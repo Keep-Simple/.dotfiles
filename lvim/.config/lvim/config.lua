@@ -116,26 +116,26 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- end
 
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
--- local formatters = require "lvim.lsp.null-ls.formatters"
--- formatters.setup {
---   { exe = "black" },
---   {
---     exe = "prettier",
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
---     filetypes = { "typescript", "typescriptreact" },
---   },
--- }
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+  -- { exe = "black" },
+  {
+    exe = "prettier",
+    ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+    filetypes = { "typescript", "typescriptreact" },
+  },
+}
 
 -- -- set additional linters
--- local linters = require "lvim.lsp.null-ls.linters"
--- linters.setup {
---   { exe = "black" },
---   {
---     exe = "eslint_d",
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
---     filetypes = { "javascript", "javascriptreact" },
---   },
--- }
+local linters = require "lvim.lsp.null-ls.linters"
+linters.setup {
+  -- { exe = "black" },
+  {
+    exe = "eslint_d",
+    ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
+  },
+}
 
 -- Additional Plugins
 lvim.plugins = {
@@ -144,10 +144,10 @@ lvim.plugins = {
 	-- {'unblevable/quick-scope'},
 	{'lyokha/vim-xkbswitch'},
 	{'easymotion/vim-easymotion'},
-	-- {
-	-- 	"folke/trouble.nvim",
-	-- 	cmd = "TroubleToggle",
-	-- },
+	{
+		"folke/trouble.nvim",
+		cmd = "TroubleToggle",
+	},
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)

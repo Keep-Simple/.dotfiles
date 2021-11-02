@@ -7,6 +7,9 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+# fnm
+export PATH=$PATH:$HOME/.fnm
+eval "$(fnm env)"
 
 ZSH_THEME="robbyrussell"
 # for webassembly
@@ -73,14 +76,12 @@ ZSH_THEME="robbyrussell"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-NVM_LAZY=1
-
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(nvm zsh-syntax-highlighting npm zsh-autosuggestions)
+plugins=(zsh-syntax-highlighting zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -134,4 +135,4 @@ HISTFILE=~/.cache/zsh/history
 bindkey -v
 export KEYTIMEOUT=1
 
-clear;
+# clear;
