@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+local COMPOSE_PATH="$HOME/Documents/commercial/rapidsec/gateway/docker-compose.yml"
+local DASHBOARD_PATH="$HOME/Documents/commercial/rapidsec/dashboard"
+
+trap "docker-compose -f $COMPOSE_PATH down; exit 1" INT
+
+docker-compose -f $COMPOSE_PATH  up -d &&
+yarn --cwd $DASHBOARD_PATH dev
