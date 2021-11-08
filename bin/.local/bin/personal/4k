@@ -7,6 +7,6 @@ xrandr \
  --output DP2 --mode 2560x1440
 
 
-setbg /home/keep-simple/.local/share/bg
+setbg $HOME/.local/share/bg
 
 remaps

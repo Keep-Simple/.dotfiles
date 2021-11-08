@@ -8,5 +8,5 @@ xrandr \
  # --dpi 144 \
  # --output eDP-1 --mode 1920x1080 --rate 60 --pos 0x0 --primary \
 
-setbg /home/keep-simple/.local/share/bg
+setbg $HOME/.local/share/bg
 remaps

@@ -1,6 +1,7 @@
 hash -d cf=/home/keep-simple/.config 
 hash -d D=/home/keep-simple/Downloads 
 hash -d d=/home/keep-simple/Documents 
+hash -d co=/home/keep-simple/.dotfiles 
 hash -d dr=/home/keep-simple/Documents/commercial/rapidsec 
 hash -d lo=/home/keep-simple/.local/share 
 hash -d h=/home/keep-simple 

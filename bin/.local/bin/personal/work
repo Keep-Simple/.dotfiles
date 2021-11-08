@@ -1,5 +1,3 @@
-#!/usr/bin/env zsh
-
 brave --new-window \
 https://rapidsec.monday.com/boards/657321888/views/26151703?userId=23427061 \
 https://github.com/rapidsec-com/dashboard/pulls \

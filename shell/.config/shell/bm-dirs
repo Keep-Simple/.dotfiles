@@ -1,6 +1,7 @@
 cf  ${XDG_CONFIG_HOME:-$HOME/.config}
 D   ${XDG_DOWNLOAD_DIR:-$HOME/Downloads}
 d   ${XDG_DOCUMENTS_DIR:-$HOME/Documents}
+co  $HOME/.dotfiles
 dr  ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/rapidsec}
 lo  ${XDG_DATA_HOME:-$HOME/.local}
 h   $HOME

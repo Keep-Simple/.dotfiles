@@ -1,5 +1,3 @@
-#!/usr/bin/env zsh
-
 brave --new-window \
 https://youtube.com \
 https://zubiden.github.io/nulp-timetable/#/%D0%9F%D0%97-11/2 \
