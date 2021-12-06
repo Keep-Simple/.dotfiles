@@ -19,6 +19,8 @@ lvim.colorscheme = "onedarker"
 lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.command_mode["w!!"] = "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<cr>"
+	-- map <leader>c :w! \| !compiler "<c-r>%"<CR>
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = ""
 -- edit a default keymapping
