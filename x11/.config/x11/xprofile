@@ -6,12 +6,19 @@
 setbg 			# set the background with the `setbg` script
 xrdb -merge ${XDG_CONFIG_HOME}/x11/xresources  # Uncomment to use Xresources colors/settings on startup
 remaps 		# run the remaps script, switching caps/esc and more; check it for more info
-
-mpd &			# music player daemon-you might prefer it as a service though
-# xcompmgr &		# xcompmgr for transparency
-picom -b
 dunst &			# dunst for notifications
 unclutter &		# Remove mouse when idle
+runsvdir ~/.config/runit/runsvdir &
+
+# init keyring
+eval $(gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)
+# export keyring
+export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
+
+# mpd &			# music player daemon-you might prefer it as a service though
+# xcompmgr &		# xcompmgr for transparency
+# picom -b
+
 # This line autostarts an instance of Pulseaudio that does not exit on idle.
 # This is "necessary" on Artix due to a current bug between PA and
 # Chromium-based browsers where they fail to start PA and use dummy output.

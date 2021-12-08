@@ -114,7 +114,8 @@ map D &trash -- $fx
 map <delete> :delete
 map p :paste
 map S :share
-map P :link
+# not working
+map L :link
 map t toggle
 map <c-n> push :mkdir<space>
 map <c-r> reload
