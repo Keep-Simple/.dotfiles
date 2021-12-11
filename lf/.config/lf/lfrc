@@ -115,7 +115,7 @@ map <delete> :delete
 map p :paste
 map S :share
 # not working
-map L :link
+# map L :link
 map t toggle
 map <c-n> push :mkdir<space>
 map <c-r> reload

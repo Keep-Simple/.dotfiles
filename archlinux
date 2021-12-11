@@ -6,8 +6,8 @@ if [[ -z $STOW_FOLDERS ]]; then
     shell,picom,lf,
     dunst,suckless,
     bin,lvim,wallpapers,
-    pulse,zathura,
-    pipewire,runit"
+    zathura,pipewire,
+    runit"
 fi
 
 if [[ -z $DOTFILES ]]; then
