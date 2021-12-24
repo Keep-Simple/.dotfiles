@@ -4,10 +4,11 @@ if [[ -z $STOW_FOLDERS ]]; then
     STOW_FOLDERS="
     nvim,zsh,x11,
     shell,picom,lf,
+    fontconfig,
     dunst,suckless,
     bin,lvim,wallpapers,
     zathura,pipewire,
-    runit"
+    runit,packup"
 fi
 
 if [[ -z $DOTFILES ]]; then

@@ -9,13 +9,19 @@ static unsigned int borderpx = 3; /* border pixel of windows */
 static unsigned int snap = 32;    /* snap pixel */
 static unsigned int gappih = 20;  /* horiz inner gap between windows */
 static unsigned int gappiv = 10;  /* vert inner gap between windows */
-static unsigned int gappoh = 10;  /* horiz outer gap between windows and screen edge */
-static unsigned int gappov = 30;  /* vert outer gap between windows and screen edge */
-static int swallowfloating = 0;   /* 1 means swallow floating windows by default */
-static int smartgaps = 0;         /* 1 means no outer gap when there is only one window */
-static int showbar = 1;           /* 0 means no bar */
-static int topbar = 1;            /* 0 means bottom bar */
-static char *fonts[] = {"monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"};
+static unsigned int gappoh =
+    10; /* horiz outer gap between windows and screen edge */
+static unsigned int gappov =
+    30; /* vert outer gap between windows and screen edge */
+static int swallowfloating =
+    0; /* 1 means swallow floating windows by default */
+static int smartgaps =
+    1;                  /* 1 means no outer gap when there is only one window */
+static int showbar = 1; /* 0 means no bar */
+static int topbar = 1;  /* 0 means bottom bar */
+static const char *fonts[] = {
+    "Source Code Pro Regular:size=13",
+    "JoyPixels:pixelsize=14:antialias=true:autohint=true"};
 static char normbgcolor[] = "#222222";
 static char normbordercolor[] = "#444444";
 static char normfgcolor[] = "#bbbbbb";
@@ -28,13 +34,14 @@ static char *colors[][3] = {
     [SchemeSel] = {selfgcolor, selbgcolor, selbordercolor},
 };
 
-typedef struct
-{
-    const char *name;
-    const void *cmd;
+typedef struct {
+  const char *name;
+  const void *cmd;
 } Sp;
 const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "120x34", NULL};
-const char *spcmd2[] = {TERMINAL, "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL};
+const char *spcmd2[] = {TERMINAL, "-n",    "spcalc", "-f", "monospace:size=16",
+                        "-g",     "50x20", "-e",     "bc", "-lq",
+                        NULL};
 static Sp scratchpads[] = {
     /* name          cmd  */
     {"spterm", spcmd1},
@@ -46,10 +53,11 @@ static const char *tags[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
 static const Rule rules[] = {
     /* xprop(1):
-	 *	WM_CLASS(STRING) = instance, class
-	 *	WM_NAME(STRING) = title
-	*/
-    /* class    instance      title       	 tags mask    isfloating   isterminal  noswallow  monitor */
+     *	WM_CLASS(STRING) = instance, class
+     *	WM_NAME(STRING) = title
+     */
+    /* class    instance      title       	 tags mask    isfloating
+       isterminal  noswallow  monitor */
     {"Gimp", NULL, NULL, 1 << 8, 0, 0, 0, -1},
     {TERMCLASS, NULL, NULL, 0, 0, 1, 0, -1},
     {NULL, NULL, "Event Tester", 0, 0, 0, 1, -1},
@@ -61,7 +69,8 @@ static const Rule rules[] = {
 static float mfact = 0.55;  /* factor of master area size [0.05..0.95] */
 static int nmaster = 1;     /* number of clients in master area */
 static int resizehints = 0; /* 1 means respect size hints in tiled resizals */
-#define FORCE_VSPLIT 1      /* nrowgrid layout: force two clients to always split vertically */
+#define FORCE_VSPLIT                                                           \
+  1 /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
 static const Layout layouts[] = {
     /* symbol     arrange function */
@@ -83,23 +92,28 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
-#define TAGKEYS(KEY, TAG)                                          \
-    {MODKEY, KEY, view, {.ui = 1 << TAG}},                         \
-        {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}}, \
-        {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},          \
-        {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
-#define STACKKEYS(MOD, ACTION)                      \
-    {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},     \
-        {MOD, XK_k, ACTION##stack, {.i = INC(-1)}}, \
-        {MOD, XK_v, ACTION##stack, {.i = 0}}, /* { MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \ */
-                                              /* { MOD, XK_a,     ACTION##stack, {.i = 1 } }, \ */
-                                              /* { MOD, XK_z,     ACTION##stack, {.i = 2 } }, \ */
-                                              /* { MOD, XK_x,     ACTION##stack, {.i = -1 } }, */
+
+#define TAGKEYS(KEY, TAG)                                                      \
+  {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
+      {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
+      {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
+      {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
+
+#define STACKKEYS(MOD, ACTION)                                                 \
+  {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},                                  \
+      {MOD, XK_k, ACTION##stack, {.i = INC(-1)}},                              \
+      {MOD,                                                                    \
+       XK_v,                                                                   \
+       ACTION##stack,                                                          \
+       {.i = 0}}, /* { MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \ */
+                  /* { MOD, XK_a,     ACTION##stack, {.i = 1 } }, \ */
+                  /* { MOD, XK_z,     ACTION##stack, {.i = 2 } }, \ */
+                  /* { MOD, XK_x,     ACTION##stack, {.i = -1 } }, */
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd)                                           \
-    {                                                        \
-        .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL } \
-    }
+#define SHCMD(cmd)                                                             \
+  {                                                                            \
+    .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
+  }
 
 /* commands */
 static const char *termcmd[] = {TERMINAL, NULL};
@@ -129,30 +143,28 @@ ResourcePref resources[] = {
     {"smartgaps", INTEGER, &smartgaps},
 };
 
-#include <X11/XF86keysym.h>
 #include "shiftview.c"
+#include <X11/XF86keysym.h>
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
-    STACKKEYS(MODKEY, focus)
-        STACKKEYS(MODKEY | ShiftMask, push)
+    STACKKEYS(MODKEY, focus) STACKKEYS(MODKEY | ShiftMask, push)
     /* { MODKEY|ShiftMask,    XK_Escape,  spawn,  SHCMD("") }, */
     {MODKEY, XK_grave, spawn, SHCMD("dmenuunicode")},
     /* { MODKEY|ShiftMask,    XK_grave,  togglescratch,  SHCMD("") }, */
-    TAGKEYS(XK_1, 0)
-        TAGKEYS(XK_2, 1)
-            TAGKEYS(XK_3, 2)
-                TAGKEYS(XK_4, 3)
-                    TAGKEYS(XK_5, 4)
-                        TAGKEYS(XK_6, 5)
-                            TAGKEYS(XK_7, 6)
-                                TAGKEYS(XK_8, 7)
-                                    TAGKEYS(XK_9, 8){MODKEY, XK_0, view, {.ui = ~0}},
-    {MODKEY | ShiftMask, XK_0, tag, {.ui = ~0}},
-    {MODKEY, XK_minus, spawn, SHCMD("pamixer --allow-boost -d 5; kill -44 $(pidof dwmblocks)")},
-    {MODKEY | ShiftMask, XK_minus, spawn, SHCMD("pamixer --allow-boost -d 15; kill -44 $(pidof dwmblocks)")},
-    {MODKEY, XK_equal, spawn, SHCMD("pamixer --allow-boost -i 5; kill -44 $(pidof dwmblocks)")},
-    {MODKEY | ShiftMask, XK_equal, spawn, SHCMD("pamixer --allow-boost -i 15; kill -44 $(pidof dwmblocks)")},
+    TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
+        TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
+            TAGKEYS(XK_9, 8)
+    //
+    {MODKEY, XK_0, spawn, SHCMD("skippy-xd")},
+    {MODKEY, XK_minus, spawn,
+     SHCMD("pamixer --allow-boost -d 5; kill -44 $(pidof dwmblocks)")},
+    {MODKEY | ShiftMask, XK_minus, spawn,
+     SHCMD("pamixer --allow-boost -d 15; kill -44 $(pidof dwmblocks)")},
+    {MODKEY, XK_equal, spawn,
+     SHCMD("pamixer --allow-boost -i 5; kill -44 $(pidof dwmblocks)")},
+    {MODKEY | ShiftMask, XK_equal, spawn,
+     SHCMD("pamixer --allow-boost -i 15; kill -44 $(pidof dwmblocks)")},
     {MODKEY, XK_BackSpace, spawn, SHCMD("sysact")},
     {MODKEY | ShiftMask, XK_BackSpace, spawn, SHCMD("sysact")},
 
@@ -162,8 +174,10 @@ static Key keys[] = {
     {MODKEY | ShiftMask, XK_q, spawn, SHCMD("sysact")},
     {MODKEY, XK_w, spawn, SHCMD("$BROWSER")},
     {MODKEY | ShiftMask, XK_w, spawn, SHCMD(TERMINAL " -e sudo nmtui")},
-    /* { MODKEY,      XK_e,    spawn,    SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook") }, */
-    /* { MODKEY|ShiftMask,    XK_e,    spawn,    SHCMD(TERMINAL " -e abook -C ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook") }, */
+    /* { MODKEY,      XK_e,    spawn,    SHCMD(TERMINAL " -e neomutt ; pkill
+       -RTMIN+12 dwmblocks; rmdir ~/.abook") }, */
+    /* { MODKEY|ShiftMask,    XK_e,    spawn,    SHCMD(TERMINAL " -e abook -C
+       ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook") }, */
     {MODKEY, XK_r, spawn, SHCMD(TERMINAL " -e lfrun")},
     {MODKEY | ShiftMask, XK_r, spawn, SHCMD(TERMINAL " -e htop")},
     {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},             /* tile */
@@ -172,8 +186,11 @@ static Key keys[] = {
     {MODKEY | ShiftMask, XK_y, setlayout, {.v = &layouts[3]}}, /* dwindle */
     {MODKEY, XK_u, setlayout, {.v = &layouts[4]}},             /* deck */
     {MODKEY | ShiftMask, XK_u, setlayout, {.v = &layouts[5]}}, /* monocle */
-    {MODKEY, XK_i, setlayout, {.v = &layouts[6]}},             /* centeredmaster */
-    {MODKEY | ShiftMask, XK_i, setlayout, {.v = &layouts[7]}}, /* centeredfloatingmaster */
+    {MODKEY, XK_i, setlayout, {.v = &layouts[6]}}, /* centeredmaster */
+    {MODKEY | ShiftMask,
+     XK_i,
+     setlayout,
+     {.v = &layouts[7]}}, /* centeredfloatingmaster */
     {MODKEY, XK_o, incnmaster, {.i = +1}},
     {MODKEY | ShiftMask, XK_o, incnmaster, {.i = -1}},
     {MODKEY, XK_p, spawn, SHCMD("mpc toggle")},
@@ -213,9 +230,11 @@ static Key keys[] = {
     {MODKEY, XK_b, togglebar, {0}},
     /* { MODKEY|ShiftMask,    XK_b,    spawn,    SHCMD("") }, */
     {MODKEY, XK_n, spawn, SHCMD(TERMINAL " -e nvim -c VimwikiIndex")},
-    {MODKEY | ShiftMask, XK_n, spawn, SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+6 dwmblocks")},
+    {MODKEY | ShiftMask, XK_n, spawn,
+     SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+6 dwmblocks")},
     {MODKEY, XK_m, spawn, SHCMD(TERMINAL " -e ncmpcpp")},
-    {MODKEY | ShiftMask, XK_m, spawn, SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)")},
+    {MODKEY | ShiftMask, XK_m, spawn,
+     SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)")},
     {MODKEY, XK_comma, spawn, SHCMD("mpc prev")},
     {MODKEY | ShiftMask, XK_comma, spawn, SHCMD("mpc seek 0%")},
     {MODKEY, XK_period, spawn, SHCMD("mpc next")},
@@ -230,20 +249,30 @@ static Key keys[] = {
     {MODKEY | ShiftMask, XK_Page_Up, shifttag, {.i = -1}},
     {MODKEY, XK_Page_Down, shiftview, {.i = +1}},
     {MODKEY | ShiftMask, XK_Page_Down, shifttag, {.i = +1}},
-    {MODKEY, XK_Insert, spawn, SHCMD("xdotool type $(grep -v '^#' ~/.local/share/larbs/snippets | dmenu -i -l 50 | cut -d' ' -f1)")},
+    {MODKEY, XK_Insert, spawn,
+     SHCMD("xdotool type $(grep -v '^#' ~/.local/share/larbs/snippets | dmenu "
+           "-i -l 50 | cut -d' ' -f1)")},
 
-    {MODKEY, XK_F1, spawn, SHCMD("groff -mom /usr/local/share/dwm/larbs.mom -Tpdf | zathura -")},
+    {MODKEY, XK_F1, spawn,
+     SHCMD("groff -mom /usr/local/share/dwm/larbs.mom -Tpdf | zathura -")},
     {MODKEY, XK_F2, spawn, SHCMD("tutorialvids")},
     {MODKEY, XK_F3, spawn, SHCMD("displayselect")},
-    {MODKEY, XK_F4, spawn, SHCMD(TERMINAL " -e pulsemixer; kill -44 $(pidof dwmblocks)")},
+    {MODKEY, XK_F4, spawn,
+     SHCMD(TERMINAL " -e pulsemixer; kill -44 $(pidof dwmblocks)")},
     /* { MODKEY,      XK_F5,    xrdb,    {.v = NULL } }, */
     {MODKEY, XK_F6, spawn, SHCMD("torwrap")},
     {MODKEY, XK_F7, spawn, SHCMD("td-toggle")},
     {MODKEY, XK_F8, spawn, SHCMD("mw -Y")},
     {MODKEY, XK_F9, spawn, SHCMD("dmenumount")},
     {MODKEY, XK_F10, spawn, SHCMD("dmenuumount")},
-    {MODKEY, XK_F11, spawn, SHCMD("mpv --no-cache --no-osc --no-input-default-bindings --profile=low-latency --input-conf=/dev/null --title=webcam $(ls /dev/video[0,2,4,6,8] | tail -n 1)")},
-    {MODKEY, XK_F12, spawn, SHCMD("remaps & notify-send \\\"⌨️ Keyboard remapping...\\\" \\\"Re-running keyboard defaults for any newly plugged-in keyboards.\\\"")},
+    {MODKEY, XK_F11, spawn,
+     SHCMD("mpv --no-cache --no-osc --no-input-default-bindings "
+           "--profile=low-latency --input-conf=/dev/null --title=webcam $(ls "
+           "/dev/video[0,2,4,6,8] | tail -n 1)")},
+    {MODKEY, XK_F12, spawn,
+     SHCMD("remaps & notify-send \\\"⌨️ Keyboard remapping...\\\" \\\""
+           "Re-running keyboard defaults for any newly plugged-in keyb"
+           "oards.\\\"")},
     {MODKEY, XK_space, zoom, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
     {0, XK_Print, spawn, SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png")},
@@ -252,10 +281,12 @@ static Key keys[] = {
     {MODKEY | ShiftMask, XK_Print, spawn, SHCMD("dmenurecord kill")},
     {MODKEY, XK_Delete, spawn, SHCMD("dmenurecord kill")},
     {MODKEY, XK_Scroll_Lock, spawn, SHCMD("killall screenkey || screenkey &")},
-    /* { MODKEY,                       XK_v,      spawn,  SHCMD("skippy-xd") }, */
-    {0, XF86XK_AudioMute, spawn, SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)")},
-    {0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)")},
-    {0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)")},
+    {0, XF86XK_AudioMute, spawn,
+     SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)")},
+    {0, XF86XK_AudioRaiseVolume, spawn,
+     SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)")},
+    {0, XF86XK_AudioLowerVolume, spawn,
+     SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)")},
     {0, XF86XK_AudioPrev, spawn, SHCMD("mpc prev")},
     {0, XF86XK_AudioNext, spawn, SHCMD("mpc next")},
     {0, XF86XK_AudioPause, spawn, SHCMD("mpc pause")},
@@ -264,46 +295,67 @@ static Key keys[] = {
     {0, XF86XK_AudioRewind, spawn, SHCMD("mpc seek -10")},
     {0, XF86XK_AudioForward, spawn, SHCMD("mpc seek +10")},
     {0, XF86XK_AudioMedia, spawn, SHCMD(TERMINAL " -e ncmpcpp")},
-    {0, XF86XK_AudioMicMute, spawn, SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle")},
+    {0, XF86XK_AudioMicMute, spawn,
+     SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle")},
     {0, XF86XK_PowerOff, spawn, SHCMD("sysact")},
     {0, XF86XK_Calculator, spawn, SHCMD(TERMINAL " -e bc -l")},
     {0, XF86XK_Sleep, spawn, SHCMD("sudo -A zzz")},
     {0, XF86XK_WWW, spawn, SHCMD("$BROWSER")},
     {0, XF86XK_DOS, spawn, SHCMD(TERMINAL)},
-    {0, XF86XK_ScreenSaver, spawn, SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv")},
+    {0, XF86XK_ScreenSaver, spawn,
+     SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv")},
     {0, XF86XK_TaskPane, spawn, SHCMD(TERMINAL " -e htop")},
-    {0, XF86XK_Mail, spawn, SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks")},
+    {0, XF86XK_Mail, spawn,
+     SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks")},
     {0, XF86XK_MyComputer, spawn, SHCMD(TERMINAL " -e lf /")},
     /* { 0, XF86XK_Battery,    spawn,    SHCMD("") }, */
     {0, XF86XK_Launch1, spawn, SHCMD("xset dpms force off")},
-    {0, XF86XK_TouchpadToggle, spawn, SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1")},
+    {0, XF86XK_TouchpadToggle, spawn,
+     SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || "
+           "synclient TouchpadOff=1")},
     {0, XF86XK_TouchpadOff, spawn, SHCMD("synclient TouchpadOff=1")},
     {0, XF86XK_TouchpadOn, spawn, SHCMD("synclient TouchpadOff=0")},
     {0, XF86XK_MonBrightnessUp, spawn, SHCMD("brightnessctl -q set +5%")},
     {0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl -q set 5%-")},
 
-    /* { MODKEY|Mod4Mask,              XK_h,      incrgaps,       {.i = +1 } }, */
-    /* { MODKEY|Mod4Mask,              XK_l,      incrgaps,       {.i = -1 } }, */
-    /* { MODKEY|Mod4Mask|ShiftMask,    XK_h,      incrogaps,      {.i = +1 } }, */
-    /* { MODKEY|Mod4Mask|ShiftMask,    XK_l,      incrogaps,      {.i = -1 } }, */
-    /* { MODKEY|Mod4Mask|ControlMask,  XK_h,      incrigaps,      {.i = +1 } }, */
-    /* { MODKEY|Mod4Mask|ControlMask,  XK_l,      incrigaps,      {.i = -1 } }, */
+    /* { MODKEY|Mod4Mask,              XK_h,      incrgaps,       {.i = +1 } },
+     */
+    /* { MODKEY|Mod4Mask,              XK_l,      incrgaps,       {.i = -1 } },
+     */
+    /* { MODKEY|Mod4Mask|ShiftMask,    XK_h,      incrogaps,      {.i = +1 } },
+     */
+    /* { MODKEY|Mod4Mask|ShiftMask,    XK_l,      incrogaps,      {.i = -1 } },
+     */
+    /* { MODKEY|Mod4Mask|ControlMask,  XK_h,      incrigaps,      {.i = +1 } },
+     */
+    /* { MODKEY|Mod4Mask|ControlMask,  XK_l,      incrigaps,      {.i = -1 } },
+     */
     /* { MODKEY|Mod4Mask|ShiftMask,    XK_0,      defaultgaps,    {0} }, */
-    /* { MODKEY,                       XK_y,      incrihgaps,     {.i = +1 } }, */
-    /* { MODKEY,                       XK_o,      incrihgaps,     {.i = -1 } }, */
-    /* { MODKEY|ControlMask,           XK_y,      incrivgaps,     {.i = +1 } }, */
-    /* { MODKEY|ControlMask,           XK_o,      incrivgaps,     {.i = -1 } }, */
-    /* { MODKEY|Mod4Mask,              XK_y,      incrohgaps,     {.i = +1 } }, */
-    /* { MODKEY|Mod4Mask,              XK_o,      incrohgaps,     {.i = -1 } }, */
-    /* { MODKEY|ShiftMask,             XK_y,      incrovgaps,     {.i = +1 } }, */
-    /* { MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -1 } }, */
+    /* { MODKEY,                       XK_y,      incrihgaps,     {.i = +1 } },
+     */
+    /* { MODKEY,                       XK_o,      incrihgaps,     {.i = -1 } },
+     */
+    /* { MODKEY|ControlMask,           XK_y,      incrivgaps,     {.i = +1 } },
+     */
+    /* { MODKEY|ControlMask,           XK_o,      incrivgaps,     {.i = -1 } },
+     */
+    /* { MODKEY|Mod4Mask,              XK_y,      incrohgaps,     {.i = +1 } },
+     */
+    /* { MODKEY|Mod4Mask,              XK_o,      incrohgaps,     {.i = -1 } },
+     */
+    /* { MODKEY|ShiftMask,             XK_y,      incrovgaps,     {.i = +1 } },
+     */
+    /* { MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -1 } },
+     */
 
 };
 
 /* button definitions */
-/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
+/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
+ * ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
-/* click                event mask      button          function        argument */
+/* click                event mask      button          function        argument
+ */
 #ifndef __OpenBSD__
     {ClkWinTitle, 0, Button2, zoom, {0}},
     {ClkStatusText, 0, Button1, sigdwmblocks, {.i = 1}},
@@ -313,7 +365,8 @@ static Button buttons[] = {
     {ClkStatusText, 0, Button5, sigdwmblocks, {.i = 5}},
     {ClkStatusText, ShiftMask, Button1, sigdwmblocks, {.i = 6}},
 #endif
-    {ClkStatusText, ShiftMask, Button3, spawn, SHCMD(TERMINAL " -e nvim ~/.local/src/dwmblocks/config.h")},
+    {ClkStatusText, ShiftMask, Button3, spawn,
+     SHCMD(TERMINAL " -e nvim ~/.local/src/dwmblocks/config.h")},
     {ClkClientWin, MODKEY, Button1, movemouse, {0}},
     {ClkClientWin, MODKEY, Button2, defaultgaps, {0}},
     {ClkClientWin, MODKEY, Button3, resizemouse, {0}},
@@ -327,4 +380,3 @@ static Button buttons[] = {
     {ClkTagBar, 0, Button5, shiftview, {.i = 1}},
     {ClkRootWin, 0, Button2, togglebar, {0}},
 };
-

@@ -1,0 +1,27 @@
+# packup configuration file
+
+# set date format
+# date options are as follows:
+#	%a - abbreviated weekday name (e.g., Sun)
+#	%A - full weekday name (e.g., Sunday)
+#	%b - abbreviated month name (e.g., Jan)
+#	%B - full month name (e.g., January)
+#	%d - day of month (e.g., 01)
+#	%H - hour - 24hr format (00..23)
+#	%I - hour - 12hr format (01..12)
+#	%j - day of year (001..366)
+#	%m - month (01..12)
+#	%M - minute (00..59)
+#	%P - AM/PM
+#	%p - am/pm
+#	%S - seconds (00..60)
+#	%y - last two digits of year (e.g., 09)
+#	%Y - year (e.g., 2009)
+# default=%Y%m%d-%H%M
+DATEFMT=%Y%m%d-%H%M
+
+# set backup directory
+BACKUP_DIR=$XDG_CONFIG_HOME/packup/backups
+
+# set default editor
+EDITOR=$EDITOR
