@@ -11,15 +11,13 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "onedarker"
--- lvim.fileformats=nil
--- lvim.fileformat="dos"
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.command_mode["w!!"] = "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<cr>"
-	-- map <leader>c :w! \| !compiler "<c-r>%"<CR>
+-- map <leader>c :w! \| !compiler "<c-r>%"<CR>
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = ""
 -- edit a default keymapping
@@ -28,8 +26,12 @@ lvim.keys.command_mode["w!!"] = "execute 'silent! write !sudo tee % >/dev/null' 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 local _, actions = pcall(require, "telescope.actions")
-lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true }}
 
+lvim.builtin.terminal.direction = "horizontal"
+lvim.builtin.terminal.open_mapping = [[<A-;>]]
+
+lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true }}
+lvim.builtin.telescope.defaults.file_ignore_patterns = { ".git", "node_modules" }
 lvim.builtin.telescope.defaults.mappings = {
   -- for input mode
   i = {
@@ -62,7 +64,7 @@ lvim.builtin.which_key.mappings["t"] = {
 lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.show_icons.git = 0
+lvim.builtin.nvimtree.show_icons.git = 1
 lvim.builtin.nvimtree.hide_dotfiles = 0
 
 -- if you don't want all the parsers change this to a table of the ones you want
@@ -132,10 +134,6 @@ formatters.setup {
   },
 }
 
--- -- set additional linters
--- lvim.lang.typescript.linters = {
---   {exe = "eslint"}
--- }
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   -- { exe = "black" },
@@ -146,10 +144,14 @@ linters.setup {
   },
 }
 
+-- -- set additional linters
+-- lvim.lang.typescript.linters = {
+--   {exe = "eslint"}
+-- }
 -- lvim.lang.typescript.formatters = { { exe = "eslint_d"}, { exe = "prettier" } }
 -- lvim.lang.typescriptreact.formatters = lvim.lang.typescript.formatters
 -- lvim.lang.typescript.linters = { { exe = "eslint" } }
--- lvim.lang.typescriptreact.linters = lvim.lang.typescript.linters
+-- lvim.lang.tytreact.linters = lvim.lang.typescript.linters
 
 -- Additional Plugins
 lvim.plugins = {
@@ -192,10 +194,18 @@ lvim.plugins = {
     ft = {"fugitive"}
   },
   {
-        "ray-x/lsp_signature.nvim",
-        config = function() require"lsp_signature".on_attach() end,
-        event = "BufRead"
-  }
+    "ray-x/lsp_signature.nvim",
+    config = function() require"lsp_signature".on_attach() end,
+    event = "BufRead"
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    config = function() require("nvim-ts-autotag").setup() end,
+    event = "InsertEnter",
+  },
+  -- {
+  --   "jose-elias-alvarez/nvim-lsp-ts-utils"
+  -- },
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)

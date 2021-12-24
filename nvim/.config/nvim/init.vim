@@ -36,8 +36,8 @@ if exists('g:vscode')
 	nnoremap gr :call VSCodeNotify('references-view.findReferences')<CR>
 	nmap <leader>w :call VSCodeNotify('workbench.action.files.save')<CR>
 	nmap <leader>aw :call VSCodeNotify('workbench.action.files.saveAll')<CR>
-	nnoremap <leader>q <Cmd>Quit!<CR>
-	nnoremap <leader><S-q> :call VSCodeNotify('workbench.action.closeOtherEditors')<CR>
+	nnoremap <leader>c <Cmd>Quit!<CR>
+	nnoremap <leader><S-c> :call VSCodeNotify('workbench.action.closeOtherEditors')<CR>
 
 	map  <Leader>f <Plug>(easymotion-bd-f)
 	map s <Plug>(easymotion-s2)
