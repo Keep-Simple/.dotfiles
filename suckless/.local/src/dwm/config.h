@@ -19,9 +19,7 @@ static int smartgaps =
     1;                  /* 1 means no outer gap when there is only one window */
 static int showbar = 1; /* 0 means no bar */
 static int topbar = 1;  /* 0 means bottom bar */
-static const char *fonts[] = {
-    "Source Code Pro Regular:size=13",
-    "JoyPixels:pixelsize=14:antialias=true:autohint=true"};
+static char *fonts[] = {"monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"};
 static char normbgcolor[] = "#222222";
 static char normbordercolor[] = "#444444";
 static char normfgcolor[] = "#bbbbbb";
@@ -34,13 +32,14 @@ static char *colors[][3] = {
     [SchemeSel] = {selfgcolor, selbgcolor, selbordercolor},
 };
 
-typedef struct {
-  const char *name;
-  const void *cmd;
+typedef struct
+{
+    const char *name;
+    const void *cmd;
 } Sp;
 const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "120x34", NULL};
-const char *spcmd2[] = {TERMINAL, "-n",    "spcalc", "-f", "monospace:size=16",
-                        "-g",     "50x20", "-e",     "bc", "-lq",
+const char *spcmd2[] = {TERMINAL, "-n", "spcalc", "-f", "monospace:size=16",
+                        "-g", "50x20", "-e", "bc", "-lq",
                         NULL};
 static Sp scratchpads[] = {
     /* name          cmd  */
@@ -69,8 +68,8 @@ static const Rule rules[] = {
 static float mfact = 0.55;  /* factor of master area size [0.05..0.95] */
 static int nmaster = 1;     /* number of clients in master area */
 static int resizehints = 0; /* 1 means respect size hints in tiled resizals */
-#define FORCE_VSPLIT                                                           \
-  1 /* nrowgrid layout: force two clients to always split vertically */
+#define FORCE_VSPLIT \
+    1 /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
 static const Layout layouts[] = {
     /* symbol     arrange function */
@@ -93,27 +92,27 @@ static const Layout layouts[] = {
 /* key definitions */
 #define MODKEY Mod4Mask
 
-#define TAGKEYS(KEY, TAG)                                                      \
-  {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
-      {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
-      {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
-      {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
+#define TAGKEYS(KEY, TAG)                                          \
+    {MODKEY, KEY, view, {.ui = 1 << TAG}},                         \
+        {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}}, \
+        {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},          \
+        {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
 
-#define STACKKEYS(MOD, ACTION)                                                 \
-  {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},                                  \
-      {MOD, XK_k, ACTION##stack, {.i = INC(-1)}},                              \
-      {MOD,                                                                    \
-       XK_v,                                                                   \
-       ACTION##stack,                                                          \
-       {.i = 0}}, /* { MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \ */
-                  /* { MOD, XK_a,     ACTION##stack, {.i = 1 } }, \ */
-                  /* { MOD, XK_z,     ACTION##stack, {.i = 2 } }, \ */
-                  /* { MOD, XK_x,     ACTION##stack, {.i = -1 } }, */
+#define STACKKEYS(MOD, ACTION)                      \
+    {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},     \
+        {MOD, XK_k, ACTION##stack, {.i = INC(-1)}}, \
+        {MOD,                                       \
+         XK_v,                                      \
+         ACTION##stack,                             \
+         {.i = 0}}, /* { MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \ */
+                    /* { MOD, XK_a,     ACTION##stack, {.i = 1 } }, \ */
+                    /* { MOD, XK_z,     ACTION##stack, {.i = 2 } }, \ */
+                    /* { MOD, XK_x,     ACTION##stack, {.i = -1 } }, */
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd)                                                             \
-  {                                                                            \
-    .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
-  }
+#define SHCMD(cmd)                                           \
+    {                                                        \
+        .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL } \
+    }
 
 /* commands */
 static const char *termcmd[] = {TERMINAL, NULL};
@@ -186,7 +185,7 @@ static Key keys[] = {
     {MODKEY | ShiftMask, XK_y, setlayout, {.v = &layouts[3]}}, /* dwindle */
     {MODKEY, XK_u, setlayout, {.v = &layouts[4]}},             /* deck */
     {MODKEY | ShiftMask, XK_u, setlayout, {.v = &layouts[5]}}, /* monocle */
-    {MODKEY, XK_i, setlayout, {.v = &layouts[6]}}, /* centeredmaster */
+    {MODKEY, XK_i, setlayout, {.v = &layouts[6]}},             /* centeredmaster */
     {MODKEY | ShiftMask,
      XK_i,
      setlayout,

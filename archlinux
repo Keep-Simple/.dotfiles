@@ -4,7 +4,7 @@ if [[ -z $STOW_FOLDERS ]]; then
     STOW_FOLDERS="
     nvim,zsh,x11,
     shell,picom,lf,
-    fontconfig,
+    fontconfig,git,
     dunst,suckless,
     bin,lvim,wallpapers,
     zathura,pipewire,
