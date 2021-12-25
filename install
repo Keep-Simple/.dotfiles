@@ -1,10 +1,35 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-pushd $DOTFILES
+# make sure we have pulled in and updated any submodules
+git submodule update --init --recursive
+git submodule update --remote --merge
 
-for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
-do
-	stow -D $folder
-	stow $folder
+# run the stow command for the passed in directory ($2) in location $1
+stowit() {
+    usr=$1
+    app=$2
+    # -v verbose
+    # -R recursive
+    # -t target
+    stow -v -R -t ${usr} ${app}
+}
+
+echo ""
+echo "Stowing apps for user: ${whoami}"
+
+# install apps available to local users and root
+for app in $(echo $ROOT_APPS | sed "s/,/ /g"); do
+    stowit "${HOME}" $app 
 done
-popd
+
+# install only user space folders
+for app in $(echo $USER_APPS | sed "s/,/ /g"); do
+    if [[ "$(whoami)" != *"root"* ]]; then
+        stowit "${HOME}" $app 
+    fi
+done
+
+echo ""
+echo "##### ALL DONE"
+
+

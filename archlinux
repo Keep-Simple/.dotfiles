@@ -1,18 +1,16 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-if [[ -z $STOW_FOLDERS ]]; then
-    STOW_FOLDERS="
-    nvim,zsh,x11,
-    shell,picom,lf,
-    fontconfig,git,
-    dunst,suckless,
-    bin,lvim,wallpapers,
-    zathura,pipewire,
-    runit,packup"
-fi
+USER_APPS="git,packup,personal";
 
-if [[ -z $DOTFILES ]]; then
-    DOTFILES=$HOME/.dotfiles
-fi
+ROOT_APPS="
+nvim,zsh,x11,
+shell,picom,lf,
+fontconfig,
+dunst,suckless,
+bin,lvim,wallpapers,
+zathura,pipewire,
+runit,skippy"
 
-STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES $DOTFILES/install
+INSTALL_PATH=$(dirname $(realpath $0))/install
+
+ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $INSTALL_PATH
