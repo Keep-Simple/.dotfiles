@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-USER_APPS="git,packup,personal";
+USER_APPS="git,packup";
 
 ROOT_APPS="
 nvim,zsh,x11,

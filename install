@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# make sure we have pulled in and updated any submodules
-git submodule update --init --recursive
-git submodule update --remote --merge
-
 # run the stow command for the passed in directory ($2) in location $1
 stowit() {
     usr=$1
@@ -28,9 +24,6 @@ for app in $(echo $USER_APPS | sed "s/,/ /g"); do
         stowit "${HOME}" $app 
     fi
 done
-
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/*
 
 echo ""
 echo "##### ALL DONE"
