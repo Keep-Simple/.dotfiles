@@ -8,14 +8,11 @@
 # Adds `~/.local/bin` to $PATH
 export PATH="$PATH:${$(find -L ~/.local/bin -type d -printf %p:)%%:}"
 
-# unsetopt PROMPT_SP
-
 # Default programs:
 export EDITOR="lvim"
 export TERMINAL="st"
 export BROWSER="brave"
 
-# ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"

@@ -29,6 +29,9 @@ for app in $(echo $USER_APPS | sed "s/,/ /g"); do
     fi
 done
 
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/*
+
 echo ""
 echo "##### ALL DONE"
 
