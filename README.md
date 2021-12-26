@@ -11,7 +11,6 @@ Clone into your `$HOME` directory or `~`
 ```bash
 git clone git@github.com:Keep-Simple/.dotfiles.git ~
 ```
-Remove `personal` folder and `.gitmodules`
 
 If using `Arch`, run this script to symlink everything 
 ```bash
