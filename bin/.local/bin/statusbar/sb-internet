@@ -16,9 +16,19 @@ case $BLOCK_BUTTON in
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-case "$(cat /sys/class/net/w*/operstate 2>/dev/null)" in
-	down) wifiicon="📡 " ;;
-	up) wifiicon="$(awk '/^\s*w/ { print "📶", int($3 * 100 / 70) "% " }' /proc/net/wireless)" ;;
+WIFI_STATUS="$(cat /sys/class/net/w*/operstate 2>/dev/null)" 
+ETHERNET_STATUS="$(cat /sys/class/net/e*/operstate 2>/dev/null)" 
+VPN_STATUS="$(cat /sys/class/net/tun*/operstate 2>/dev/null)" 
+
+case $ETHERNET_STATUS in
+	up) icon="🌐 " ;;
 esac
 
-printf "%s%s%s\n" "$wifiicon" "$(sed "s/down/❎/;s/up/🌐/" /sys/class/net/e*/operstate 2>/dev/null)" "$(sed "s/.*/🔒/" /sys/class/net/tun*/operstate 2>/dev/null)"
+case $WIFI_STATUS in
+	up) icon="📶 " ;;
+esac
+
+[ -z "$icon" ] && icon="📡 "
+
+
+printf "%s%s\n" "$icon" "$(sed "s/.*/🔒/" $VPN_STATUS)"
