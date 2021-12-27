@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-USER_APPS="packup";
+USER_APPS="";
 
 ROOT_APPS="
 nvim,zsh,x11,
@@ -9,7 +9,8 @@ fontconfig,
 dunst,suckless,
 bin,lvim,wallpapers,
 zathura,pipewire,
-runit,skippy"
+runit,skippy,
+packup"
 
 INSTALL_PATH=$(dirname $(realpath $0))/install
 
