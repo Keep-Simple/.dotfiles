@@ -1,0 +1,3 @@
+#!/bin/sh
+
+yay -S --needed - < $XDG_BACKUP_DIR/pkglist.txt

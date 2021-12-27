@@ -10,7 +10,7 @@ dunst,suckless,
 bin,lvim,wallpapers,
 zathura,pipewire,
 runit,skippy,
-packup"
+backup"
 
 INSTALL_PATH=$(dirname $(realpath $0))/install
 
