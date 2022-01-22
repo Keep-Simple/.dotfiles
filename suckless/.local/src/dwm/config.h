@@ -99,8 +99,8 @@ static const Layout layouts[] = {
       {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
 
 #define STACKKEYS(MOD, ACTION)                                                 \
-  {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},                                  \
-      {MOD, XK_k, ACTION##stack, {.i = INC(-1)}},                              \
+  {MOD, XK_j, ACTION##stack, {.i = INC(-1)}},                                  \
+      {MOD, XK_k, ACTION##stack, {.i = INC(+1)}},                              \
       {MOD,                                                                    \
        XK_v,                                                                   \
        ACTION##stack,                                                          \
