@@ -105,7 +105,7 @@ cmd docxToPdf $libreoffice --headless --convert-to pdf $fx
 # Bindings
 map <c-f> $lf -remote "send $id select '$(fzf)'"
 map <c-a> :select-files
-map g top
+map gg top
 map D &trash -- $fx
 map <delete> :delete
 map p :paste
@@ -113,7 +113,7 @@ map S :share
 # not working
 # map L :link
 map t toggle
-map <c-n> push :mkdir<space>
+map M push :mkdir<space>-p<space>
 map <c-r> reload
 map <enter> shell
 map x $$f

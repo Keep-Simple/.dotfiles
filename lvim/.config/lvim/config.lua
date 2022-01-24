@@ -28,7 +28,7 @@ lvim.keys.command_mode["w!!"] = "execute 'silent! write !sudo tee % >/dev/null' 
 local _, actions = pcall(require, "telescope.actions")
 
 lvim.builtin.terminal.direction = "horizontal"
-lvim.builtin.terminal.open_mapping = [[<A-;>]]
+lvim.builtin.terminal.open_mapping = [[<<leader>-;>]]
 
 lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true }}
 lvim.builtin.telescope.defaults.file_ignore_patterns = { ".git", "node_modules" }
