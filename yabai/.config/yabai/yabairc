@@ -28,12 +28,17 @@ yabai -m config mouse_drop_action            swap
 
 # general space settings
 yabai -m config layout                       bsp
-yabai -m config top_padding                  4
-yabai -m config bottom_padding               4
-yabai -m config left_padding                 4
-yabai -m config right_padding                4
+yabai -m config top_padding                  5
+yabai -m config bottom_padding               5
+yabai -m config left_padding                 5
+yabai -m config right_padding                5
 yabai -m config window_gap                   8
 
+# remove all rules first
+yabai -m rule --list \
+  | jq '.[].index' \
+  | sort -rn \
+  | xargs -n 1 yabai -m rule --remove
 
 # float system preferences. Most of these just diable Yabai form resizing them.
 yabai -m rule --add app="^System Preferences$" sticky=on layer=above manage=off
@@ -58,7 +63,6 @@ yabai -m rule --add app="^CiscoSparkHelper$" manage=off
 yabai -m rule --add app="^Logi Options$" manage=off
 yabai -m rule --add app="^Cisco Webex Start$" manage=off
 yabai -m rule --add app="^Private Internet Access$" manage=off
-
 yabai -m rule --add app="^iTerm2$" manage=off grid=10:10:3:3:4:4
 
 # notch handling (macbook pro 16)

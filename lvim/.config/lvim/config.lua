@@ -28,7 +28,7 @@ lvim.keys.command_mode["w!!"] = "execute 'silent! write !sudo tee % >/dev/null' 
 local _, actions = pcall(require, "telescope.actions")
 
 lvim.builtin.terminal.direction = "horizontal"
-lvim.builtin.terminal.open_mapping = [[<<leader>-;>]]
+-- lvim.builtin.terminal.open_mapping = [[<<,>-;>]]
 
 lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true }}
 lvim.builtin.telescope.defaults.file_ignore_patterns = { ".git", "node_modules" }
@@ -58,6 +58,8 @@ lvim.builtin.which_key.mappings["t"] = {
   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
   w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
 }
+-- lvim.builtin.which_key.mappings[";"] = { "<cmd>ToggleTerm<CR>", "Terminal" }
+-- lvim.builtin.which_key.mappings["d"] = { "<cmd>Dashboard<CR>", "Dashboard" }
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -160,7 +162,7 @@ lvim.plugins = {
     keys = {"c", "d", "y"}
   },
   -- {'unblevable/quick-scope'},
-  {'lyokha/vim-xkbswitch'},
+  --{'lyokha/vim-xkbswitch'},
   {
     "phaazon/hop.nvim",
     event = "BufRead",
@@ -203,8 +205,8 @@ lvim.plugins = {
     config = function() require("nvim-ts-autotag").setup() end,
     event = "InsertEnter",
   },
-  -- {
-  --   "jose-elias-alvarez/nvim-lsp-ts-utils"
+   --{
+   --  "jose-elias-alvarez/nvim-lsp-ts-utils"
   -- },
 }
 

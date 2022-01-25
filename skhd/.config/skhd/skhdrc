@@ -23,11 +23,12 @@ lctrl + alt + cmd - k : yabai -m window --focus $(yabai -m query --windows --spa
 # lctrl + alt + cmd + shift - j : yabai -m window --warp west
 # lctrl + alt + cmd + shift - k : yabai -m window --warp south
 # lctrl + alt + cmd + shift - l : yabai -m window --warp east
-lctrl + alt + cmd + shift - j : yabai -m window --warp $(yabai -m query --windows --space | jq 'sort_by(.id) | .[(to_entries | .[] | select(.value."has-focus" == true) | .key - 1) % length] | .id')
-lctrl + alt + cmd + shift - k : yabai -m window --warp $(yabai -m query --windows --space | jq 'sort_by(.id) | .[(to_entries | .[] | select(.value."has-focus" == true) | .key + 1) % length] | .id')
+
+lctrl + alt + cmd + shift - j : ~/.config/skhd/cycle_clockwise.sh
+lctrl + alt + cmd + shift - k : ~/.config/skhd/cycle_counterclockwise.sh
 
 # balance size of windows
-# lctrl + alt + cmd - b : yabai -m space --balance
+# lctrl + alt + cmd - z : yabai -m space --balance
 
 lctrl + alt + cmd - h : yabai -m window --resize left:-50:0; \
                   yabai -m window --resize right:-50:0
@@ -44,11 +45,16 @@ lctrl + alt + cmd - 6 : yabai -m space --focus 6
 lctrl + alt + cmd - 7 : yabai -m space --focus 7
 lctrl + alt + cmd - 8 : yabai -m space --focus 8
 lctrl + alt + cmd - 9 : yabai -m space --focus 9
-# lctrl + alt + cmd - 0 : yabai -m space --focus 10
 
 # fast focus previous and next desktop
-# lctrl + alt + cmd - g : yabai -m space --focus prev
-# lctrl + alt + cmd - semicolon : yabai -m space --focus next
+lctrl + alt + cmd - g : yabai -m space --focus prev || yabai -m space --focus last
+lctrl + alt + cmd - 0x29 : yabai -m space --focus next || yabai -m space --focus first
+
+# toggle sticky (show on all spaces)
+lctrl + alt + cmd - s : yabai -m window --toggle sticky
+
+# toggle topmost (keep above other windows)
+lctrl + alt + cmd - o : yabai -m window --toggle topmost
 
 # create and destroy spaces
 # lctrl + alt + cmd - x : yabai -m space --destroy
