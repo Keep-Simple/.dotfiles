@@ -7,6 +7,7 @@ set ifs "\n"
 set filesep "\n"  # default already
 set scrolloff 10
 set icons
+set hidden true
 set period 1
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set previewer ~/.config/lf/preview
@@ -113,21 +114,21 @@ map S :share
 # not working
 # map L :link
 map t toggle
-map M push :mkdir<space>-p<space>
+map M push :mkdir<space>
 map <c-r> reload
 map <enter> shell
 map x $$f
 map X !$f
-map o &mimeopen $f
+map o &open $f
 map O $mimeopen --ask $f
 
-map A rename # at the very end
 map <c-z> $kill -STOP $PPID
 map <c-p> :docxToPdf
 map <c-e> extract
 map <c-o> $code $fx
 map <c-l> $lvim $fx
 # map c push A<c-u> # new rename
+map A rename # at the very end
 map I push A<c-a> # at the very beginning
 map i push A<a-b><a-b><a-f> # before extention
 map a push A<a-b> # after extention

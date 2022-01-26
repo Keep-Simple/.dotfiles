@@ -3,12 +3,11 @@
 USER_APPS="";
 
 ROOT_APPS="
-nvim,zsh,
-shell,lf,
+nvim,lf,
 bin,lvim,
 alacritty,iterm2,
-karabiner,skhd,yabai
-"
+karabiner,skhd,yabai,
+shell,zsh"
 
 ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $(dirname $(realpath $0))/install "$@"
 

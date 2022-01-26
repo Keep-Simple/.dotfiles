@@ -2,7 +2,7 @@ cf  ${XDG_CONFIG_HOME:-$HOME/.config}
 D   ${XDG_DOWNLOAD_DIR:-$HOME/Downloads}
 d   ${XDG_DOCUMENTS_DIR:-$HOME/Documents}
 cdf  $HOME/.dotfiles
-r  ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/rapidsec}
+c  ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial}
 lo  ${XDG_DATA_HOME:-$HOME/.local}
 h   $HOME
 m   ${XDG_MUSIC_DIR:-$HOME/Music}
