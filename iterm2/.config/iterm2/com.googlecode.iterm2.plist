@@ -4,6 +4,16 @@
 <dict>
 	<key>AllowTabbarInTitlebarAccessoryBigSur</key>
 	<false/>
+	<key>AppleAntiAliasingThreshold</key>
+	<integer>1</integer>
+	<key>ApplePressAndHoldEnabled</key>
+	<false/>
+	<key>AppleScrollAnimationEnabled</key>
+	<integer>0</integer>
+	<key>AppleSmoothFixedFontsSizeThreshold</key>
+	<integer>1</integer>
+	<key>AppleWindowTabbingMode</key>
+	<string>manual</string>
 	<key>Command</key>
 	<string></string>
 	<key>Custom Color Presets</key>
@@ -351,7 +361,7 @@
 		</dict>
 	</dict>
 	<key>Default Bookmark Guid</key>
-	<string>B5989023-CF93-4DF4-A209-75B78E45B3A8</string>
+	<string>85FB2D7B-F304-4B56-A1FE-B0A82E4B7A25</string>
 	<key>DisableWindowSizeSnap</key>
 	<true/>
 	<key>DoubleClickPerformsSmartSelection</key>
@@ -1863,7 +1873,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>HackNerdFontCompleteM-Regular 14</string>
+			<string>HackNerdFontCompleteM-Regular 16</string>
 			<key>Option Key Sends</key>
 			<integer>2</integer>
 			<key>Prevent Opening in a Tab</key>

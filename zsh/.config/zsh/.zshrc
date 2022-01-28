@@ -31,4 +31,4 @@ HISTFILE=~/.cache/zsh/history
 bindkey -v
 export KEYTIMEOUT=1
 
-# clear;
+clear;

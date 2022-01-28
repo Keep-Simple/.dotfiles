@@ -1,5 +1,6 @@
-brave --new-window \
+open -a "Brave Browser" -n --args --new-window \
 https://open.spotify.com \
 https://zubiden.github.io/nulp-timetable/#/%D0%9F%D0%97-11/2 \
 https://todoist.com/app/upcoming \
-https://web.telegram.org/z/#434464514 </dev/null &>/dev/null &
+https://web.telegram.org/z/#434464514 \
+</dev/null &>/dev/null &
