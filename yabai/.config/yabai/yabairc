@@ -29,10 +29,10 @@ yabai -m config mouse_drop_action            swap
 
 # general space settings
 yabai -m config layout                       bsp
-yabai -m config top_padding                  0
-yabai -m config bottom_padding               6
-yabai -m config left_padding                 6
-yabai -m config right_padding                6
+yabai -m config top_padding                  4
+yabai -m config bottom_padding               8
+yabai -m config left_padding                 8
+yabai -m config right_padding                8
 yabai -m config window_gap                   8
 
 # remove all rules first
@@ -42,10 +42,10 @@ yabai -m rule --list \
   | xargs -n 1 yabai -m rule --remove
 
 # float system preferences. Most of these just diable Yabai form resizing them.
-yabai -m rule --add app="^System Preferences$" manage=off
-yabai -m rule --add app="^Karabiner-Elements$" sticky=on layer=above manage=off
-yabai -m rule --add app="^Karabiner-EventViewer$" sticky=on layer=above manage=off
-yabai -m rule --add app="^Finder$" sticky=on manage=off
+yabai -m rule --add app="^System Preferences$" manage=off layer=above 
+yabai -m rule --add app="^Karabiner-Elements$" layer=above manage=off
+yabai -m rule --add app="^Karabiner-EventViewer$" layer=above manage=off
+yabai -m rule --add app="^Finder$" manage=off grid=10:10:3:3:4:4 layer=above 
 yabai -m rule --add app="^Keka$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Alfred Preferences$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Disk Utility$" sticky=on layer=above manage=off
@@ -53,38 +53,31 @@ yabai -m rule --add app="^System Information$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Activity Monitor$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Path Finder$" manage=off
 yabai -m rule --add app="^TeamViewer$" sticky=off layer=above manage=off
-yabai -m rule --add app="Fantastical" manage=off
 yabai -m rule --add app="^Spotify$" manage=off
 yabai -m rule --add app="^Flux$" manage=off
 yabai -m rule --add app="^Time Out$" manage=off
-yabai -m rule --add app="^perl_client_app$" manage=off
-yabai -m rule --add app="^console$" manage=off
-yabai -m rule --add app="^Harvest$" manage=off
-yabai -m rule --add app="^CiscoSparkHelper$" manage=off
 yabai -m rule --add app="^Logi Options$" manage=off
-yabai -m rule --add app="^Cisco Webex Start$" manage=off
 yabai -m rule --add app="^Private Internet Access$" manage=off
-yabai -m rule --add app="^iTerm2$" manage=off grid=10:10:3:3:4:4
+yabai -m rule --add app="^iTerm2$" manage=off grid=10:10:3:3:4:4 sticky=on
 
-# notch handling (macbook pro 16)
-NOTCH_UUID="37D8832A-2D66-02CA-B9F7-8F30A301B230"
-NORMAL_BAR=32
-NOTCH_BAR=0
-yabai -m signal --add event=display_added action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NORMAL_BAR:0; fi"
-yabai -m signal --add event=display_removed action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NOTCH_BAR:0; fi"
-if [[ "$(yabai -m query --displays | jq '.[].uuid')" =~ "$NOTCH_UUID" ]]; then if [ "$(yabai -m query --displays | jq length)" -gt "1" ]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NOTCH_BAR:0; fi else yabai -m config external_bar all:$NORMAL_BAR:0; fi
+# notch handling (macbook pro 16) for custom title bar
+# NOTCH_UUID="37D8832A-2D66-02CA-B9F7-8F30A301B230"
+# NORMAL_BAR=32
+# NOTCH_BAR=0
+# yabai -m signal --add event=display_added action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NORMAL_BAR:0; fi"
+# yabai -m signal --add event=display_removed action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NOTCH_BAR:0; fi"
+# if [[ "$(yabai -m query --displays | jq '.[].uuid')" =~ "$NOTCH_UUID" ]]; then if [ "$(yabai -m query --displays | jq length)" -gt "1" ]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NOTCH_BAR:0; fi else yabai -m config external_bar all:$NORMAL_BAR:0; fi
 
-# Focus window under cursor when an application is hidden
 yabai -m signal --add event=application_hidden \
-    action="yabai -m window --focus mouse"
+    action="yabai -m window --focus last"
 
-# Focus window under cursor when a window is destroyed
 yabai -m signal --add event=window_destroyed \
-    action="yabai -m window --focus mouse"
+    action="yabai -m window --focus last"
+    # action="yabai -m window --focus mouse"
 
 # Focus window under cursor when an application is terminated
 yabai -m signal --add event=application_terminated \
-    action="yabai -m window --focus mouse"
+    action="yabai -m window --focus last"
 
 # yabai -m signal --add event=space_changed \
 #     action="osascript -e 'tell application \"†bersicht\" to refresh widget id \"simple-bar-lite-main-jsx\"'"
@@ -143,26 +136,3 @@ echo "yabai configuration loaded.."
 # killall limelight &>/dev/null
 # limelight &>/dev/null &
 
-# # #Ubersicht widget bar stuff
-# #yabai -m signal --add event=space_changed \
-# #action="osascript -e 'tell application \"†bersicht\" to refresh widget id \"nibar-spaces-primary-jsx\"'"
-# #yabai -m signal --add event=display_changed \
-# #action="osascript -e 'tell application \"†bersicht\" to refresh widget id \"nibar-spaces-primary-jsx\"'"
-
-# #yabai -m signal --add event=space_changed \
-# #action="osascript -e 'tell application \"†bersicht\" to refresh widget id \"nibar-spaces-secondary-jsx\"'"
-# #yabai -m signal --add event=display_changed \
-# #action="osascript -e 'tell application \"†bersicht\" to refresh widget id \"nibar-spaces-secondary-jsx\"'"
-
-# # signals
-# # yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
-# #yabai -m signal --add event=space_changed action="yabai -m window --focus $(yabai -m query --windows --window | jq ".id")"
-# # yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
-
-
-# #testing signals
- # yabai -m signal --add event=window_destroyed action="terminal-notifier -message 'window_destroyed'"
- # yabai -m signal --add event=application_terminated action="terminal-notifier -message 'application_terminated'"
-
-
-# yabai -m signal --add event=space_changed action="export CUR_ACTIVE_APP=\"iTerm2\""

@@ -1,6 +1,6 @@
 lctrl + alt + cmd - return : open -na Alacritty
 ctrl + alt + cmd - b : open -na "Brave Browser"
-ctrl + alt + cmd - n : open -na /Applications/Visual\ Studio\ Code.app
+ctrl + alt + cmd - n : open -na "Visual Studio Code"
 
 # focus window
 # lctrl + alt + cmd - h : yabai -m window --focus west

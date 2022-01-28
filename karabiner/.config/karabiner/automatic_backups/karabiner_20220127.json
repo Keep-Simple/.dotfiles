@@ -2363,6 +2363,16 @@
             "simple_modifications": [
                 {
                     "from": {
+                        "apple_vendor_top_case_key_code": "keyboard_fn"
+                    },
+                    "to": [
+                        {
+                            "key_code": "left_control"
+                        }
+                    ]
+                },
+                {
+                    "from": {
                         "key_code": "backslash"
                     },
                     "to": [
@@ -2393,6 +2403,16 @@
                 },
                 {
                     "from": {
+                        "key_code": "left_control"
+                    },
+                    "to": [
+                        {
+                            "apple_vendor_top_case_key_code": "keyboard_fn"
+                        }
+                    ]
+                },
+                {
+                    "from": {
                         "key_code": "left_option"
                     },
                     "to": [
@@ -2418,26 +2438,6 @@
                     "to": [
                         {
                             "key_code": "backslash"
-                        }
-                    ]
-                },
-                {
-                    "from": {
-                        "apple_vendor_top_case_key_code": "keyboard_fn"
-                    },
-                    "to": [
-                        {
-                            "key_code": "left_control"
-                        }
-                    ]
-                },
-                {
-                    "from": {
-                        "key_code": "left_control"
-                    },
-                    "to": [
-                        {
-                            "apple_vendor_top_case_key_code": "keyboard_fn"
                         }
                     ]
                 }
