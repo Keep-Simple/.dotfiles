@@ -35,6 +35,9 @@ if exists('g:vscode')
 
 	nnoremap gr :call VSCodeNotify('references-view.findReferences')<CR>
 	nmap <leader>w :call VSCodeNotify('workbench.action.files.save')<CR>
+	nmap L :call VSCodeNotify('workbench.action.nextEditorInGroup')<CR>
+	nmap H :call VSCodeNotify('workbench.action.previousEditorInGroup')<CR>
+	map <leader> :call VSCodeNotify('whichkey.show')<CR>
 	nmap <leader>aw :call VSCodeNotify('workbench.action.files.saveAll')<CR>
 	nnoremap <leader>c <Cmd>Quit!<CR>
 	nnoremap <leader><S-c> :call VSCodeNotify('workbench.action.closeOtherEditors')<CR>

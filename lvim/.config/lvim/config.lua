@@ -1,23 +1,46 @@
+-- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "onedarker"
-
--- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = ","
+
+lvim.builtin.terminal.direction = "horizontal"
+lvim.builtin.dashboard.active = true
+lvim.builtin.terminal.active = true
+lvim.builtin.nvimtree.setup.view.side = "left"
+lvim.builtin.nvimtree.setup.view.auto_resize = true
+lvim.builtin.nvimtree.show_icons.git = 1
+lvim.builtin.treesitter.highlight.enabled = true
+lvim.builtin.treesitter.ensure_installed = {
+  "bash",
+  "c",
+  "javascript",
+  "json",
+  "lua",
+  "python",
+  "typescript",
+  "css",
+  "rust",
+  "java",
+  "yaml",
+}
+-- lvim.builtin.nvimtree.hide_dotfiles = 0
+
+
 
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.command_mode["w!!"] = "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<cr>"
+lvim.builtin.cmp.mapping["<A-Space>"] = lvim.builtin.cmp.mapping["<C-Space>"]
+lvim.builtin.which_key.mappings["W"] =  {"<cmd>execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<cr>", "Sudo Save"}
+
+
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 local _, actions = pcall(require, "telescope.actions")
-
-lvim.builtin.terminal.direction = "horizontal"
--- lvim.builtin.terminal.open_mapping = [[<<,>-;>]]
-
 lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true }}
 lvim.builtin.telescope.defaults.file_ignore_patterns = { ".git", "node_modules" }
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.telescope.defaults.mappings = {
   -- for input mode
   i = {
@@ -33,8 +56,8 @@ lvim.builtin.telescope.defaults.mappings = {
   },
 }
 
+
 -- Use which-key to add extra bindings with the leader-key prefix
-lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["t"] = {
   name = "+Trouble",
   r = { "<cmd>Trouble lsp_references<cr>", "References" },
@@ -57,29 +80,8 @@ lvim.builtin.which_key.mappings["lt"] = {
 -- lvim.builtin.which_key.mappings[";"] = { "<cmd>ToggleTerm<CR>", "Terminal" }
 -- lvim.builtin.which_key.mappings["d"] = { "<cmd>Dashboard<CR>", "Dashboard" }
 
--- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
-lvim.builtin.dashboard.active = true
-lvim.builtin.terminal.active = true
-lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.show_icons.git = 1
--- lvim.builtin.nvimtree.hide_dotfiles = 0
 
--- if you don't want all the parsers change this to a table of the ones you want
-lvim.builtin.treesitter.ensure_installed = {
-  "bash",
-  "c",
-  "javascript",
-  "json",
-  "lua",
-  "python",
-  "typescript",
-  "css",
-  "rust",
-  "java",
-  "yaml",
-}
 
-lvim.builtin.treesitter.highlight.enabled = true
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
@@ -101,6 +103,7 @@ linters.setup {
   },
   -- { exe = "black" },
 }
+
 
 
 -- Additional Plugins
