@@ -5,8 +5,11 @@ lvim.colorscheme = "onedarker"
 lvim.leader = ","
 
 lvim.builtin.terminal.direction = "horizontal"
-lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
+lvim.builtin.terminal.shading_factor = 1
+-- lvim.builtin.dap.active = true
+lvim.builtin.gitsigns.opts.current_line_blame = true
+lvim.builtin.dashboard.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.view.auto_resize = true
 lvim.builtin.nvimtree.show_icons.git = 1
@@ -24,15 +27,12 @@ lvim.builtin.treesitter.ensure_installed = {
   "java",
   "yaml",
 }
--- lvim.builtin.nvimtree.hide_dotfiles = 0
-
 
 
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.builtin.cmp.mapping["<A-Space>"] = lvim.builtin.cmp.mapping["<C-Space>"]
 lvim.builtin.which_key.mappings["W"] =  {"<cmd>execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<cr>", "Sudo Save"}
-
 
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
@@ -60,12 +60,12 @@ lvim.builtin.telescope.defaults.mappings = {
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["t"] = {
   name = "+Trouble",
-  r = { "<cmd>Trouble lsp_references<cr>", "References" },
-  f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
-  d = { "<cmd>Trouble lsp_document_diagnostics<cr>", "Diagnostics" },
-  q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
-  l = { "<cmd>Trouble loclist<cr>", "LocationList" },
-  w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
+  r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
+  f = { "<cmd>TroubleToggle lsp_definitions<cr>", "Definitions" },
+  d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
+  q = { "<cmd>TroubleToggle quickfix<cr>", "Quickfix" },
+  l = { "<cmd>TroubleToggle loclist<cr>", "Location list" },
+  w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
 }
 
 lvim.builtin.which_key.mappings["lt"] = {
@@ -77,11 +77,6 @@ lvim.builtin.which_key.mappings["lt"] = {
       h = {"<cmd>TSLspToggleInlayHints<cr>", "Toggle hints"}
 }
 
--- lvim.builtin.which_key.mappings[";"] = { "<cmd>ToggleTerm<CR>", "Terminal" }
--- lvim.builtin.which_key.mappings["d"] = { "<cmd>Dashboard<CR>", "Dashboard" }
-
-
-
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
@@ -91,7 +86,7 @@ formatters.setup {
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
     filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
   },
-  -- { exe = "black" },
+  { exe = "black" },
 }
 
 local linters = require "lvim.lsp.null-ls.linters"
@@ -101,26 +96,22 @@ linters.setup {
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
     filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
   },
-  -- { exe = "black" },
+  { exe = "flake8" },
 }
-
 
 
 -- Additional Plugins
 lvim.plugins = {
   {
     "tpope/vim-surround",
-    keys = {"c", "d", "y"}
   },
-  -- {'unblevable/quick-scope'},
-  --{'lyokha/vim-xkbswitch'},
   {
     "phaazon/hop.nvim",
     event = "BufRead",
     config = function()
       require("hop").setup()
-      vim.api.nvim_set_keymap("n", "s", ":HopChar2<cr>", { silent = true })
       vim.api.nvim_set_keymap("n", "S", ":HopWord<cr>", { silent = true })
+      vim.api.nvim_set_keymap("n", "s", ":HopChar2<cr>", { silent = true })
     end,
   },
   {
@@ -146,6 +137,7 @@ lvim.plugins = {
     },
     ft = {"fugitive"}
   },
+  { "tpope/vim-rhubarb" },
   {
     "ray-x/lsp_signature.nvim",
     config = function() require"lsp_signature".on_attach() end,
@@ -160,8 +152,12 @@ lvim.plugins = {
     "jose-elias-alvarez/nvim-lsp-ts-utils",
     filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
   },
+  {
+    "sindrets/diffview.nvim",
+    requires = 'nvim-lua/plenary.nvim',
+  },
 }
--- generic LSP settings
+
 
 -- ---@usage disable automatic installation of servers
 -- lvim.lsp.automatic_servers_installation = false
@@ -174,42 +170,8 @@ lvim.plugins = {
 -- local opts = {} -- check the lspconfig documentation for a list of all possible options
 -- require("lvim.lsp.manager").setup("pylsp", opts)
 
--- you can set a custom on_attach function that will be used for all the language servers
--- See <https://github.com/neovim/nvim-lspconfig#keybindings-and-completion>
--- lvim.lsp.on_attach_callback = function(client, bufnr)
---   local function buf_set_option(...)
---     vim.api.nvim_buf_set_option(bufnr, ...)
---   end
---   --Enable completion triggered by <c-x><c-o>
---   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
--- end
--- you can overwrite the null_ls setup table (useful for setting the root_dir function)
--- lvim.lsp.null_ls.setup = {
---   root_dir = require("lspconfig").util.root_pattern("Makefile", ".git", "node_modules"),
--- }
--- or if you need something more advanced
--- lvim.lsp.null_ls.setup.root_dir = function(fname)
---   if vim.bo.filetype == "javascript" then
---     return require("lspconfig/util").root_pattern("Makefile", ".git", "node_modules")(fname)
---       or require("lspconfig/util").path.dirname(fname)
---   elseif vim.bo.filetype == "php" then
---     return require("lspconfig/util").root_pattern("Makefile", ".git", "composer.json")(fname) or vim.fn.getcwd()
---   else
---     return require("lspconfig/util").root_pattern("Makefile", ".git")(fname) or require("lspconfig/util").path.dirname(fname)
---   end
--- end
-
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {
 --   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
 -- }
-
--- -- set additional linters
--- lvim.lang.typescript.formatters = { { exe = "eslint_d"}, { exe = "prettier" } }
--- lvim.lang.typescriptreact.formatters = lvim.lang.typescript.formatters
--- lvim.lang.typescript.linters = { { exe = "eslint" } }
-
--- vim.list_extend(lvim.lsp.override, {
---    "emmet_ls", "tsserver"
--- })
 

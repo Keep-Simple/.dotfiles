@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
@@ -58,14 +58,21 @@ yabai -m rule --add app="^Karabiner-EventViewer$" manage=off
 yabai -m rule --add app="^Spotify$" manage=off
 yabai -m rule --add app="^iTerm2$" manage=off grid=10:10:3:3:4:4 sticky=on
 
-yabai -m signal --add event=application_hidden \
-    action="yabai -m window --focus last"
+function focus_under_cursor {
+  if yabai -m query --windows --space |
+      jq -er 'map(select(."has-focus" == true)) | length == 0' >/dev/null; then
+    yabai -m window --focus mouse 2>/dev/null || true
+  fi
+}
 
+# If no window on the current space is focused after a window is destroyed or
+# minimized, or an application is hidden, focus the window under the cursor.
 yabai -m signal --add event=window_destroyed \
-    action="yabai -m window --focus last"
-
-yabai -m signal --add event=application_terminated \
-    action="yabai -m window --focus last"
+  action="${functions[focus_under_cursor]}"
+yabai -m signal --add event=window_minimized \
+  action="${functions[focus_under_cursor]}"
+yabai -m signal --add event=application_hidden \
+  action="${functions[focus_under_cursor]}"
 
 # auto update-yabai
 YABAI_CERT=yabai-cert sh -c "$(curl -sSL "https://git.io/update-yabai")" &

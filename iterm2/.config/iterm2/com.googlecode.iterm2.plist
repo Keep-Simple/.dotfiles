@@ -377,17 +377,6 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x76-0x40000-0x9</key>
-		<dict>
-			<key>Action</key>
-			<integer>22</integer>
-			<key>Label</key>
-			<string></string>
-			<key>Text</key>
-			<string></string>
-			<key>Version</key>
-			<integer>1</integer>
-		</dict>
 		<key>0x9-0x40000</key>
 		<dict>
 			<key>Action</key>
@@ -1537,9 +1526,9 @@
 			<key>HotKey Window Animates</key>
 			<false/>
 			<key>HotKey Window AutoHides</key>
-			<true/>
+			<false/>
 			<key>HotKey Window Dock Click Action</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>HotKey Window Floats</key>
 			<true/>
 			<key>HotKey Window Reopens On Activation</key>
@@ -1623,6 +1612,17 @@
 					<string></string>
 					<key>Text</key>
 					<string>85FB2D7B-F304-4B56-A1FE-B0A82E4B7A25</string>
+					<key>Version</key>
+					<integer>1</integer>
+				</dict>
+				<key>0x76-0x40000-0x9</key>
+				<dict>
+					<key>Action</key>
+					<integer>41</integer>
+					<key>Label</key>
+					<string></string>
+					<key>Text</key>
+					<string>{"ConvertUnicodePunctuation":true,"WaitForPrompts":false,"Substitution":"","EscapeForShell":false,"Base64":false,"TabStopSize":4,"Delay":0.01,"RemoveNewlines":false,"Regex":"","ConvertNewlines":true,"TabTransform":0,"BracketAllowed":true,"UseRegexSubstitution":false,"ChunkSize":1024,"RemoveControls":true}</string>
 					<key>Version</key>
 					<integer>1</integer>
 				</dict>

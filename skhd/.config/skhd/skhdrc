@@ -3,8 +3,6 @@
 # apps shortcuts
 ctrl + alt + cmd - return : open -n /Applications/Alacritty.app
 ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
-ctrl + alt + cmd - n : code -n
-
 # change layouts
 ctrl + alt + cmd - t : yabai -m space --layout bsp 
 ctrl + alt + cmd - u : yabai -m space --layout stack
