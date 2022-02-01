@@ -68,6 +68,14 @@ lvim.builtin.which_key.mappings["t"] = {
   w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
 }
 
+lvim.builtin.which_key.mappings["gv"] = {
+  name = "+Diffview",
+  o = {"<cmd>DiffviewOpen<cr>", "Open"},
+  c = {"<cmd>DiffviewClose<cr>", "Close"},
+  r = {"<cmd>DiffviewRefresh<cr>", "Refresh"},
+  f = {"<cmd>DiffviewRefresh<cr>", "Files History"},
+}
+
 lvim.builtin.which_key.mappings["lt"] = {
       name = "+Typescript",
       i = {"<cmd>TSLspImportAll<cr>", "Import All"},
