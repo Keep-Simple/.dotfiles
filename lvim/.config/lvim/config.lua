@@ -9,166 +9,193 @@ lvim.builtin.terminal.active = true
 lvim.builtin.terminal.shading_factor = 1
 -- lvim.builtin.dap.active = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
+lvim.builtin.cmp.completion.autocomplete = false
 lvim.builtin.dashboard.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.view.auto_resize = true
-lvim.builtin.nvimtree.show_icons.git = 1
+lvim.builtin.nvimtree.setup.filters.custom = { "node_modules", ".git", ".idea", ".vscode" }
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.ensure_installed = {
-  "bash",
-  "c",
-  "javascript",
-  "json",
-  "lua",
-  "python",
-  "typescript",
-  "css",
-  "rust",
-  "java",
-  "yaml",
+	"bash",
+	"c",
+	"javascript",
+	"json",
+	"lua",
+	"python",
+	"typescript",
+	"css",
+	"rust",
+	"java",
+	"yaml",
 }
-
 
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.builtin.cmp.mapping["<A-Space>"] = lvim.builtin.cmp.mapping["<C-Space>"]
-lvim.builtin.which_key.mappings["W"] =  {"<cmd>execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<cr>", "Sudo Save"}
-
+lvim.builtin.which_key.mappings["W"] = {
+	"<cmd>execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<cr>",
+	"Sudo Save",
+}
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 local _, actions = pcall(require, "telescope.actions")
-lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true }}
+lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true } }
 lvim.builtin.telescope.defaults.file_ignore_patterns = { ".git", "node_modules" }
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.telescope.defaults.mappings = {
-  -- for input mode
-  i = {
-    ["<C-j>"] = actions.move_selection_next,
-    ["<C-k>"] = actions.move_selection_previous,
-    ["<C-n>"] = actions.cycle_history_next,
-    ["<C-p>"] = actions.cycle_history_prev,
-  },
-  -- for normal mode
-  n = {
-    ["<C-j>"] = actions.move_selection_next,
-    ["<C-k>"] = actions.move_selection_previous,
-  },
+	-- for input mode
+	i = {
+		["<C-j>"] = actions.move_selection_next,
+		["<C-k>"] = actions.move_selection_previous,
+		["<C-n>"] = actions.cycle_history_next,
+		["<C-p>"] = actions.cycle_history_prev,
+	},
+	-- for normal mode
+	n = {
+		["<C-j>"] = actions.move_selection_next,
+		["<C-k>"] = actions.move_selection_previous,
+	},
 }
-
 
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["t"] = {
-  name = "+Trouble",
-  r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
-  f = { "<cmd>TroubleToggle lsp_definitions<cr>", "Definitions" },
-  d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
-  q = { "<cmd>TroubleToggle quickfix<cr>", "Quickfix" },
-  l = { "<cmd>TroubleToggle loclist<cr>", "Location list" },
-  w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
+	name = "+Trouble",
+	r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
+	f = { "<cmd>TroubleToggle lsp_definitions<cr>", "Definitions" },
+	d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
+	q = { "<cmd>TroubleToggle quickfix<cr>", "Quickfix" },
+	l = { "<cmd>TroubleToggle loclist<cr>", "Location list" },
+	w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
 }
 
 lvim.builtin.which_key.mappings["gv"] = {
-  name = "+Diffview",
-  o = {"<cmd>DiffviewOpen<cr>", "Open"},
-  c = {"<cmd>DiffviewClose<cr>", "Close"},
-  r = {"<cmd>DiffviewRefresh<cr>", "Refresh"},
-  f = {"<cmd>DiffviewRefresh<cr>", "Files History"},
+	name = "+Diffview",
+	o = { "<cmd>DiffviewOpen<cr>", "Open" },
+	c = { "<cmd>DiffviewClose<cr>", "Close" },
+	r = { "<cmd>DiffviewRefresh<cr>", "Refresh" },
+	f = { "<cmd>DiffviewRefresh<cr>", "Files History" },
 }
+
+lvim.builtin.which_key.mappings["gm"] = { "<cmd>Git<cr>", "Git menu" }
 
 lvim.builtin.which_key.mappings["lt"] = {
-      name = "+Typescript",
-      i = {"<cmd>TSLspImportAll<cr>", "Import All"},
-      o = {"<cmd>TSLspOrganize<cr>", "Organize Imports"},
-      r = {"<cmd>TSLspRenameFile<cr>", "Rename File"},
-      c = {"<cmd>TSLspImportCurrent<cr>", "Import under cursor"},
-      h = {"<cmd>TSLspToggleInlayHints<cr>", "Toggle hints"}
+	name = "+Typescript",
+	i = { "<cmd>TSLspImportAll<cr>", "Import All" },
+	o = { "<cmd>TSLspOrganize<cr>", "Organize Imports" },
+	r = { "<cmd>TSLspRenameFile<cr>", "Rename File" },
+	c = { "<cmd>TSLspImportCurrent<cr>", "Import under cursor" },
+	h = { "<cmd>TSLspToggleInlayHints<cr>", "Toggle hints" },
 }
 
-
+local null_ls = require("null-ls")
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
-local formatters = require "lvim.lsp.null-ls.formatters"
-formatters.setup {
-  {
-    exe = "prettier",
-    ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
-  },
-  { exe = "black" },
-}
+local formatters = require("lvim.lsp.null-ls.formatters")
+formatters.setup({
+	null_ls.builtins.formatting.prettier,
+	{ exe = "black" },
+	{ exe = "stylua" },
+	{ exe = "rustfmt" },
+})
 
-local linters = require "lvim.lsp.null-ls.linters"
-linters.setup {
-  {
-    exe = "eslint_d",
-    ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
-  },
-  { exe = "flake8" },
-}
+local linters = require("lvim.lsp.null-ls.linters")
+linters.setup({
+	null_ls.builtins.diagnostics.eslint_d.with({
+		condition = function(utils)
+			return utils.root_has_file({
+				".eslintrc.js",
+				".eslintrc.cjs",
+				".eslintrc.yaml",
+				"eslintrc.yml",
+				".eslintrc.json",
+			})
+		end,
+	}),
+	{ exe = "flake8" },
+})
 
+vim.list_extend(lvim.lsp.override, { "rust_analyzer" })
 
 -- Additional Plugins
 lvim.plugins = {
-  {
-    "tpope/vim-surround",
-  },
-  {
-    "phaazon/hop.nvim",
-    event = "BufRead",
-    config = function()
-      require("hop").setup()
-      vim.api.nvim_set_keymap("n", "S", ":HopWord<cr>", { silent = true })
-      vim.api.nvim_set_keymap("n", "s", ":HopChar2<cr>", { silent = true })
-    end,
-  },
-  {
-    "folke/trouble.nvim",
-    cmd = "TroubleToggle",
-  },
-  {
-    "tpope/vim-fugitive",
-    cmd = {
-      "G",
-      "Git",
-      "Gdiffsplit",
-      "Gread",
-      "Gwrite",
-      "Ggrep",
-      "GMove",
-      "GDelete",
-      "GBrowse",
-      "GRemove",
-      "GRename",
-      "Glgrep",
-      "Gedit"
-    },
-    ft = {"fugitive"}
-  },
-  { "tpope/vim-rhubarb" },
-  {
-    "ray-x/lsp_signature.nvim",
-    config = function() require"lsp_signature".on_attach() end,
-    event = "BufRead"
-  },
-  {
-    "windwp/nvim-ts-autotag",
-    config = function() require("nvim-ts-autotag").setup() end,
-    event = "InsertEnter",
-  },
-  {
-    "jose-elias-alvarez/nvim-lsp-ts-utils",
-    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
-  },
-  {
-    "sindrets/diffview.nvim",
-    requires = 'nvim-lua/plenary.nvim',
-  },
+	{
+		"tpope/vim-surround",
+	},
+	{
+		"phaazon/hop.nvim",
+		event = "BufRead",
+		config = function()
+			require("hop").setup()
+			vim.api.nvim_set_keymap("n", "s", ":HopChar2<cr>", { silent = true })
+		end,
+	},
+	{
+		"folke/trouble.nvim",
+		cmd = "TroubleToggle",
+	},
+	{
+		"tpope/vim-fugitive",
+		cmd = {
+			"G",
+			"Git",
+			"Gdiffsplit",
+			"Gread",
+			"Gwrite",
+			"Ggrep",
+			"GMove",
+			"GDelete",
+			"GBrowse",
+			"GRemove",
+			"GRename",
+			"Glgrep",
+			"Gedit",
+		},
+		ft = { "fugitive" },
+	},
+	{ "tpope/vim-rhubarb" },
+	{
+		"ray-x/lsp_signature.nvim",
+		config = function()
+			require("lsp_signature").on_attach()
+		end,
+		event = "BufRead",
+	},
+	{
+		"windwp/nvim-ts-autotag",
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
+		event = "InsertEnter",
+	},
+	{
+		"jose-elias-alvarez/nvim-lsp-ts-utils",
+		filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
+	},
+	{
+		"sindrets/diffview.nvim",
+		requires = "nvim-lua/plenary.nvim",
+	},
+	{
+		"simrat39/rust-tools.nvim",
+		config = function()
+			require("rust-tools").setup({
+				tools = {
+					autoSetHints = true,
+					hover_with_actions = true,
+					runnables = {
+						use_telescope = true,
+					},
+				},
+				server = {
+					cmd = { vim.fn.stdpath("data") .. "/lsp_servers/rust/rust-analyzer" },
+					on_attach = require("lvim.lsp").common_on_attach,
+					on_init = require("lvim.lsp").common_on_init,
+				},
+			})
+		end,
+		ft = { "rust", "rs" },
+	},
 }
-
-
--- ---@usage disable automatic installation of servers
--- lvim.lsp.automatic_servers_installation = false
 
 -- ---@usage Select which servers should be configured manually. Requires `:LvimCacheRest` to take effect.
 -- See the full default list `:lua print(vim.inspect(lvim.lsp.override))`
@@ -182,4 +209,3 @@ lvim.plugins = {
 -- lvim.autocommands.custom_groups = {
 --   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
 -- }
-

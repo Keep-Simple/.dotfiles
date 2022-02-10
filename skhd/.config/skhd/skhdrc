@@ -3,30 +3,47 @@
 # apps shortcuts
 ctrl + alt + cmd - return : open -n /Applications/Alacritty.app
 ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
+
 # change layouts
 ctrl + alt + cmd - t : yabai -m space --layout bsp 
 ctrl + alt + cmd - u : yabai -m space --layout stack
 
-# i3 like window focus
-ctrl + alt + cmd - j : yabai -m window --focus $(yabai -m query --windows --space | jq 'sort_by(.frame.y, .frame.x, .id) | .[(to_entries | .[] | select(.value."has-focus" == true) | .key - 1) % length] | .id')
-ctrl + alt + cmd - k : yabai -m window --focus $(yabai -m query --windows --space | jq 'sort_by(.frame.y, .frame.x, .id) | .[(to_entries | .[] | select(.value."has-focus" == true) | .key + 1) % length] | .id')
+# focus window
+ctrl + alt + cmd - x : yabai -m window --focus recent
+ctrl + alt + cmd - h : yabai -m window --focus west
+ctrl + alt + cmd - j : yabai -m window --focus south
+ctrl + alt + cmd - k : yabai -m window --focus north
+ctrl + alt + cmd - l : yabai -m window --focus east
+# alt - z : yabai -m window --focus stack.prev
+# alt - c : yabai -m window --focus stack.next
 
-# i3 like window swapping
-ctrl + alt + cmd + shift - j : yabai -m window --swap $(yabai -m query --windows --space | jq 'sort_by(.frame.y, .frame.x, .id) | .[(to_entries | .[] | select(.value."has-focus" == true) | .key - 1) % length] | .id')
-ctrl + alt + cmd + shift - k : yabai -m window --swap $(yabai -m query --windows --space | jq 'sort_by(.frame.y, .frame.x, .id) | .[(to_entries | .[] | select(.value."has-focus" == true) | .key + 1) % length] | .id')
+# swap window
+ctrl + alt + cmd + shift - x : yabai -m window --warp recent
+ctrl + alt + cmd + shift - h : yabai -m window --warp west
+ctrl + alt + cmd + shift - j : yabai -m window --warp south
+ctrl + alt + cmd + shift - k : yabai -m window --warp north
+ctrl + alt + cmd + shift - l : yabai -m window --warp east
 
 # resize window
-ctrl + alt + cmd - h : yabai -m window --resize left:-50:0; yabai -m window --resize right:-50:0
-ctrl + alt + cmd - l : yabai -m window --resize right:50:0; yabai -m window --resize left:50:0
+ctrl + alt + cmd - left : yabai -m window --resize left:-50:0; \
+                  yabai -m window --resize right:-50:0
+ctrl + alt + cmd - down : yabai -m window --resize bottom:0:50; \
+                  yabai -m window --resize top:0:50
+ctrl + alt + cmd - up : yabai -m window --resize top:0:-50; \
+                  yabai -m window --resize bottom:0:-50
+ctrl + alt + cmd - right : yabai -m window --resize right:50:0; \
+                  yabai -m window --resize left:50:0
 
 # fast focus previous and next desktop
 ctrl + alt + cmd - g : yabai -m space --focus prev || yabai -m space --focus last
+# maps to ;
 ctrl + alt + cmd - 0x29 : yabai -m space --focus next || yabai -m space --focus first
-
+#toggle gaps
+ctrl + alt + cmd + shift - a : yabai -m space --toggle padding && yabai -m space --toggle gap
 # toggle sticky (show on all spaces)
-ctrl + alt + cmd - s : yabai -m window --toggle sticky --layer above --toggle topmost
+ctrl + alt + cmd + shift - s : yabai -m window --toggle sticky --layer above --toggle topmost
 # toggle topmost (keep above other windows)
-ctrl + alt + cmd - o : yabai -m window --toggle topmost
+ctrl + alt + cmd + shift - o : yabai -m window --toggle topmost
 ## Close active application
 ctrl + alt + cmd - q : yabai -m window --close
 # toggle window zoom
@@ -34,9 +51,11 @@ ctrl + alt + cmd - f : yabai -m window --toggle zoom-fullscreen
 # toggle window native fullscreen
 ctrl + alt + cmd + shift - f : yabai -m window --toggle native-fullscreen
 # float / unfloat window 
-ctrl + alt + cmd + shift - space : yabai -m window --toggle float; yabai -m window --grid 4:4:1:1:2:2
+ctrl + alt + cmd + shift - space : yabai -m window --toggle float && yabai -m window --grid 4:4:1:1:2:2
 # Restart Yabai
-ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"; skhd -r
+ctrl + alt + cmd - r : /usr/bin/env osascript <<< \
+        "display notification \"Restarting Yabai and skhd\" with title \"Yabai\""; \
+    launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"; skhd -r
 
 # fast focus desktop
 ctrl + alt + cmd - 1 : yabai -m space --focus 1
