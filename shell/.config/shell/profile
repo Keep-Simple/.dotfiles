@@ -8,6 +8,8 @@
 paths=$(find -L ~/.local/bin -type d -printf %p:)%%:
 export PATH="$PATH:${paths}"
 
+eval "$(fnm env)"
+
 # Default programs:
 export EDITOR="lvim"
 export TERMINAL="st"

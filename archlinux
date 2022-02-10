@@ -12,6 +12,4 @@ zathura,pipewire,
 runit,skippy,
 backup"
 
-INSTALL_PATH=$(dirname $(realpath $0))/install
-
-ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $INSTALL_PATH
+ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $(dirname $(realpath $0))/install "$@"

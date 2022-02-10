@@ -3,19 +3,13 @@
 USER_APPS="";
 
 ROOT_APPS="
-nvim,zsh,
-shell,lf,
+nvim,lf,
 bin,lvim,
-zathura
-"
+alacritty,iterm2,
+karabiner,skhd,yabai,
+shell,zsh"
 
-SCRIPT_PATH=$(dirname $(realpath $0))
+ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $(dirname $(realpath $0))/install "$@"
 
-if [[ $1 != 'd' ]];
-then 
-	ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $SCRIPT_PATH/install
-else
-	ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $SCRIPT_PATH/uninstall
-fi
 
 
