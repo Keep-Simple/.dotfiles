@@ -4,6 +4,9 @@ lvim.format_on_save = true
 lvim.colorscheme = "onedarker"
 lvim.leader = ","
 
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.cmd("set nofen")
 lvim.builtin.terminal.direction = "horizontal"
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.shading_factor = 1
@@ -14,6 +17,36 @@ lvim.builtin.dashboard.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.view.auto_resize = true
 lvim.builtin.nvimtree.setup.filters.custom = { "node_modules", ".git", ".idea", ".vscode" }
+
+local tree_cb = require("nvim-tree.config").nvim_tree_callback
+lvim.builtin.nvimtree.setup.view.mappings.list = {
+	{ key = "<Tab>", cb = tree_cb("preview") },
+	{ key = "K", cb = tree_cb("first_sibling") },
+	{ key = "J", cb = tree_cb("last_sibling") },
+	{ key = "I", cb = tree_cb("toggle_ignored") },
+	{ key = "H", cb = tree_cb("toggle_dotfiles") },
+	{ key = "<C-r>", cb = tree_cb("refresh") },
+	{ key = "<C-t>" },
+	{ key = "a", cb = tree_cb("create") },
+	{ key = "gd", cb = tree_cb("remove") },
+	{ key = "D", cb = tree_cb("trash") },
+	{ key = "r", cb = tree_cb("rename") },
+	{ key = "d", cb = tree_cb("cut") },
+	{ key = "y", cb = tree_cb("copy") },
+	{ key = "p", cb = tree_cb("paste") },
+	{ key = { "l", "<CR>", "o" }, cb = tree_cb("edit") },
+	{ key = "h", cb = tree_cb("close_node") },
+	{ key = "v", cb = tree_cb("vsplit") },
+	{ key = "C", cb = tree_cb("cd") },
+	{ key = "gy", cb = tree_cb("copy_name") },
+	{ key = "gpy", cb = tree_cb("copy_path") },
+	{ key = "gay", cb = tree_cb("copy_absolute_path") },
+	{ key = "-", cb = tree_cb("dir_up") },
+	{ key = "s", cb = tree_cb("system_open") },
+	{ key = "q", cb = tree_cb("close") },
+	{ key = "g?", cb = tree_cb("toggle_help") },
+}
+
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.ensure_installed = {
 	"bash",
@@ -30,7 +63,14 @@ lvim.builtin.treesitter.ensure_installed = {
 }
 
 -- add your own keymapping
-lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode = {
+	["<C-s>"] = ":w<cr>",
+	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
+	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
+	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
+	-- zf = "<cmd>set fen<cr>",
+	-- zF = "<cmd>set nofen<cr>",
+}
 lvim.builtin.cmp.mapping["<A-Space>"] = lvim.builtin.cmp.mapping["<C-Space>"]
 lvim.builtin.which_key.mappings["W"] = {
 	"<cmd>execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<cr>",
@@ -93,9 +133,9 @@ local null_ls = require("null-ls")
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
 	null_ls.builtins.formatting.prettier,
-	{ exe = "black" },
-	{ exe = "stylua" },
-	{ exe = "rustfmt" },
+	{ command = "black" },
+	{ command = "stylua" },
+	{ command = "rustfmt" },
 })
 
 local linters = require("lvim.lsp.null-ls.linters")
@@ -111,7 +151,7 @@ linters.setup({
 			})
 		end,
 	}),
-	{ exe = "flake8" },
+	{ command = "flake8" },
 })
 
 vim.list_extend(lvim.lsp.override, { "rust_analyzer" })
@@ -195,6 +235,11 @@ lvim.plugins = {
 		end,
 		ft = { "rust", "rs" },
 	},
+	{
+		"peterhoeg/vim-qml",
+		event = "BufRead",
+		ft = { "qml" },
+	},
 }
 
 -- ---@usage Select which servers should be configured manually. Requires `:LvimCacheRest` to take effect.
@@ -207,5 +252,5 @@ lvim.plugins = {
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {
---   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
+-- 	{ "Syntax", "*", "normal zR" },
 -- }
