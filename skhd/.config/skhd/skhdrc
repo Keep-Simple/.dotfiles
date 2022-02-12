@@ -2,6 +2,7 @@
 
 # apps shortcuts
 ctrl + alt + cmd - return : open -n /Applications/Alacritty.app
+ctrl + alt + cmd + shift - return : "${HOME}/.config/skhd/quick_terminal.zsh"
 ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
 
 # change layouts
@@ -10,10 +11,10 @@ ctrl + alt + cmd - u : yabai -m space --layout stack
 
 # focus window
 ctrl + alt + cmd - x : yabai -m window --focus recent
-ctrl + alt + cmd - h : yabai -m window --focus west
-ctrl + alt + cmd - j : yabai -m window --focus south
+ctrl + alt + cmd - h : yabai -m window --focus west || yabai -m window --focus stack.prev || yabai -m window --focus stack.next
+ctrl + alt + cmd - j : yabai -m window --focus south 
 ctrl + alt + cmd - k : yabai -m window --focus north
-ctrl + alt + cmd - l : yabai -m window --focus east
+ctrl + alt + cmd - l : yabai -m window --focus east || yabai -m window --focus stack.next || yabai -m window --focus stack.prev
 # alt - z : yabai -m window --focus stack.prev
 # alt - c : yabai -m window --focus stack.next
 
