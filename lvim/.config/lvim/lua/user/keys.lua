@@ -28,17 +28,20 @@ lvim.builtin.nvimtree.setup.view.mappings.list = {
 	{ key = "q", cb = tree_cb("close") },
 	{ key = "g?", cb = tree_cb("toggle_help") },
 }
+
 lvim.keys.normal_mode = {
 	["<C-s>"] = ":w<cr>",
 	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 }
+
 lvim.builtin.cmp.mapping["<A-Space>"] = lvim.builtin.cmp.mapping["<C-Space>"]
 lvim.builtin.which_key.mappings["W"] = {
 	"<cmd>SudaWrite<cr>",
 	"Sudo Save",
 }
+
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.mappings = {
@@ -53,6 +56,7 @@ lvim.builtin.telescope.defaults.mappings = {
 		["<C-k>"] = actions.move_selection_previous,
 	},
 }
+
 lvim.builtin.which_key.mappings["t"] = {
 	name = "+Trouble",
 	r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },

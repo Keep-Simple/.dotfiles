@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
@@ -76,6 +76,19 @@ function restart_yabai {
 	skhd -r
 }
 
+function gaps_refresh {
+	number_of_windows=$(yabai -m query --windows --space |
+		jq 'map(select(."is-floating" == false)) | length')
+
+	padding=8
+	[ $number_of_windows -eq 1 ] && padding=0
+
+	yabai -m config --space mouse top_padding $padding
+	yabai -m config --space mouse bottom_padding $padding
+	yabai -m config --space mouse left_padding $padding
+	yabai -m config --space mouse right_padding $padding
+}
+
 # If no window on the current space is focused after a window is destroyed or
 # minimized, or an application is hidden, focus the window under the cursor.
 yabai -m signal --add event=window_destroyed \
@@ -86,6 +99,9 @@ yabai -m signal --add event=application_hidden \
 	action="${functions[focus_under_cursor]}"
 yabai -m signal --add event=display_changed \
 	action="${functions[restart_yabai]}"
+
+yabai -m signal --add event=window_created action="${functions[gaps_refresh]}"
+yabai -m signal --add event=window_destroyed action="${functions[gaps_refresh]}"
 
 # auto update-yabai
 YABAI_CERT=yabai-cert sh -c "$(curl -sSL "https://git.io/update-yabai")" &

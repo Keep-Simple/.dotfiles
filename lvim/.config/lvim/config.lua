@@ -7,18 +7,26 @@ require("user.keys")
 require("user.plugins")
 require("user.bufferline")
 
+-- folding
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.cmd("set nofen")
+
 lvim.builtin.terminal.direction = "horizontal"
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.shading_factor = 1
+
+-- when true brakes nvim-tree, when opening dir (so I modified lua/lvim/core/nvimtree.lua)
+lvim.builtin.project.active = true
+
 lvim.builtin.dap.active = true
 lvim.builtin.notify.active = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
 lvim.builtin.cmp.completion.autocomplete = false
 lvim.builtin.dashboard.active = true
+
 lvim.builtin.nvimtree.setup.view.side = "left"
+lvim.builtin.nvimtree.setup.open_on_setup = true
 lvim.builtin.nvimtree.setup.view.auto_resize = true
 lvim.builtin.nvimtree.setup.filters.custom = { "node_modules", ".git", ".idea", ".vscode" }
 
