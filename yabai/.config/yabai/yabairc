@@ -1,44 +1,44 @@
-#!/usr/bin/env zsh
+#!/bin/sh
 
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
 # global settings
-yabai -m config mouse_follows_focus          off
-yabai -m config focus_follows_mouse          autoraise
-yabai -m config window_origin_display        default
-yabai -m config window_placement             second_child
-yabai -m config window_topmost               off
-yabai -m config window_shadow                float # (default: on, options: on, off, float)
-yabai -m config window_opacity               on
-yabai -m config window_opacity_duration      0.0
-yabai -m config active_window_opacity        1.0
-yabai -m config normal_window_opacity        0.9
-yabai -m config window_border                off
-yabai -m config window_border_width          6
-yabai -m config active_window_border_color   0xff775759
-yabai -m config normal_window_border_color   0xff555555
-yabai -m config insert_feedback_color        0xffd75f5f
-yabai -m config split_ratio                  0.50
-yabai -m config auto_balance                 off
-yabai -m config mouse_modifier               fn
-yabai -m config mouse_action1                move
-yabai -m config mouse_action2                resize
-yabai -m config mouse_drop_action            swap
+yabai -m config mouse_follows_focus off
+yabai -m config focus_follows_mouse autoraise
+yabai -m config window_origin_display default
+yabai -m config window_placement second_child
+yabai -m config window_topmost off
+yabai -m config window_shadow float # (default: on, options: on, off, float)
+yabai -m config window_opacity on
+yabai -m config window_opacity_duration 0.0
+yabai -m config active_window_opacity 1.0
+yabai -m config normal_window_opacity 0.9
+yabai -m config window_border off
+yabai -m config window_border_width 6
+yabai -m config active_window_border_color 0xff775759
+yabai -m config normal_window_border_color 0xff555555
+yabai -m config insert_feedback_color 0xffd75f5f
+yabai -m config split_ratio 0.50
+yabai -m config auto_balance off
+yabai -m config mouse_modifier fn
+yabai -m config mouse_action1 move
+yabai -m config mouse_action2 resize
+yabai -m config mouse_drop_action swap
 
 # general space settings
-yabai -m config layout                       bsp
-yabai -m config top_padding                  8
-yabai -m config bottom_padding               8
-yabai -m config left_padding                 8
-yabai -m config right_padding                8
-yabai -m config window_gap                   8
+yabai -m config layout bsp
+yabai -m config top_padding 8
+yabai -m config bottom_padding 8
+yabai -m config left_padding 8
+yabai -m config right_padding 8
+yabai -m config window_gap 8
 
 # remove all rules first
-yabai -m rule --list \
-  | jq '.[].index' \
-  | sort -rn \
-  | xargs -n 1 yabai -m rule --remove
+yabai -m rule --list |
+	jq '.[].index' |
+	sort -rn |
+	xargs -n 1 yabai -m rule --remove
 
 # float system preferences. Most of these just diable Yabai form resizing them.
 yabai -m rule --add title='Preferences$' manage=off
@@ -59,29 +59,38 @@ yabai -m rule --add label="About This Mac" app="System Information" title="About
 yabai -m rule --add app="^Karabiner-Elements$" manage=off
 yabai -m rule --add app="^Karabiner-EventViewer$" manage=off
 yabai -m rule --add app="^Spotify$" manage=off
-yabai -m rule --add title="QuickTerminal" manage=off grid=20:20:5:5:10:10 sticky=on layer=above opacity=0.85
 yabai -m rule --add label="macfeh" app="^macfeh$" manage=off
+yabai -m rule --add title="QuickTerminal" manage=off grid=20:20:5:5:10:10 sticky=on layer=above opacity=0.9
 
 function focus_under_cursor {
-  if yabai -m query --windows --space |
-      jq -er 'map(select(."has-focus" == true)) | length == 0' >/dev/null; then
-    yabai -m window --focus mouse 2>/dev/null || true
-  fi
+	if yabai -m query --windows --space |
+		jq -er 'map(select(."has-focus" == true)) | length == 0' >/dev/null; then
+		yabai -m window --focus mouse 2>/dev/null || true
+	fi
+}
+
+function restart_yabai {
+	/usr/bin/env osascript <<< \
+		"display notification \"Restarting Yabai and skhd\" with title \"Yabai\""
+	launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
+	skhd -r
 }
 
 # If no window on the current space is focused after a window is destroyed or
 # minimized, or an application is hidden, focus the window under the cursor.
 yabai -m signal --add event=window_destroyed \
-  action="${functions[focus_under_cursor]}"
+	action="${functions[focus_under_cursor]}"
 yabai -m signal --add event=window_minimized \
-  action="${functions[focus_under_cursor]}"
+	action="${functions[focus_under_cursor]}"
 yabai -m signal --add event=application_hidden \
-  action="${functions[focus_under_cursor]}"
+	action="${functions[focus_under_cursor]}"
+yabai -m signal --add event=display_changed \
+	action="${functions[restart_yabai]}"
 
 # auto update-yabai
 YABAI_CERT=yabai-cert sh -c "$(curl -sSL "https://git.io/update-yabai")" &
 
-echo "yabai configuration loaded.." 
+echo "yabai configuration loaded.."
 
 # notch handling (macbook pro 16) for custom title bar
 # NOTCH_UUID="37D8832A-2D66-02CA-B9F7-8F30A301B230"
@@ -90,5 +99,3 @@ echo "yabai configuration loaded.."
 # yabai -m signal --add event=display_added action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NORMAL_BAR:0; fi"
 # yabai -m signal --add event=display_removed action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NOTCH_BAR:0; fi"
 # if [[ "$(yabai -m query --displays | jq '.[].uuid')" =~ "$NOTCH_UUID" ]]; then if [ "$(yabai -m query --displays | jq length)" -gt "1" ]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NOTCH_BAR:0; fi else yabai -m config external_bar all:$NORMAL_BAR:0; fi
-
-

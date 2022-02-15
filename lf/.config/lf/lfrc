@@ -128,8 +128,8 @@ map A push :mkdir<space>
 map a push $lvim<space>
 map <c-r> reload
 map <enter> shell
-map x $$f
-map X !$f
+map X $$f
+map x !$f
 map o &open $f
 map O $mimeopen --ask $f
 

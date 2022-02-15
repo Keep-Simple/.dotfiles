@@ -8,12 +8,15 @@ ZSH_THEME="robbyrussell"
 export FZF_BASE=/opt/homebrew/bin/fzf
 
 plugins=(
-  vi-mode
+  # vi-mode
+  # git
   zsh-syntax-highlighting
   zsh-autosuggestions
   poetry
+  nick-functions
   gh
   kubectl
+  terraform
   docker
   docker-compose
 )
@@ -39,5 +42,6 @@ HISTFILE=~/.cache/zsh/history
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc"
 
 export KEYTIMEOUT=35
+bindkey -v;
 
 clear;
