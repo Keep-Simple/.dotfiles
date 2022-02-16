@@ -5,8 +5,8 @@ ctrl + alt + cmd + shift - return : "${HOME}/.config/skhd/quick_terminal.sh"
 ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
 
 # change layouts
-ctrl + alt + cmd - t : yabai -m space --layout bsp 
-ctrl + alt + cmd - u : yabai -m space --layout stack
+ctrl + alt + cmd - t : yabai -m space --layout bsp; ~/.config/yabai/scripts/smart_gaps.sh
+ctrl + alt + cmd - u : yabai -m space --layout stack; ~/.config/yabai/scripts/smart_gaps.sh
 
 # focus window
 ctrl + alt + cmd - x : yabai -m window --focus recent
@@ -45,16 +45,13 @@ ctrl + alt + cmd + shift - o : yabai -m window --toggle topmost
 ## Close active application
 ctrl + alt + cmd - q : yabai -m window --close
 # toggle window zoom
-ctrl + alt + cmd - f : yabai -m window --toggle zoom-fullscreen
+ctrl + alt + cmd - f : yabai -m window --toggle zoom-fullscreen; ~/.config/yabai/scripts/smart_gaps.sh
 # toggle window native fullscreen
 ctrl + alt + cmd + shift - f : yabai -m window --toggle native-fullscreen
 # float / unfloat window 
 ctrl + alt + cmd + shift - space : yabai -m window --toggle float && yabai -m window --grid 4:4:1:1:2:2
 # Restart Yabai
-ctrl + alt + cmd - r : /usr/bin/env osascript <<< \
-        "display notification \"Restarting Yabai and skhd\" with title \"Yabai\""; \
-    launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"; skhd -r
-
+ctrl + alt + cmd - r : ~/.config/yabai/scripts/restart.sh
 # fast focus desktop
 ctrl + alt + cmd - 1 : yabai -m space --focus 1
 ctrl + alt + cmd - 2 : yabai -m space --focus 2
