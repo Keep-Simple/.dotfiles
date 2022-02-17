@@ -1,8 +1,9 @@
 #!/bin/sh
 
 open-brave \
-https://open.spotify.com \
-https://vns.lpnu.ua/my \
-https://zubiden.github.io/nulp-timetable/#/%D0%9F%D0%97-11/2 \
-https://todoist.com/app/upcoming \
-https://web.telegram.org/z/#434464514 
+	https://open.spotify.com \
+	https://vns.lpnu.ua/my \
+	https://zubiden.github.io/nulp-timetable/#/%D0%9F%D0%97-11/2 \
+	https://calendar.google.com/calendar/u/3/r/week \
+	https://todoist.com/app/upcoming \
+	https://web.telegram.org/z/#434464514

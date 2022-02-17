@@ -5,7 +5,6 @@ lvim.colorscheme = "onedarker"
 
 require("user.keys")
 require("user.plugins")
-require("user.bufferline")
 
 -- folding
 vim.opt.foldmethod = "expr"
