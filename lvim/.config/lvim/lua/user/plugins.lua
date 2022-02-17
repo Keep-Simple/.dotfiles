@@ -7,13 +7,51 @@ lvim.plugins = {
 		"phaazon/hop.nvim",
 		event = "BufRead",
 		config = function()
-			require("hop").setup()
-			vim.api.nvim_set_keymap("n", "s", ":HopChar2<cr>", { silent = true })
+			require("user.hop").config()
 		end,
 	},
 	{
 		"folke/trouble.nvim",
 		cmd = "TroubleToggle",
+	},
+	-- for renaming --
+	{
+		"kevinhwang91/rnvimr",
+		config = function()
+			require("user.rnvimr")
+		end,
+	},
+	{
+		"windwp/nvim-spectre",
+		event = "BufRead",
+		config = function()
+			require("user.spectre").config()
+		end,
+	},
+	-- end --
+	{
+		"karb94/neoscroll.nvim",
+		config = function()
+			require("user.neoscroll").config()
+		end,
+	},
+	{
+		"kevinhwang91/nvim-bqf",
+		event = "BufRead",
+	},
+	{
+		"norcalli/nvim-colorizer.lua",
+		config = function()
+			require("user.colorizer").config()
+		end,
+	},
+	{
+		"ruifm/gitlinker.nvim",
+		requires = "nvim-lua/plenary.nvim",
+		event = "BufRead",
+		config = function()
+			require("user.gitlinker").config()
+		end,
 	},
 	{
 		"tpope/vim-fugitive",
@@ -45,9 +83,16 @@ lvim.plugins = {
 	{
 		"windwp/nvim-ts-autotag",
 		config = function()
-			require("nvim-ts-autotag").setup()
+			require("user.autotag").config()
 		end,
-		event = "InsertEnter",
+		-- event = "InsertEnter",
+	},
+	{
+		"simrat39/symbols-outline.nvim",
+		-- cmd = "SymbolsOutline",
+		config = function()
+			require("user.outline").config()
+		end,
 	},
 	{
 		"jose-elias-alvarez/nvim-lsp-ts-utils",
@@ -90,6 +135,12 @@ lvim.plugins = {
 	{
 		"npxbr/glow.nvim",
 		ft = { "markdown" },
+	},
+	{
+		"folke/zen-mode.nvim",
+		config = function()
+			require("user.zen").config()
+		end,
 	},
 	{
 		"folke/persistence.nvim",

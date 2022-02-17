@@ -55,6 +55,7 @@ formatters.setup({
 	{ command = "stylua" },
 	{ command = "rustfmt" },
 	{ command = "gofmt" },
+	{ command = "shfmt" },
 })
 
 local linters = require("lvim.lsp.null-ls.linters")
