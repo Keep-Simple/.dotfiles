@@ -78,7 +78,11 @@ lvim.builtin.which_key.mappings["gv"] = {
 	f = { "<cmd>DiffviewRefresh<cr>", "Files History" },
 }
 
-lvim.builtin.which_key.mappings["gy"] = { "<cmd>lua require'gitlinker'.get_buf_range_url('v')<cr>", "Copy link" }
+lvim.builtin.which_key.mappings["gy"] = {
+	"<cmd>lua require'gitlinker'.get_buf_range_url('n')<cr>",
+	"Copy link",
+}
+
 lvim.builtin.which_key.mappings["gm"] = { "<cmd>Git<cr>", "Git menu" }
 
 lvim.builtin.which_key.mappings["G"] = { "<cmd>Glow<cr>", "Markdown preview" }
@@ -106,3 +110,5 @@ lvim.builtin.which_key.mappings["r"] = {
 	w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "Replace Word" },
 	f = { "<cmd>lua require('spectre').open_file_search()<cr>", "Replace Buffer" },
 }
+
+lvim.builtin.which_key.mappings["y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
