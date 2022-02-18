@@ -99,8 +99,8 @@ static const Layout layouts[] = {
       {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
 
 #define STACKKEYS(MOD, ACTION)                                                 \
-  {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},                                  \
-      {MOD, XK_k, ACTION##stack, {.i = INC(-1)}},                              \
+  {MOD, XK_j, ACTION##stack, {.i = INC(-1)}},                                  \
+      {MOD, XK_k, ACTION##stack, {.i = INC(+1)}},                              \
       {MOD,                                                                    \
        XK_v,                                                                   \
        ACTION##stack,                                                          \
@@ -171,8 +171,7 @@ static Key keys[] = {
     /* { MODKEY|ShiftMask,    XK_Tab,    spawn,    SHCMD("") }, */
     {MODKEY, XK_q, killclient, {0}},
     {MODKEY | ShiftMask, XK_q, spawn, SHCMD("sysact")},
-    {MODKEY, XK_w, spawn, SHCMD("$BROWSER")},
-    {MODKEY | ShiftMask, XK_w, spawn, SHCMD(TERMINAL " -e sudo nmtui")},
+    {MODKEY, XK_b, spawn, SHCMD("$BROWSER")},
     /* { MODKEY,      XK_e,    spawn,    SHCMD(TERMINAL " -e neomutt ; pkill
        -RTMIN+12 dwmblocks; rmdir ~/.abook") }, */
     /* { MODKEY|ShiftMask,    XK_e,    spawn,    SHCMD(TERMINAL " -e abook -C
@@ -226,7 +225,7 @@ static Key keys[] = {
     {MODKEY, XK_c, spawn, SHCMD("code")},
     {MODKEY, XK_e, spawn, SHCMD("telegram-desktop")},
     /* V is automatically bound above in STACKKEYS */
-    {MODKEY, XK_b, togglebar, {0}},
+    // {MODKEY, XK_b, togglebar, {0}},
     /* { MODKEY|ShiftMask,    XK_b,    spawn,    SHCMD("") }, */
     {MODKEY, XK_n, spawn, SHCMD(TERMINAL " -e nvim -c VimwikiIndex")},
     {MODKEY | ShiftMask, XK_n, spawn,
