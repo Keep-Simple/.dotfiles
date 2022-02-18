@@ -1,5 +1,8 @@
-brave --new-window \
-https://calendar.google.com/calendar/u/0/r \
-https://rapidsec.monday.com/boards/657321888/views/26151703?userId=23427061 \
-https://github.com/rapidsec-com/dashboard/pulls \
-https://app.slack.com/client/T012D0BNY9L/C022YL6HYVA </dev/null &>/dev/null &
+#!/bin/sh
+
+open-brave \
+	https://calendar.google.com/calendar/u/0/r/week \
+	https://app.slack.com/client \
+	https://github.com/orcasecurity/apisec \
+	https://orcasecurity.atlassian.net/jira/software/c/projects/APIS/boards/101?assignee=61e011157aa7ac0070a737cc \
+	https://trello.com/b/FFtQw3nq/apisec-nick

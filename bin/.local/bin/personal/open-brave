@@ -1,0 +1,3 @@
+#!/bin/sh
+
+brave --new-window  $* </dev/null &>/dev/null &

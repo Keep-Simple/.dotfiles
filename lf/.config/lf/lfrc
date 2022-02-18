@@ -91,6 +91,16 @@ cmd fzf_search ${{
     [ ! -z "$res" ] && lf -remote "send $id select \"$res\""
 }}
 
+cmd fzf_jump ${{
+    res="$(find . | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    if [ -d "$res" ]; then
+        cmd="cd"
+    else 
+        cmd="select"                                                       
+    fi
+    lf -remote "send $id $cmd \"$res\""
+}}
+
 cmd poetry_lvim ${{
   cd $fx
   poetry run lvim .
@@ -103,24 +113,23 @@ cmd docxToPdf $libreoffice --headless --convert-to pdf $fx
 cmd trash %trash-put $fx
 
 # Bindings
-map <c-f> $lf -remote "send $id select '$(fzf)'"
 map <c-a> :select-files
 map gg top
 map gS :share
 map gd :delete
-map gr $trash-restore | fzf
 map gs :fzf_search
+map gf :fzf_jump
 map gc $code $fx
 map gl $lvim $fx
 map gp :poetry_lvim
 map D :trash
 map t toggle
-map a push :mkdir<space>
-map A push :!lvim<space>
+map A push :mkdir<space>
+map a push $lvim<space>
 map <c-r> reload
 map <enter> shell
-map x $$f
-map X !$f
+map X $$f
+map x !$f
 map o &open $f
 map O $mimeopen --ask $f
 

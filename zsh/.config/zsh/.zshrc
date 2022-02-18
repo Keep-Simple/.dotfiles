@@ -3,12 +3,22 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-ZSH_THEME="robbyrussell"
+ZSH_THEME="dracula"
+
+export FZF_BASE=/opt/homebrew/bin/fzf
 
 plugins=(
+  # vi-mode
+  # git
   zsh-syntax-highlighting
   zsh-autosuggestions
   poetry
+  nick-functions
+  gh
+  kubectl
+  terraform
+  docker
+  docker-compose
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -31,8 +41,7 @@ HISTFILE=~/.cache/zsh/history
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc"
 
-# vi mode
-bindkey -v
-export KEYTIMEOUT=1
+export KEYTIMEOUT=35
+bindkey -v;
 
 clear;
