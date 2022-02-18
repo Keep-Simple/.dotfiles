@@ -7,6 +7,17 @@
 # Adds `~/.local/bin` to $PATH
 paths=$(find -L ~/.local/bin -type d -print | xargs printf -- '%s:')%%:
 export PATH="$PATH:${paths}"
+
+eval "$(pyenv init --path)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(fnm env --use-on-cd)"
+. "$HOME/.local/share/cargo/env"
+
+# Default programs:
+export EDITOR="lvim"
+export TERMINAL="alacritty"
+export BROWSER="brave"
+
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$HOME/.local/share/cargo/bin
@@ -16,15 +27,6 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PYENV_ROOT="$HOME/.pyenv"
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-
-eval "$(pyenv init --path)"
-eval "$(/opt/homebrew/bin/brew shellenv)"
-. "$HOME/.local/share/cargo/env"
-
-# Default programs:
-export EDITOR="lvim"
-export TERMINAL="alacritty"
-export BROWSER="brave"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
