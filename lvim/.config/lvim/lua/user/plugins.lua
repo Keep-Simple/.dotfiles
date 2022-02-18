@@ -3,6 +3,7 @@ lvim.plugins = {
 	{
 		"tpope/vim-surround",
 	},
+	{ "ojroques/vim-oscyank" },
 	{
 		"phaazon/hop.nvim",
 		event = "BufRead",
