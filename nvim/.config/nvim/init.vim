@@ -1,11 +1,12 @@
 function! Cond(Cond, ...)
-	let opts = get(a:000, 0, {})
+  let opts = get(a:000, 0, {})
 	return a:Cond ? opts : extend(opts, { 'on': [], 'for': [] })
 endfunction
 
 call plug#begin('~/.config/nvim/plugged')
 Plug 'tpope/vim-surround'
 Plug 'unblevable/quick-scope'
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
 Plug 'asvetliakov/vim-easymotion', Cond(exists('g:vscode'), { 'as': 'vsc-easymotion' })
 
@@ -20,6 +21,7 @@ Plug 'bling/vim-airline', Cond(!exists('g:vscode'))
 Plug 'tpope/vim-commentary', Cond(!exists('g:vscode'))
 Plug 'ap/vim-css-color', Cond(!exists('g:vscode'))
 call plug#end()
+
 
 let mapleader =","
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
