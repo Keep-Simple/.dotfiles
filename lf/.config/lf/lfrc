@@ -4,12 +4,12 @@ set ratios 1:2:3
 set shell zsh
 set shellopts '-euy'
 set ifs "\n"
-set filesep "\n"  # default already
 set scrolloff 10
 set icons
 set hidden true
 set period 1
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
+set preview
 set previewer ~/.config/lf/preview
 set cleaner ~/.config/lf/cleaner
 
@@ -30,23 +30,45 @@ cmd open ${{
 cmd mkdir %mkdir -p "$@"
 
 cmd extract ${{
-	clear; tput cup $(($(tput lines)/3)); tput bold
-	set -f
-	printf "%s\n\t" "$fx"
-	printf "extract?[y/N]"
-	read ans
-	[ $ans = "y" ] && ext $fx
-	clear
+  set -f
+  case $f in
+    *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf $f;;
+    *.tar.gz|*.tgz) tar xzvf $f;;
+    *.tar.xz|*.txz) tar xJvf $f;;
+    *.tar) tar xvf $f;;
+    *.zip) unzip $f;;
+    *.rar) unrar x $f;;
+    *.7z) 7z x $f;;
+    *) echo "Unsupported format";;
+  esac
+}}
+
+cmd tar ${{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    tar czf $1.tar.gz $1
+    rm -rf $1
 }}
 
 cmd delete ${{
-	clear; tput cup $(($(tput lines)/3)); tput bold
-	set -f
-	printf "%s\n\t" "$fx"
-	printf "delete?[y/N]"
-	read ans
-	[ $ans = "y" ] && rm -rf -- $fx
-	clear
+  set -f
+  printf "\n$fx\n"
+  printf "delete?[y/N]"
+  read ans
+  if [[ $ans == "y" ]]; then
+    rm -rf $fx
+  fi
+}}
+
+cmd chmod ${{
+  printf "\nMode Bits: "
+  read ans
+  for file in "$fx"
+  do
+    chmod $ans $file
+  done
+  lf -remote 'send reload'
 }}
 
 cmd link %{{
@@ -101,24 +123,47 @@ cmd fzf_jump ${{
     lf -remote "send $id $cmd \"$res\""
 }}
 
+# Copy the file names (including extension) of the selections separated by \n
+cmd copy-filename ${{
+  names="$(echo $fx | tr ' ' '\n' | xargs -I{} basename {})"
+  echo $names | tr ' ' '\n' | pbcopy
+}}
+
+# Copy the absolute paths of selections separated by \n
+cmd copy-absolute-path ${{
+  echo $fx | tr ' ' '\n' | pbcopy
+}}
+
 cmd poetry_lvim ${{
   cd $fx
   poetry run lvim .
 }}
 
+
+
+map gh
+map d
+map y
+map ,
+
 cmd setbg "$1"
-cmd bulkrename $vidir
 cmd share $curl -F"file=@$fx" https://0x0.st | xclip -selection c
 cmd docxToPdf $libreoffice --headless --convert-to pdf $fx
 cmd trash %trash-put $fx
 
-# Bindings
-map <c-a> :select-files
+map yy copy
+map yn copy-filename
+map yP copy-absolute-path
+map x cut
+map X !$f
 map gg top
-map gS :share
 map gd :delete
-map gs :fzf_search
-map gf :fzf_jump
+map ,st :fzf_search
+map ,S :share
+map ,ch :chmod
+map ,f :fzf_jump
+map ,t push :tar<space>
+map ,e :extract
 map gc $code $fx
 map gl $lvim $fx
 map gp :poetry_lvim
@@ -127,16 +172,13 @@ map t toggle
 map A push :mkdir<space>
 map a push $lvim<space>
 map <c-r> reload
+map <c-a> :select-files
 map <enter> shell
-map X $$f
-map x !$f
-map o &open $f
+map X !$f
 map O $mimeopen --ask $f
 
 map <c-z> $kill -STOP $PPID
 map <c-p> :docxToPdf
-map <c-e> extract
-map B bulkrename
 map b $setbg $f
 
 cmd paste_try_cow &{{
@@ -221,9 +263,33 @@ cmd paste_try_cow &{{
 
     lf -remote "send load"
 }}
+cmd bulk-rename ${{
+  old="$(mktemp)"
+  new="$(mktemp)"
+  if [ -n "$fs" ]; then
+    fs="$(basename $fs)"
+  else
+    fs="$(ls)"
+  fi
+  printf '%s\n' "$fs" >"$old"
+  printf '%s\n' "$fs" >"$new"
+  $EDITOR "$new"
+  [ "$(wc -l < "$new")" -ne "$(wc -l < "$old")" ] && exit
+  paste "$old" "$new" | while IFS= read -r names; do
+    src="$(printf '%s' "$names" | cut -f1)"
+    dst="$(printf '%s' "$names" | cut -f2)"
+    if [ "$src" = "$dst" ] || [ -e "$dst" ]; then
+        continue
+    fi
+    mv -- "$src" "$dst"
+  done
+  rm -- "$old" "$new"
+  lf -remote "send $id unselect"
+}}
 
 # name is different to avoid recursive calls
 map p paste_try_cow
+map ,r bulk-rename
 
 # Source Bookmarks
 source "~/.config/lf/shortcutrc"

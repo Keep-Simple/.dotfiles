@@ -1,0 +1,2 @@
+['html', 'graphql', 'lemminx', 'rome', 'sqls', 'stylelint_lsp', 'terraformls', 'vuels', 'bashls', 'cssls', 'rust_analyzer', 'pyright', 'prismals', 'clangd', '
+sumneko_lua', 'solc', 'cmake', 'jsonls', 'vimls', 'tflint', 'texlab', 'gopls', 'solang', 'taplo', 'dotls', 'dockerls', 'tsserver', 'yamlls', 'ltex']
