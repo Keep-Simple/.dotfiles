@@ -177,4 +177,8 @@ lvim.plugins = {
 			})
 		end,
 	},
+	{
+		"ptzz/lf.vim",
+		requires = "voldikss/vim-floaterm",
+	},
 }

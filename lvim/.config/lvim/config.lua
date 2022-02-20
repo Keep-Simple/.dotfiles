@@ -24,10 +24,16 @@ lvim.builtin.gitsigns.opts.current_line_blame = true
 lvim.builtin.cmp.completion.autocomplete = false
 lvim.builtin.dashboard.active = true
 
-lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.setup.open_on_setup = true
-lvim.builtin.nvimtree.setup.view.auto_resize = true
-lvim.builtin.nvimtree.setup.filters.custom = { "node_modules", ".git", ".idea", ".vscode" }
+lvim.builtin.nvimtree.active = false
+-- lvim.builtin.nvimtree.setup.view.side = "left"
+-- lvim.builtin.nvimtree.setup.open_on_setup = true
+-- lvim.builtin.nvimtree.setup.view.auto_resize = true
+-- lvim.builtin.nvimtree.setup.filters.custom = { "node_modules", ".git", ".idea", ".vscode" }
+
+vim.cmd([[
+  let g:lf_map_keys = 0
+  let g:lf_replace_netrw = 1
+  ]])
 
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.ensure_installed = {

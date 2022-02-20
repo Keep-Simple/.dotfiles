@@ -115,3 +115,4 @@ lvim.builtin.which_key.mappings["r"] = {
 }
 
 lvim.builtin.which_key.mappings["y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
+lvim.builtin.which_key.mappings["e"] = { "<cmd>Lf<cr>", "Explorer" }
