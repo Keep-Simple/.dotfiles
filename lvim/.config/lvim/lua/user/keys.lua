@@ -1,37 +1,5 @@
 lvim.leader = ","
 
-local tree_cb = require("nvim-tree.config").nvim_tree_callback
-lvim.builtin.nvimtree.setup.view.mappings.list = {
-	{ key = "<Tab>", cb = tree_cb("preview") },
-	{ key = "K", cb = tree_cb("first_sibling") },
-	{ key = "J", cb = tree_cb("last_sibling") },
-	{ key = "zi", cb = tree_cb("toggle_ignored") },
-	{ key = "zh", cb = tree_cb("toggle_dotfiles") },
-	{ key = "<C-r>", cb = tree_cb("refresh") },
-	{ key = "<C-t>" },
-	{ key = "a", cb = tree_cb("create") },
-	{ key = "gd", cb = tree_cb("remove") },
-	{ key = "D", cb = tree_cb("trash") },
-	{ key = "r", cb = tree_cb("rename") },
-	{ key = "x", cb = tree_cb("cut") },
-	{ key = "yy", cb = tree_cb("copy") },
-	{ key = "p", cb = tree_cb("paste") },
-	{ key = { "l", "<CR>" }, cb = tree_cb("edit") },
-	{ key = "O", cb = tree_cb("edit_no_picker") },
-	{ key = "h", cb = tree_cb("close_node") },
-	{ key = "v", cb = tree_cb("vsplit") },
-	{ key = "C", cb = tree_cb("cd") },
-	{ key = "yn", cb = tree_cb("copy_name") },
-	{ key = "yp", cb = tree_cb("copy_path") },
-	{ key = "yP", cb = tree_cb("copy_absolute_path") },
-	{ key = "-", cb = tree_cb("dir_up") },
-	{ key = "o", cb = tree_cb("system_open") },
-	{ key = "[g", cb = tree_cb("prev_git_item") },
-	{ key = "]g", cb = tree_cb("next_git_item") },
-	{ key = "q", cb = tree_cb("close") },
-	{ key = "?", cb = tree_cb("toggle_help") },
-}
-
 local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.mappings = {
 	i = {
