@@ -1,4 +1,3 @@
--- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "onedarker"
@@ -6,35 +5,27 @@ lvim.colorscheme = "onedarker"
 require("user.keys")
 require("user.plugins")
 
--- folding
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.cmd("set nofen")
-
 lvim.builtin.terminal.direction = "horizontal"
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.shading_factor = 1
 
--- when true brakes nvim-tree, when opening dir (so I modified lua/lvim/core/nvimtree.lua)
 lvim.builtin.project.active = true
-
 lvim.builtin.dap.active = true
 lvim.builtin.notify.active = true
-lvim.builtin.gitsigns.opts.current_line_blame = true
-lvim.builtin.cmp.completion.autocomplete = false
 lvim.builtin.dashboard.active = true
-
 lvim.builtin.nvimtree.active = false
--- lvim.builtin.nvimtree.setup.view.side = "left"
--- lvim.builtin.nvimtree.setup.open_on_setup = true
--- lvim.builtin.nvimtree.setup.view.auto_resize = true
--- lvim.builtin.nvimtree.setup.filters.custom = { "node_modules", ".git", ".idea", ".vscode" }
 
+-- folding
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.cmd("set nofen")
 vim.cmd([[
   let g:lf_map_keys = 0
   let g:lf_replace_netrw = 1
   ]])
 
+lvim.builtin.gitsigns.opts.current_line_blame = true
+lvim.builtin.cmp.completion.autocomplete = false
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.ensure_installed = {
 	"bash",
