@@ -1,4 +1,4 @@
-set ratios 1:2:3
+# set ratios 1:2:3
 
 # Basic vars
 set shell zsh
@@ -38,7 +38,7 @@ cmd extract ${{
   esac
 }}
 
-cmd tar ${{
+cmd tar &{{
     set -f
     mkdir $1
     cp -r $fx $1
@@ -64,24 +64,6 @@ cmd chmod ${{
     chmod $ans $file
   done
   lf -remote 'send reload'
-}}
-
-cmd link %{{
-    set -- $(cat ~/.local/share/lf/files)
-    mode="$1"
-    shift
-    if [ "$#" -lt 1 ]; then
-        lf -remote "send $id echo no files to link"
-        exit 0
-    fi
-    case "$mode" in
-        # symbolically copy mode is indicating a soft link
-        copy) ln -sr -t . -- "$@";;
-        # while a move mode is indicating a hard link
-        move) ln -t . -- "$@";;
-    esac
-    rm ~/.local/share/lf/files
-    lf -remote "send clear"
 }}
 
 cmd select-files ${{
@@ -142,7 +124,7 @@ map y
 map ,
 
 cmd setbg "$1"
-cmd share $curl -F"file=@$fx" https://0x0.st | xclip -selection c
+cmd share $curl -F"file=@$fx" https://0x0.st | pbcopy
 cmd docxToPdf $libreoffice --headless --convert-to pdf $fx
 cmd trash %trash-put $fx
 
