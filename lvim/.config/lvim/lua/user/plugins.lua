@@ -106,20 +106,7 @@ lvim.plugins = {
 	{
 		"simrat39/rust-tools.nvim",
 		config = function()
-			require("rust-tools").setup({
-				tools = {
-					autoSetHints = true,
-					hover_with_actions = true,
-					runnables = {
-						use_telescope = true,
-					},
-				},
-				server = {
-					cmd = { vim.fn.stdpath("data") .. "/lsp_servers/rust/rust-analyzer" },
-					on_attach = require("lvim.lsp").common_on_attach,
-					on_init = require("lvim.lsp").common_on_init,
-				},
-			})
+			require("lsp-servers.rust-tools").config()
 		end,
 		ft = { "rust", "rs" },
 	},
@@ -179,6 +166,11 @@ lvim.plugins = {
 	},
 	{
 		"ptzz/lf.vim",
-		requires = "voldikss/vim-floaterm",
+	},
+	{
+		"voldikss/vim-floaterm",
+		config = function()
+			require("user.floaterm").config()
+		end,
 	},
 }

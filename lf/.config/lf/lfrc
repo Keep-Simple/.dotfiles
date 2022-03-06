@@ -1,16 +1,23 @@
-# set ratios 1:2:3
-
 # Basic vars
 set shell zsh
 set shellopts '-euy'
 set ifs "\n"
 set scrolloff 10
 set icons
-set hidden true
+# set hidden true
 set period 1
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set preview
 set previewer ~/.config/lf/preview
+
+${{
+    w=$(tput cols)
+    if [ $w -le 100 ]; then
+        lf -remote "send $id set ratios 2:2:3"
+    elif [ $w -le 160 ]; then
+        lf -remote "send $id set ratios 1:2:3"
+    fi
+}}
 
 cmd open ${{
     case $(file --mime-type $f -b) in
@@ -22,7 +29,26 @@ cmd open ${{
     esac
 }}
 
-cmd mkdir %mkdir -p "$@"
+cmd fzf-restore ${{
+    ids="$(echo -ne '\n'              | \
+      trash-restore                   | \
+      awk '$1 ~ /^[0-9]+/ {print $0}' | \
+      fzf --multi                     | \
+      awk '{print $1}'                | \
+      sed -z 's/\n/,/g;s/,$/\n/')"
+    echo $ids | trash-restore 
+    clear
+}}
+
+cmd touch %{{
+    mkdir -p "$(dirname "$*")" && touch -- "$*"
+    lf -remote "send $id select \"$*\""
+}}
+
+cmd mkdir %{{
+    mkdir -p "$@"
+    lf -remote "send $id select \"$@\""
+}}
 
 cmd extract ${{
   set -f
@@ -131,7 +157,8 @@ cmd trash %trash-put $fx
 map yy copy
 map yn copy-filename
 map yP copy-absolute-path
-map x cut
+map dd cut
+map U fzf-restore
 map X !$f
 map gg top
 map gd :delete
@@ -147,7 +174,7 @@ map gp :poetry_lvim
 map D :trash
 map t toggle
 map A push :mkdir<space>
-map a push $lvim<space>
+map a push :touch<space>
 map <c-r> reload
 map <c-a> :select-files
 map <enter> shell
