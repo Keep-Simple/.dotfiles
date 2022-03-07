@@ -12,12 +12,13 @@ yabai -m config window_topmost off
 yabai -m config window_shadow float # (default: on, options: on, off, float)
 yabai -m config window_opacity on
 yabai -m config window_opacity_duration 0.0
-yabai -m config active_window_opacity 1.0
-yabai -m config normal_window_opacity 0.9
-yabai -m config window_border off
-yabai -m config window_border_width 6
-yabai -m config active_window_border_color 0xff775759
-yabai -m config normal_window_border_color 0xff555555
+# yabai -m config active_window_opacity 1.0
+# yabai -m config normal_window_opacity 0.9
+yabai -m config window_border on
+yabai -m config window_border_width 4
+yabai -m config active_window_border_color '0xffc4a7e7'
+yabai -m config normal_window_border_color '0xff6e6a86'
+
 yabai -m config insert_feedback_color 0xffd75f5f
 yabai -m config split_ratio 0.50
 yabai -m config auto_balance off
@@ -62,20 +63,24 @@ yabai -m rule --add app="^Spotify$" manage=off
 yabai -m rule --add label="macfeh" app="^macfeh$" manage=off
 yabai -m rule --add title="QuickTerminal" manage=off grid=20:20:5:5:10:10 sticky=on layer=above opacity=0.9
 
+YABAI="$HOME/.config/yabai/scripts"
+
 # If no window on the current space is focused after a window is destroyed or
 # minimized, or an application is hidden, focus the window under the cursor.
 yabai -m signal --add event=window_destroyed \
-	action="~/.config/yabai/scripts/focus.sh"
+	action=$YABAI/focus.sh
 yabai -m signal --add event=window_minimized \
-	action="~/.config/yabai/scripts/focus.sh"
+	action=$YABAI/focus.sh
 yabai -m signal --add event=application_hidden \
-	action="~/.config/yabai/scripts/focus.sh"
+	action=$YABAI/focus.sh
 yabai -m signal --add event=display_changed \
-	action="~/.config/yabai/scripts/restart.sh"
+	action=$YABAI/restart.sh
 
-yabai -m signal --add event=window_created action="~/.config/yabai/scripts/smart_gaps.sh"
-yabai -m signal --add event=window_destroyed action="~/.config/yabai/scripts/smart_gaps.sh"
-yabai -m signal --add event=space_changed action="~/.config/yabai/scripts/smart_gaps.sh"
+yabai -m signal --add event=window_created action=$YABAI/smart_gaps.sh
+yabai -m signal --add event=window_destroyed action=$YABAI/smart_gaps.sh
+yabai -m signal --add event=space_changed action=$YABAI/smart_gaps.sh
+yabai -m signal --add event=window_minimized action=$YABAI/smart_gaps.sh
+yabai -m signal --add event=window_deminimized action=$YABAI/smart_gaps.sh
 
 # auto update-yabai
 YABAI_CERT=yabai-cert sh -c "$(curl -sSL "https://git.io/update-yabai")" &
