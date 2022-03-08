@@ -16,7 +16,7 @@ eval "$(fnm env --use-on-cd)"
 # Default programs:
 export EDITOR="lvim"
 export TERMINAL="alacritty"
-export BROWSER="brave"
+export BROWSER="open-brave"
 
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
