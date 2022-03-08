@@ -7,6 +7,8 @@ nvim,lf,
 bin,lvim,
 alacritty,
 karabiner,skhd,yabai,
-shell,zsh"
+shell,zsh,
+backup
+"
 
 ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $(dirname $(realpath $0))/install "$@"
