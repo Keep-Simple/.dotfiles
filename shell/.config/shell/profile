@@ -15,6 +15,7 @@ eval "$(fnm env --use-on-cd)"
 
 # Default programs:
 export EDITOR="lvim"
+export VISUAL="$EDITOR"
 export TERMINAL="alacritty"
 export BROWSER="open-brave"
 

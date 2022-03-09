@@ -83,17 +83,17 @@ scrolling:
 font:
   # Normal (roman) font face
   normal:
-    family: Hack Nerd Font
+    family: JetBrainsMono Nerd Font Mono
     style: Regular
 
   # Bold font face
   bold:
-    family: Hack Nerd Font
+    family: JetBrainsMono Nerd Font Mono
     style: Bold
 
   # Italic font face
   italic:
-    family: Hack Nerd Font
+    family: JetBrainsMono Nerd Font Mono
     style: Italic
 
   # Point size

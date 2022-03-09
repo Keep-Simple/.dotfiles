@@ -4,13 +4,11 @@
 
 YABAI="$HOME/.config/yabai/scripts"
 p=8
+windows=$(yabai -m query --windows --space)
+non_floated_count=$(echo $windows | jq 'map(select(."is-floating" == false)) | length')
+visible_count=$(echo $windows | jq 'map(select(."is-visible" == true)) | length')
 
-if [[ $(yabai -m query --windows --space |
-	jq 'map(select(."is-floating" == false)) | length') -eq 1 ||
-$(yabai -m query --windows --space |
-	jq 'map(select(."is-visible" == true)) | length') -eq 1 ||
-$(yabai -m query --windows --space |
-	jq 'map(select(."has-fullscreen-zoom" == true)) | length') -ge 1 ]]; then
+if [[ $non_floated_count -eq 1 ]] || [[ $visible_count -eq 1 ]]; then
 	p=0
 	yabai -m query --spaces --space | jq '.windows | .[]' | xargs -n1 $YABAI/border_off.sh
 else
@@ -23,3 +21,6 @@ yabai -m space --padding abs:$p:$p:$p:$p
 # ||
 # $(yabai -m query --spaces --space |
 # 	jq 'select(.type =="stack")')
+# ||
+# $(yabai -m query --windows --space |
+# 	jq 'map(select(."has-fullscreen-zoom" == true)) | length') -ge 1
