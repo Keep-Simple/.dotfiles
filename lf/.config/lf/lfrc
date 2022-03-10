@@ -20,6 +20,7 @@ ${{
 }}
 
 cmd open ${{
+    test -L $f && f=$(readlink -f $f)
     case $(file --mime-type $f -b) in
       text/*|application/json|application/octet-stream) $EDITOR $fx;;
       audio/*) mpv --audio-display=no $f ;;

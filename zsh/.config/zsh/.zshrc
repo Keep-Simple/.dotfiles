@@ -22,6 +22,7 @@ plugins=(
   poetry
   nick-functions
   gh
+  golang
   kubectl
   terraform
   docker

@@ -15,10 +15,11 @@ lvim.builtin.telescope.defaults.mappings = {
 }
 
 lvim.keys.normal_mode = {
-	["<C-s>"] = ":w<cr>",
+	["<C-s>"] = "<cmd>w<cr>",
 	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
+	["yy"] = "0y$",
 }
 
 lvim.builtin.cmp.mapping["<A-Space>"] = lvim.builtin.cmp.mapping["<C-Space>"]
