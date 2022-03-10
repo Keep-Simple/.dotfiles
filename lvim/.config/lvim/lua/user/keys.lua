@@ -19,7 +19,8 @@ lvim.keys.normal_mode = {
 	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
-	["yy"] = "0y$",
+	-- wtf...
+	["yy"] = "yy",
 }
 
 lvim.builtin.cmp.mapping["<A-Space>"] = lvim.builtin.cmp.mapping["<C-Space>"]
