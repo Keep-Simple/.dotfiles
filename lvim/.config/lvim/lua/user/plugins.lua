@@ -15,13 +15,6 @@ lvim.plugins = {
 		"folke/trouble.nvim",
 		cmd = "TroubleToggle",
 	},
-	-- for renaming --
-	{
-		"kevinhwang91/rnvimr",
-		config = function()
-			require("user.rnvimr")
-		end,
-	},
 	{
 		"windwp/nvim-spectre",
 		event = "BufRead",
@@ -166,6 +159,9 @@ lvim.plugins = {
 	},
 	{
 		"ptzz/lf.vim",
+		config = function()
+			require("user.lf")
+		end,
 	},
 	{
 		"voldikss/vim-floaterm",

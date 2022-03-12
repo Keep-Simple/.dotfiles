@@ -4,10 +4,9 @@ set shellopts '-euy'
 set ifs "\n"
 set scrolloff 10
 set icons
-# set hidden true
+set hidden true
 set period 1
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
-set preview
 set previewer ~/.config/lf/preview
 
 ${{
@@ -20,13 +19,15 @@ ${{
 }}
 
 cmd open ${{
-    test -L $f && f=$(readlink -f $f)
     case $(file --mime-type $f -b) in
-      text/*|application/json|application/octet-stream) $EDITOR $fx;;
-      audio/*) mpv --audio-display=no $f ;;
-      video/*) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
-      # application/pdf|application/vnd*|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
-      *) for f in $fx; do open $f > /dev/null 2> /dev/null & done;;
+        image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
+        text/*|application/json|inode/x-empty) $EDITOR $fx;;
+        image/svg+xml) display -- $f ;;
+        audio/*) mpv --audio-display=no $f ;;
+        video/*) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
+        application/pdf|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
+        application/pgp-encrypted) $EDITOR $fx ;;
+        *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
     esac
 }}
 
