@@ -169,4 +169,5 @@ lvim.plugins = {
 			require("user.floaterm").config()
 		end,
 	},
+	{ "gurpreetatwal/vim-avro" },
 }
