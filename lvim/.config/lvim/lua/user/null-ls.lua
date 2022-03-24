@@ -42,6 +42,7 @@ linters.setup({
 	}),
 	{ command = "flake8" },
 	{ command = "qmllint" },
+	{ command = "mypy" },
 })
 
 local actions = require("lvim.lsp.null-ls.code_actions")

@@ -52,7 +52,7 @@ export KEYTIMEOUT=35
 bindkey -v;
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
-[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # to fix % on the terminal start (sometimes during yabai resizing)
 setopt PROMPT_SP

@@ -1,6 +1,6 @@
 # Basic vars
 set shell zsh
-set shellopts '-euy'
+set shellopts '-ey'
 set ifs "\n"
 set scrolloff 10
 set icons
