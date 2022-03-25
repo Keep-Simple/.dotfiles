@@ -139,13 +139,6 @@ cmd copy-absolute-path ${{
   echo $fx | tr ' ' '\n' | pbcopy
 }}
 
-cmd poetry_lvim ${{
-  cd $fx
-  poetry run lvim .
-}}
-
-
-
 map gh
 map d
 map y
@@ -172,7 +165,7 @@ map ,t push :tar<space>
 map ,e :extract
 map gc $code $fx
 map gl $lvim $fx
-map gp :poetry_lvim
+map gp $poetry run lvim $fx
 map D :trash
 map t toggle
 map A push :mkdir<space>

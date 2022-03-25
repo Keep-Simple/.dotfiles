@@ -38,5 +38,13 @@ lvim.builtin.treesitter.playground.enable = true
 lvim.builtin.treesitter.indent.disable = { "python" }
 lvim.builtin.treesitter.rainbow = {
 	enable = true,
-	disable = { "html" },
+	disable = { "html", "jsx" },
+	colors = {
+		"Gold",
+		"Orchid",
+		"DodgerBlue",
+		-- "Cornsilk",
+		-- "Salmon",
+		-- "LawnGreen",
+	},
 }

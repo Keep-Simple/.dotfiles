@@ -23,17 +23,9 @@ lvim.plugins = {
 	},
 	{
 		"gelfand/copilot.vim",
+		requires = "hrsh7th/cmp-copilot",
 		config = function()
-			-- copilot assume mapped
-			vim.g.copilot_assume_mapped = true
-			vim.g.copilot_no_tab_map = true
-		end,
-	},
-	{
-		"hrsh7th/cmp-copilot",
-		config = function()
-			lvim.builtin.cmp.formatting.source_names["copilot"] = "(Cop)"
-			table.insert(lvim.builtin.cmp.sources, { name = "copilot" })
+			require("user.copilot").config()
 		end,
 	},
 	{
@@ -183,5 +175,7 @@ lvim.plugins = {
 		end,
 	},
 	{ "gurpreetatwal/vim-avro" },
-	{ "ChristianChiarulli/nvim-ts-rainbow" },
+	{
+		"p00f/nvim-ts-rainbow",
+	},
 }
