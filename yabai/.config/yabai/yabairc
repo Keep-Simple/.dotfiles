@@ -80,7 +80,7 @@ yabai -m signal --add event=window_minimized action=$YABAI/smart_gaps.sh
 yabai -m signal --add event=window_deminimized action=$YABAI/smart_gaps.sh
 
 # auto update-yabai
-YABAI_CERT=yabai-cert sh -c "$(curl -sSL "https://git.io/update-yabai")" &
+# YABAI_CERT=yabai-cert sh -c "$(curl -sSL "https://git.io/update-yabai")" &
 echo "yabai configuration loaded.."
 
 # notch handling (macbook pro 16) for custom title bar

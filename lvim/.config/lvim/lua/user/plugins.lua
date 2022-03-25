@@ -1,4 +1,3 @@
--- Additional Plugins
 lvim.plugins = {
 	{
 		"tpope/vim-surround",
@@ -22,7 +21,21 @@ lvim.plugins = {
 			require("user.spectre").config()
 		end,
 	},
-	-- end --
+	{
+		"gelfand/copilot.vim",
+		config = function()
+			-- copilot assume mapped
+			vim.g.copilot_assume_mapped = true
+			vim.g.copilot_no_tab_map = true
+		end,
+	},
+	{
+		"hrsh7th/cmp-copilot",
+		config = function()
+			lvim.builtin.cmp.formatting.source_names["copilot"] = "(Cop)"
+			table.insert(lvim.builtin.cmp.sources, { name = "copilot" })
+		end,
+	},
 	{
 		"karb94/neoscroll.nvim",
 		config = function()
@@ -160,7 +173,7 @@ lvim.plugins = {
 	{
 		"ptzz/lf.vim",
 		config = function()
-			require("user.lf")
+			require("user.lf").config()
 		end,
 	},
 	{
@@ -170,4 +183,5 @@ lvim.plugins = {
 		end,
 	},
 	{ "gurpreetatwal/vim-avro" },
+	{ "ChristianChiarulli/nvim-ts-rainbow" },
 }
