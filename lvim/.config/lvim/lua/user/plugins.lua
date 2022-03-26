@@ -36,6 +36,10 @@ lvim.plugins = {
 	},
 	{
 		"kevinhwang91/nvim-bqf",
+		ft = "qf",
+		config = function()
+			require("user.bqf").config()
+		end,
 		event = "BufRead",
 	},
 	{
@@ -177,5 +181,17 @@ lvim.plugins = {
 	{ "gurpreetatwal/vim-avro" },
 	{
 		"p00f/nvim-ts-rainbow",
+	},
+	{
+		"jbyuki/instant.nvim",
+		config = function()
+			require("user.instant").config()
+		end,
+	},
+	{
+		"nathom/filetype.nvim",
+		config = function()
+			require("user.filetype").config()
+		end,
 	},
 }

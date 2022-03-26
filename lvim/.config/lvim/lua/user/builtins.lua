@@ -11,6 +11,8 @@ lvim.builtin.nvimtree.active = false
 lvim.builtin.cmp.completion.autocomplete = false
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
+lvim.builtin.project.detection_methods = { "lsp", "pattern" }
+
 lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true } }
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
 	"__pycache__/*",
