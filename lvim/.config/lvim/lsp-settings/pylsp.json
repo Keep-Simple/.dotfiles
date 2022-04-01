@@ -1,0 +1,9 @@
+{
+  "pylsp": {
+    "plugins": {
+      "pycodestyle": {
+        "enabled": false
+      }
+    }
+  }
+}
