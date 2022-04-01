@@ -1,6 +1,8 @@
 lvim.transparent_window = false
 vim.opt.wrap = false
 lvim.debug = false
+vim.lsp.set_log_level("warn")
+lvim.log.level = "warn"
 vim.cmd([[set iskeyword+=-]])
 vim.cmd([[set formatoptions-=cro]]) -- TODO: this doesn't seem to work
 
@@ -41,7 +43,6 @@ end
 vim.opt.termguicolors = true
 vim.opt.updatetime = 100
 vim.opt.timeoutlen = 250
-vim.opt.redrawtime = 1500
 vim.opt.ttimeoutlen = 10
 vim.opt.wrapscan = true -- Searches wrap around the end of the file
 vim.opt.pumblend = 10

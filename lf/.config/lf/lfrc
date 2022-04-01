@@ -139,6 +139,13 @@ cmd copy-absolute-path ${{
   echo $fx | tr ' ' '\n' | pbcopy
 }}
 
+cmd poetry_lvim ${{
+  if [ -d "$f" ]; then
+   cd $f 
+  fi
+  poetry run lvim $f
+}}
+
 map gh
 map d
 map y
@@ -164,8 +171,8 @@ map ,f :fzf_jump
 map ,t push :tar<space>
 map ,e :extract
 map gc $code $fx
-map gl $lvim $fx
-map gp $poetry run lvim $fx
+map gl $lvim $f
+map gp :poetry_lvim
 map D :trash
 map t toggle
 map A push :mkdir<space>
@@ -173,6 +180,7 @@ map a push :touch<space>
 map <c-r> reload
 map <c-a> :select-files
 map <enter> shell
+map o $open $f
 
 map <c-z> $kill -STOP $PPID
 map <c-p> :docxToPdf
@@ -260,6 +268,7 @@ cmd paste_try_cow &{{
 
     lf -remote "send load"
 }}
+
 cmd bulk-rename ${{
   old="$(mktemp)"
   new="$(mktemp)"

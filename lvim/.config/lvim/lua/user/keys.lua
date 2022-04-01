@@ -19,6 +19,7 @@ lvim.keys.normal_mode = {
 	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
+	["gq"] = "<cmd>lua require('user.keys').ToggleQuickFix()<cr>",
 	-- wtf...
 	["yy"] = "yy",
 }
@@ -86,3 +87,15 @@ lvim.builtin.which_key.mappings["r"] = {
 
 lvim.builtin.which_key.mappings["y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 lvim.builtin.which_key.mappings["e"] = { "<cmd>Lf<cr>", "Explorer" }
+
+local M = {}
+
+function M.ToggleQuickFix()
+	if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
+		vim.cmd([[copen]])
+	else
+		vim.cmd([[cclose]])
+	end
+end
+
+return M

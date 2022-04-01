@@ -34,7 +34,6 @@ lvim.builtin.treesitter.autotag = {
 	disable = { "xml" },
 }
 
-lvim.builtin.treesitter.playground.enable = true
 lvim.builtin.treesitter.indent.disable = { "python" }
 lvim.builtin.treesitter.rainbow = {
 	enable = true,

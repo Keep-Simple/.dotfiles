@@ -1,4 +1,5 @@
 lvim.format_on_save = true
+
 lvim.colorscheme = "onedarker"
 
 require("user.keys")
@@ -15,4 +16,6 @@ vim.list_extend(lvim.lsp.override, {
 	"clangd",
 	"gopls",
 	"rust_analyzer",
+	"pyright",
+	"jedi_language_server",
 })
