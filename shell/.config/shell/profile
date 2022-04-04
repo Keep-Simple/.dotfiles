@@ -18,7 +18,7 @@ eval $(thefuck --alias)
 export EDITOR="lvim"
 export VISUAL="$EDITOR"
 export TERMINAL="alacritty"
-export BROWSER="open-brave"
+export BROWSER="open-in-brave"
 
 export PATH=$PATH:$HOME/.local/share/cargo/bin
 export PATH="/opt/homebrew/opt/util-linux/bin:$PATH"
