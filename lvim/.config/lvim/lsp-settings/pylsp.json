@@ -3,6 +3,9 @@
     "plugins": {
       "pycodestyle": {
         "enabled": false
+      },
+      "pylsp_mypy": {
+        "enabled": true
       }
     }
   }

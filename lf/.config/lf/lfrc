@@ -153,7 +153,6 @@ map ,
 
 cmd setbg "$1"
 cmd share $curl -F"file=@$fx" https://0x0.st | pbcopy
-cmd docxToPdf $libreoffice --headless --convert-to pdf $fx
 cmd trash %trash-put $fx
 
 map yy copy
@@ -170,6 +169,7 @@ map ,ch :chmod
 map ,f :fzf_jump
 map ,t push :tar<space>
 map ,e :extract
+map ,ll $lvim +"lua require('persistence').load({ last = true })"
 map gc $code $fx
 map gl $lvim $f
 map gp :poetry_lvim
@@ -181,10 +181,7 @@ map <c-r> reload
 map <c-a> :select-files
 map <enter> shell
 map o $open $f
-
 map <c-z> $kill -STOP $PPID
-map <c-p> :docxToPdf
-map b $setbg $f
 
 cmd paste_try_cow &{{
     # # This was very helpful for debugging:

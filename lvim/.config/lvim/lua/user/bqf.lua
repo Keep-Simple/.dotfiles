@@ -43,6 +43,13 @@ M.config = function()
 				return ret
 			end,
 		},
+		auto_enable = true,
+		filter = {
+			fzf = {
+				action_for = { ["ctrl-s"] = "split" },
+				extra_opts = { "--bind", "ctrl-o:toggle-all", "--prompt", "> " },
+			},
+		},
 	})
 end
 

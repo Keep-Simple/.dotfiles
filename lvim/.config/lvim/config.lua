@@ -8,7 +8,7 @@ require("user.plugins")
 require("user.treesitter")
 require("user.settings")
 require("user.builtins")
-
+require("user.null-ls")
 require("lsp-servers.clangd")
 
 vim.list_extend(lvim.lsp.override, {
@@ -18,5 +18,3 @@ vim.list_extend(lvim.lsp.override, {
 	"pyright",
 	-- "jedi_language_server",
 })
-
-require("user.null-ls")
