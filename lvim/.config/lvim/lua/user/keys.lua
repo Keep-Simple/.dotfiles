@@ -24,7 +24,6 @@ lvim.keys.normal_mode = {
 	["yy"] = "yy",
 }
 
-lvim.builtin.cmp.mapping["<A-Space>"] = lvim.builtin.cmp.mapping["<C-Space>"]
 lvim.builtin.which_key.mappings["LC"] = { "<cmd>LvimCacheReset<cr>", "Cache Reset" }
 lvim.builtin.which_key.mappings["W"] = {
 	"<cmd>SudaWrite<cr>",

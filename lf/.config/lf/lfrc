@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Basic vars
 set shell zsh
 set shellopts '-ey'
@@ -24,7 +26,7 @@ cmd open ${{
         image/svg+xml) display -- $f ;;
         audio/*) mpv --audio-display=no $f ;;
         video/*) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
-        image/vnd.djvu|application/pdf|application/octet-stream|application/postscript|application/pdf|application/epub*) setsid -f $BROWSER "$fx" >/dev/null 2>&1 ;;
+        image/vnd.djvu|application/pdf|application/octet-stream|application/postscript|application/pdf|application/epub*) setsid -f $BROWSER  "$fx" >/dev/null 2>&1 ;;
         application/pgp-encrypted) $EDITOR $fx ;;
         *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
     esac
@@ -108,7 +110,7 @@ cmd select-files ${{
 cmd fzf_search ${{
     res="$( \
         RG_PREFIX="rg --column --line-number --no-heading --color=always \
-            --smart-case "
+            --smart-case --hidden --glob '!.git'"
         FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
             fzf --bind "change:reload:$RG_PREFIX {q} || true" \
             --ansi --layout=reverse --header 'Search in files' \

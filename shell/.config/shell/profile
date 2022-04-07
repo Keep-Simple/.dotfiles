@@ -77,5 +77,3 @@ export AWT_TOOLKIT="MToolkit wmname LG3D" #May have to install wmname
 export _JAVA_AWT_WM_NONREPARENTING=1      # Fix for Java applications in dwm
 
 source $HOME/.config/lf/icons
-
-[ ! -f ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ] && ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc >/dev/null 2>&1 &
