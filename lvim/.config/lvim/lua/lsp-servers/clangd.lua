@@ -1,4 +1,3 @@
--- some settings can only passed as commandline flags `clangd --help`
 local clangd_flags = {
 	"--all-scopes-completion",
 	"--suggest-missing-includes",
