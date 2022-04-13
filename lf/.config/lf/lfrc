@@ -2,7 +2,7 @@
 
 # Basic vars
 set shell zsh
-set shellopts '-euy'
+set shellopts '-ey'
 set ifs "\n"
 set scrolloff 10
 set icons
@@ -103,8 +103,8 @@ cmd select-files ${{
         else
           cat
         fi |
-        sed '/^$/d' | sort | uniq -u |
-        xargs -d '\n' -r -I{} lf -remote "send $id toggle {}"
+        sed '/^$/d' | sort | uniq -u | tr "\n" "\0" |
+        xargs -0 -r -I{} lf -remote "send $id toggle '{}'"
 }}
 
 cmd fzf_search ${{
@@ -120,7 +120,7 @@ cmd fzf_search ${{
 }}
 
 cmd fzf_jump ${{
-    res="$(find . | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    res="$(fd . | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
     if [ -d "$res" ]; then
         cmd="cd"
     else 
@@ -138,13 +138,6 @@ cmd copy-filename ${{
 # Copy the absolute paths of selections separated by \n
 cmd copy-absolute-path ${{
   echo $fx | tr ' ' '\n' | pbcopy
-}}
-
-cmd poetry_lvim ${{
-  if [ -d "$f" ]; then
-   cd $f 
-  fi
-  poetry run lvim $f
 }}
 
 map gh
@@ -173,7 +166,6 @@ map ,e :extract
 map ,ll $lvim +"lua require('persistence').load({ last = true })"
 map gc $code $fx
 map gl $lvim $f
-map gp :poetry_lvim
 map D :trash
 map t toggle
 map A push :mkdir<space>
@@ -185,24 +177,11 @@ map o $open $f
 map <c-z> $kill -STOP $PPID
 
 cmd paste_try_cow &{{
-    # # This was very helpful for debugging:
-    # log_file="$HOME/lf-reflink-log-$(date +'%Y-%m-%d_%H-%M-%S')"
-    # [ -f "$log_file" ] || touch "$log_file"
-    # exec 1>> $log_file 2>&1
-    # set -x
-
-    # In theory, this may fail,
-    # but I tested it on selection with 10k files - everything worked (bash)
     set -- $(cat ~/.local/share/lf/files)
     mode="$1"
     shift
 
     if [ $mode = 'copy' ]; then
-        # Reflink if all items of selection and the destination are on the
-        # same mount point and it is CoW fs.
-        # (to make sure reflink never fails in first place, so we don't have to
-        # clean up)
-
         src_targets="$(df --output=target -- "$@" | sed '1d' | sort -u)"
 
         if [ "$(df --output=target -- "$PWD" | tail -n 1)" = \
@@ -214,8 +193,6 @@ cmd paste_try_cow &{{
 
             start=$(date '+%s')
 
-            # Handle same names in dst
-            # TODO parallelism, idk - but exit/return/break won't stop the loop from subshell...
             for i in "$@"; do
                 name="${i##*/}"
                 original="$name"
@@ -242,10 +219,6 @@ cmd paste_try_cow &{{
                 t="${finish}s"
             fi
 
-            # Or just skip a file when names are the same.
-            # (A LOT faster if you e.g. pasting selection of 10k files)
-            # cp -rn --reflink=always -- "$@" .
-
             lf -remote "send clear"
 
             green=$'\u001b[32m'
@@ -260,9 +233,6 @@ cmd paste_try_cow &{{
         echo 'selected move and lf native paste'
         lf -remote "send $id paste"
     fi
-
-    # # for debug
-    # set +x
 
     lf -remote "send load"
 }}
@@ -291,7 +261,6 @@ cmd bulk-rename ${{
   lf -remote "send $id unselect"
 }}
 
-# name is different to avoid recursive calls
 map p paste_try_cow
 map ,r bulk-rename
 
