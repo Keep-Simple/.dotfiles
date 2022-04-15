@@ -9,12 +9,14 @@ require("user.treesitter")
 require("user.settings")
 require("user.builtins")
 require("user.null-ls")
-require("lsp-servers.clangd")
 
-vim.list_extend(lvim.lsp.override, {
+require("lsp-servers.clangd")
+require("lsp-servers.tsserver")
+
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, {
 	"clangd",
 	"gopls",
 	"rust_analyzer",
 	"pyright",
-	-- "jedi_language_server",
+	"tsserver",
 })

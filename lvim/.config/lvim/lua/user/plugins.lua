@@ -27,20 +27,19 @@ lvim.plugins = {
 		config = function()
 			require("user.copilot").config()
 		end,
+		disable = true,
+	},
+	{
+		"tzachar/cmp-tabnine",
+		run = "./install.sh",
+		requires = "hrsh7th/nvim-cmp",
+		event = "InsertEnter",
 	},
 	{
 		"karb94/neoscroll.nvim",
 		config = function()
 			require("user.neoscroll").config()
 		end,
-	},
-	{
-		"kevinhwang91/nvim-bqf",
-		ft = "qf",
-		config = function()
-			require("user.bqf").config()
-		end,
-		event = { "BufRead", "BufNew" },
 	},
 	{
 		"norcalli/nvim-colorizer.lua",
@@ -88,11 +87,9 @@ lvim.plugins = {
 		config = function()
 			require("user.autotag").config()
 		end,
-		-- event = "InsertEnter",
 	},
 	{
 		"simrat39/symbols-outline.nvim",
-		-- cmd = "SymbolsOutline",
 		config = function()
 			require("user.outline").config()
 		end,
@@ -108,7 +105,7 @@ lvim.plugins = {
 	{
 		"simrat39/rust-tools.nvim",
 		config = function()
-			require("lsp-servers.rust-tools").config()
+			require("user.rust-tools").config()
 		end,
 		ft = { "rust", "rs" },
 	},
@@ -213,6 +210,14 @@ lvim.plugins = {
 				show_numbers = true, -- Enable 'number' for the window while peeking
 				show_cursorline = true, -- Enable 'cursorline' for the window while peeking
 			})
+		end,
+	},
+	{ "mfussenegger/nvim-dap-python" },
+	{
+		"rcarriga/nvim-dap-ui",
+		requires = { "mfussenegger/nvim-dap" },
+		config = function()
+			require("user.dapui").config()
 		end,
 	},
 }

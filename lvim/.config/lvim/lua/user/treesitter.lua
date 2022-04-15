@@ -28,7 +28,7 @@ lvim.builtin.treesitter.textobjects = {
 		},
 	},
 }
-lvim.builtin.treesitter.ensure_installed = "maintained"
+
 lvim.builtin.treesitter.autotag = {
 	enable = true,
 	disable = { "xml" },

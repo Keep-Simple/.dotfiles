@@ -1,3 +1,7 @@
+local dap_python = require("dap-python")
+dap_python.setup("~/.local/share/nvim/dapinstall/python/bin/python")
+dap_python.test_runner = "pytest"
+
 local util = require("lspconfig/util")
 local path = util.path
 
@@ -42,6 +46,18 @@ local opts = {
 	single_file_support = true,
 	before_init = function(_, config)
 		config.settings.python.pythonPath = get_python_path(config.root_dir)
+
+		require("dap").configurations.python = {
+			{
+				type = "python",
+				request = "launch",
+				name = "Launch file with PYTHONPATH and venv",
+				program = "${file}",
+				python = { config.settings.python.pythonPath },
+				cwd = config.root_dir,
+				env = { ["PYTHONPATH"] = config.root_dir },
+			},
+		}
 	end,
 }
 

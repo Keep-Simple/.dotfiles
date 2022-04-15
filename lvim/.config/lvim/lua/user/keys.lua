@@ -14,12 +14,15 @@ lvim.builtin.telescope.defaults.mappings = {
 	},
 }
 
+lvim.lsp.buffer_mappings.normal_mode["gr"] = {}
+
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
 	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
-	["gq"] = "<cmd>lua require('user.keys').ToggleQuickFix()<cr>",
+	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
+	["gq"] = "<cmd>TroubleToggle quickfix<cr>",
 	-- wtf...
 	["yy"] = "yy",
 }
@@ -87,14 +90,7 @@ lvim.builtin.which_key.mappings["r"] = {
 lvim.builtin.which_key.mappings["y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 lvim.builtin.which_key.mappings["e"] = { "<cmd>Lf<cr>", "Explorer" }
 
-local M = {}
-
-function M.ToggleQuickFix()
-	if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
-		vim.cmd([[copen]])
-	else
-		vim.cmd([[cclose]])
-	end
-end
-
-return M
+lvim.builtin.which_key.mappings["dv"] = {
+	"<cmd>lua require('dapui').toggle()<cr>",
+	"Toggle UI",
+}
