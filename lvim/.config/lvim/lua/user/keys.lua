@@ -14,14 +14,19 @@ lvim.builtin.telescope.defaults.mappings = {
 	},
 }
 
+lvim.lsp.buffer_mappings.normal_mode["gr"] = {}
+
 lvim.keys.normal_mode = {
-	["<C-s>"] = ":w<cr>",
+	["<C-s>"] = "<cmd>w<cr>",
 	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
+	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
+	["gq"] = "<cmd>TroubleToggle quickfix<cr>",
+	-- wtf...
+	["yy"] = "yy",
 }
 
-lvim.builtin.cmp.mapping["<A-Space>"] = lvim.builtin.cmp.mapping["<C-Space>"]
 lvim.builtin.which_key.mappings["LC"] = { "<cmd>LvimCacheReset<cr>", "Cache Reset" }
 lvim.builtin.which_key.mappings["W"] = {
 	"<cmd>SudaWrite<cr>",
@@ -31,8 +36,8 @@ lvim.builtin.which_key.mappings["W"] = {
 lvim.builtin.which_key.mappings["z"] = { "<cmd>ZenMode<cr>", "Zen" }
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<cr>", "Projects" }
 
-lvim.builtin.which_key.mappings["t"] = {
-	name = "+Trouble",
+lvim.builtin.which_key.mappings["T"] = {
+	name = "Trouble",
 	r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
 	f = { "<cmd>TroubleToggle lsp_definitions<cr>", "Definitions" },
 	d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
@@ -42,7 +47,7 @@ lvim.builtin.which_key.mappings["t"] = {
 }
 
 lvim.builtin.which_key.mappings["gv"] = {
-	name = "+Diffview",
+	name = "Diffview",
 	o = { "<cmd>DiffviewOpen<cr>", "Open" },
 	c = { "<cmd>DiffviewClose<cr>", "Close" },
 	r = { "<cmd>DiffviewRefresh<cr>", "Refresh" },
@@ -60,7 +65,7 @@ lvim.builtin.which_key.mappings["G"] = { "<cmd>Glow<cr>", "Markdown preview" }
 
 lvim.builtin.which_key.mappings["lo"] = { "<cmd>SymbolsOutline<cr>", "Outline" }
 lvim.builtin.which_key.mappings["lt"] = {
-	name = "+Typescript",
+	name = "Typescript",
 	i = { "<cmd>TSLspImportAll<cr>", "Import All" },
 	o = { "<cmd>TSLspOrganize<cr>", "Organize Imports" },
 	r = { "<cmd>TSLspRenameFile<cr>", "Rename File" },
@@ -84,3 +89,22 @@ lvim.builtin.which_key.mappings["r"] = {
 
 lvim.builtin.which_key.mappings["y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 lvim.builtin.which_key.mappings["e"] = { "<cmd>Lf<cr>", "Explorer" }
+
+lvim.builtin.which_key.mappings["db"] = {
+	name = "Breakpoints",
+	c = { "<cmd>lua require('dap').clear_breakpoints()<cr>", "Clear all breakpoints" },
+	l = { "<cmd>lua require('dap').list_breakpoints()<cr>", "List breakpoints" },
+}
+
+lvim.builtin.which_key.mappings["t"] = {
+	name = "Test Runner",
+	f = { "<cmd>Ultest<cr>", "Current file" },
+	n = { "<cmd>UltestNearest<cr>", "Nearest" },
+	s = { "<cmd>UltestSummary<cr>", "Toogle Summary" },
+	q = { "<cmd>UltestStop<cr>", "Stop" },
+	d = {
+		name = "Debug",
+		f = { "<cmd>UltestDebug<cr>", "Debug current file" },
+		n = { "<cmd>UltestDebugNearest<cr>", "Debug nearest" },
+	},
+}

@@ -1,2 +1,4 @@
-['html', 'graphql', 'lemminx', 'rome', 'sqls', 'stylelint_lsp', 'terraformls', 'vuels', 'bashls', 'cssls', 'rust_analyzer', 'pyright', 'prismals', 'clangd', '
-sumneko_lua', 'solc', 'cmake', 'jsonls', 'vimls', 'tflint', 'texlab', 'gopls', 'solang', 'taplo', 'dotls', 'dockerls', 'tsserver', 'yamlls', 'ltex']
+['ltex', 'bashls', 'cssls', 'rome', 'solang', 'pyright', 'vuels', 'prismals', 'eslint', 'sumneko_lua', 'j
+sonls', 'tflint', 'lemminx', 'gopls', 'clangd', 'sqls', 'html', 'dotls', 'dockerls', 'rust_analyzer', 'cm
+ake', 'solc', 'yamlls', 'graphql', 'stylelint_lsp', 'vimls', 'tsserver', 'taplo', 'texlab', 'terraformls'
+]

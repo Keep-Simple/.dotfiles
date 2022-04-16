@@ -1,3 +1,8 @@
 {
-  "python.analysis.typeCheckingMode": "off"
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.useLibraryCodeForTypes": false,
+  "pyright.disableLanguageServices": false,
+  "pyright.disableOrganizeImports": false
 }

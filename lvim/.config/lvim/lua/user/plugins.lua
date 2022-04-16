@@ -1,4 +1,3 @@
--- Additional Plugins
 lvim.plugins = {
 	{
 		"tpope/vim-surround",
@@ -15,13 +14,6 @@ lvim.plugins = {
 		"folke/trouble.nvim",
 		cmd = "TroubleToggle",
 	},
-	-- for renaming --
-	{
-		"kevinhwang91/rnvimr",
-		config = function()
-			require("user.rnvimr")
-		end,
-	},
 	{
 		"windwp/nvim-spectre",
 		event = "BufRead",
@@ -29,16 +21,25 @@ lvim.plugins = {
 			require("user.spectre").config()
 		end,
 	},
-	-- end --
+	{
+		"gelfand/copilot.vim",
+		requires = "hrsh7th/cmp-copilot",
+		config = function()
+			require("user.copilot").config()
+		end,
+		disable = true,
+	},
+	{
+		"tzachar/cmp-tabnine",
+		run = "./install.sh",
+		requires = "hrsh7th/nvim-cmp",
+		event = "InsertEnter",
+	},
 	{
 		"karb94/neoscroll.nvim",
 		config = function()
 			require("user.neoscroll").config()
 		end,
-	},
-	{
-		"kevinhwang91/nvim-bqf",
-		event = "BufRead",
 	},
 	{
 		"norcalli/nvim-colorizer.lua",
@@ -86,11 +87,9 @@ lvim.plugins = {
 		config = function()
 			require("user.autotag").config()
 		end,
-		-- event = "InsertEnter",
 	},
 	{
 		"simrat39/symbols-outline.nvim",
-		-- cmd = "SymbolsOutline",
 		config = function()
 			require("user.outline").config()
 		end,
@@ -106,20 +105,7 @@ lvim.plugins = {
 	{
 		"simrat39/rust-tools.nvim",
 		config = function()
-			require("rust-tools").setup({
-				tools = {
-					autoSetHints = true,
-					hover_with_actions = true,
-					runnables = {
-						use_telescope = true,
-					},
-				},
-				server = {
-					cmd = { vim.fn.stdpath("data") .. "/lsp_servers/rust/rust-analyzer" },
-					on_attach = require("lvim.lsp").common_on_attach,
-					on_init = require("lvim.lsp").common_on_init,
-				},
-			})
+			require("user.rust-tools").config()
 		end,
 		ft = { "rust", "rs" },
 	},
@@ -163,22 +149,88 @@ lvim.plugins = {
 		"rmagatti/goto-preview",
 		config = function()
 			require("goto-preview").setup({
-				width = 120, -- Width of the floating window
-				height = 25, -- Height of the floating window
-				default_mappings = true, -- Bind default mappings
-				debug = false, -- Print debug information
-				opacity = nil, -- 0-100 opacity level of the floating window where 100 is fully transparent.
-				post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
-				-- You can use "default_mappings = true" setup option
-				-- Or explicitly set keybindings
-				-- vim.cmd("nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<CR>")
-				-- vim.cmd("nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<CR>")
-				-- vim.cmd("nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>")
+				width = 120,
+				height = 25,
+				default_mappings = true,
+				debug = false,
+				opacity = nil,
+				post_open_hook = nil,
 			})
 		end,
 	},
 	{
 		"ptzz/lf.vim",
-		requires = "voldikss/vim-floaterm",
+		config = function()
+			require("user.lf").config()
+		end,
+	},
+	{
+		"voldikss/vim-floaterm",
+		config = function()
+			require("user.floaterm").config()
+		end,
+	},
+	{ "gurpreetatwal/vim-avro" },
+	{
+		"p00f/nvim-ts-rainbow",
+	},
+	{
+		"jbyuki/instant.nvim",
+		config = function()
+			require("user.instant").config()
+		end,
+	},
+	{
+		"nathom/filetype.nvim",
+		config = function()
+			require("user.filetype").config()
+		end,
+	},
+	{
+		"ethanholz/nvim-lastplace",
+		event = "BufRead",
+		config = function()
+			require("nvim-lastplace").setup({
+				lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
+				lastplace_ignore_filetype = {
+					"gitcommit",
+					"gitrebase",
+					"svn",
+					"hgcommit",
+				},
+				lastplace_open_folds = true,
+			})
+		end,
+	},
+	{
+		"nacro90/numb.nvim",
+		event = "BufRead",
+		config = function()
+			require("numb").setup({
+				show_numbers = true,
+				show_cursorline = true,
+			})
+		end,
+	},
+	{
+		"rcarriga/nvim-dap-ui",
+		requires = { "mfussenegger/nvim-dap" },
+		config = function()
+			require("user.dapui").config()
+		end,
+	},
+	{
+		"rcarriga/vim-ultest",
+		requires = { "vim-test/vim-test" },
+		run = ":UpdateRemotePlugins",
+		config = function()
+			require("user.ultest").config()
+		end,
+	},
+	{
+		"theHamsta/nvim-dap-virtual-text",
+		config = function()
+			require("user.dap-virtual-text").config()
+		end,
 	},
 }
