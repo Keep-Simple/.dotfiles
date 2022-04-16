@@ -19,18 +19,18 @@ M.config = function()
 				-- Provide as ID strings or tables with "id" and "size" keys
 				{
 					id = "scopes",
-					size = 0.55, -- Can be float or integer > 1
+					size = 1, -- Can be float or integer > 1
 				},
 				{ id = "breakpoints", size = 0.20 },
 				{ id = "stacks", size = 0.15 },
-				{ id = "watches", size = 00.10 },
+				{ id = "watches", size = 0.10 },
 			},
 			size = 40,
 			position = "left", -- Can be "left", "right", "top", "bottom"
 		},
 		tray = {
 			elements = { "repl" },
-			size = 12,
+			size = 15,
 			position = "bottom", -- Can be "left", "right", "top", "bottom"
 		},
 		floating = {
@@ -50,9 +50,11 @@ M.config = function()
 	end
 	dap.listeners.before.event_terminated["dapui_config"] = function()
 		dapui.close()
+		dap.repl.close()
 	end
 	dap.listeners.before.event_exited["dapui_config"] = function()
 		dapui.close()
+		dap.repl.close()
 	end
 end
 

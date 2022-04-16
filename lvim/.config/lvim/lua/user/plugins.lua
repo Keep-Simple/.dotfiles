@@ -207,8 +207,8 @@ lvim.plugins = {
 		event = "BufRead",
 		config = function()
 			require("numb").setup({
-				show_numbers = true, -- Enable 'number' for the window while peeking
-				show_cursorline = true, -- Enable 'cursorline' for the window while peeking
+				show_numbers = true,
+				show_cursorline = true,
 			})
 		end,
 	},
@@ -218,6 +218,20 @@ lvim.plugins = {
 		requires = { "mfussenegger/nvim-dap" },
 		config = function()
 			require("user.dapui").config()
+		end,
+	},
+	{
+		"rcarriga/vim-ultest",
+		requires = { "vim-test/vim-test" },
+		run = ":UpdateRemotePlugins",
+		config = function()
+			require("user.ultest").config()
+		end,
+	},
+	{
+		"theHamsta/nvim-dap-virtual-text",
+		config = function()
+			require("user.dap-virtual-text").config()
 		end,
 	},
 }
