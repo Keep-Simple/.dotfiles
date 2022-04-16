@@ -5,8 +5,7 @@ M.config = function()
 	dapui.setup({
 		icons = { expanded = "▾", collapsed = "▸" },
 		mappings = {
-			-- Use a table to apply multiple mappings
-			expand = { "<CR>", "<2-LeftMouse>" },
+			expand = { "<CR>", "l" },
 			open = "o",
 			remove = "d",
 			edit = "e",
@@ -14,19 +13,17 @@ M.config = function()
 			toggle = "t",
 		},
 		sidebar = {
-			-- You can change the order of elements in the sidebar
 			elements = {
-				-- Provide as ID strings or tables with "id" and "size" keys
 				{
 					id = "scopes",
-					size = 1, -- Can be float or integer > 1
+					size = 1.5, -- Can be float or integer > 1
 				},
 				{ id = "breakpoints", size = 0.20 },
-				{ id = "stacks", size = 0.15 },
-				{ id = "watches", size = 0.10 },
+				-- { id = "stacks", size = 0.15 },
+				-- { id = "watches", size = 0.10 },
 			},
-			size = 40,
-			position = "left", -- Can be "left", "right", "top", "bottom"
+			size = 50,
+			position = "left",
 		},
 		tray = {
 			elements = { "repl" },
@@ -46,6 +43,10 @@ M.config = function()
 
 	local dap = require("dap")
 	dap.listeners.after.event_initialized["dapui_config"] = function()
+		vim.cmd([[
+      vnoremap <c-k> <Cmd>lua require("dapui").eval()<CR>
+      map <c-k> <Cmd>lua require("dapui").eval()<CR>
+    ]])
 		dapui.open()
 	end
 	dap.listeners.before.event_terminated["dapui_config"] = function()

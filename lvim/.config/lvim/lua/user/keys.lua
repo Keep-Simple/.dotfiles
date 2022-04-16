@@ -102,9 +102,9 @@ lvim.builtin.which_key.mappings["t"] = {
 	n = { "<cmd>UltestNearest<cr>", "Nearest" },
 	s = { "<cmd>UltestSummary<cr>", "Toogle Summary" },
 	q = { "<cmd>UltestStop<cr>", "Stop" },
-	-- d = {
-	-- 	name = "Debug",
-	-- 	f = { "<cmd>UltestDebug<cr>", "Debug current file" },
-	-- 	n = { "<cmd>UltestDebugNearest<cr>", "Debug nearest" },
-	-- },
+	d = {
+		name = "Debug",
+		f = { "<cmd>UltestDebug<cr>", "Debug current file" },
+		n = { "<cmd>UltestDebugNearest<cr>", "Debug nearest" },
+	},
 }

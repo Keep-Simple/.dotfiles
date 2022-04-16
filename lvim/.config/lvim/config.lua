@@ -7,6 +7,7 @@ require("user.bufferline")
 require("user.plugins")
 require("user.treesitter")
 require("user.settings")
+require("user.dap")
 require("user.builtins")
 require("user.null-ls")
 

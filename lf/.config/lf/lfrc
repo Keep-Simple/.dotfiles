@@ -158,12 +158,12 @@ map X !$f
 map gg top
 map gd :delete
 map ,st :fzf_search
-map ,S :share
+map ,sh :share
 map ,ch :chmod
 map ,f :fzf_jump
 map ,t push :tar<space>
 map ,e :extract
-map ,ll $lvim +"lua require('persistence').load({ last = true })"
+map ,Sl $lvim +"lua require('persistence').load({ last = true })"
 map gc $code $fx
 map gl $lvim $f
 map D :trash
