@@ -44,8 +44,8 @@ M.config = function()
 	local dap = require("dap")
 	dap.listeners.after.event_initialized["dapui_config"] = function()
 		vim.cmd([[
-      vnoremap <c-k> <Cmd>lua require("dapui").eval()<CR>
-      map <c-k> <Cmd>lua require("dapui").eval()<CR>
+      vnoremap ge <Cmd>lua require("dapui").eval()<CR>
+      map ge <Cmd>lua require("dapui").eval()<CR>
     ]])
 		dapui.open()
 	end

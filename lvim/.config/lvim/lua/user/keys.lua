@@ -15,6 +15,7 @@ lvim.builtin.telescope.defaults.mappings = {
 }
 
 lvim.lsp.buffer_mappings.normal_mode["gr"] = {}
+lvim.lsp.buffer_mappings.normal_mode["gd"] = {}
 
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
@@ -23,6 +24,7 @@ lvim.keys.normal_mode = {
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
 	["gq"] = "<cmd>TroubleToggle quickfix<cr>",
+	["gd"] = "<cmd>TroubleToggle lsp_definitions<cr>",
 	-- wtf...
 	["yy"] = "yy",
 }
@@ -90,7 +92,7 @@ lvim.builtin.which_key.mappings["r"] = {
 lvim.builtin.which_key.mappings["y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 lvim.builtin.which_key.mappings["e"] = { "<cmd>Lf<cr>", "Explorer" }
 
-lvim.builtin.which_key.mappings["db"] = {
+lvim.builtin.which_key.mappings["dB"] = {
 	name = "Breakpoints",
 	c = { "<cmd>lua require('dap').clear_breakpoints()<cr>", "Clear all breakpoints" },
 	l = { "<cmd>lua require('dap').list_breakpoints()<cr>", "List breakpoints" },

@@ -120,7 +120,7 @@ cmd fzf_search ${{
 }}
 
 cmd fzf_jump ${{
-    res="$(fd . | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    res="$(fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
     if [ -d "$res" ]; then
         cmd="cd"
     else 

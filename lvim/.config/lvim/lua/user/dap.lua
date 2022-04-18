@@ -1,4 +1,20 @@
-local dap_install = require("dap-install")
+local status_ok, dap = pcall(require, "dap")
+if not status_ok then
+	return
+end
+
+local _status_ok, dap_install = pcall(require, "dap-install")
+if not _status_ok then
+	return
+end
+
+-- default adapter and configuration config from DAPInstall
+for _, debugger in ipairs(require("dap-install.api.debuggers").get_installed_debuggers()) do
+	dap_install.config(debugger)
+end
+
+-- DAPInstall path
+local dbg_path = require("dap-install.config.settings").options["installation_path"]
 
 local function sep_os_replacer(str)
 	local result = str
@@ -6,12 +22,8 @@ local function sep_os_replacer(str)
 	result = result:gsub("/", path_sep)
 	return result
 end
-local join_path = require("lvim.utils").join_paths
 
-local status_ok, dap = pcall(require, "dap")
-if not status_ok then
-	return
-end
+local join_path = require("lvim.utils").join_paths
 
 dap.configurations.lua = {
 	{
@@ -101,112 +113,35 @@ dap.configurations.dart = {
 	},
 }
 
-dap.adapters.firefox = {
+dap.adapters.node2 = {
 	type = "executable",
 	command = "node",
-	args = {
-		join_path(
-			vim.fn.expand("~/"),
-			"/.vscode/extensions/firefox-devtools.vscode-firefox-debug-2.9.6/dist/adapter.bundle.js"
-		),
-	},
+	args = { dbg_path .. "/vscode-node-debug2/out/src/nodeDebug.js" },
 }
 
-local firefoxExecutable = "/usr/bin/firefox"
-if vim.fn.has("mac") == 1 then
-	firefoxExecutable = "/Applications/Firefox.app/Contents/MacOS/firefox"
-end
-
-dap.configurations.typescript = {
+dap.configurations.javascript = {
 	{
+		name = "Launch",
 		type = "node2",
-		name = "node attach",
-		request = "attach",
+		request = "launch",
 		program = "${file}",
 		cwd = vim.fn.getcwd(),
 		sourceMaps = true,
 		protocol = "inspector",
+		console = "integratedTerminal",
 	},
 	{
-		type = "chrome",
-		name = "chrome",
+		-- For this to work you need to make sure the node process is started with the `--inspect` flag.
+		name = "Attach to process",
+		type = "node2",
 		request = "attach",
-		program = "${file}",
-		-- cwd = "${workspaceFolder}",
-		-- protocol = "inspector",
-		port = 9222,
-		webRoot = "${workspaceFolder}",
-		-- sourceMaps = true,
-		sourceMapPathOverrides = {
-			-- Sourcemap override for nextjs
-			["webpack://_N_E/./*"] = "${webRoot}/*",
-			["webpack:///./*"] = "${webRoot}/*",
-		},
-	},
-	{
-		name = "Debug with Firefox",
-		type = "firefox",
-		request = "launch",
-		reAttach = true,
-		sourceMaps = true,
-		url = "http://localhost:6969",
-		webRoot = "${workspaceFolder}",
-		firefoxExecutable = firefoxExecutable,
+		processId = require("dap.utils").pick_process,
 	},
 }
 
+dap.configurations.typescript = dap.configurations.javascript
 dap.configurations.typescriptreact = dap.configurations.typescript
-dap.configurations.javascript = dap.configurations.typescript
 dap.configurations.javascriptreact = dap.configurations.typescript
-
-dap.adapters.codelldb = function(on_adapter)
-	local stdout = vim.loop.new_pipe(false)
-	local stderr = vim.loop.new_pipe(false)
-
-	local cmd = vim.fn.expand("~/") .. ".vscode/extensions/vadimcn.vscode-lldb-1.6.10/adapter/codelldb"
-
-	local handle, pid_or_err
-	local opts = {
-		stdio = { nil, stdout, stderr },
-		detached = true,
-	}
-	handle, pid_or_err = vim.loop.spawn(cmd, opts, function(code)
-		stdout:close()
-		stderr:close()
-		handle:close()
-		if code ~= 0 then
-			print("codelldb exited with code", code)
-		end
-	end)
-	assert(handle, "Error running codelldb: " .. tostring(pid_or_err))
-	stdout:read_start(function(err, chunk)
-		assert(not err, err)
-		if chunk then
-			local port = chunk:match("Listening on port (%d+)")
-			if port then
-				vim.schedule(function()
-					on_adapter({
-						type = "server",
-						host = "127.0.0.1",
-						port = port,
-					})
-				end)
-			else
-				vim.schedule(function()
-					require("dap.repl").append(chunk)
-				end)
-			end
-		end
-	end)
-	stderr:read_start(function(err, chunk)
-		assert(not err, err)
-		if chunk then
-			vim.schedule(function()
-				require("dap.repl").append(chunk)
-			end)
-		end
-	end)
-end
 
 dap.configurations.cpp = {
 	{
@@ -242,41 +177,40 @@ dap.configurations.scala = {
 	},
 }
 
-dap_install.config("python", {
-	configurations = {
-		{
-			type = "python",
-			request = "launch",
-			name = "Launch file",
-			program = "${file}",
-			pythonPath = function()
-				local path
-				for _, server in pairs(vim.lsp.buf_get_clients()) do
-					if server.name == "pyright" or server.name == "pylance" then
-						path = vim.tbl_get(server, "config", "settings", "python", "pythonPath")
-						break
-					end
+dap.configurations.python = {
+
+	{
+		type = "python",
+		request = "launch",
+		name = "Launch file",
+		program = "${file}",
+		pythonPath = function()
+			local path
+			for _, server in pairs(vim.lsp.buf_get_clients()) do
+				if server.name == "pyright" or server.name == "pylance" then
+					path = vim.tbl_get(server, "config", "settings", "python", "pythonPath")
+					break
 				end
-				-- path = vim.fn.input("Python path: ", path or "", "file")
-				path = path ~= "" and vim.fn.expand(path) or nil
-				return path
-			end,
-			-- args = function()
-			--   local args = {}
-			--   local i = 1
-			--   while true do
-			--     local arg = vim.fn.input("Argument [" .. i .. "]: ")
-			--     if arg == "" then
-			--       break
-			--     end
-			--     args[i] = arg
-			--     i = i + 1
-			--   end
-			--   return args
-			-- end,
-			env = function()
-				return { ["PYTHONPATH"] = vim.fn.getcwd() }
-			end,
-		},
+			end
+			-- path = vim.fn.input("Python path: ", path or "", "file")
+			path = path ~= "" and vim.fn.expand(path) or nil
+			return path
+		end,
+		-- args = function()
+		--   local args = {}
+		--   local i = 1
+		--   while true do
+		--     local arg = vim.fn.input("Argument [" .. i .. "]: ")
+		--     if arg == "" then
+		--       break
+		--     end
+		--     args[i] = arg
+		--     i = i + 1
+		--   end
+		--   return args
+		-- end,
+		env = function()
+			return { ["PYTHONPATH"] = vim.fn.getcwd() }
+		end,
 	},
-})
+}
