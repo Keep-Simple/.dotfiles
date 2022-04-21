@@ -3,27 +3,7 @@ if not status_ok then
 	return
 end
 
-local _status_ok, dap_install = pcall(require, "dap-install")
-if not _status_ok then
-	return
-end
-
--- default adapter and configuration config from DAPInstall
-for _, debugger in ipairs(require("dap-install.api.debuggers").get_installed_debuggers()) do
-	dap_install.config(debugger)
-end
-
--- DAPInstall path
-local dbg_path = require("dap-install.config.settings").options["installation_path"]
-
-local function sep_os_replacer(str)
-	local result = str
-	local path_sep = package.config:sub(1, 1)
-	result = result:gsub("/", path_sep)
-	return result
-end
-
-local join_path = require("lvim.utils").join_paths
+local dbg_path = vim.fn.expand("$LVIM_DEBUGGERS")
 
 dap.configurations.lua = {
 	{
@@ -101,22 +81,10 @@ dap.configurations.go = {
 	},
 }
 
-dap.configurations.dart = {
-	{
-		type = "dart",
-		request = "launch",
-		name = "Launch flutter",
-		dartSdkPath = sep_os_replacer(join_path(vim.fn.expand("~/"), "/flutter/bin/cache/dart-sdk/")),
-		flutterSdkPath = sep_os_replacer(join_path(vim.fn.expand("~/"), "/flutter")),
-		program = sep_os_replacer("${workspaceFolder}/lib/main.dart"),
-		cwd = "${workspaceFolder}",
-	},
-}
-
 dap.adapters.node2 = {
 	type = "executable",
 	command = "node",
-	args = { dbg_path .. "/vscode-node-debug2/out/src/nodeDebug.js" },
+	args = { dbg_path .. "/node2/out/src/nodeDebug.js" },
 }
 
 dap.configurations.javascript = {
@@ -143,6 +111,53 @@ dap.configurations.typescript = dap.configurations.javascript
 dap.configurations.typescriptreact = dap.configurations.typescript
 dap.configurations.javascriptreact = dap.configurations.typescript
 
+dap.adapters.codelldb = function(on_adapter)
+	local tcp = vim.loop.new_tcp()
+	tcp:bind("127.0.0.1", 0)
+	local port = tcp:getsockname().port
+	tcp:shutdown()
+	tcp:close()
+	local stdout = vim.loop.new_pipe(false)
+	local stderr = vim.loop.new_pipe(false)
+	local opts = {
+		stdio = { nil, stdout, stderr },
+		args = { "--port", tostring(port) },
+	}
+	local handle
+	local pid_or_err
+	handle, pid_or_err = vim.loop.spawn(dbg_path .. "/codelldb/extension/adapter/codelldb", opts, function(code)
+		stdout:close()
+		stderr:close()
+		handle:close()
+		if code ~= 0 then
+			print("codelldb exited with code", code)
+		end
+	end)
+	if not handle then
+		vim.notify("Error running codelldb: " .. tostring(pid_or_err), vim.log.levels.ERROR)
+		stdout:close()
+		stderr:close()
+		return
+	end
+	vim.notify("codelldb started. pid=" .. pid_or_err)
+	stderr:read_start(function(err, chunk)
+		assert(not err, err)
+		if chunk then
+			vim.schedule(function()
+				require("dap.repl").append(chunk)
+			end)
+		end
+	end)
+	local adapter = {
+		type = "server",
+		host = "127.0.0.1",
+		port = port,
+	}
+	vim.defer_fn(function()
+		on_adapter(adapter)
+	end, 500)
+end
+
 dap.configurations.cpp = {
 	{
 		name = "Launch file",
@@ -158,23 +173,10 @@ dap.configurations.cpp = {
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
 
-dap.configurations.scala = {
-	{
-		type = "scala",
-		request = "launch",
-		name = "Run or Test Target",
-		metals = {
-			runType = "runOrTestFile",
-		},
-	},
-	{
-		type = "scala",
-		request = "launch",
-		name = "Test Target",
-		metals = {
-			runType = "testTarget",
-		},
-	},
+dap.adapters.python = {
+	type = "executable",
+	command = dbg_path .. "/debugpy/bin/python",
+	args = { "-m", "debugpy.adapter" },
 }
 
 dap.configurations.python = {

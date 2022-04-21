@@ -15,7 +15,7 @@ lvim.builtin.telescope.defaults.mappings = {
 }
 
 lvim.lsp.buffer_mappings.normal_mode["gr"] = {}
-lvim.lsp.buffer_mappings.normal_mode["gd"] = {}
+-- lvim.lsp.buffer_mappings.normal_mode["gd"] = {}
 
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
@@ -24,7 +24,7 @@ lvim.keys.normal_mode = {
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
 	["gq"] = "<cmd>TroubleToggle quickfix<cr>",
-	["gd"] = "<cmd>TroubleToggle lsp_definitions<cr>",
+	-- ["gd"] = "<cmd>Trouble lsp_definitions<cr>",
 	-- wtf...
 	["yy"] = "yy",
 }

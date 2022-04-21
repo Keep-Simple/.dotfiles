@@ -1,6 +1,3 @@
-local dap_install = require("dap-install")
-dap_install.config("go_delve", {})
-
 local opts = {
 	settings = {
 		gopls = {
@@ -30,11 +27,5 @@ local opts = {
 		},
 	},
 }
-
-local servers = require("nvim-lsp-installer.servers")
-local server_available, requested_server = servers.get_server("gopls")
-if server_available then
-	opts.cmd_env = requested_server:get_default_options().cmd_env
-end
 
 require("lvim.lsp.manager").setup("gopls", opts)
