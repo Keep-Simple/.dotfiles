@@ -14,6 +14,7 @@ plugins=(
   # git
   zsh-syntax-highlighting
   zsh-autosuggestions
+  ansible
   poetry
   nick-functions
   gh

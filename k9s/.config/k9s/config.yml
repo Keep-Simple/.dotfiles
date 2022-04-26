@@ -1,0 +1,87 @@
+k9s:
+  refreshRate: 2
+  maxConnRetry: 10
+  enableMouse: false
+  headless: false
+  logoless: true
+  crumbsless: false
+  readOnly: true
+  noIcons: false
+  logger:
+    tail: 100
+    buffer: 5000
+    sinceSeconds: 60
+    fullScreenLogs: false
+    textWrap: false
+    showTime: false
+  currentContext: prod-us
+  currentCluster: arn:aws:eks:us-east-1:976280145156:cluster/eks_production
+  clusters:
+    arn:aws:eks:us-east-1:470450033084:cluster/eks_devenv1:
+      namespace:
+        active: all
+        favorites:
+        - all
+        - orcadevyuval
+        - default
+      view:
+        active: namespace
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    arn:aws:eks:us-east-1:669056829813:cluster/eks_devenv5:
+      namespace:
+        active: orcadevnikita
+        favorites:
+        - all
+        - orcadevnikita
+        - default
+      view:
+        active: configmap
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    arn:aws:eks:us-east-1:976280145156:cluster/eks_production:
+      namespace:
+        active: production
+        favorites:
+        - all
+        - production
+        - default
+      view:
+        active: pods
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+  thresholds:
+    cpu:
+      critical: 90
+      warn: 70
+    memory:
+      critical: 90
+      warn: 70
+  screenDumpDir: /var/folders/fy/zczh7q316h50xs4lydvd4n_80000gn/T/k9s-screens-nickyasnogorodskyi
