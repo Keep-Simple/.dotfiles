@@ -13,6 +13,10 @@ lvim.plugins = {
 	{
 		"folke/trouble.nvim",
 		cmd = "TroubleToggle",
+		requires = "kyazdani42/nvim-web-devicons",
+		config = function()
+			require("user.trouble").config()
+		end,
 	},
 	{
 		"windwp/nvim-spectre",

@@ -5,17 +5,17 @@ k9s:
   headless: false
   logoless: true
   crumbsless: false
-  readOnly: true
+  readOnly: false
   noIcons: false
   logger:
-    tail: 100
+    tail: 300
     buffer: 5000
-    sinceSeconds: 60
+    sinceSeconds: -1
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: prod-us
-  currentCluster: arn:aws:eks:us-east-1:976280145156:cluster/eks_production
+  currentContext: devenv5
+  currentCluster: arn:aws:eks:us-east-1:669056829813:cluster/eks_devenv5
   clusters:
     arn:aws:eks:us-east-1:470450033084:cluster/eks_devenv1:
       namespace:
@@ -45,7 +45,7 @@ k9s:
         - orcadevnikita
         - default
       view:
-        active: configmap
+        active: pods
       featureGates:
         nodeShell: false
       shellPod:
@@ -65,7 +65,7 @@ k9s:
         - production
         - default
       view:
-        active: pods
+        active: pod
       featureGates:
         nodeShell: false
       shellPod:
