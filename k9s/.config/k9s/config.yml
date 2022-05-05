@@ -17,15 +17,14 @@ k9s:
   currentContext: devenv5
   currentCluster: arn:aws:eks:us-east-1:669056829813:cluster/eks_devenv5
   clusters:
-    arn:aws:eks:us-east-1:470450033084:cluster/eks_devenv1:
+    arn:aws:eks:ap-southeast-2:976280145156:cluster/eks_production:
       namespace:
-        active: all
+        active: production
         favorites:
-        - all
-        - orcadevyuval
+        - production
         - default
       view:
-        active: namespace
+        active: ctx
       featureGates:
         nodeShell: false
       shellPod:
@@ -41,11 +40,10 @@ k9s:
       namespace:
         active: orcadevnikita
         favorites:
-        - all
         - orcadevnikita
         - default
       view:
-        active: pods
+        active: pod
       featureGates:
         nodeShell: false
       shellPod:
