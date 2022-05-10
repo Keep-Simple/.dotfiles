@@ -11,9 +11,9 @@ non_floated_count=$(echo $windows | jq 'map(select(."is-floating" == false)) | l
 
 if [[ $non_floated_count -le 1 ]]; then
 	p=0
+	yabai -m space --padding abs:$p:$p:$p:$p
 	echo $windows_ids | xargs -n1 $YABAI/border_off.sh
 else
+	yabai -m space --padding abs:$p:$p:$p:$p
 	echo $windows_ids | xargs -n1 $YABAI/border_on.sh
 fi
-
-yabai -m space --padding abs:$p:$p:$p:$p

@@ -1,6 +1,6 @@
-# Keep-Simple dotfiles for Macos 
+# Keep-Simple dotfiles for Macos
 
-![desktop pic](https://i.imgur.com/xypdgfq.png)
+![desktop pic](https://i.imgur.com/vFMUK7b.jpg)
 
 ## Requirements
 
@@ -21,4 +21,3 @@ cd ~/.dotfiles
 ```
 
 [Funny tutorial about stow](https://www.youtube.com/watch?v=tkUllCAGs3c)
-

@@ -45,7 +45,7 @@ ctrl + alt + cmd - o : yabai -m window --toggle topmost
 ## Close active application
 ctrl + alt + cmd - q : yabai -m window --close
 # toggle window zoom
-ctrl + alt + cmd - f : yabai -m window --toggle zoom-fullscreen; ~/.config/yabai/scripts/smart_gaps.sh
+ctrl + alt + cmd - f : yabai -m window --toggle zoom-fullscreen; 
 # toggle window native fullscreen
 ctrl + alt + cmd + shift - f : yabai -m window --toggle native-fullscreen
 # float / unfloat window 
