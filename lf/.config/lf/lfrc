@@ -75,6 +75,14 @@ cmd tar &{{
     rm -rf $1
 }}
 
+cmd zip &{{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    zip -r $1 $fx
+    rm -rf $1
+}}
+
 cmd delete ${{
   set -f
   printf "\n$fx\n"
@@ -85,7 +93,7 @@ cmd delete ${{
   fi
 }}
 
-cmd chmod ${{
+cmd chmod %{{
   printf "\nMode Bits: "
   read ans
   for file in "$fx"
@@ -162,6 +170,7 @@ map ,sh :share
 map ,ch :chmod
 map ,f :fzf_jump
 map ,t push :tar<space>
+map ,z push :zip<space>
 map ,e :extract
 map ,Sl $lvim +"lua require('persistence').load({ last = true })"
 map gc $code $fx

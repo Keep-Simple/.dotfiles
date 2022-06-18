@@ -23,7 +23,7 @@ lvim.lsp.buffer_mappings.normal_mode["gr"] = {}
 
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
-	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
+	-- ["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
@@ -95,6 +95,7 @@ lvim.builtin.which_key.mappings["r"] = {
 
 lvim.builtin.which_key.mappings["y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 lvim.builtin.which_key.mappings["e"] = { "<cmd>Lf<cr>", "Explorer" }
+lvim.builtin.which_key.mappings["sr"] = { "<cmd>Telescope resume<cr>", "Resume search" }
 
 lvim.builtin.which_key.mappings["dB"] = {
 	name = "Breakpoints",
