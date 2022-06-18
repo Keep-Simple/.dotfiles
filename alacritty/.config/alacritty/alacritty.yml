@@ -38,7 +38,7 @@ window:
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
   padding:
-    x: 2
+    x: 4
     y: 2
 
   # Spread additional padding evenly around the terminal content.
@@ -83,17 +83,17 @@ scrolling:
 font:
   # Normal (roman) font face
   normal:
-    family: Hack Nerd Font
+    family: JetBrainsMono Nerd Font Mono
     style: Regular
 
   # Bold font face
   bold:
-    family: Hack Nerd Font
+    family: JetBrainsMono Nerd Font Mono
     style: Bold
 
   # Italic font face
   italic:
-    family: Hack Nerd Font
+    family: JetBrainsMono Nerd Font Mono
     style: Italic
 
   # Point size

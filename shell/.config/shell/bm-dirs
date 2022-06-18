@@ -1,9 +1,10 @@
 cf  ${XDG_CONFIG_HOME:-$HOME/.config}
 D   ${XDG_DOWNLOAD_DIR:-$HOME/Downloads}
 d   ${XDG_DOCUMENTS_DIR:-$HOME/Documents}
-cdf  $HOME/.dotfiles
-o  ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca}
-P  ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal}
-lo  ${XDG_DATA_HOME:-$HOME/.local}
+cdf $HOME/.dotfiles
+o   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca}
+P   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal}
+u   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/university/labs}
+lo  $HOME/.local
 h   $HOME
 m   ${XDG_MUSIC_DIR:-$HOME/Music}

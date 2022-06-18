@@ -1,17 +1,25 @@
-# set ratios 1:2:3
+#!/bin/sh
 
 # Basic vars
 set shell zsh
-set shellopts '-euy'
+set shellopts '-ey'
 set ifs "\n"
 set scrolloff 10
 set icons
 set hidden true
 set period 1
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
-set preview
 set previewer ~/.config/lf/preview
 set cleaner ~/.config/lf/cleaner
+
+${{
+    w=$(tput cols)
+    if [ $w -le 100 ]; then
+        lf -remote "send $id set ratios 2:2:3"
+    elif [ $w -le 160 ]; then
+        lf -remote "send $id set ratios 1:2:3"
+    fi
+}}
 
 cmd open ${{
     case $(file --mime-type $f -b) in
@@ -27,7 +35,26 @@ cmd open ${{
     esac
 }}
 
-cmd mkdir %mkdir -p "$@"
+cmd fzf-restore ${{
+    ids="$(echo -ne '\n'              | \
+      trash-restore                   | \
+      awk '$1 ~ /^[0-9]+/ {print $0}' | \
+      fzf --multi                     | \
+      awk '{print $1}'                | \
+      sed -z 's/\n/,/g;s/,$/\n/')"
+    echo $ids | trash-restore 
+    clear
+}}
+
+cmd touch %{{
+    mkdir -p "$(dirname "$*")" && touch -- "$*"
+    lf -remote "send $id select \"$*\""
+}}
+
+cmd mkdir %{{
+    mkdir -p "$@"
+    lf -remote "send $id select \"$@\""
+}}
 
 cmd extract ${{
   set -f
@@ -79,14 +106,14 @@ cmd select-files ${{
         else
           cat
         fi |
-        sed '/^$/d' | sort | uniq -u |
-        xargs -d '\n' -r -I{} lf -remote "send $id toggle {}"
+        sed '/^$/d' | sort | uniq -u | tr "\n" "\0" |
+        xargs -0 -r -I{} lf -remote "send $id toggle '{}'"
 }}
 
 cmd fzf_search ${{
     res="$( \
         RG_PREFIX="rg --column --line-number --no-heading --color=always \
-            --smart-case "
+            --smart-case --hidden --glob '!.git'"
         FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
             fzf --bind "change:reload:$RG_PREFIX {q} || true" \
             --ansi --layout=reverse --header 'Search in files' \
@@ -96,7 +123,7 @@ cmd fzf_search ${{
 }}
 
 cmd fzf_jump ${{
-    res="$(find . | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    res="$(fd . | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
     if [ -d "$res" ]; then
         cmd="cd"
     else 
@@ -116,13 +143,6 @@ cmd copy-absolute-path ${{
   echo $fx | tr ' ' '\n' | pbcopy
 }}
 
-cmd poetry_lvim ${{
-  cd $fx
-  poetry run lvim .
-}}
-
-
-
 map gh
 map d
 map y
@@ -136,52 +156,37 @@ cmd trash %trash-put $fx
 map yy copy
 map yn copy-filename
 map yP copy-absolute-path
-map x cut
+map dd cut
+map U fzf-restore
 map X !$f
 map gg top
 map gd :delete
 map ,st :fzf_search
-map ,S :share
+map ,sh :share
 map ,ch :chmod
 map ,f :fzf_jump
 map ,t push :tar<space>
 map ,e :extract
+map ,Sl $lvim +"lua require('persistence').load({ last = true })"
 map gc $code $fx
-map gl $lvim $fx
-map gp :poetry_lvim
+map gl $lvim $f
 map D :trash
 map t toggle
 map A push :mkdir<space>
-map a push $lvim<space>
+map a push :touch<space>
 map <c-r> reload
 map <c-a> :select-files
 map <enter> shell
 map X !$f
 map O $mimeopen --ask $f
-
 map <c-z> $kill -STOP $PPID
-map <c-p> :docxToPdf
-map b $setbg $f
 
 cmd paste_try_cow &{{
-    # # This was very helpful for debugging:
-    # log_file="$HOME/lf-reflink-log-$(date +'%Y-%m-%d_%H-%M-%S')"
-    # [ -f "$log_file" ] || touch "$log_file"
-    # exec 1>> $log_file 2>&1
-    # set -x
-
-    # In theory, this may fail,
-    # but I tested it on selection with 10k files - everything worked (bash)
     set -- $(cat ~/.local/share/lf/files)
     mode="$1"
     shift
 
     if [ $mode = 'copy' ]; then
-        # Reflink if all items of selection and the destination are on the
-        # same mount point and it is CoW fs.
-        # (to make sure reflink never fails in first place, so we don't have to
-        # clean up)
-
         src_targets="$(df --output=target -- "$@" | sed '1d' | sort -u)"
 
         if [ "$(df --output=target -- "$PWD" | tail -n 1)" = \
@@ -193,8 +198,6 @@ cmd paste_try_cow &{{
 
             start=$(date '+%s')
 
-            # Handle same names in dst
-            # TODO parallelism, idk - but exit/return/break won't stop the loop from subshell...
             for i in "$@"; do
                 name="${i##*/}"
                 original="$name"
@@ -221,10 +224,6 @@ cmd paste_try_cow &{{
                 t="${finish}s"
             fi
 
-            # Or just skip a file when names are the same.
-            # (A LOT faster if you e.g. pasting selection of 10k files)
-            # cp -rn --reflink=always -- "$@" .
-
             lf -remote "send clear"
 
             green=$'\u001b[32m'
@@ -240,11 +239,9 @@ cmd paste_try_cow &{{
         lf -remote "send $id paste"
     fi
 
-    # # for debug
-    # set +x
-
     lf -remote "send load"
 }}
+
 cmd bulk-rename ${{
   old="$(mktemp)"
   new="$(mktemp)"
@@ -269,7 +266,6 @@ cmd bulk-rename ${{
   lf -remote "send $id unselect"
 }}
 
-# name is different to avoid recursive calls
 map p paste_try_cow
 map ,r bulk-rename
 
