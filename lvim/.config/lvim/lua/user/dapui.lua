@@ -12,33 +12,35 @@ M.config = function()
 			repl = "r",
 			toggle = "t",
 		},
-		sidebar = {
-			elements = {
-				{
-					id = "scopes",
-					size = 1.5, -- Can be float or integer > 1
+		layouts = {
+			{
+				elements = {
+					"scopes",
+					"breakpoints",
+					-- 'stacks',
+					-- 'watches',
 				},
-				{ id = "breakpoints", size = 0.20 },
-				-- { id = "stacks", size = 0.15 },
-				-- { id = "watches", size = 0.10 },
+				size = 50,
+				position = "left",
 			},
-			size = 50,
-			position = "left",
-		},
-		tray = {
-			elements = { "repl" },
-			size = 15,
-			position = "bottom", -- Can be "left", "right", "top", "bottom"
-		},
-		floating = {
-			max_height = nil, -- These can be integers or a float between 0 and 1.
-			max_width = nil, -- Floats will be treated as percentage of your screen.
-			border = "single", -- Border style. Can be "single", "double" or "rounded"
-			mappings = {
-				close = { "q", "<Esc>" },
+			{
+				elements = {
+					"repl",
+					"console",
+				},
+				size = 15,
+				position = "bottom",
 			},
+			floating = {
+				max_height = nil, -- These can be integers or a float between 0 and 1.
+				max_width = nil, -- Floats will be treated as percentage of your screen.
+				border = "single", -- Border style. Can be "single", "double" or "rounded"
+				mappings = {
+					close = { "q", "<Esc>" },
+				},
+			},
+			windows = { indent = 1 },
 		},
-		windows = { indent = 1 },
 	})
 
 	local dap = require("dap")

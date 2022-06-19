@@ -224,17 +224,23 @@ lvim.plugins = {
 		end,
 	},
 	{
-		"rcarriga/vim-ultest",
-		requires = { "vim-test/vim-test" },
-		run = ":UpdateRemotePlugins",
-		config = function()
-			require("user.ultest").config()
-		end,
-	},
-	{
 		"theHamsta/nvim-dap-virtual-text",
 		config = function()
 			require("user.dap-virtual-text").config()
+		end,
+	},
+	{
+		"nvim-neotest/neotest",
+		requires = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"antoinemadec/FixCursorHold.nvim",
+			-- "nvim-neotest/neotest-python",
+			"nikita-orca/neotest-python",
+			"nvim-neotest/neotest-go",
+		},
+		config = function()
+			require("user.neotest").config()
 		end,
 	},
 }

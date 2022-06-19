@@ -105,13 +105,16 @@ lvim.builtin.which_key.mappings["dB"] = {
 
 lvim.builtin.which_key.mappings["t"] = {
 	name = "Test Runner",
-	f = { "<cmd>Ultest<cr>", "Current file" },
-	n = { "<cmd>UltestNearest<cr>", "Nearest" },
-	s = { "<cmd>UltestSummary<cr>", "Toogle Summary" },
-	q = { "<cmd>UltestStop<cr>", "Stop" },
+	f = { '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', "Run file" },
+	n = { "<cmd>lua require('neotest').run.run()<cr>", "Run nearest" },
+	r = { "<cmd>lua require('neotest').run.run_last()<cr>", "Re-run latest" },
+	q = { "<cmd>lua require('neotest').run.stop()<cr>", "Stop nearest" },
 	d = {
 		name = "Debug",
-		f = { "<cmd>UltestDebug<cr>", "Debug current file" },
-		n = { "<cmd>UltestDebugNearest<cr>", "Debug nearest" },
+		n = { "<cmd>lua require('neotest').run.run({ strategy='dap' })<cr>", "Debug nearest" },
+		f = { "<cmd>lua require('neotest').run.run({ vim.fn.expand('%'), strategy='dap' })<cr>", "Debug file" },
+		r = { "<cmd>lua require('neotest').run.run_last({ strategy='dap' })<cr>", "Re-run latest with debug" },
 	},
+	s = { "<cmd>lua require('neotest').summary.open()<cr>", "Toogle Summary" },
+	o = { "<cmd>lua require('neotest').output.open({ enter = true, short = false })<cr>", "Show output" },
 }

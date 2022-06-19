@@ -180,11 +180,11 @@ dap.adapters.python = {
 }
 
 dap.configurations.python = {
-
 	{
 		type = "python",
 		request = "launch",
 		name = "Launch file",
+		justMyCode = false,
 		program = "${file}",
 		pythonPath = function()
 			local path
@@ -197,6 +197,9 @@ dap.configurations.python = {
 			-- path = vim.fn.input("Python path: ", path or "", "file")
 			path = path ~= "" and vim.fn.expand(path) or nil
 			return path
+		end,
+		env = function()
+			return { ["PYTHONPATH"] = vim.fn.getcwd() }
 		end,
 		-- args = function()
 		--   local args = {}
@@ -211,8 +214,5 @@ dap.configurations.python = {
 		--   end
 		--   return args
 		-- end,
-		env = function()
-			return { ["PYTHONPATH"] = vim.fn.getcwd() }
-		end,
 	},
 }
