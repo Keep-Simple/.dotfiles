@@ -216,3 +216,5 @@ dap.configurations.python = {
 		-- end,
 	},
 }
+
+dap.defaults.fallback.exception_breakpoints = { "raised", "uncaught" }

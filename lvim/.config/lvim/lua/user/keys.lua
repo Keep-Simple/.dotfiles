@@ -18,9 +18,7 @@ lvim.builtin.telescope.defaults.mappings = {
 	},
 }
 
-lvim.lsp.buffer_mappings.normal_mode["gr"] = {}
--- lvim.lsp.buffer_mappings.normal_mode["gd"] = {}
-
+lvim.lsp.buffer_mappings.normal_mode["gr"] = nil
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
 	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
