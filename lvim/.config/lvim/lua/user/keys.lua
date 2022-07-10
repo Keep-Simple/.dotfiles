@@ -23,11 +23,15 @@ lvim.lsp.buffer_mappings.normal_mode["gr"] = {}
 
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
-	-- ["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
+	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
 	["gq"] = "<cmd>TroubleToggle quickfix<cr>",
+	["<C-Up>"] = ":resize +2<CR>",
+	["<C-Down>"] = ":resize -2<CR>",
+	["<C-Left>"] = ":vertical resize +2<CR>",
+	["<C-Right>"] = ":vertical resize -2<CR>",
 	-- ["gd"] = "<cmd>Trouble lsp_definitions<cr>",
 	-- wtf...
 	["yy"] = "yy",

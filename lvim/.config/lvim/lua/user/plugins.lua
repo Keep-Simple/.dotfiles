@@ -235,12 +235,19 @@ lvim.plugins = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"antoinemadec/FixCursorHold.nvim",
-			-- "nvim-neotest/neotest-python",
-			"nikita-orca/neotest-python",
+			"nvim-neotest/neotest-python",
 			"nvim-neotest/neotest-go",
 		},
 		config = function()
 			require("user.neotest").config()
 		end,
+	},
+	{
+		"kevinhwang91/nvim-ufo",
+		requires = "kevinhwang91/promise-async",
+		config = function()
+			require("user.nvim-ufo").config()
+		end,
+		disable = true,
 	},
 }

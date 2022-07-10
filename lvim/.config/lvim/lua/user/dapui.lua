@@ -12,23 +12,24 @@ M.config = function()
 			repl = "r",
 			toggle = "t",
 		},
+		expand_lines = vim.fn.has("nvim-0.7"),
 		layouts = {
 			{
 				elements = {
 					"scopes",
 					"breakpoints",
-					-- 'stacks',
-					-- 'watches',
+					"watches",
+					"stacks",
 				},
-				size = 50,
+				size = 0.3,
 				position = "left",
 			},
 			{
 				elements = {
 					"repl",
-					"console",
+					-- "console",
 				},
-				size = 15,
+				size = 0.2,
 				position = "bottom",
 			},
 			floating = {

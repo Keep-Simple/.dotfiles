@@ -84,7 +84,7 @@ dap.configurations.go = {
 dap.adapters.node2 = {
 	type = "executable",
 	command = "node",
-	args = { dbg_path .. "/node2/out/src/nodeDebug.js" },
+	args = { dbg_path .. "/node/out/src/nodeDebug.js" },
 }
 
 dap.configurations.javascript = {

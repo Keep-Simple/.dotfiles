@@ -14,12 +14,13 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: devenv5
-  currentCluster: arn:aws:eks:us-east-1:669056829813:cluster/eks_devenv5
+  currentContext: prod-us
+  currentCluster: arn:aws:eks:us-east-1:976280145156:cluster/eks_production
   clusters:
     arn:aws:eks:ap-southeast-2:976280145156:cluster/eks_production:
       namespace:
         active: production
+        lockFavorites: false
         favorites:
         - production
         - default
@@ -39,6 +40,7 @@ k9s:
     arn:aws:eks:eu-central-1:976280145156:cluster/eks_production:
       namespace:
         active: production
+        lockFavorites: false
         favorites:
         - production
         - default
@@ -58,7 +60,9 @@ k9s:
     arn:aws:eks:us-east-1:669056829813:cluster/eks_devenv5:
       namespace:
         active: orcadevnikita
+        lockFavorites: false
         favorites:
+        - all
         - orcadevnikita
         - default
       view:
@@ -77,6 +81,7 @@ k9s:
     arn:aws:eks:us-east-1:976280145156:cluster/eks_production:
       namespace:
         active: production
+        lockFavorites: false
         favorites:
         - all
         - production

@@ -10,12 +10,10 @@ M.config = function()
 		},
 		floating = {
 			max_width = 0.8,
-			max_height = 0.7,
+			max_height = 0.8,
 		},
 		output = {
-			open_on_run = {
-				open_on_run = false,
-			},
+			open_on_run = false,
 		},
 		summary = {
 			expand_errors = true,
@@ -37,6 +35,7 @@ M.config = function()
 				runner = "pytest",
 				dap = {
 					justMyCode = false,
+					env = { ["PYTHONPATH"] = vim.fn.getcwd() },
 				},
 			}),
 			require("neotest-go"),
