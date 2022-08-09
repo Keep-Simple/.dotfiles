@@ -16,8 +16,6 @@ M.config = function()
 			open_on_run = false,
 		},
 		summary = {
-			expand_errors = true,
-			follow = true,
 			mappings = {
 				attach = "a",
 				expand = { "l" },
@@ -35,7 +33,7 @@ M.config = function()
 				runner = "pytest",
 				dap = {
 					justMyCode = false,
-					env = { ["PYTHONPATH"] = vim.fn.getcwd() },
+					-- env = { ["PYTHONPATH"] = vim.fn.getcwd() },
 				},
 			}),
 			require("neotest-go"),

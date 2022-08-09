@@ -25,6 +25,7 @@ formatters.setup({
 	{ command = "gofmt" },
 	{ command = "shfmt" },
 	{ command = "qmlformat" },
+	{ command = "buf" },
 })
 
 local linters = require("lvim.lsp.null-ls.linters")
@@ -43,6 +44,7 @@ linters.setup({
 	}),
 	{ command = "flake8" },
 	{ command = "qmllint" },
+	{ command = "buf" },
 	-- { command = "mypy" },
 })
 

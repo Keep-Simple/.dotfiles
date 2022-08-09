@@ -1,10 +1,10 @@
 {
-  "LC": {
-    "prefix": "LC",
+  "ltc": {
+    "prefix": "ltc",
     "body": [
       "import pytest\n\n",
       "def ${1:funcname}(${2:params}):",
-      "\tpass\n\n",
+      "\t\"\"\" \"\"\"\n\n",
       "@pytest.mark.parametrize(\n\t\"$2, expected\",\n\t[\n\t\t($0),\n\t],\n)",
       "def test_$1($2, expected):",
       "\tassert $1($2) == expected"

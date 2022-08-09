@@ -250,4 +250,5 @@ lvim.plugins = {
 		end,
 		disable = true,
 	},
+	{ "nvim-treesitter/nvim-treesitter-context" },
 }

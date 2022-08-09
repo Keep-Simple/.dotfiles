@@ -194,8 +194,8 @@ dap.configurations.python = {
 					break
 				end
 			end
-			-- path = vim.fn.input("Python path: ", path or "", "file")
-			path = path ~= "" and vim.fn.expand(path) or nil
+			path = vim.fn.input("Python path: ", path or "", "file")
+			-- path = path ~= "" and vim.fn.expand(path) or nil
 			return path
 		end,
 		env = function()
@@ -217,4 +217,4 @@ dap.configurations.python = {
 	},
 }
 
-dap.defaults.fallback.exception_breakpoints = { "raised", "uncaught" }
+dap.defaults.fallback.exception_breakpoints = { "uncaught" }

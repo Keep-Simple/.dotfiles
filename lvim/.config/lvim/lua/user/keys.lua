@@ -105,6 +105,8 @@ lvim.builtin.which_key.mappings["dB"] = {
 	l = { "<cmd>lua require('dap').list_breakpoints()<cr>", "List breakpoints" },
 }
 
+lvim.builtin.which_key.mappings["dR"] = { "<cmd>lua require('dap').repl.close()<cr>", "Close Repl" }
+
 lvim.builtin.which_key.mappings["t"] = {
 	name = "Test Runner",
 	f = { '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', "Run file" },

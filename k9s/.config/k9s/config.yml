@@ -6,6 +6,7 @@ k9s:
   logoless: true
   crumbsless: false
   readOnly: false
+  noExitOnCtrlC: false
   noIcons: false
   logger:
     tail: 300
@@ -14,8 +15,8 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: prod-us
-  currentCluster: arn:aws:eks:us-east-1:976280145156:cluster/eks_production
+  currentContext: devenv2
+  currentCluster: arn:aws:eks:us-east-1:612055167500:cluster/eks_devenv2
   clusters:
     arn:aws:eks:ap-southeast-2:976280145156:cluster/eks_production:
       namespace:
@@ -25,7 +26,7 @@ k9s:
         - production
         - default
       view:
-        active: ctx
+        active: pod
       featureGates:
         nodeShell: false
       shellPod:
@@ -57,13 +58,33 @@ k9s:
           cpu: 100m
           memory: 100Mi
       portForwardAddress: localhost
-    arn:aws:eks:us-east-1:669056829813:cluster/eks_devenv5:
+    arn:aws:eks:us-east-1:612055167500:cluster/eks_devenv2:
       namespace:
         active: orcadevnikita
         lockFavorites: false
         favorites:
         - all
         - orcadevnikita
+        - default
+      view:
+        active: pod
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    arn:aws:eks:us-east-1:669056829813:cluster/eks_devenv5:
+      namespace:
+        active: all
+        lockFavorites: false
+        favorites:
+        - all
         - default
       view:
         active: pod

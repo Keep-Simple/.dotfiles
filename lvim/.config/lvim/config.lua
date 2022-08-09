@@ -4,7 +4,6 @@ lvim.colorscheme = "onedarker"
 
 require("user.keys")
 require("user.plugins")
-require("user.treesitter")
 require("user.settings")
 require("user.dap")
 require("user.builtins")
