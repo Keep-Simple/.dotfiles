@@ -135,10 +135,9 @@ dap.configurations.cpp = {
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
 
--- TODO replace with debugpy-adapter and revert /Users/nickyasnogorodskyi/.local/share/nvim/mason/bin/debugpy
 dap.adapters.python = {
 	type = "executable",
-	command = "debugpy",
+	command = "debugpy-adapter",
 }
 
 dap.configurations.python = {
