@@ -242,13 +242,11 @@ lvim.plugins = {
 			require("user.neotest").config()
 		end,
 	},
-	{
-		"kevinhwang91/nvim-ufo",
-		requires = "kevinhwang91/promise-async",
-		config = function()
-			require("user.nvim-ufo").config()
-		end,
-		disable = true,
-	},
 	{ "nvim-treesitter/nvim-treesitter-context" },
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		config = function()
+			require("user.mason").config()
+		end,
+	},
 }
