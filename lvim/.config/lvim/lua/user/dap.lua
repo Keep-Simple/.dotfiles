@@ -3,69 +3,24 @@ if not status_ok then
 	return
 end
 
-local dbg_path = vim.fn.expand("$LVIM_DEBUGGERS")
-
-dap.configurations.lua = {
-	{
-		type = "nlua",
-		request = "attach",
-		name = "Neovim attach",
-		host = function()
-			local value = vim.fn.input("Host [127.0.0.1]: ")
-			if value ~= "" then
-				return value
-			end
-			return "127.0.0.1"
-		end,
-		port = function()
-			local val = tonumber(vim.fn.input("Port: "))
-			assert(val, "Please provide a port number")
-			return val
-		end,
+dap.adapters.delve = {
+	type = "server",
+	port = "${port}",
+	executable = {
+		command = "dlv",
+		args = { "dap", "-l", "127.0.0.1:${port}" },
 	},
 }
 
-dap.adapters.go = function(callback, _)
-	local stdout = vim.loop.new_pipe(false)
-	local handle
-	local pid_or_err
-	local port = 38697
-	local opts = {
-		stdio = { nil, stdout },
-		args = { "dap", "-l", "127.0.0.1:" .. port },
-		detached = true,
-	}
-	handle, pid_or_err = vim.loop.spawn("dlv", opts, function(code)
-		stdout:close()
-		handle:close()
-		if code ~= 0 then
-			print("dlv exited with code", code)
-		end
-	end)
-	assert(handle, "Error running dlv: " .. tostring(pid_or_err))
-	stdout:read_start(function(err, chunk)
-		assert(not err, err)
-		if chunk then
-			vim.schedule(function()
-				require("dap.repl").append(chunk)
-			end)
-		end
-	end)
-	-- Wait for delve to start
-	vim.defer_fn(function()
-		callback({ type = "server", host = "127.0.0.1", port = port })
-	end, 100)
-end
--- https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
 dap.configurations.go = {
 	{
-		type = "go",
+		type = "delve",
 		name = "Debug",
 		request = "launch",
 		program = "${file}",
 	},
 	{
-		type = "go",
+		type = "delve",
 		name = "Debug test", -- configuration for debugging test files
 		request = "launch",
 		mode = "test",
@@ -73,7 +28,7 @@ dap.configurations.go = {
 	},
 	-- works with go.mod packages and sub packages
 	{
-		type = "go",
+		type = "delve",
 		name = "Debug test (go.mod)",
 		request = "launch",
 		mode = "test",
@@ -83,8 +38,7 @@ dap.configurations.go = {
 
 dap.adapters.node2 = {
 	type = "executable",
-	command = "node",
-	args = { dbg_path .. "/node/out/src/nodeDebug.js" },
+	command = "node-debug2-adapter",
 }
 
 dap.configurations.javascript = {
@@ -108,75 +62,83 @@ dap.configurations.javascript = {
 }
 
 dap.configurations.typescript = dap.configurations.javascript
-dap.configurations.typescriptreact = dap.configurations.typescript
-dap.configurations.javascriptreact = dap.configurations.typescript
 
-dap.adapters.codelldb = function(on_adapter)
-	local tcp = vim.loop.new_tcp()
-	tcp:bind("127.0.0.1", 0)
-	local port = tcp:getsockname().port
-	tcp:shutdown()
-	tcp:close()
-	local stdout = vim.loop.new_pipe(false)
-	local stderr = vim.loop.new_pipe(false)
-	local opts = {
-		stdio = { nil, stdout, stderr },
-		args = { "--port", tostring(port) },
-	}
-	local handle
-	local pid_or_err
-	handle, pid_or_err = vim.loop.spawn(dbg_path .. "/codelldb/extension/adapter/codelldb", opts, function(code)
-		stdout:close()
-		stderr:close()
-		handle:close()
-		if code ~= 0 then
-			print("codelldb exited with code", code)
-		end
-	end)
-	if not handle then
-		vim.notify("Error running codelldb: " .. tostring(pid_or_err), vim.log.levels.ERROR)
-		stdout:close()
-		stderr:close()
-		return
-	end
-	vim.notify("codelldb started. pid=" .. pid_or_err)
-	stderr:read_start(function(err, chunk)
-		assert(not err, err)
-		if chunk then
-			vim.schedule(function()
-				require("dap.repl").append(chunk)
-			end)
-		end
-	end)
-	local adapter = {
-		type = "server",
-		host = "127.0.0.1",
-		port = port,
-	}
-	vim.defer_fn(function()
-		on_adapter(adapter)
-	end, 500)
-end
+dap.adapters.chrome = {
+	type = "executable",
+	command = "chrome-debug-adapter",
+}
+
+dap.configurations.javascriptreact = {
+	{
+		type = "chrome",
+		request = "attach",
+		program = "${file}",
+		cwd = vim.fn.getcwd(),
+		sourceMaps = true,
+		protocol = "inspector",
+		port = 9222,
+		webRoot = "${workspaceFolder}",
+	},
+}
+
+dap.configurations.typescriptreact = dap.configurations.javascriptreact
+
+dap.adapters.cppdbg = {
+	id = "cppdbg",
+	type = "executable",
+	command = "OpenDebugAD7",
+}
+
+dap.adapters.codelldb = {
+	type = "server",
+	port = "${port}",
+	executable = {
+		command = "codelldb",
+		args = { "--port", "${port}" },
+		-- On windows you may have to uncomment this:
+		-- detached = false,
+	},
+}
+
+dap.adapters.lldb = {
+	type = "executable",
+	command = "/opt/homebrew/opt/llvm/bin/lldb-vscode", -- adjust as needed, must be absolute path
+	name = "lldb",
+}
 
 dap.configurations.cpp = {
 	{
-		name = "Launch file",
-		type = "codelldb",
+		name = "Launch",
+		type = "lldb",
 		request = "launch",
 		program = function()
 			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 		end,
 		cwd = "${workspaceFolder}",
-		stopOnEntry = true,
+		stopOnEntry = false,
+		args = {},
+
+		-- 💀
+		-- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+		--
+		--    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+		--
+		-- Otherwise you might get the following error:
+		--
+		--    Error on launch: Failed to attach to the target process
+		--
+		-- But you should be aware of the implications:
+		-- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+		-- runInTerminal = false,
 	},
 }
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
 
+-- TODO replace with debugpy-adapter and revert /Users/nickyasnogorodskyi/.local/share/nvim/mason/bin/debugpy
 dap.adapters.python = {
 	type = "executable",
-	command = dbg_path .. "/debugpy/bin/python",
-	args = { "-m", "debugpy.adapter" },
+	command = "debugpy",
 }
 
 dap.configurations.python = {

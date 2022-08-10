@@ -29,6 +29,5 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = {
 }
 lvim.builtin.telescope.defaults.path_display = { "smart" }
 
-lvim.lsp.automatic_servers_installation = true
 lvim.lsp.diagnostics.float.focusable = true
 lvim.lsp.float.focusable = true

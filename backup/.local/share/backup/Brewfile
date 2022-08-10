@@ -74,6 +74,7 @@ brew 'lf'
 brew 'libmagic'
 brew 'librdkafka'
 brew 'libxmlsec1'
+brew 'llvm'
 brew 'lolcat'
 brew 'luajit', args: ['HEAD']
 brew 'luajit-openresty'
