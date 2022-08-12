@@ -30,6 +30,8 @@ lvim.keys.normal_mode = {
 	["<C-Down>"] = ":resize -2<CR>",
 	["<C-Left>"] = ":vertical resize +2<CR>",
 	["<C-Right>"] = ":vertical resize -2<CR>",
+	["<S-l>"] = ":BufferLineCycleNext<CR>",
+	["<S-h>"] = ":BufferLineCyclePrev<CR>",
 	-- ["gd"] = "<cmd>Trouble lsp_definitions<cr>",
 	-- wtf...
 	["yy"] = "yy",
