@@ -1,3 +1,6 @@
+lvim.builtin.treesitter.ensure_installed = "all"
+lvim.builtin.treesitter.ignore_install = { "phpdoc", "proto" }
+
 lvim.builtin.treesitter.textobjects = {
 	-- lsp_interop = {
 	--      enable = true,
@@ -29,10 +32,7 @@ lvim.builtin.treesitter.textobjects = {
 	},
 }
 
-lvim.builtin.treesitter.autotag = {
-	enable = true,
-	disable = { "xml" },
-}
+lvim.builtin.treesitter.autotag = { enable = true }
 
 lvim.builtin.treesitter.indent.disable = { "python" }
 lvim.builtin.treesitter.rainbow = {

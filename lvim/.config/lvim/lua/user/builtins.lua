@@ -1,3 +1,5 @@
+require("user.treesitter")
+
 lvim.builtin.terminal.direction = "horizontal"
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.shading_factor = 1
@@ -11,8 +13,6 @@ lvim.builtin.nvimtree.active = false
 lvim.builtin.cmp.completion.autocomplete = false
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
-lvim.builtin.treesitter.ensure_installed = "all"
-lvim.builtin.treesitter.ignore_install = { "phpdoc" } -- some bug on m1
 lvim.builtin.project.detection_methods = { "lsp", "pattern" }
 
 lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true } }
@@ -29,6 +29,5 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = {
 }
 lvim.builtin.telescope.defaults.path_display = { "smart" }
 
-lvim.lsp.automatic_servers_installation = true
 lvim.lsp.diagnostics.float.focusable = true
 lvim.lsp.float.focusable = true

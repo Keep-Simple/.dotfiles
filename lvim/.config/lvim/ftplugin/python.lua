@@ -13,10 +13,12 @@ local function get_python_path(workspace)
 		if match ~= "" then
 			return path.join(path.dirname(match), "bin", "python")
 		end
-		match = vim.fn.glob(path.join(workspace, "poetry.lock"))
+		match = vim.fn.glob(path.join(workspace, "pyproject.toml"))
 		if match ~= "" then
 			local venv = vim.fn.trim(vim.fn.system("poetry env info -p"))
-			return path.join(venv, "bin", "python")
+			if venv then
+				return path.join(venv, "bin", "python")
+			end
 		end
 	end
 
@@ -32,7 +34,7 @@ local opts = {
 			"setup.cfg",
 			"requirements.txt",
 			"Pipfile",
-			"manage.py",
+			-- "manage.py",
 			"pyrightconfig.json",
 		}
 		return util.root_pattern(unpack(root_files))(fname)
@@ -45,10 +47,10 @@ local opts = {
 	end,
 }
 
-local servers = require("nvim-lsp-installer.servers")
-local server_available, requested_server = servers.get_server("pyright")
-if server_available then
-	opts.cmd_env = requested_server:get_default_options().cmd_env
-end
+-- local servers = require("nvim-lsp-installer.servers")
+-- local server_available, requested_server = servers.get_server("pyright")
+-- if server_available then
+-- 	opts.cmd_env = requested_server:get_default_options().cmd_env
+-- end
 
 require("lvim.lsp.manager").setup("pyright", opts)

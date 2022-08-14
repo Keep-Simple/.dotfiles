@@ -10,7 +10,7 @@ M.config = function()
 			},
 		},
 		server = {
-			cmd = { vim.fn.stdpath("data") .. "/lsp_servers/rust/rust-analyzer" },
+			cmd = { "rust-analyzer" },
 			on_attach = require("lvim.lsp").common_on_attach,
 			on_init = require("lvim.lsp").common_on_init,
 		},

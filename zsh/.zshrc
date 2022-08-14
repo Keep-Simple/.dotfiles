@@ -14,6 +14,7 @@ plugins=(
   # git
   zsh-syntax-highlighting
   zsh-autosuggestions
+  ansible
   poetry
   nick-functions
   gh
@@ -34,10 +35,8 @@ zstyle ':bracketed-paste-magic' active-widgets '.self-*' # instant paste
 setopt autocd		# Automatically cd into typed directory.
 setopt interactive_comments
 
-# History in cache directory:
 HISTSIZE=10000000
 SAVEHIST=10000000
-HISTFILE=~/.cache/zsh/history
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc"
@@ -54,4 +53,5 @@ export PROMPT_EOL_MARK=""
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+

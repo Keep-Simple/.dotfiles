@@ -1,5 +1,7 @@
 lvim.leader = ","
 
+local _, trouble = pcall(require, "trouble.providers.telescope")
+
 local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.mappings = {
 	i = {
@@ -7,15 +9,16 @@ lvim.builtin.telescope.defaults.mappings = {
 		["<C-k>"] = actions.move_selection_previous,
 		["<C-n>"] = actions.cycle_history_next,
 		["<C-p>"] = actions.cycle_history_prev,
+		["<C-q>"] = trouble.open_with_trouble,
 	},
 	n = {
 		["<C-j>"] = actions.move_selection_next,
 		["<C-k>"] = actions.move_selection_previous,
+		["<C-q>"] = trouble.open_with_trouble,
 	},
 }
 
-lvim.lsp.buffer_mappings.normal_mode["gr"] = {}
-
+lvim.lsp.buffer_mappings.normal_mode["gr"] = nil
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
 	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
@@ -23,6 +26,13 @@ lvim.keys.normal_mode = {
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
 	["gq"] = "<cmd>TroubleToggle quickfix<cr>",
+	["<C-Up>"] = ":resize +2<CR>",
+	["<C-Down>"] = ":resize -2<CR>",
+	["<C-Left>"] = ":vertical resize +2<CR>",
+	["<C-Right>"] = ":vertical resize -2<CR>",
+	["<S-l>"] = ":BufferLineCycleNext<CR>",
+	["<S-h>"] = ":BufferLineCyclePrev<CR>",
+	-- ["gd"] = "<cmd>Trouble lsp_definitions<cr>",
 	-- wtf...
 	["yy"] = "yy",
 }
@@ -89,22 +99,28 @@ lvim.builtin.which_key.mappings["r"] = {
 
 lvim.builtin.which_key.mappings["y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 lvim.builtin.which_key.mappings["e"] = { "<cmd>Lf<cr>", "Explorer" }
+lvim.builtin.which_key.mappings["sr"] = { "<cmd>Telescope resume<cr>", "Resume search" }
 
-lvim.builtin.which_key.mappings["db"] = {
+lvim.builtin.which_key.mappings["dB"] = {
 	name = "Breakpoints",
 	c = { "<cmd>lua require('dap').clear_breakpoints()<cr>", "Clear all breakpoints" },
 	l = { "<cmd>lua require('dap').list_breakpoints()<cr>", "List breakpoints" },
 }
 
+lvim.builtin.which_key.mappings["dR"] = { "<cmd>lua require('dap').repl.close()<cr>", "Close Repl" }
+
 lvim.builtin.which_key.mappings["t"] = {
 	name = "Test Runner",
-	f = { "<cmd>Ultest<cr>", "Current file" },
-	n = { "<cmd>UltestNearest<cr>", "Nearest" },
-	s = { "<cmd>UltestSummary<cr>", "Toogle Summary" },
-	q = { "<cmd>UltestStop<cr>", "Stop" },
+	f = { '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', "Run file" },
+	n = { "<cmd>lua require('neotest').run.run()<cr>", "Run nearest" },
+	r = { "<cmd>lua require('neotest').run.run_last()<cr>", "Re-run latest" },
+	q = { "<cmd>lua require('neotest').run.stop()<cr>", "Stop nearest" },
 	d = {
 		name = "Debug",
-		f = { "<cmd>UltestDebug<cr>", "Debug current file" },
-		n = { "<cmd>UltestDebugNearest<cr>", "Debug nearest" },
+		n = { "<cmd>lua require('neotest').run.run({ strategy='dap' })<cr>", "Debug nearest" },
+		f = { "<cmd>lua require('neotest').run.run({ vim.fn.expand('%'), strategy='dap' })<cr>", "Debug file" },
+		r = { "<cmd>lua require('neotest').run.run_last({ strategy='dap' })<cr>", "Re-run latest with debug" },
 	},
+	s = { "<cmd>lua require('neotest').summary.open()<cr>", "Toogle Summary" },
+	o = { "<cmd>lua require('neotest').output.open({ enter = true, short = false })<cr>", "Show output" },
 }

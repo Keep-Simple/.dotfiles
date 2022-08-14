@@ -1,17 +1,16 @@
-local opts = {
-	-- Needed for inlayHints. Merge this table with your settings or copy
-	-- it from the source if you want to add your own init_options.
-	init_options = require("nvim-lsp-ts-utils").init_options,
-	--
-	on_attach = function(client, bufnr)
-		local ts_utils = require("nvim-lsp-ts-utils")
+local status_ok, ts_utils = pcall(require, "nvim-lsp-ts-utils")
+if not status_ok then
+	vim.cmd([[ packadd nvim-lsp-ts-utils ]])
+	ts_utils = require("nvim-lsp-ts-utils")
+end
 
-		-- defaults
+local opts = {
+	init_options = require("nvim-lsp-ts-utils").init_options,
+	on_attach = function(client)
 		ts_utils.setup({
 			debug = false,
 			disable_commands = false,
 			enable_import_on_completion = true,
-
 			-- import all
 			import_all_timeout = 5000, -- ms
 			-- lower numbers = higher priority
@@ -39,22 +38,12 @@ local opts = {
 				Type = {},
 				Parameter = {},
 				Enum = {},
-				-- Example format customization for `Type` kind:
-				-- Type = {
-				--     highlight = "Comment",
-				--     text = function(text)
-				--         return "->" .. text:sub(2)
-				--     end,
-				-- },
 			},
-
 			-- update imports on file move
 			update_imports_on_move = false,
 			require_confirmation_on_move = false,
 			watch_dir = nil,
 		})
-
-		-- required to fix code action ranges and filter diagnostics
 		ts_utils.setup_client(client)
 	end,
 }

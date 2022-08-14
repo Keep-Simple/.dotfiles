@@ -16,6 +16,7 @@ cd ~/.dotfiles
 ./archlinux
 ```
 
+<<<<<<< HEAD
 Otherwise copy this script to add/remove program's configs.
 [Funny tutorial](https://www.youtube.com/watch?v=tkUllCAGs3c)
 
@@ -34,3 +35,6 @@ sudo packup
 ```
 
 Use it to install all `pacman` packages
+=======
+[Funny tutorial about stow](https://www.youtube.com/watch?v=tkUllCAGs3c)
+>>>>>>> origin/macos

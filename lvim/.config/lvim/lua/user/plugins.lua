@@ -13,6 +13,10 @@ lvim.plugins = {
 	{
 		"folke/trouble.nvim",
 		cmd = "TroubleToggle",
+		requires = "kyazdani42/nvim-web-devicons",
+		config = function()
+			require("user.trouble").config()
+		end,
 	},
 	{
 		"windwp/nvim-spectre",
@@ -220,17 +224,29 @@ lvim.plugins = {
 		end,
 	},
 	{
-		"rcarriga/vim-ultest",
-		requires = { "vim-test/vim-test" },
-		run = ":UpdateRemotePlugins",
-		config = function()
-			require("user.ultest").config()
-		end,
-	},
-	{
 		"theHamsta/nvim-dap-virtual-text",
 		config = function()
 			require("user.dap-virtual-text").config()
+		end,
+	},
+	{
+		"nvim-neotest/neotest",
+		requires = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-neotest/neotest-python",
+			"nvim-neotest/neotest-go",
+		},
+		config = function()
+			require("user.neotest").config()
+		end,
+	},
+	{ "nvim-treesitter/nvim-treesitter-context" },
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		config = function()
+			require("user.mason").config()
 		end,
 	},
 }
