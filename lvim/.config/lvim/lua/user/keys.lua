@@ -37,10 +37,14 @@ lvim.keys.normal_mode = {
 	["yy"] = "yy",
 }
 
-lvim.builtin.which_key.mappings["LC"] = { "<cmd>LvimCacheReset<cr>", "Cache Reset" }
+lvim.builtin.which_key.mappings["LC"] = { "<cmd>LvimCacheReset<cr>", "Lvim cache reset" }
 lvim.builtin.which_key.mappings["W"] = {
 	"<cmd>SudaWrite<cr>",
-	"Sudo Save",
+	"sudo save",
+}
+lvim.builtin.which_key.mappings["n"] = {
+	"<cmd>noautocmd w<cr>",
+	"Save & no fmt",
 }
 
 lvim.builtin.which_key.mappings["z"] = { "<cmd>ZenMode<cr>", "Zen" }

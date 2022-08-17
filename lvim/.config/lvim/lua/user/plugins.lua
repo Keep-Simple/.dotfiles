@@ -38,6 +38,7 @@ lvim.plugins = {
 		run = "./install.sh",
 		requires = "hrsh7th/nvim-cmp",
 		event = "InsertEnter",
+		disable = true,
 	},
 	{
 		"karb94/neoscroll.nvim",
