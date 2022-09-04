@@ -95,4 +95,10 @@ vim.opt.formatoptions = {
 	v = true,
 }
 
+vim.cmd([[augroup numbertoggle]])
+vim.cmd([[  autocmd!]])
+vim.cmd([[  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif]])
+vim.cmd([[  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif]])
+vim.cmd([[augroup END]])
+
 pcall(require, "profile")

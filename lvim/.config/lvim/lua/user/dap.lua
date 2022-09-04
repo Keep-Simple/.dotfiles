@@ -162,20 +162,21 @@ dap.configurations.python = {
 		env = function()
 			return { ["PYTHONPATH"] = vim.fn.getcwd() }
 		end,
-		-- args = function()
-		--   local args = {}
-		--   local i = 1
-		--   while true do
-		--     local arg = vim.fn.input("Argument [" .. i .. "]: ")
-		--     if arg == "" then
-		--       break
-		--     end
-		--     args[i] = arg
-		--     i = i + 1
-		--   end
-		--   return args
-		-- end,
+		args = function()
+			local args = {}
+			local i = 1
+			while true do
+				local arg = vim.fn.input("Argument [" .. i .. "]: ")
+				if arg == "" then
+					break
+				end
+				args[i] = arg
+				i = i + 1
+			end
+			return args
+		end,
 	},
 }
 
 dap.defaults.fallback.exception_breakpoints = { "uncaught" }
+-- dap.defaults.fallback.terminal_win_cmd = "50vsplit new"
