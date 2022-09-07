@@ -61,7 +61,7 @@ yabai -m signal --add event=window_destroyed action=$YABAI/focus.sh
 yabai -m signal --add event=window_minimized action=$YABAI/focus.sh
 yabai -m signal --add event=application_hidden action=$YABAI/focus.sh
 
-yabai -m signal --add event=display_changed action=$YABAI/restart.sh
+# yabai -m signal --add event=display_changed action=$YABAI/restart.sh
 
 yabai -m signal --add event=window_created action=$YABAI/smart_gaps.sh
 yabai -m signal --add event=window_destroyed action=$YABAI/smart_gaps.sh
