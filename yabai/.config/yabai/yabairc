@@ -65,10 +65,11 @@ yabai -m signal --add event=application_hidden action=$YABAI/focus.sh
 
 yabai -m signal --add event=window_created action=$YABAI/smart_gaps.sh
 yabai -m signal --add event=window_destroyed action=$YABAI/smart_gaps.sh
-yabai -m signal --add event=space_changed action=$YABAI/smart_gaps.sh
+# yabai -m signal --add event=space_changed action=$YABAI/smart_gaps.sh
 yabai -m signal --add event=window_minimized action=$YABAI/smart_gaps.sh
 yabai -m signal --add event=window_deminimized action=$YABAI/smart_gaps.sh
 
+$YABAI/smart_gaps.sh
 echo "yabai configuration loaded.."
 
 # auto update-yabai

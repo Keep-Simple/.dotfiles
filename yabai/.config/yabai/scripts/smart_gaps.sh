@@ -3,17 +3,15 @@
 # Only have borders/gaps/padding if there is >1 VISIBLE window
 
 YABAI="$HOME/.config/yabai/scripts"
-p=8
-windows=$(yabai -m query --windows --space)
-quick_term_id=$(yabai -m query --windows | jq -r 'map(select(.title=="QuickTerminal")) | .[0].id')
-windows_ids=$(yabai -m query --spaces --space | jq ".windows |  map(select(. != $quick_term_id)) | .[]")
-non_floated_count=$(echo $windows | jq 'map(select(."is-floating" == false)) | length')
+windows_ids=$(yabai -m query --windows --space | jq '.[] | select(."is-floating"==false and .title!="QuickTerminal").id')
+windows_count=$(echo $windows_ids | wc -w)
 
-if [[ $non_floated_count -le 1 ]]; then
+if [[ $windows_count -le 1 ]]; then
 	p=0
 	yabai -m space --padding abs:$p:$p:$p:$p
-	echo $windows_ids | xargs -n1 $YABAI/border_off.sh
+	echo $windows_ids | xargs -n1 -P10 $YABAI/border_off.sh
 else
+	p=8
 	yabai -m space --padding abs:$p:$p:$p:$p
-	echo $windows_ids | xargs -n1 $YABAI/border_on.sh
+	echo $windows_ids | xargs -n1 -P10 $YABAI/border_on.sh
 fi

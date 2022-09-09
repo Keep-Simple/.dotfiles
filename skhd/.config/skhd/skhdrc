@@ -1,7 +1,7 @@
 
 # apps shortcuts
 ctrl + alt + cmd - return : open -n /Applications/Alacritty.app
-ctrl + alt + cmd + shift - return : "${HOME}/.config/skhd/quick_terminal.sh"
+ctrl + alt + cmd + shift - return : ~/.config/skhd/quick_terminal.sh
 ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
 
 # change layouts
