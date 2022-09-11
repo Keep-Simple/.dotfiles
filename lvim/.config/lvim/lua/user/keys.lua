@@ -38,6 +38,11 @@ lvim.keys.normal_mode = {
 	["yy"] = "yy",
 }
 
+-- backward search
+vim.cmd([[
+ noremap \ ,
+]])
+
 lvim.builtin.which_key.mappings["LC"] = { "<cmd>LvimCacheReset<cr>", "Lvim cache reset" }
 lvim.builtin.which_key.mappings["W"] = {
 	"<cmd>SudaWrite<cr>",

@@ -1,4 +1,7 @@
-#!/usr/bin/env zsh
+#!/bin/sh
+
+# to load $YABAI env
+source $HOME/.profile
 
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
@@ -61,14 +64,14 @@ yabai -m signal --add event=application_hidden action=$YABAI/focus.sh
 
 # yabai -m signal --add event=display_changed action=$YABAI/restart.sh
 
-yabai -m signal --add event=window_created action=$YABAI/smart_gaps.sh
-yabai -m signal --add event=window_destroyed action=$YABAI/smart_gaps.sh
+# pass YABAI env, because of sh not autoloading .profile
+yabai -m signal --add event=window_created action="YABAI=$YABAI $YABAI/smart_gaps.sh"
+yabai -m signal --add event=window_destroyed action="YABAI=$YABAI $YABAI/smart_gaps.sh"
 # yabai -m signal --add event=space_changed action=$YABAI/smart_gaps.sh
-yabai -m signal --add event=window_minimized action=$YABAI/smart_gaps.sh
-yabai -m signal --add event=window_deminimized action=$YABAI/smart_gaps.sh
+yabai -m signal --add event=window_minimized action="YABAI=$YABAI $YABAI/smart_gaps.sh"
+yabai -m signal --add event=window_deminimized action="YABAI=$YABAI $YABAI/smart_gaps.sh"
 
 $YABAI/smart_gaps.sh
-
 SHELL='/bin/sh' skhd &
 echo "yabai configuration loaded.."
 
