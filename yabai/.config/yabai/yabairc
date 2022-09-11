@@ -1,5 +1,5 @@
-#!/bin/sh
-YABAI="$HOME/.config/yabai/scripts"
+#!/usr/bin/env zsh
+
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
@@ -68,6 +68,8 @@ yabai -m signal --add event=window_minimized action=$YABAI/smart_gaps.sh
 yabai -m signal --add event=window_deminimized action=$YABAI/smart_gaps.sh
 
 $YABAI/smart_gaps.sh
+
+SHELL='/bin/sh' skhd &
 echo "yabai configuration loaded.."
 
 # auto update-yabai

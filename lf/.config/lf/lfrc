@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Basic vars
-set shell zsh
-set shellopts '-ey'
+set shell sh
+# set shellopts '-ey'
 set ifs "\n"
 set scrolloff 10
 set icons

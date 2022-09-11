@@ -155,13 +155,14 @@ dap.configurations.python = {
 					break
 				end
 			end
-			path = vim.fn.input("Python path: ", path or "", "file")
+			-- path = vim.fn.input("Python path: ", path or "", "file")
 			-- path = path ~= "" and vim.fn.expand(path) or nil
 			return path
 		end,
 		env = function()
 			return { ["PYTHONPATH"] = vim.fn.getcwd() }
 		end,
+		-- console = "externalTerminal",
 		args = function()
 			local args = {}
 			local i = 1
@@ -180,3 +181,7 @@ dap.configurations.python = {
 
 dap.defaults.fallback.exception_breakpoints = { "uncaught" }
 -- dap.defaults.fallback.terminal_win_cmd = "50vsplit new"
+dap.defaults.fallback.external_terminal = {
+	command = "alacritty",
+	args = { "-e" },
+}
