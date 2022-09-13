@@ -69,9 +69,9 @@ export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
 export LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
 
 eval "$(pyenv init --path)"
+# for brew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(fnm env --use-on-cd)"
-eval $(thefuck --alias)
 source $HOME/.config/lf/icons
 . "$HOME/.local/share/cargo/env"
 ulimit -n unlimited

@@ -41,6 +41,7 @@ lvim.keys.normal_mode = {
 -- backward search
 vim.cmd([[
  noremap \ ,
+ xnoremap <C-p> "_dP
 ]])
 
 lvim.builtin.which_key.mappings["LC"] = { "<cmd>LvimCacheReset<cr>", "Lvim cache reset" }
@@ -109,7 +110,7 @@ lvim.builtin.which_key.mappings["r"] = {
 
 lvim.builtin.which_key.mappings["y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 lvim.builtin.which_key.mappings["e"] = { "<cmd>Lf<cr>", "Explorer" }
-lvim.builtin.which_key.mappings["sr"] = { "<cmd>Telescope resume<cr>", "Resume search" }
+lvim.builtin.which_key.mappings["ss"] = { "<cmd>Telescope resume<cr>", "Resume search" }
 
 lvim.builtin.which_key.mappings["dB"] = {
 	name = "Breakpoints",

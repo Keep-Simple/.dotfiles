@@ -1,7 +1,7 @@
 # apps shortcuts
 ctrl + alt + cmd - return : open -n /Applications/Alacritty.app
 ctrl + alt + cmd + shift - return : $YABAI/quick_terminal.sh
-ctrl + alt + cmd + shift - s : open -n /System/Applications/System\ Preferences.app
+ctrl + alt + cmd - s : open -n /System/Applications/System\ Preferences.app
 ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
 
 # change layouts
@@ -36,12 +36,13 @@ ctrl + alt + cmd - right : yabai -m window --resize right:50:0; \
 ctrl + alt + cmd - g : yabai -m space --focus prev || yabai -m space --focus last
 # maps to ;
 ctrl + alt + cmd - 0x29 : yabai -m space --focus next || yabai -m space --focus first
+ctrl + alt + cmd - 0 : yabai -m space --focus recent
 #toggle gaps
-ctrl + alt + cmd - a : yabai -m space --toggle padding && yabai -m space --toggle gap
+ctrl + alt + cmd + shift - a : yabai -m space --toggle padding && yabai -m space --toggle gap
 # toggle sticky (show on all spaces)
-ctrl + alt + cmd - s : yabai -m window --toggle sticky --layer above --toggle topmost
+ctrl + alt + cmd + shift - s : yabai -m window --toggle sticky --toggle topmost
 # toggle topmost (keep above other windows)
-ctrl + alt + cmd - o : yabai -m window --toggle topmost
+ctrl + alt + cmd + shift - o : yabai -m window --toggle topmost
 ## Close active application
 ctrl + alt + cmd - q : yabai -m window --close
 # toggle window zoom

@@ -2,12 +2,12 @@ local M = {}
 
 M.config = function()
 	require("neotest").setup({
-		icons = {
-			running = "🏃",
-			passed = "✨",
-			failed = "❗",
-			skipped = "💤",
-		},
+		-- icons = {
+		-- 	running = "🏃",
+		-- 	passed = "✨",
+		-- 	failed = "❗",
+		-- 	skipped = "💤",
+		-- },
 		floating = {
 			max_width = 0.8,
 			max_height = 0.8,
