@@ -26,6 +26,7 @@ lvim.keys.normal_mode = {
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
 	["gq"] = "<cmd>TroubleToggle quickfix<cr>",
+	["gS"] = "<cmd>setlocal spell!<cr>",
 	["<C-Up>"] = ":resize +2<CR>",
 	["<C-Down>"] = ":resize -2<CR>",
 	["<C-Left>"] = ":vertical resize +2<CR>",

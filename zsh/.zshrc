@@ -8,6 +8,8 @@ fi
 export ZSH=$HOME/.oh-my-zsh
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
+# for homebrew autocomplete, needs to be before omz source
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
 plugins=(
   # vi-mode
@@ -72,7 +74,6 @@ eval "$(pyenv init --path)"
 # for brew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(fnm env --use-on-cd)"
-source $HOME/.config/lf/icons
 . "$HOME/.local/share/cargo/env"
 ulimit -n unlimited
 

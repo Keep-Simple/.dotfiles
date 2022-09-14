@@ -15,8 +15,8 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: prod-us
-  currentCluster: arn:aws:eks:us-east-1:976280145156:cluster/eks_production
+  currentContext: devenv2
+  currentCluster: arn:aws:eks:us-east-1:612055167500:cluster/eks_devenv2
   clusters:
     arn:aws:eks:ap-southeast-2:976280145156:cluster/eks_production:
       namespace:
