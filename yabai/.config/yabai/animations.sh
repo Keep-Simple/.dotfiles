@@ -5,14 +5,17 @@ if [[ "$1" != "-d" ]]; then
 	defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
 	defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
 	defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
-	defaults write -g NSScrollAnimationEnabled -bool false
+	# defaults write -g NSScrollAnimationEnabled -bool false
 	defaults write -g NSWindowResizeTime -float 0.001
 	defaults write -g QLPanelAnimationDuration -float 0
 	defaults write -g NSScrollViewRubberbanding -bool false
 	defaults write -g NSDocumentRevisionsWindowTransformAnimation -bool false
 	defaults write -g NSToolbarFullScreenAnimationDuration -float 0
 	defaults write -g NSBrowserColumnAnimationSpeedMultiplier -float 0
-	defaults write com.apple.dock autohide-delay -float 1
+	defaults write com.apple.dock autohide-delay -float 10
+	defaults write com.apple.dock autohide -bool true
+	defaults write com.apple.dock no-bouncing -bool true
+	# defaults write com.apple.dock autohide-time-modifier -float 2
 	defaults write com.apple.dock expose-animation-duration -float 0
 	defaults write com.apple.dock springboard-show-duration -float 0
 	defaults write com.apple.dock springboard-hide-duration -float 0

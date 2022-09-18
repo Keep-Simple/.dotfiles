@@ -39,7 +39,7 @@ map yy copy
 map yn copy-filename
 map yP copy-absolute-path
 map dd cut
-map \ find-prev
+map \\ find-prev
 map U fzf-restore
 map X push !$f<space>
 map x !$f

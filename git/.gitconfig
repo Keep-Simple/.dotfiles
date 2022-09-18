@@ -1,8 +1,6 @@
 [user]
 	email = nikyasnogorodskyi@gmail.com
 	name = Nick Yasnogorodskyi
-[includeIf "gitdir:~/Documents/commercial/"]
-  path = ~/.gitconfig-work
 [core]
 	pager = delta 
   sshCommand = "ssh -i ~/.ssh/personal_key"
@@ -34,3 +32,6 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+
+[includeIf "gitdir:~/Documents/commercial/"]
+  path = ~/.gitconfig-work

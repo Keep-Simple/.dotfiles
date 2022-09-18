@@ -1,5 +1,8 @@
 lvim.leader = ","
 
+lvim.builtin.terminal.open_mapping = "<C-t>"
+lvim.builtin.terminal.direction = "horizontal"
+
 local _, trouble = pcall(require, "trouble.providers.telescope")
 
 local _, actions = pcall(require, "telescope.actions")
