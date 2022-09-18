@@ -41,7 +41,8 @@ map yP copy-absolute-path
 map dd cut
 map \ find-prev
 map U fzf-restore
-map X !$f
+map X push !$f<space>
+map x !$f
 map gg top
 map gd :delete
 map gc $code $fx
