@@ -36,7 +36,6 @@ M.config = function()
 				runner = "pytest",
 				dap = {
 					justMyCode = false,
-					-- env = { ["PYTHONPATH"] = vim.fn.getcwd() },
 				},
 			}),
 			require("neotest-go"),
