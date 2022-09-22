@@ -16,13 +16,17 @@ yabai -m config \
 	window_shadow float \
 	window_opacity off \
 	window_border off \
-	window_border_width 5 \
+	window_border_blur off \
+	window_border_width 2 \
+	window_animation_duration 0.0 \
+	window_border_hidpi on \
 	active_window_border_color 0xffc4a7e7 \
 	normal_window_border_color 0xff6e6a86 \
 	layout bsp \
 	window_gap 8 \
-	insert_feedback_color 0xffd75f5f \
+	split_type auto \
 	split_ratio 0.5 \
+	insert_feedback_color 0xffd75f5f \
 	auto_balance off \
 	mouse_modifier ctrl \
 	mouse_action1 move \
@@ -37,6 +41,7 @@ yabai -m rule --list |
 
 # float system preferences. Most of these just diable Yabai form resizing them.
 yabai -m rule --add title='Preferences$' manage=off
+yabai -m rule --add title='^General' manage=off
 yabai -m rule --add title='Settings$' manage=off
 
 yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
@@ -66,16 +71,13 @@ yabai -m signal --add event=application_hidden action=$YABAI/focus.sh
 # pass YABAI env, because of sh not autoloading .profile
 yabai -m signal --add event=window_created action="YABAI=$YABAI $YABAI/smart_gaps.sh"
 yabai -m signal --add event=window_destroyed action="YABAI=$YABAI $YABAI/smart_gaps.sh"
-# yabai -m signal --add event=space_changed action=$YABAI/smart_gaps.sh
-# yabai -m signal --add event=window_minimized action="YABAI=$YABAI $YABAI/smart_gaps.sh"
-# yabai -m signal --add event=window_deminimized action="YABAI=$YABAI $YABAI/smart_gaps.sh"
+yabai -m signal --add event=window_minimized action="YABAI=$YABAI $YABAI/smart_gaps.sh"
+yabai -m signal --add event=window_deminimized action="YABAI=$YABAI $YABAI/smart_gaps.sh"
+# yabai -m signal --add event=space_changed action="YABAI=$YABAI $YABAI/smart_gaps.sh"
 
 $YABAI/smart_gaps.sh
 SHELL='/bin/sh' skhd &
 echo "yabai configuration loaded.."
-
-# auto update-yabai
-# YABAI_CERT=yabai-cert sh -c "$(curl -sSL "https://git.io/update-yabai")" &
 
 # notch handling (macbook pro 16) for custom title bar
 # NOTCH_UUID="37D8832A-2D66-02CA-B9F7-8F30A301B230"
@@ -84,3 +86,6 @@ echo "yabai configuration loaded.."
 # yabai -m signal --add event=display_added action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NORMAL_BAR:0; fi"
 # yabai -m signal --add event=display_removed action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NOTCH_BAR:0; fi"
 # if [[ "$(yabai -m query --displays | jq '.[].uuid')" =~ "$NOTCH_UUID" ]]; then if [ "$(yabai -m query --displays | jq length)" -gt "1" ]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NOTCH_BAR:0; fi else yabai -m config external_bar all:$NORMAL_BAR:0; fi
+
+# to handle non-resizable float only windows
+# yabai -m signal --add event=window_created action='yabai -m query --windows --window $YABAI_WINDOW_ID | jq -er ".\"can-resize\" or .\"is-floating\"" || yabai -m window $YABAI_WINDOW_ID --toggle float'

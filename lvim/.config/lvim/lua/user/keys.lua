@@ -52,7 +52,7 @@ vim.cmd([[
      nnoremap \ ,
     "leader instead of , is not working for some reason
     "paste and ignore deleted content
-     xnoremap ,p "_dP
+     xnoremap ,p "_dp
     "delete completly (to the null register)
      nnoremap ,d "_d
      vnoremap ,d "_d
