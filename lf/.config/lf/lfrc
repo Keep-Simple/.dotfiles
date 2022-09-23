@@ -2,7 +2,7 @@
 
 source "~/.config/lf/commands/paste"
 source "~/.config/lf/commands/bulk-rename"
-source "~/.config/lf/commands/shortcutrc"
+source "~/.config/lf/shortcutrc"
 source "~/.config/lf/commands/fzf"
 source "~/.config/lf/commands/trash"
 source "~/.config/lf/commands/open"
