@@ -1,7 +1,31 @@
 lvim.leader = ","
 
-local _, trouble = pcall(require, "trouble.providers.telescope")
+lvim.builtin.terminal.open_mapping = "<C-t>"
+-- bruh..., ignore default lvim debugger mappings
+lvim.builtin.dap.on_config_done = function()
+	lvim.builtin.which_key.mappings["d"] = {
+		name = "Debug",
+		t = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
+		B = { "<cmd>lua require'dap'.clear_breakpoints()<cr>", "Clear all breakpoints" },
+		b = { "<cmd>lua require'dap'.step_back()<cr>", "Step Back" },
+		c = { "<cmd>lua require'dap'.continue()<cr>", "Start/Continue" },
+		C = { "<cmd>lua require'dap'.run_to_cursor()<cr>", "Run To Cursor" },
+		d = { "<cmd>lua require'dap'.disconnect()<cr>", "Disconnect" },
+		g = { "<cmd>lua require'dap'.session()<cr>", "Get Session" },
+		i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into" },
+		o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over" },
+		u = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
+		p = { "<cmd>lua require'dap'.pause()<cr>", "Pause" },
+		r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "Toggle Repl" },
+		R = { "<cmd>lua require('dap').repl.close()<cr>", "Close Repl" },
+		q = { "<cmd>lua require'dap'.close()<cr>", "Quit" },
+	}
+end
+-- ignore project.nvim mapping, use only packer
+lvim.builtin.which_key.mappings["P"] = lvim.builtin.which_key.mappings["p"]
+lvim.builtin.which_key.mappings["p"] = nil
 
+local _, trouble = pcall(require, "trouble.providers.telescope")
 local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.mappings = {
 	i = {
@@ -26,25 +50,44 @@ lvim.keys.normal_mode = {
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
 	["gq"] = "<cmd>TroubleToggle quickfix<cr>",
+	["gS"] = "<cmd>setlocal spell!<cr>",
 	["<C-Up>"] = ":resize +2<CR>",
 	["<C-Down>"] = ":resize -2<CR>",
 	["<C-Left>"] = ":vertical resize +2<CR>",
 	["<C-Right>"] = ":vertical resize -2<CR>",
 	["<S-l>"] = ":BufferLineCycleNext<CR>",
 	["<S-h>"] = ":BufferLineCyclePrev<CR>",
+	["<S-x>"] = ":BufferKill<CR>",
 	-- ["gd"] = "<cmd>Trouble lsp_definitions<cr>",
 	-- wtf...
-	["yy"] = "yy",
+	-- ["yy"] = "yy",
 }
 
-lvim.builtin.which_key.mappings["LC"] = { "<cmd>LvimCacheReset<cr>", "Cache Reset" }
+vim.cmd([[
+    " backward search
+     nnoremap \ ,
+    "leader instead of , is not working for some reason
+    "paste and ignore deleted content
+     xnoremap ,p "_dp
+    "delete completly (to the null register)
+     " nnoremap ,d "_d
+     " vnoremap ,d "_d
+    "copy to the clipboard
+     nnoremap ,y "+y
+     vnoremap ,y "+y
+]])
+
+lvim.builtin.which_key.mappings["LC"] = { "<cmd>LvimCacheReset<cr>", "Lvim cache reset" }
 lvim.builtin.which_key.mappings["W"] = {
 	"<cmd>SudaWrite<cr>",
-	"Sudo Save",
+	"sudo save",
+}
+lvim.builtin.which_key.mappings["n"] = {
+	"<cmd>noautocmd w<cr>",
+	"Save & no fmt",
 }
 
 lvim.builtin.which_key.mappings["z"] = { "<cmd>ZenMode<cr>", "Zen" }
-lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<cr>", "Projects" }
 
 lvim.builtin.which_key.mappings["T"] = {
 	name = "Trouble",
@@ -97,17 +140,9 @@ lvim.builtin.which_key.mappings["r"] = {
 	f = { "<cmd>lua require('spectre').open_file_search()<cr>", "Replace Buffer" },
 }
 
-lvim.builtin.which_key.mappings["y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
+lvim.builtin.which_key.mappings["Y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 lvim.builtin.which_key.mappings["e"] = { "<cmd>Lf<cr>", "Explorer" }
-lvim.builtin.which_key.mappings["sr"] = { "<cmd>Telescope resume<cr>", "Resume search" }
-
-lvim.builtin.which_key.mappings["dB"] = {
-	name = "Breakpoints",
-	c = { "<cmd>lua require('dap').clear_breakpoints()<cr>", "Clear all breakpoints" },
-	l = { "<cmd>lua require('dap').list_breakpoints()<cr>", "List breakpoints" },
-}
-
-lvim.builtin.which_key.mappings["dR"] = { "<cmd>lua require('dap').repl.close()<cr>", "Close Repl" }
+lvim.builtin.which_key.mappings["ss"] = { "<cmd>Telescope resume<cr>", "Resume search" }
 
 lvim.builtin.which_key.mappings["t"] = {
 	name = "Test Runner",

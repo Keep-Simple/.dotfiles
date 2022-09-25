@@ -1,28 +1,17 @@
-#!/usr/bin/env bash
-
-# profile file. Runs on login. Environmental variables are set here.
-
-# If you don't plan on reverting to bash, you can remove the link in ~/.profile
-# to clean up.
-# Adds `~/.local/bin` to $PATH
-paths=$(find -L ~/.local/bin -type d -print | xargs printf -- '%s:')%%:
-export PATH="$PATH:${paths}"
-
-export PATH=$PATH:$HOME/.local/share/cargo/bin
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-export PATH="$HOME/.poetry/bin:$PATH"
-
-eval "$(pyenv init -)"
-eval "$(fnm env --use-on-cd)"
-eval $(thefuck --alias)
-. "$HOME/.local/share/cargo/env"
-
-# Default programs:
+# vim:ft=sh
+# Default programs
 export EDITOR="lvim"
 export VISUAL="$EDITOR"
 export TERMINAL="st"
 export BROWSER="brave"
+
+paths=$(find -L ~/.local/bin -type d -print | xargs printf -- '%s:')%%:
+export PATH="$PATH:${paths}"
+export PATH=$PATH:$HOME/.local/share/cargo/bin
+export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$PATH"
+export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
+export PATH=$PATH:$GOPATH/bin
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -36,50 +25,21 @@ export LESSHISTFILE="-"
 # export WGETRC="${XDG_CONFIG_HOME:-$HOME/.config}/wget/wgetrc"
 export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/shell/inputrc"
 # export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
-#export ALSA_CONFIG_PATH="$XDG_CONFIG_HOME/alsa/asoundrc"
-#export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local/share}/gnupg"
+# export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local/share}/gnupg"
+# export ALSA_CONFIG_PATH="$XDG_CONFIG_HOME/alsa/asoundrc"
 export WINEPREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/wineprefixes/default"
 export KODI_DATA="${XDG_DATA_HOME:-$HOME/.local/share}/kodi"
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/password-store"
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 export ANDROID_SDK_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/android"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
-export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
-export PATH=$PATH:$GOPATH/bin
 export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible/ansible.cfg"
 export UNISON="${XDG_DATA_HOME:-$HOME/.local/share}/unison"
 export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
-export WEECHAT_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/weechat"
 export MBSYNCRC="${XDG_CONFIG_HOME:-$HOME/.config}/mbsync/config"
-export ELECTRUMDIR="${XDG_DATA_HOME:-$HOME/.local/share}/electrum"
 export DICS="/usr/share/stardict/dic/"
-# export SUDO_ASKPASS="$HOME/.local/bin/dmenupass"
+export SUDO_ASKPASS="$HOME/.local/bin/dmenupass"
 
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-export FZF_DEFAULT_OPTS="--layout=reverse --inline-info --height=50%"
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
---color=dark
---color=fg:-1,bg:-1,hl:#c678dd,fg+:#ffffff,bg+:#4b5263,hl+:#d858fe
---color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef
-'
-export LESS=-R
-export LESS_TERMCAP_mb="$(printf '%b' '[1;31m')"
-export LESS_TERMCAP_md="$(printf '%b' '[1;36m')"
-export LESS_TERMCAP_me="$(printf '%b' '[0m')"
-export LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')"
-export LESS_TERMCAP_se="$(printf '%b' '[0m')"
-export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"
-export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
-export LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
-export QT_QPA_PLATFORMTHEME="gtk2"        # Have QT use gtk2 theme.
-export MOZ_USE_XINPUT2="1"                # Mozilla smooth scrolling/touchpads.
-export AWT_TOOLKIT="MToolkit wmname LG3D" #May have to install wmname
-export _JAVA_AWT_WM_NONREPARENTING=1      # Fix for Java applications in dwm
-
-export PYTHONPATH=$PYTHONPATH:.
-ulimit -n unlimited
-
-source $HOME/.config/lf/icons
 
 if [ ! -f ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ];
 then
@@ -98,3 +58,5 @@ fi
 
 # Switch escape and caps if tty and no passwd required:
 # sudo -n loadkeys ${XDG_DATA_HOME:-$HOME/.local/share}/larbs/ttymaps.kmap 2>/dev/null
+export PYTHONPATH=$PYTHONPATH:.
+export PYENV_ROOT="$HOME/.pyenv"

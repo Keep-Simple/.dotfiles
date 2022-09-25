@@ -29,8 +29,22 @@ M.config = function()
 					"repl",
 					-- "console",
 				},
-				size = 0.2,
+				size = 0.25,
 				position = "bottom",
+			},
+			controls = {
+				enabled = true,
+				element = "repl",
+				icons = {
+					pause = "",
+					play = "",
+					step_into = "",
+					step_over = "",
+					step_out = "",
+					step_back = "",
+					run_last = "↻",
+					terminate = "□",
+				},
 			},
 			floating = {
 				max_height = nil, -- These can be integers or a float between 0 and 1.
@@ -41,6 +55,10 @@ M.config = function()
 				},
 			},
 			windows = { indent = 1 },
+			render = {
+				max_type_length = nil, -- Can be integer or nil.
+				max_value_lines = 100, -- Can be integer or nil.
+			},
 		},
 	})
 

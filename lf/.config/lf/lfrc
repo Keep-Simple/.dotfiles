@@ -1,8 +1,17 @@
-#!/bin/sh
+# vim:ft=sh
 
-# Basic vars
-set shell zsh
-set shellopts '-ey'
+source "~/.config/lf/commands/paste"
+source "~/.config/lf/commands/bulk-rename"
+source "~/.config/lf/shortcutrc"
+source "~/.config/lf/commands/fzf"
+source "~/.config/lf/commands/trash"
+source "~/.config/lf/commands/open"
+source "~/.config/lf/commands/files_and_dirs"
+source "~/.config/lf/commands/archives"
+
+set shell sh
+# set shellopts '-ey' # for zsh
+set shellopts '-eu'
 set ifs "\n"
 set scrolloff 10
 set icons
@@ -12,6 +21,7 @@ set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set previewer ~/.config/lf/preview
 set cleaner ~/.config/lf/cleaner
 
+# change columns size dependant on the available space
 ${{
     w=$(tput cols)
     if [ $w -le 100 ]; then
@@ -21,135 +31,7 @@ ${{
     fi
 }}
 
-cmd open ${{
-    case $(file --mime-type $f -b) in
-	image/vnd.djvu|application/pdf|application/octet-stream) setsid -f zathura $fx >/dev/null 2>&1 ;;
-        text/*|application/json) $EDITOR $fx;;
-	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
-	image/svg+xml) display -- $f ;;
-	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|tif\|ico\)\(_large\)*$" | sxiv -aio 2>/dev/null | lf-select ;;
-	audio/*) mpv --audio-display=no $f ;;
-	video/*) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
-	application/pdf|application/vnd*|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
-        *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
-    esac
-}}
 
-cmd fzf-restore ${{
-    ids="$(echo -ne '\n'              | \
-      trash-restore                   | \
-      awk '$1 ~ /^[0-9]+/ {print $0}' | \
-      fzf --multi                     | \
-      awk '{print $1}'                | \
-      sed -z 's/\n/,/g;s/,$/\n/')"
-    echo $ids | trash-restore 
-    clear
-}}
-
-cmd touch %{{
-    mkdir -p "$(dirname "$*")" && touch -- "$*"
-    lf -remote "send $id select \"$*\""
-}}
-
-cmd mkdir %{{
-    mkdir -p "$@"
-    lf -remote "send $id select \"$@\""
-}}
-
-cmd extract ${{
-  set -f
-  case $f in
-    *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf $f;;
-    *.tar.gz|*.tgz) tar xzvf $f;;
-    *.tar.xz|*.txz) tar xJvf $f;;
-    *.tar) tar xvf $f;;
-    *.zip) unzip $f;;
-    *.rar) unrar x $f;;
-    *.7z) 7z x $f;;
-    *) echo "Unsupported format";;
-  esac
-}}
-
-cmd tar &{{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    tar czf $1.tar.gz $1
-    rm -rf $1
-}}
-
-cmd zip &{{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    zip -r $1 $fx
-    rm -rf $1
-}}
-
-cmd delete ${{
-  set -f
-  printf "\n$fx\n"
-  printf "delete?[y/N]"
-  read ans
-  if [[ $ans == "y" ]]; then
-    rm -rf $fx
-  fi
-}}
-
-cmd chmod %{{
-  printf "\nMode Bits: "
-  read ans
-  for file in "$fx"
-  do
-    chmod $ans $file
-  done
-  lf -remote 'send reload'
-}}
-
-cmd select-files ${{
-    { echo "$fs"; find -L "$(pwd)" -mindepth 1 -maxdepth 1 -type f; } |
-        if [ "$lf_hidden" = "false" ]; then
-          # remove any hidden files so you only select files you can see.
-          grep -v '/\.[^/]\+$'
-        else
-          cat
-        fi |
-        sed '/^$/d' | sort | uniq -u | tr "\n" "\0" |
-        xargs -0 -r -I{} lf -remote "send $id toggle '{}'"
-}}
-
-cmd fzf_search ${{
-    res="$( \
-        RG_PREFIX="rg --column --line-number --no-heading --color=always \
-            --smart-case --hidden --glob '!.git'"
-        FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
-            fzf --bind "change:reload:$RG_PREFIX {q} || true" \
-            --ansi --layout=reverse --header 'Search in files' \
-            | cut -d':' -f1
-    )"
-    [ ! -z "$res" ] && lf -remote "send $id select \"$res\""
-}}
-
-cmd fzf_jump ${{
-    res="$(fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
-    if [ -d "$res" ]; then
-        cmd="cd"
-    else 
-        cmd="select"                                                       
-    fi
-    lf -remote "send $id $cmd \"$res\""
-}}
-
-# Copy the file names (including extension) of the selections separated by \n
-cmd copy-filename ${{
-  names="$(echo $fx | tr ' ' '\n' | xargs -I{} basename {})"
-  echo $names | tr ' ' '\n' | pbcopy
-}}
-
-# Copy the absolute paths of selections separated by \n
-cmd copy-absolute-path ${{
-  echo $fx | tr ' ' '\n' | pbcopy
-}}
 
 map gh
 map d
@@ -165,20 +47,14 @@ map yy copy
 map yn copy-filename
 map yP copy-absolute-path
 map dd cut
+map \\ find-prev
 map U fzf-restore
-map X !$f
+map X push !$f<space>
+map x !$f
 map gg top
 map gd :delete
-map ,st :fzf_search
-map ,sh :share
-map ,ch :chmod
-map ,f :fzf_jump
-map ,t push :tar<space>
-map ,z push :zip<space>
-map ,e :extract
-map ,Sl $lvim +"lua require('persistence').load({ last = true })"
 map gc $code $fx
-map gl $lvim $f
+map gl follow_link
 map D :trash
 map t toggle
 map A push :mkdir<space>
@@ -189,94 +65,13 @@ map <enter> shell
 map X !$f
 map O $mimeopen --ask $f
 map <c-z> $kill -STOP $PPID
-
-cmd paste_try_cow &{{
-    set -- $(cat ~/.local/share/lf/files)
-    mode="$1"
-    shift
-
-    if [ $mode = 'copy' ]; then
-        src_targets="$(df --output=target -- "$@" | sed '1d' | sort -u)"
-
-        if [ "$(df --output=target -- "$PWD" | tail -n 1)" = \
-             "$(echo "$src_targets" | tail -n 1)" ] && \
-             (( "$(echo "$src_targets" | wc -l)" == 1 )) && \
-             [[ "$(df --output=fstype -- "$PWD" | tail -n 1)" =~ ^(btrfs|xfs|zfs)$ ]]; then
-
-            echo 'selected copy and cp reflink paste'
-
-            start=$(date '+%s')
-
-            for i in "$@"; do
-                name="${i##*/}"
-                original="$name"
-
-                count=0
-                while [ -w "$PWD/$name" ]; do
-                    count=$((count+1))
-                    name="$original.~$count~"
-                done
-
-                set +e
-                cp_out="$(cp -rn --reflink=always -- "$i" "$PWD/$name" 2>&1)"
-                set -e
-
-                if [ ! -z "$cp_out" ]; then
-                    lf -remote "send $id echoerr $cp_out"
-                    exit 0
-                fi
-            done
-
-            finish=$(( $(date '+%s') - $start ))
-            t=''
-            if (( $finish > 2 )); then
-                t="${finish}s"
-            fi
-
-            lf -remote "send clear"
-
-            green=$'\u001b[32m'
-            reset=$'\u001b[0m'
-            lf -remote "send $id echo ${green}reflinked!${reset} $t"
-        else
-            echo 'selected copy and lf native paste'
-            lf -remote "send $id paste"
-        fi
-
-    elif [ $mode = 'move' ]; then
-        echo 'selected move and lf native paste'
-        lf -remote "send $id paste"
-    fi
-
-    lf -remote "send load"
-}}
-
-cmd bulk-rename ${{
-  old="$(mktemp)"
-  new="$(mktemp)"
-  if [ -n "$fs" ]; then
-    fs="$(basename $fs)"
-  else
-    fs="$(ls)"
-  fi
-  printf '%s\n' "$fs" >"$old"
-  printf '%s\n' "$fs" >"$new"
-  $EDITOR "$new"
-  [ "$(wc -l < "$new")" -ne "$(wc -l < "$old")" ] && exit
-  paste "$old" "$new" | while IFS= read -r names; do
-    src="$(printf '%s' "$names" | cut -f1)"
-    dst="$(printf '%s' "$names" | cut -f2)"
-    if [ "$src" = "$dst" ] || [ -e "$dst" ]; then
-        continue
-    fi
-    mv -- "$src" "$dst"
-  done
-  rm -- "$old" "$new"
-  lf -remote "send $id unselect"
-}}
-
 map p paste_try_cow
 map ,r bulk-rename
-
-# Source Bookmarks
-source "~/.config/lf/shortcutrc"
+map ,st :fzf_search
+map ,sh :share
+map ,ch :chmod
+map ,f :fzf_jump
+map ,t push :tar<space>
+map ,z push :zip<space>
+map ,e :extract
+map ,Sl $lvim +"lua require('persistence').load({ last = true })"

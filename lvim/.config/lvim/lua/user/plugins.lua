@@ -38,6 +38,7 @@ lvim.plugins = {
 		run = "./install.sh",
 		requires = "hrsh7th/nvim-cmp",
 		event = "InsertEnter",
+		disable = true,
 	},
 	{
 		"karb94/neoscroll.nvim",
@@ -79,13 +80,6 @@ lvim.plugins = {
 		ft = { "fugitive" },
 	},
 	{ "tpope/vim-rhubarb" },
-	{
-		"ray-x/lsp_signature.nvim",
-		config = function()
-			require("lsp_signature").on_attach()
-		end,
-		event = "BufRead",
-	},
 	{
 		"windwp/nvim-ts-autotag",
 		config = function()

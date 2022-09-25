@@ -3,6 +3,40 @@ if not status_ok then
 	return
 end
 
+dap.defaults.fallback.terminal_win_cmd = "50vsplit new"
+dap.defaults.fallback.exception_breakpoints = { "uncaught" }
+dap.defaults.fallback.external_terminal = {
+	command = "alacritty",
+	args = { "-e" },
+}
+
+local icons = {
+	breakpoint = {
+		text = "",
+		texthl = "LspDiagnosticsSignError",
+		linehl = "",
+		numhl = "",
+	},
+	breakpoint_rejected = {
+		text = "",
+		texthl = "LspDiagnosticsSignHint",
+		linehl = "",
+		numhl = "",
+	},
+	stopped = {
+		text = "",
+		texthl = "LspDiagnosticsSignInformation",
+		linehl = "DiagnosticUnderlineInfo",
+		numhl = "LspDiagnosticsSignInformation",
+	},
+}
+
+if lvim.use_icons then
+	vim.fn.sign_define("DapBreakpoint", icons.breakpoint)
+	vim.fn.sign_define("DapBreakpointRejected", icons.breakpoint_rejected)
+	vim.fn.sign_define("DapStopped", icons.stopped)
+end
+
 dap.adapters.delve = {
 	type = "server",
 	port = "${port}",
@@ -155,27 +189,26 @@ dap.configurations.python = {
 					break
 				end
 			end
-			path = vim.fn.input("Python path: ", path or "", "file")
+			-- path = vim.fn.input("Python path: ", path or "", "file")
 			-- path = path ~= "" and vim.fn.expand(path) or nil
 			return path
 		end,
 		env = function()
 			return { ["PYTHONPATH"] = vim.fn.getcwd() }
 		end,
-		-- args = function()
-		--   local args = {}
-		--   local i = 1
-		--   while true do
-		--     local arg = vim.fn.input("Argument [" .. i .. "]: ")
-		--     if arg == "" then
-		--       break
-		--     end
-		--     args[i] = arg
-		--     i = i + 1
-		--   end
-		--   return args
-		-- end,
+		-- console = "externalTerminal",
+		args = function()
+			local args = {}
+			local i = 1
+			while true do
+				local arg = vim.fn.input("Argument [" .. i .. "]: ")
+				if arg == "" then
+					break
+				end
+				args[i] = arg
+				i = i + 1
+			end
+			return args
+		end,
 	},
 }
-
-dap.defaults.fallback.exception_breakpoints = { "uncaught" }
