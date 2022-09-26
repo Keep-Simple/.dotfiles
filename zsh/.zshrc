@@ -6,7 +6,7 @@ fi
 [[ -n $(ls ~/.zshrc.d/) ]] && for file in ~/.zshrc.d/*; do source "${file}"; done
 
 export ZSH=$HOME/.oh-my-zsh
-
+export ZSH_COMPDUMP="${ZSH_CACHE_DIR}/.zcompdump-${(%):-%m}-${ZSH_VERSION}"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 # for homebrew autocomplete, needs to be before omz source
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -36,9 +36,6 @@ zle_highlight+=(paste:none) # no highlight on paste
 zstyle ':bracketed-paste-magic' active-widgets '.self-*' # instant paste
 setopt autocd		# Automatically cd into typed directory.
 setopt interactive_comments
-
-HISTSIZE=10000000
-SAVEHIST=10000000
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc"
@@ -75,7 +72,7 @@ eval "$(pyenv init --path)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(fnm env --use-on-cd)"
 . "$HOME/.local/share/cargo/env"
-ulimit -n unlimited
+# ulimit -n unlimited
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
