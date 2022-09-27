@@ -1,9 +1,3 @@
-# You may also like to assign a key to this command:
-#
-#     bind '"\C-o":"lfcd\C-m"'  # bash
-#     bindkey -s '^o' 'lfcd\n'  # zsh
-#
-
 # it's for changing dir on lf quit with button Q (not regular q)
 lf () {
     local tempfile="$(mktemp)"
@@ -14,3 +8,9 @@ lf () {
     fi
     command rm -f -- "$tempfile" 2>/dev/null
 }
+
+
+zle     -N            lf
+bindkey -M emacs '^O' lf
+bindkey -M vicmd '^O' lf
+bindkey -M viins '^O' lf

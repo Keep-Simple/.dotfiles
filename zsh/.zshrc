@@ -18,7 +18,6 @@ plugins=(
   zsh-autosuggestions
   ansible
   poetry
-  nick-functions
   gh
   fzf
   golang
@@ -26,6 +25,7 @@ plugins=(
   terraform
   docker
   docker-compose
+  nick-functions
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -76,8 +76,6 @@ eval "$(fnm env --use-on-cd)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
