@@ -72,7 +72,7 @@ eval "$(pyenv init --path)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(fnm env --use-on-cd)"
 . "$HOME/.local/share/cargo/env"
-# ulimit -n unlimited
+ulimit -n unlimited
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

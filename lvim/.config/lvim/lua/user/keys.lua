@@ -1,6 +1,6 @@
 lvim.leader = ","
 
-lvim.builtin.terminal.open_mapping = "<C-t>"
+lvim.builtin.terminal.open_mapping = [[<c-\>]]
 -- bruh..., ignore default lvim debugger mappings
 lvim.builtin.dap.on_config_done = function()
 	lvim.builtin.which_key.mappings["d"] = {
@@ -45,11 +45,11 @@ lvim.builtin.telescope.defaults.mappings = {
 lvim.lsp.buffer_mappings.normal_mode["gr"] = nil
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
+	-- overwrites ga (shows asci code of the character)
 	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
-	["gq"] = "<cmd>TroubleToggle quickfix<cr>",
 	["gS"] = "<cmd>setlocal spell!<cr>",
 	["<C-Up>"] = ":resize +2<CR>",
 	["<C-Down>"] = ":resize -2<CR>",
@@ -58,9 +58,6 @@ lvim.keys.normal_mode = {
 	["<S-l>"] = ":BufferLineCycleNext<CR>",
 	["<S-h>"] = ":BufferLineCyclePrev<CR>",
 	["<S-x>"] = ":BufferKill<CR>",
-	-- ["gd"] = "<cmd>Trouble lsp_definitions<cr>",
-	-- wtf...
-	-- ["yy"] = "yy",
 }
 
 vim.cmd([[
@@ -68,7 +65,7 @@ vim.cmd([[
      nnoremap \ ,
     "leader instead of , is not working for some reason
     "paste and ignore deleted content
-     xnoremap ,p "_dp
+     xnoremap ,p "_dP
     "delete completly (to the null register)
      " nnoremap ,d "_d
      " vnoremap ,d "_d
