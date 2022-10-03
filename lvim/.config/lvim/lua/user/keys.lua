@@ -28,28 +28,14 @@ lvim.builtin.dap.on_config_done = function()
 		q = { "<cmd>lua require'dap'.terminate()<cr>", "Quit" },
 	}
 end
+
 -- ignore project.nvim mapping, use only packer
 lvim.builtin.which_key.mappings["P"] = lvim.builtin.which_key.mappings["p"]
 lvim.builtin.which_key.mappings["p"] = nil
-
-local _, trouble = pcall(require, "trouble.providers.telescope")
-local _, actions = pcall(require, "telescope.actions")
-lvim.builtin.telescope.defaults.mappings = {
-	i = {
-		["<C-j>"] = actions.move_selection_next,
-		["<C-k>"] = actions.move_selection_previous,
-		["<C-n>"] = actions.cycle_history_next,
-		["<C-p>"] = actions.cycle_history_prev,
-		["<C-q>"] = trouble.open_with_trouble,
-	},
-	n = {
-		["<C-j>"] = actions.move_selection_next,
-		["<C-k>"] = actions.move_selection_previous,
-		["<C-q>"] = trouble.open_with_trouble,
-	},
-}
-
+lvim.builtin.which_key.mappings[";"] = nil
 lvim.lsp.buffer_mappings.normal_mode["gr"] = nil
+lvim.builtin.which_key.mappings["/"] = nil
+
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
@@ -81,15 +67,13 @@ vim.cmd([[
 
 lvim.builtin.which_key.mappings["LC"] = { "<cmd>LvimCacheReset<cr>", "Lvim cache reset" }
 lvim.builtin.which_key.mappings["W"] = {
-	"<cmd>SudaWrite<cr>",
-	"sudo save",
-}
-lvim.builtin.which_key.mappings["n"] = {
-	"<cmd>noautocmd w<cr>",
-	"Save & no fmt",
-}
+	name = "Save options",
+	s = { "<cmd>SudaWrite<cr>", "sudo save" },
+	n = { "<cmd>noautocmd w<cr>", "no format save" },
+	a = { "<cmd>wa<cr>", "save all" },
 
-lvim.builtin.which_key.mappings["z"] = { "<cmd>ZenMode<cr>", "Zen" }
+	N = { "<cmd>noautocmd wa<cr>", "no format save all" },
+}
 
 lvim.builtin.which_key.mappings["T"] = {
 	name = "Trouble",
@@ -108,25 +92,12 @@ lvim.builtin.which_key.mappings["gv"] = {
 	r = { "<cmd>DiffviewRefresh<cr>", "Refresh" },
 	f = { "<cmd>DiffviewRefresh<cr>", "Files History" },
 }
-
-lvim.builtin.which_key.mappings["gy"] = {
-	"<cmd>lua require'gitlinker'.get_buf_range_url('n')<cr>",
-	"Copy link",
-}
-
+lvim.builtin.which_key.mappings["gy"] = { "<cmd>lua require'gitlinker'.get_buf_range_url('n')<cr>", "Copy link" }
 lvim.builtin.which_key.mappings["gm"] = { "<cmd>Git<cr>", "Git menu" }
 
-lvim.builtin.which_key.mappings["G"] = { "<cmd>Glow<cr>", "Markdown preview" }
+lvim.builtin.which_key.mappings["m"] = { "<cmd>MarkdownPreviewToggle<cr>", "Live Markdown" }
 
 lvim.builtin.which_key.mappings["lo"] = { "<cmd>SymbolsOutline<cr>", "Outline" }
-lvim.builtin.which_key.mappings["lt"] = {
-	name = "Typescript",
-	i = { "<cmd>TSLspImportAll<cr>", "Import All" },
-	o = { "<cmd>TSLspOrganize<cr>", "Organize Imports" },
-	r = { "<cmd>TSLspRenameFile<cr>", "Rename File" },
-	c = { "<cmd>TSLspImportCurrent<cr>", "Import under cursor" },
-	h = { "<cmd>TSLspToggleInlayHints<cr>", "Toggle hints" },
-}
 
 lvim.builtin.which_key.mappings["S"] = {
 	name = "Session",
@@ -160,4 +131,21 @@ lvim.builtin.which_key.mappings["t"] = {
 	},
 	s = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Toogle Summary" },
 	o = { "<cmd>lua require('neotest').output.open({ enter = true, short = false })<cr>", "Show output" },
+}
+
+local _, trouble = pcall(require, "trouble.providers.telescope")
+local _, actions = pcall(require, "telescope.actions")
+lvim.builtin.telescope.defaults.mappings = {
+	i = {
+		["<C-j>"] = actions.move_selection_next,
+		["<C-k>"] = actions.move_selection_previous,
+		["<C-n>"] = actions.cycle_history_next,
+		["<C-p>"] = actions.cycle_history_prev,
+		["<C-q>"] = trouble.open_with_trouble,
+	},
+	n = {
+		["<C-j>"] = actions.move_selection_next,
+		["<C-k>"] = actions.move_selection_previous,
+		["<C-q>"] = trouble.open_with_trouble,
+	},
 }

@@ -1,15 +1,6 @@
 lvim.plugins = {
-	{
-		"tpope/vim-surround",
-	},
+	-- copy over ssh
 	{ "ojroques/vim-oscyank" },
-	{
-		"phaazon/hop.nvim",
-		event = "BufRead",
-		config = function()
-			require("user.hop").config()
-		end,
-	},
 	{
 		"folke/trouble.nvim",
 		cmd = "TroubleToggle",
@@ -18,6 +9,7 @@ lvim.plugins = {
 			require("user.trouble").config()
 		end,
 	},
+	-- find and replace
 	{
 		"windwp/nvim-spectre",
 		event = "BufRead",
@@ -25,27 +17,7 @@ lvim.plugins = {
 			require("user.spectre").config()
 		end,
 	},
-	{
-		"gelfand/copilot.vim",
-		requires = "hrsh7th/cmp-copilot",
-		config = function()
-			require("user.copilot").config()
-		end,
-		disable = true,
-	},
-	{
-		"tzachar/cmp-tabnine",
-		run = "./install.sh",
-		requires = "hrsh7th/nvim-cmp",
-		event = "InsertEnter",
-		disable = true,
-	},
-	{
-		"karb94/neoscroll.nvim",
-		config = function()
-			require("user.neoscroll").config()
-		end,
-	},
+	-- highlight hex color values
 	{
 		"norcalli/nvim-colorizer.lua",
 		config = function()
@@ -60,6 +32,7 @@ lvim.plugins = {
 			require("user.gitlinker").config()
 		end,
 	},
+	-- smart git wrapper
 	{
 		"tpope/vim-fugitive",
 		cmd = {
@@ -79,7 +52,11 @@ lvim.plugins = {
 		},
 		ft = { "fugitive" },
 	},
-	{ "tpope/vim-rhubarb" },
+	{ "tpope/vim-repeat" },
+	{
+		"tpope/vim-surround",
+	},
+	-- autoclose and autorename html/xml tags
 	{
 		"windwp/nvim-ts-autotag",
 		config = function()
@@ -92,86 +69,59 @@ lvim.plugins = {
 			require("user.outline").config()
 		end,
 	},
+	-- smooth scrolling
 	{
-		"jose-elias-alvarez/nvim-lsp-ts-utils",
-		filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
+		"karb94/neoscroll.nvim",
+		config = function()
+			require("user.neoscroll").config()
+		end,
 	},
+	-- Git diffview
 	{
 		"sindrets/diffview.nvim",
 		requires = "nvim-lua/plenary.nvim",
 	},
-	{
-		"simrat39/rust-tools.nvim",
-		config = function()
-			require("user.rust-tools").config()
-		end,
-		ft = { "rust", "rs" },
-	},
-	{
-		"peterhoeg/vim-qml",
-		event = "BufRead",
-		ft = { "qml" },
-	},
+	-- Sudo save
 	{ "lambdalisue/suda.vim" },
+	-- :Codi [name] opens buffers with [name] language interpreter
 	{
 		"metakirby5/codi.vim",
 		cmd = "Codi",
 	},
+	-- Live markdown preview in browser
 	{
-		"npxbr/glow.nvim",
-		ft = { "markdown" },
-	},
-	{
-		"folke/zen-mode.nvim",
-		config = function()
-			require("user.zen").config()
-		end,
+		"iamcco/markdown-preview.nvim",
+		run = "cd app && npm install",
+		ft = "markdown",
 	},
 	{
 		"folke/persistence.nvim",
 		event = "BufReadPre", -- this will only start session saving when an actual file was opened
 		module = "persistence",
 		config = function()
-			require("persistence").setup({
-				dir = vim.fn.expand(vim.fn.stdpath("config") .. "/session/"),
-				options = { "buffers", "curdir", "tabpages", "winsize" },
-			})
+			require("persistence").setup()
 		end,
 	},
-	{ "tpope/vim-repeat" },
+	-- gx opens links
 	{
 		"felipec/vim-sanegx",
 		event = "BufRead",
 	},
-	{
-		"rmagatti/goto-preview",
-		config = function()
-			require("goto-preview").setup({
-				width = 120,
-				height = 25,
-				default_mappings = true,
-				debug = false,
-				opacity = nil,
-				post_open_hook = nil,
-			})
-		end,
-	},
+	-- lf wrapper
 	{
 		"ptzz/lf.vim",
 		config = function()
 			require("user.lf").config()
 		end,
 	},
+	-- needed for lf wrapper
 	{
 		"voldikss/vim-floaterm",
 		config = function()
 			require("user.floaterm").config()
 		end,
 	},
-	{ "gurpreetatwal/vim-avro" },
-	{
-		"p00f/nvim-ts-rainbow",
-	},
+	-- collaborative editing
 	{
 		"jbyuki/instant.nvim",
 		config = function()
@@ -184,6 +134,7 @@ lvim.plugins = {
 			require("user.filetype").config()
 		end,
 	},
+	-- remember cursor position of the buffers
 	{
 		"ethanholz/nvim-lastplace",
 		event = "BufRead",
@@ -200,6 +151,7 @@ lvim.plugins = {
 			})
 		end,
 	},
+	-- pick on line numbers, when in command mode
 	{
 		"nacro90/numb.nvim",
 		event = "BufRead",
@@ -223,6 +175,7 @@ lvim.plugins = {
 			require("user.dap-virtual-text").config()
 		end,
 	},
+	-- test runner with dap integration
 	{
 		"nvim-neotest/neotest",
 		requires = {
@@ -235,11 +188,47 @@ lvim.plugins = {
 			require("user.neotest").config()
 		end,
 	},
+	-- show code context at the top of the buffer
 	{ "nvim-treesitter/nvim-treesitter-context" },
+	-- mason is lsp/debugger/formatters/linters installer, this is config
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		config = function()
 			require("user.mason").config()
 		end,
+	},
+
+	-- language specific
+	{
+		"simrat39/rust-tools.nvim",
+		config = function()
+			require("user.rust-tools").config()
+		end,
+		ft = { "rust", "rs" },
+	},
+	{
+		"peterhoeg/vim-qml",
+		event = "BufRead",
+		ft = { "qml" },
+	},
+	{
+		"jose-elias-alvarez/typescript.nvim",
+	},
+
+	-- ai autocompletions
+	{
+		"gelfand/copilot.vim",
+		requires = "hrsh7th/cmp-copilot",
+		config = function()
+			require("user.copilot").config()
+		end,
+		disable = true,
+	},
+	{
+		"tzachar/cmp-tabnine",
+		run = "./install.sh",
+		requires = "hrsh7th/nvim-cmp",
+		event = "InsertEnter",
+		disable = true,
 	},
 }

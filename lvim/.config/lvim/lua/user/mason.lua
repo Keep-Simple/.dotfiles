@@ -32,12 +32,12 @@ M.config = function()
 			-- formatters and linters
 			"shfmt",
 			"buf",
-      "stylua",
-      "prettierd",
-      "eslint_d",
-      "flake8",
-      "black",
-      "isort"
+			"stylua",
+			"prettierd",
+			"eslint_d",
+			"flake8",
+			"black",
+			"isort",
 			-- you can pin a tool to a particular version
 			-- { "golangci-lint", version = "1.47.0" },
 			-- you can turn off/on auto_update per tool
