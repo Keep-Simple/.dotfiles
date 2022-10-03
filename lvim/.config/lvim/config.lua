@@ -1,6 +1,6 @@
 lvim.format_on_save = true
 
-lvim.colorscheme = "onedarker"
+lvim.colorscheme = "tokyonight-storm"
 
 require("user.keys")
 require("user.plugins")

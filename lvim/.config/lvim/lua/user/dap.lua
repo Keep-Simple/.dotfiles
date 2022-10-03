@@ -10,32 +10,32 @@ dap.defaults.fallback.external_terminal = {
 	args = { "-e" },
 }
 
-local icons = {
-	breakpoint = {
-		text = "",
-		texthl = "LspDiagnosticsSignError",
-		linehl = "",
-		numhl = "",
-	},
-	breakpoint_rejected = {
-		text = "",
-		texthl = "LspDiagnosticsSignHint",
-		linehl = "",
-		numhl = "",
-	},
-	stopped = {
-		text = "",
-		texthl = "LspDiagnosticsSignInformation",
-		linehl = "DiagnosticUnderlineInfo",
-		numhl = "LspDiagnosticsSignInformation",
-	},
-}
+-- local icons = {
+-- 	breakpoint = {
+-- 		text = "",
+-- 		texthl = "LspDiagnosticsSignError",
+-- 		linehl = "",
+-- 		numhl = "",
+-- 	},
+-- 	breakpoint_rejected = {
+-- 		text = "",
+-- 		texthl = "LspDiagnosticsSignHint",
+-- 		linehl = "",
+-- 		numhl = "",
+-- 	},
+-- 	stopped = {
+-- 		text = "",
+-- 		texthl = "LspDiagnosticsSignInformation",
+-- 		linehl = "DiagnosticUnderlineInfo",
+-- 		numhl = "LspDiagnosticsSignInformation",
+-- 	},
+-- }
 
-if lvim.use_icons then
-	vim.fn.sign_define("DapBreakpoint", icons.breakpoint)
-	vim.fn.sign_define("DapBreakpointRejected", icons.breakpoint_rejected)
-	vim.fn.sign_define("DapStopped", icons.stopped)
-end
+-- if lvim.use_icons then
+-- 	vim.fn.sign_define("DapBreakpoint", icons.breakpoint)
+-- 	vim.fn.sign_define("DapBreakpointRejected", icons.breakpoint_rejected)
+-- 	vim.fn.sign_define("DapStopped", icons.stopped)
+-- end
 
 dap.adapters.delve = {
 	type = "server",

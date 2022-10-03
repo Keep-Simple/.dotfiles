@@ -6,19 +6,26 @@ lvim.builtin.dap.on_config_done = function()
 	lvim.builtin.which_key.mappings["d"] = {
 		name = "Debug",
 		t = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
+		l = {
+			"<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
+			"Toggle Log point",
+		},
+		T = {
+			"<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
+			"Toggle conditional Breakpoint",
+		},
 		B = { "<cmd>lua require'dap'.clear_breakpoints()<cr>", "Clear all breakpoints" },
 		b = { "<cmd>lua require'dap'.step_back()<cr>", "Step Back" },
 		c = { "<cmd>lua require'dap'.continue()<cr>", "Start/Continue" },
 		C = { "<cmd>lua require'dap'.run_to_cursor()<cr>", "Run To Cursor" },
-		d = { "<cmd>lua require'dap'.disconnect()<cr>", "Disconnect" },
 		g = { "<cmd>lua require'dap'.session()<cr>", "Get Session" },
 		i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into" },
 		o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over" },
 		u = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
 		p = { "<cmd>lua require'dap'.pause()<cr>", "Pause" },
 		r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "Toggle Repl" },
-		R = { "<cmd>lua require('dap').repl.close()<cr>", "Close Repl" },
-		q = { "<cmd>lua require'dap'.close()<cr>", "Quit" },
+		R = { "<cmd>lua require'dap'.repl.close()<cr>", "Close Repl" },
+		q = { "<cmd>lua require'dap'.terminate()<cr>", "Quit" },
 	}
 end
 -- ignore project.nvim mapping, use only packer
@@ -45,8 +52,6 @@ lvim.builtin.telescope.defaults.mappings = {
 lvim.lsp.buffer_mappings.normal_mode["gr"] = nil
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
-	-- overwrites ga (shows asci code of the character)
-	["ga"] = "<cmd>lua require('lvim.core.telescope').code_actions()<cr>",
 	["g["] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["g]"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
@@ -153,6 +158,6 @@ lvim.builtin.which_key.mappings["t"] = {
 		f = { "<cmd>lua require('neotest').run.run({ vim.fn.expand('%'), strategy='dap' })<cr>", "Debug file" },
 		r = { "<cmd>lua require('neotest').run.run_last({ strategy='dap' })<cr>", "Re-run latest with debug" },
 	},
-	s = { "<cmd>lua require('neotest').summary.open()<cr>", "Toogle Summary" },
+	s = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Toogle Summary" },
 	o = { "<cmd>lua require('neotest').output.open({ enter = true, short = false })<cr>", "Show output" },
 }
