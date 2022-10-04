@@ -15,7 +15,10 @@ if [[ "$1" != "-d" ]]; then
 	defaults write com.apple.dock autohide-delay -float 10
 	defaults write com.apple.dock autohide -bool true
 	defaults write com.apple.dock no-bouncing -bool true
-	# defaults write com.apple.dock autohide-time-modifier -float 2
+	# prevent dock from showing
+	defaults write com.apple.dock autohide-time-modifier -float 20000000000
+	# make the dock small
+	defaults write com.apple.dock tilesize -int 1
 	defaults write com.apple.dock expose-animation-duration -float 0
 	defaults write com.apple.dock springboard-show-duration -float 0
 	defaults write com.apple.dock springboard-hide-duration -float 0
@@ -36,6 +39,7 @@ else
 	defaults delete -g NSToolbarFullScreenAnimationDuration
 	defaults delete -g NSBrowserColumnAnimationSpeedMultiplier
 	defaults delete com.apple.dock autohide-time-modifier
+	defaults delete com.apple.dock tilesize
 	defaults delete com.apple.dock autohide-delay
 	defaults delete com.apple.dock expose-animation-duration
 	defaults delete com.apple.dock springboard-show-duration
