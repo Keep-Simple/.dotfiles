@@ -1,33 +1,6 @@
 lvim.leader = ","
 
 lvim.builtin.terminal.open_mapping = [[<c-\>]]
--- bruh..., ignore default lvim debugger mappings
-lvim.builtin.dap.on_config_done = function()
-	lvim.builtin.which_key.mappings["d"] = {
-		name = "Debug",
-		t = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
-		l = {
-			"<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
-			"Toggle Log point",
-		},
-		T = {
-			"<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
-			"Toggle conditional Breakpoint",
-		},
-		B = { "<cmd>lua require'dap'.clear_breakpoints()<cr>", "Clear all breakpoints" },
-		b = { "<cmd>lua require'dap'.step_back()<cr>", "Step Back" },
-		c = { "<cmd>lua require'dap'.continue()<cr>", "Start/Continue" },
-		C = { "<cmd>lua require'dap'.run_to_cursor()<cr>", "Run To Cursor" },
-		g = { "<cmd>lua require'dap'.session()<cr>", "Get Session" },
-		i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into" },
-		o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over" },
-		u = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
-		p = { "<cmd>lua require'dap'.pause()<cr>", "Pause" },
-		r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "Toggle Repl" },
-		R = { "<cmd>lua require'dap'.repl.close()<cr>", "Close Repl" },
-		q = { "<cmd>lua require'dap'.terminate()<cr>", "Quit" },
-	}
-end
 
 -- ignore project.nvim mapping, use only packer
 lvim.builtin.which_key.mappings["P"] = lvim.builtin.which_key.mappings["p"]
@@ -148,4 +121,29 @@ lvim.builtin.telescope.defaults.mappings = {
 		["<C-k>"] = actions.move_selection_previous,
 		["<C-q>"] = trouble.open_with_trouble,
 	},
+}
+
+lvim.builtin.which_key.mappings["d"] = {
+	name = "Debug",
+	t = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
+	l = {
+		"<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
+		"Toggle Log point",
+	},
+	T = {
+		"<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
+		"Toggle conditional Breakpoint",
+	},
+	B = { "<cmd>lua require'dap'.clear_breakpoints()<cr>", "Clear all breakpoints" },
+	b = { "<cmd>lua require'dap'.step_back()<cr>", "Step Back" },
+	c = { "<cmd>lua require'dap'.continue()<cr>", "Start/Continue" },
+	C = { "<cmd>lua require'dap'.run_to_cursor()<cr>", "Run To Cursor" },
+	g = { "<cmd>lua require'dap'.session()<cr>", "Get Session" },
+	i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into" },
+	o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over" },
+	u = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
+	p = { "<cmd>lua require'dap'.pause()<cr>", "Pause" },
+	r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "Toggle Repl" },
+	R = { "<cmd>lua require'dap'.repl.close()<cr>", "Close Repl" },
+	q = { "<cmd>lua require'dap'.terminate()<cr>", "Quit" },
 }

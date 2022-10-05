@@ -2,7 +2,7 @@ lvim.transparent_window = false
 lvim.debug = true
 lvim.log.level = "warn"
 
-lvim.builtin.dap.active = true
+lvim.builtin.dap.active = false
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.project.active = true -- keep enabled for setting cwd correctly

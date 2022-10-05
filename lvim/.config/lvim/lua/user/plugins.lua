@@ -162,9 +162,17 @@ lvim.plugins = {
 			})
 		end,
 	},
+	{ "rcarriga/cmp-dap" },
+	{
+		"mfussenegger/nvim-dap",
+		as = "dap",
+		config = function()
+			require("user.dap")
+		end,
+	},
 	{
 		"rcarriga/nvim-dap-ui",
-		requires = { "mfussenegger/nvim-dap", "rcarriga/cmp-dap" },
+		as = "dapui",
 		config = function()
 			require("user.dapui").config()
 		end,

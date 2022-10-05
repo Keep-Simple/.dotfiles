@@ -5,7 +5,6 @@ lvim.colorscheme = "tokyonight-storm"
 require("user.keys")
 require("user.plugins")
 require("user.settings")
-require("user.dap")
 require("user.treesitter")
 require("user.builtins")
 require("user.null-ls")
