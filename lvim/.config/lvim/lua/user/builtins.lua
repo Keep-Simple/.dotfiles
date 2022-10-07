@@ -2,10 +2,11 @@ lvim.transparent_window = false
 lvim.debug = true
 lvim.log.level = "warn"
 
-lvim.builtin.dap.active = false
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.project.active = true -- keep enabled for setting cwd correctly
+lvim.builtin.dap.active = false
+lvim.builtin.breadcrumbs.active = false
 lvim.builtin.lir.active = false
 lvim.builtin.indentlines.active = false
 lvim.builtin.illuminate.active = false
@@ -23,15 +24,15 @@ lvim.builtin.project.detection_methods = { "lsp", "pattern" }
 
 lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true } }
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
-	"__pycache__/*",
-	"__pycache__/",
-	"node_modules/*",
-	"node_modules/",
-	".git/",
-	".github/",
-	".gradle/",
-	".idea/",
-	".vscode/",
+  "__pycache__/*",
+  "__pycache__/",
+  "node_modules/*",
+  "node_modules/",
+  ".git/",
+  ".github/",
+  ".gradle/",
+  ".idea/",
+  ".vscode/",
 }
 lvim.builtin.telescope.defaults.path_display = { "smart" }
 

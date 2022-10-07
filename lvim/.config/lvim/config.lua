@@ -6,6 +6,7 @@ require("user.keys")
 require("user.plugins")
 require("user.settings")
 require("user.treesitter")
+require("user.autocommands")
 require("user.builtins")
 require("user.null-ls")
 
