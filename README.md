@@ -1,6 +1,6 @@
 # Keep-Simple dotfiles for Macos
 
-![desktop pic](https://i.imgur.com/vFMUK7b.jpg)
+![desktop pic](https://i.imgur.com/lc1gM44.jpg)
 
 ## Requirements
 
