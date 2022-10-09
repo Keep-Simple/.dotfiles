@@ -1,0 +1,88 @@
+{
+	"name": "Vimium C",
+	"@time": "09/10/2022, 20:17:38",
+	"time": 1665339458476,
+	"environment": {
+		"extension": "1.99.3",
+		"platform": "mac",
+		"chromium": "106"
+	},
+	"allBrowserUrls": true,
+	"exclusionRules": [
+		{
+			"passKeys": "",
+			"pattern": ":https://tankionline.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://www.hackerrank.com/"
+		}
+	],
+	"grabBackFocus": true,
+	"keyLayout": 1,
+	"keyMappings": [
+		"#!no-check",
+		"# Insert your preferred key mappings here.",
+		"unmap i",
+		"map J goBack",
+		"map K goForward",
+		"map H previousTab",
+		"map L nextTab",
+		"map j scrollDown keepHover=false",
+		"map k scrollUp keepHover=false",
+		"map W moveTabToNewWindow",
+		"map <c-f> LinkHints.activateOpenIncognito",
+		"map <c-o> visitPreviousTab",
+		"unmap X",
+		"unmap x",
+		"map X removeTab",
+		"map x restoreTab",
+		""
+	],
+	"keyupTime": 100,
+	"scrollStepSize": 40,
+	"searchEngines": [
+		"g: https://www.google.com/search?q=%s \\",
+		"  www.google.com re=/^(?:\\.[a-z]{2,4})?\\/search\\b.*?[#&?]q=([^#&]*)/i\\",
+		"  blank=https://www.google.com/ Google",
+		"",
+		"d: https://duckduckgo.com/?q=%s DuckDuckGo",
+		"",
+		"g.m: https://www.google.com/maps?q=%s \\",
+		"  blank=https://www.google.com/maps Google Maps",
+		"",
+		"y: https://www.youtube.com/results?search_query=%s \\",
+		"  blank=https://www.youtube.com/ YouTube",
+		"w: https://www.wikipedia.org/w/index.php?search=%s Wikipedia",
+		"",
+		"v.m|v\\:math: vimium://math\\ $S re= Calculate",
+		"gh|github: https://github.com/search?q=$s \\",
+		"  blank=https://github.com/ GitHub Repo",
+		"ge|gitee: https://search.gitee.com/?type=repository&q=$s \\",
+		"  blank=https://gitee.com/ Gitee 仓库",
+		"js\\:|Js: javascript:\\ $S; JavaScript",
+		""
+	],
+	"searchUrl": "https://duckduckgo.com/?q=$s DuckDuckGo",
+	"showActionIcon": false,
+	"userDefinedCss": [
+		"/* #omni */",
+		"#list { background: #2f343f; }",
+		"#bar { background: #404552; }",
+		"#input { background: #2f343f; }",
+		"a { color: #5d99e6; }",
+		".button:hover { background: #20242c; }",
+		".item { border-color: #404552; }",
+		".item:hover { background: #2f343f; border-bottom: 1px solid #404552; }",
+		".s:hover { background: #1b3355; }",
+		"",
+		"/* #find */",
+		".r.D { background: #2f343f; box-shadow: none; }",
+		"",
+		"/* #ui */",
+		".HUD.D:after { background: #2f343f; }",
+		""
+	],
+	"vimSync": true,
+	"ignoreKeyboardLayout": 2
+}
