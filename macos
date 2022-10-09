@@ -3,8 +3,7 @@
 USER_APPS=""
 
 ROOT_APPS="
-nvim,lf,
-bin,lvim,
+lf,bin,lvim,
 alacritty,
 karabiner,skhd,yabai,
 shell,zsh,
