@@ -12,7 +12,7 @@ yabai -m config \
 	focus_follows_mouse autoraise \
 	window_origin_display default \
 	window_placement second_child \
-	window_topmost on \ # floating windows are always on top \
+	window_topmost off \
 	window_shadow float \
 	window_opacity off \
 	window_border off \
@@ -53,9 +53,9 @@ yabai -m rule --add title="QuickTerminal" grid=20:20:5:5:10:10 sticky=on layer=a
 
 # If no window on the current space is focused after a window is destroyed or
 # minimized, or an application is hidden, focus the window under the cursor.
-yabai -m signal --add event=window_destroyed action=$YABAI/focus.sh
-yabai -m signal --add event=window_minimized action=$YABAI/focus.sh
-yabai -m signal --add event=application_hidden action=$YABAI/focus.sh
+yabai -m signal --add event=window_destroyed action=$YABAI/focus_space.sh
+yabai -m signal --add event=window_minimized action=$YABAI/focus_space.sh
+yabai -m signal --add event=application_hidden action=$YABAI/focus_space.sh
 
 # yabai -m signal --add event=display_changed action=$YABAI/restart.sh
 
@@ -64,7 +64,6 @@ yabai -m signal --add event=window_created action="YABAI=$YABAI $YABAI/smart_gap
 yabai -m signal --add event=window_destroyed action="YABAI=$YABAI $YABAI/smart_gaps.sh"
 yabai -m signal --add event=window_minimized action="YABAI=$YABAI $YABAI/smart_gaps.sh"
 yabai -m signal --add event=window_deminimized action="YABAI=$YABAI $YABAI/smart_gaps.sh"
-# yabai -m signal --add event=space_changed action="YABAI=$YABAI $YABAI/smart_gaps.sh"
 
 $YABAI/smart_gaps.sh
 SHELL='/bin/sh' skhd &
@@ -77,6 +76,3 @@ echo "yabai configuration loaded.."
 # yabai -m signal --add event=display_added action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NORMAL_BAR:0; fi"
 # yabai -m signal --add event=display_removed action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NOTCH_BAR:0; fi"
 # if [[ "$(yabai -m query --displays | jq '.[].uuid')" =~ "$NOTCH_UUID" ]]; then if [ "$(yabai -m query --displays | jq length)" -gt "1" ]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NOTCH_BAR:0; fi else yabai -m config external_bar all:$NORMAL_BAR:0; fi
-
-# to handle non-resizable float only windows
-# yabai -m signal --add event=window_created action='yabai -m query --windows --window $YABAI_WINDOW_ID | jq -er ".\"can-resize\" or .\"is-floating\"" || yabai -m window $YABAI_WINDOW_ID --toggle float'
