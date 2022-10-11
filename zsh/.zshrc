@@ -12,8 +12,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
 plugins=(
-  # vi-mode
   # git
+  vi-mode
   zsh-syntax-highlighting
   zsh-autosuggestions
   ansible
@@ -36,6 +36,7 @@ zle_highlight+=(paste:none) # no highlight on paste
 zstyle ':bracketed-paste-magic' active-widgets '.self-*' # instant paste
 setopt autocd		# Automatically cd into typed directory.
 setopt interactive_comments
+VI_MODE_SET_CURSOR=false
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc"
@@ -43,7 +44,6 @@ setopt interactive_comments
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc"
 
 export KEYTIMEOUT=35
-bindkey -v;
 
 # to fix % on the terminal start (sometimes during yabai resizing)
 setopt PROMPT_SP

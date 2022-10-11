@@ -16,6 +16,8 @@ osascript -e 'tell application "System Preferences" to quit'
 
 if [[ "$1" != "-d" ]]; then
 	echo "Removing animations, applying settings"
+	# defaults delete com.apple.symbolichotkeys AppleSymbolicHotKeys
+
 	defaults write -g KeyRepeat -int 2
 	defaults write -g InitialKeyRepeat -int 15
 	defaults write -g NSAutomaticWindowAnimationsEnabled -bool false

@@ -15,5 +15,3 @@ recent) yabai -m space --focus recent ;;
 	fi
 	;;
 esac
-
-$YABAI/smart_gaps.sh
