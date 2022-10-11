@@ -42,6 +42,7 @@ if [[ "$1" != "-d" ]]; then
 	defaults write com.apple.dock mineffect -string "scale"
 	defaults write com.apple.dock minimize-to-application -bool false
 	defaults write com.apple.dock tilesize -int 1 # make the dock small
+	defaults write com.apple.dock expose-group-by-app -bool false
 	defaults write com.apple.dock show-recents -bool false
 	defaults write com.apple.dock showhidden -bool true
 	defaults write com.apple.dock expose-animation-duration -float 0.1
@@ -54,6 +55,7 @@ if [[ "$1" != "-d" ]]; then
 	defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 	defaults write com.apple.LaunchServices LSQuarantine -bool false
+	defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
 	defaults import com.apple.symbolichotkeys ~/.local/share/backup/mac_shortcuts
 else

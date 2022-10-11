@@ -8,7 +8,7 @@ alacritty,
 karabiner,skhd,yabai,
 shell,zsh,
 backup,zathura,
-k9s,git
+k9s,git,spotify-tui
 "
 
 ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $(dirname $(realpath $0))/install "$@"
