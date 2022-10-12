@@ -5,6 +5,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Disable the cursor style feature
+ZVM_CURSOR_STYLE_ENABLED=false
+eval $(/opt/homebrew/bin/brew shellenv)
 # for completions
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
@@ -15,31 +18,32 @@ fi
 
 source ~/.zplug/init.zsh
 
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-autosuggestions"
-zplug "plugins/tmux", from:oh-my-zsh
-zplug "plugins/vi-mode", from:oh-my-zsh
-zplug "plugins/ansible", from:oh-my-zsh
-zplug "plugins/poetry", from:oh-my-zsh
-zplug "plugins/gh", from:oh-my-zsh
-zplug "plugins/fzf", from:oh-my-zsh
-zplug "plugins/golang", from:oh-my-zsh
-zplug "plugins/kubectl", from:oh-my-zsh
-zplug "plugins/terraform", from:oh-my-zsh
-zplug "plugins/brew", from:oh-my-zsh
-zplug "plugins/docker", from:oh-my-zsh
-zplug "plugins/git", from:oh-my-zsh
 zplug "romkatv/powerlevel10k", as:theme, depth:1
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+zplug "plugins/tmux", from:oh-my-zsh, defer:3
+zplug "jeffreytse/zsh-vi-mode"
+zplug "plugins/golang", from:oh-my-zsh
+zplug "plugins/kubectl", from:oh-my-zsh, defer:3
+zplug "plugins/terraform", from:oh-my-zsh, defer:3
+zplug "plugins/docker", from:oh-my-zsh, defer:3
 zplug "redxtech/zsh-asdf-direnv" # https://github.com/redxtech/zsh-asdf-direnv
-zplug "plugins/docker-compose", from:oh-my-zsh
+zplug "plugins/docker-compose", from:oh-my-zsh, defer:3
 zplug "~/.zshrc.d", use:"*", from:local
+
+zplug "zsh-users/zsh-completions"              
+zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
+zplug "zsh-users/zsh-syntax-highlighting",      defer:3, on:"zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
+zplug "modules/completion", from:prezto
+
+zstyle ':completion:*' menu select
 
 if ! zplug check; then
   zplug install
 fi
 
 zplug load
+
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc"

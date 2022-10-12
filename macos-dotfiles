@@ -12,4 +12,5 @@ git,spotify-tui,
 asdf,tmux
 "
 
-ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $(dirname $(realpath $0))/install-dotfiles "$@"
+cd $(dirname "${BASH_SOURCE[0]}")
+ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS ./install-dotfiles "$@"

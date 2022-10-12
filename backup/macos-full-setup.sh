@@ -1,20 +1,24 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-# osx_base.sh — Base OSX installation script
-# Created by odarriba (https://github.com/odarriba/dotfiles)
-
-SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+cd $(dirname $0)
 
 echo "Shell installation script for Keep-Simple dotfiles"
 echo "-------------------------------------------------"
 echo ""
 
+# Ask for the administrator password upfront
+sudo -v
+
+# Keep-alive: update existing `sudo` time stamp until `.macos` has finished
+while true; do
+	sudo -n true
+	sleep 60
+	kill -0 "$$" || exit
+done 2>/dev/null &
+
 installSoftware() {
-	# Install zsh and required software
 	echo "[INFO] Installing required software (restoring from brew backup)"
-	./restore.zsh
-	echo "[INFO] Installing LunarVim"
-	LV_BRANCH=rolling bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh -y)
+	./restore.sh
 }
 
 installBrew() {
@@ -40,7 +44,7 @@ updateBrew() {
 
 installAsdf() {
 	echo "[INFO] Installing Asdf runtime env manager"
-	for plugin in direnv nodejs python rust golang java; do
+	for plugin in direnv nodejs python rust golang java yarn poetry; do
 		asdf plugin-add $plugin
 	done
 
@@ -49,13 +53,22 @@ installAsdf() {
 
 syncConfig() {
 	echo "[INFO] Symlinking dotfiles..."
-	../macos-dotfiles
+	cd ..
+	./macos-dotfiles
 	echo "[INFO] Applying mac settings..."
+	cd -
 	./mac_settings.sh
 	mkdir -p ~/Documents/commercial/
 	mkdir -p ~/Documents/personal/
-	echo "[INFO] Reloading shell..."
-	. ~/.zshrc
+  apply-shortcuts
+}
+
+installLunarvim() {
+	echo "[INFO] Installing LunarVim"
+	curl https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh --output install_script.sh
+	chmod +x install_script.sh
+	LV_BRANCH=rolling ./install_script.sh -y
+	rm install_script.sh
 }
 
 doIt() {
@@ -64,19 +77,13 @@ doIt() {
 	installSoftware
 	syncConfig
 	installAsdf
+	installLunarvim
 }
 
-if [ "$1" == "--force" -o "$1" == "-f" ]; then
-	doIt
-else
-	read -p "I'm about to change the configuration files placed in your home directory. Do you want to continue? (y/n) " -n 1
-	echo ""
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		doIt
-	fi
-fi
+doIt
 
 echo ""
 echo "[INFO] If there isn't any error message, the process is completed."
 echo "Now do manual yabai setup"
 open -u https://github.com/koekeishiya/yabai/wiki/Disabling-System-Integrity-Protection
+zsh

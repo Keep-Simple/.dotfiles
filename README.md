@@ -20,4 +20,10 @@ cd ~/.dotfiles
 ./macos-dotfiles
 ```
 
+## Full install (with config)
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/Keep-Simple/.dotfiles/macos/full-install)
+```
+
 [Funny tutorial about stow](https://www.youtube.com/watch?v=tkUllCAGs3c)
