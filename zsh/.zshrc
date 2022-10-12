@@ -13,6 +13,7 @@ FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
 plugins=(
   # git
+  tmux
   vi-mode
   zsh-syntax-highlighting
   zsh-autosuggestions
