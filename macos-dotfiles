@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+USER_APPS=""
+
+ROOT_APPS="
+lf,bin,lvim,
+alacritty,
+karabiner,skhd,yabai,
+shell,zsh,
+zathura,k9s,
+git,spotify-tui,
+asdf,tmux
+"
+
+ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS $(dirname $(realpath $0))/install-dotfiles "$@"

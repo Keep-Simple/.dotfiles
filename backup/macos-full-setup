@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+# osx_base.sh — Base OSX installation script
+# Created by odarriba (https://github.com/odarriba/dotfiles)
+
+SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+
+echo "Shell installation script for Keep-Simple dotfiles"
+echo "-------------------------------------------------"
+echo ""
+
+installSoftware() {
+	# Install zsh and required software
+	echo "[INFO] Installing required software (restoring from brew backup)"
+	./restore.zsh
+	echo "[INFO] Installing LunarVim"
+	LV_BRANCH=rolling bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh -y)
+}
+
+installBrew() {
+	if hash brew 2>/dev/null; then
+		echo "[INFO] Brew already installed."
+	else
+		echo "[INFO] Installing rosetta 2"
+		softwareupdate --install-rosetta --agree-to-license
+		echo "[INFO] Installing xcode cli"
+		xcode-select --install
+		echo "[INFO] Installing Homebrew package manager..."
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+		eval "$(/opt/homebrew/bin/brew shellenv)"
+	fi
+}
+
+updateBrew() {
+	if hash brew 2>/dev/null; then
+		echo "[INFO] Updating Homebrew package manager..."
+		brew update --force --quiet
+	fi
+}
+
+installAsdf() {
+	echo "[INFO] Installing Asdf runtime env manager"
+	for plugin in direnv nodejs python rust golang java; do
+		asdf plugin-add $plugin
+	done
+
+	asdf install
+}
+
+syncConfig() {
+	echo "[INFO] Symlinking dotfiles..."
+	../macos-dotfiles
+	echo "[INFO] Applying mac settings..."
+	./mac_settings.sh
+	mkdir -p ~/Documents/commercial/
+	mkdir -p ~/Documents/personal/
+	echo "[INFO] Reloading shell..."
+	. ~/.zshrc
+}
+
+doIt() {
+	installBrew
+	updateBrew
+	installSoftware
+	syncConfig
+	installAsdf
+}
+
+if [ "$1" == "--force" -o "$1" == "-f" ]; then
+	doIt
+else
+	read -p "I'm about to change the configuration files placed in your home directory. Do you want to continue? (y/n) " -n 1
+	echo ""
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		doIt
+	fi
+fi
+
+echo ""
+echo "[INFO] If there isn't any error message, the process is completed."
+echo "Now do manual yabai setup"
+open -u https://github.com/koekeishiya/yabai/wiki/Disabling-System-Integrity-Protection

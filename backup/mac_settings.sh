@@ -1,5 +1,6 @@
 #!/bin/sh
 
+cd $(dirname "${BASH_SOURCE[0]}")
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
@@ -57,7 +58,7 @@ if [[ "$1" != "-d" ]]; then
 	defaults write com.apple.LaunchServices LSQuarantine -bool false
 	defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
-	defaults import com.apple.symbolichotkeys ~/.local/share/backup/mac_shortcuts
+	defaults import com.apple.symbolichotkeys ./mac_shortcuts
 else
 	echo "Back to the defaults"
 	defaults delete -g KeyRepeat

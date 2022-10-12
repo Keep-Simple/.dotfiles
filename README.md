@@ -17,7 +17,7 @@ Clone into your home directory and run the install script
 ```bash
 git clone git@github.com:Keep-Simple/.dotfiles.git ~
 cd ~/.dotfiles
-./macos
+./macos-dotfiles
 ```
 
 [Funny tutorial about stow](https://www.youtube.com/watch?v=tkUllCAGs3c)
