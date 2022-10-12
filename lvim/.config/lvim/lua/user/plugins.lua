@@ -197,7 +197,9 @@ lvim.plugins = {
 		end,
 	},
 	-- show code context at the top of the buffer
-	{ "nvim-treesitter/nvim-treesitter-context" },
+	"nvim-treesitter/nvim-treesitter-context",
+	-- tree sitter based textobjects
+	"nvim-treesitter/nvim-treesitter-textobjects",
 	-- mason is lsp/debugger/formatters/linters installer, this is config
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",

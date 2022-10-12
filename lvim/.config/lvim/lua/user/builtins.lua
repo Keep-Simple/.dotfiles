@@ -24,15 +24,15 @@ lvim.builtin.project.detection_methods = { "lsp", "pattern" }
 
 lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true } }
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
-  "__pycache__/*",
-  "__pycache__/",
-  "node_modules/*",
-  "node_modules/",
-  ".git/",
-  ".github/",
-  ".gradle/",
-  ".idea/",
-  ".vscode/",
+	"__pycache__/*",
+	"__pycache__/",
+	"node_modules/*",
+	"node_modules/",
+	".git/",
+	".github/",
+	".gradle/",
+	".idea/",
+	".vscode/",
 }
 lvim.builtin.telescope.defaults.path_display = { "smart" }
 
