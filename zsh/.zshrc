@@ -35,30 +35,29 @@ bindkey -r '^[[B'
 function __bind_history_keys() {
   bindkey '^[[A' history-substring-search-up
   bindkey '^[[B' history-substring-search-down
+  bindkey -M vicmd 'k' history-substring-search-up
+  bindkey -M vicmd 'j' history-substring-search-down
 }
 
-# Regular plugins, loaded in turbe mode
+# Regular plugins, loaded in turbe mode (wait)
 zinit wait lucid light-mode for \
         OMZP::golang \
         OMZP::tmux \
         Dbz/kube-aliases \
         OMZP::terraform \
+        as"completion" \
+          OMZP::docker/_docker \
+        as"completion" \
+          OMZP::docker-compose/_docker-compose \
         redxtech/zsh-asdf-direnv \
-      as"completion" \
-        OMZP::docker/_docker \
-      as"completion" \
-        OMZP::docker-compose/_docker-compose \
-      atload'__bind_history_keys' \
+     atload'__bind_history_keys' \
         zsh-users/zsh-history-substring-search \
-
-# Fast-syntax-highlighting & autosuggestions
-zinit wait lucid for \
- atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
-    zdharma/fast-syntax-highlighting \
- atload"!_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions \
- blockf atpull'zinit creinstall -q .' \
-    zsh-users/zsh-completions
+     atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
+        zdharma/fast-syntax-highlighting \
+     atload"!_zsh_autosuggest_start" \
+        zsh-users/zsh-autosuggestions \
+     blockf atpull'zinit creinstall -q .' \
+        zsh-users/zsh-completions
 
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
