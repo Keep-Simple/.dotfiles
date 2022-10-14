@@ -54,6 +54,7 @@ installAsdf() {
 	done
 
   asdf install
+  export PATH="$PATH:$HOME/.asdf/shims"
 }
 
 syncConfig() {

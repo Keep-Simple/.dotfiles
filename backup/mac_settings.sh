@@ -38,6 +38,8 @@ if [[ "$1" != "-d" ]]; then
 	defaults write com.apple.dock showhidden -bool true
 	defaults write com.apple.dock expose-animation-duration -float 0.1
     defaults write com.apple.dock wvous-br-corner -int 0
+    defaults write com.apple.dock launchanim -bool false
+    defaults write com.apple.finder AppleShowAllFiles -bool true
 
 	defaults write com.apple.finder DisableAllAnimations -bool true
 	defaults write com.apple.finder ShowPathbar -bool true
@@ -49,7 +51,9 @@ if [[ "$1" != "-d" ]]; then
 	defaults write com.apple.LaunchServices LSQuarantine -bool false
 	defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
-	defaults import com.apple.symbolichotkeys ./mac_shortcuts
+	defaults import com.apple.symbolichotkeys ./xml_settings/mac_shortcuts
+	defaults import com.apple.controlcenter ./xml_settings/mac_controlcenter
+	defaults import com.dshnkao.SpaceId ./xml_settings/spaceid
 else
 	echo "Back to the defaults"
 	defaults delete -g KeyRepeat

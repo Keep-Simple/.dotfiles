@@ -8,6 +8,7 @@ export BROWSER="open-in-brave"
 
 paths=$(find -L ~/.local/bin -type d -print | xargs printf -- '%s:')%%:
 export PATH="$PATH:${paths}"
+export PATH="/usr/local/bin:$PATH"
 export PATH="$PATH:$HOME/.local/share/cargo/bin"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export PATH="$PATH:$GOPATH/bin"
@@ -77,3 +78,9 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
 	# completions
 	export FPATH="${HOMEBREW_PREFIX}/share/zsh/site-functions:${FPATH}"
 fi
+
+# put it into .zshenv
+# Ensure that a non-login, non-interactive shell has a defined environment.
+# if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+#   source "${ZDOTDIR:-$HOME}/.zprofile"
+# fi
