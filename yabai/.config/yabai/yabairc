@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 
 # to load $YABAI env
 source $HOME/.profile
@@ -67,7 +67,7 @@ yabai -m signal --add event=window_deminimized action="YABAI=$YABAI $YABAI/smart
 yabai -m signal --add event=space_changed action="YABAI=$YABAI $YABAI/smart_gaps.sh"
 
 $YABAI/smart_gaps.sh
-SHELL='/bin/sh' skhd &
+SHELL="/bin/sh" skhd &
 echo "yabai configuration loaded.."
 
 # notch handling (macbook pro 16) for custom title bar

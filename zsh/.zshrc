@@ -15,9 +15,12 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End
 
-ZVM_VI_HIGHLIGHT_FOREGROUND=black
-ZVM_VI_HIGHLIGHT_BACKGROUND=green
-SHELL="/bin/zsh" # idk why it's set to /bin/sh
+ZVM_VI_HIGHLIGHT_FOREGROUND=green
+ZVM_VI_HIGHLIGHT_BACKGROUND=white
+SHELL="/bin/zsh" # skhd related fix
+# silence asdf-direnv
+export DIRENV_LOG_FORMAT=
+ZVM_CURSOR_STYLE_ENABLED=false
 zstyle ':completion:*' menu select
 zle_highlight+=(paste:none) # no highlight on paste
 setopt autocd	interactive_comments

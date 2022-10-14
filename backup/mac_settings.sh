@@ -37,6 +37,7 @@ if [[ "$1" != "-d" ]]; then
 	defaults write com.apple.dock show-recents -bool false
 	defaults write com.apple.dock showhidden -bool true
 	defaults write com.apple.dock expose-animation-duration -float 0.1
+    defaults write com.apple.dock wvous-br-corner -int 0
 
 	defaults write com.apple.finder DisableAllAnimations -bool true
 	defaults write com.apple.finder ShowPathbar -bool true

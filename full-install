@@ -3,5 +3,5 @@
 curl -LO https://github.com/Keep-Simple/.dotfiles/archive/refs/heads/macos.tar.gz
 tar -xzvf ./macos.tar.gz
 rm ./macos.tar.gz
-mv .dotfiles-macos ~/.dotfiles
+mv -f .dotfiles-macos ~/.dotfiles
 ~/.dotfiles/backup/macos-full-setup.sh
