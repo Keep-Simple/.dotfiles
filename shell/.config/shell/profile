@@ -1,4 +1,5 @@
 # vim:ft=sh
+
 # Default programs
 export EDITOR="lvim"
 export VISUAL="$EDITOR"
@@ -7,12 +8,9 @@ export BROWSER="open-in-brave"
 
 paths=$(find -L ~/.local/bin -type d -print | xargs printf -- '%s:')%%:
 export PATH="$PATH:${paths}"
-export PATH=$PATH:$HOME/.local/share/cargo/bin
-export PATH="/opt/homebrew/opt/util-linux/bin:$PATH"
-export PATH="/opt/homebrew/opt/util-linux/sbin:$PATH"
-export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="$PATH:$HOME/.local/share/cargo/bin"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
-export PATH=$PATH:$GOPATH/bin
+export PATH="$PATH:$GOPATH/bin"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -41,7 +39,6 @@ export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible/ansible.cfg"
 export UNISON="${XDG_DATA_HOME:-$HOME/.local/share}/unison"
 export MBSYNCRC="${XDG_CONFIG_HOME:-$HOME/.config}/mbsync/config"
-export DICS="/usr/share/stardict/dic/"
 export PYTHONPATH=$PYTHONPATH:.
 export YABAI="${XDG_CONFIG_HOME:-$HOME/.config}/yabai/scripts"
 
@@ -61,3 +58,22 @@ export LESS_TERMCAP_se="$(printf '%b' '[0m')"
 export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"
 export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
 export LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
+
+# homebrew (macos intel or silicon or linux)
+test -f /home/linuxbrew/.linuxbrew/bin/brew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+test -f /usr/local/bin/brew && eval $(/usr/local/bin/brew shellenv)
+test -f /opt/homebrew/bin/brew && eval $(/opt/homebrew/bin/brew shellenv)
+
+if [[ -n "$HOMEBREW_PREFIX" ]]; then
+	export HOMEBREW_NO_ANALYTICS=1
+	# linux utils for macos
+	export PATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
+	export MANPATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnuman:$MANPATH"
+	export PATH="${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
+	export MANPATH="${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnuman:$MANPATH"
+	export PATH="${HOMEBREW_PREFIX}/opt/gnu-tar/libexec/gnubin:$PATH"
+	export MANPATH="${HOMEBREW_PREFIX}/opt/gnu-tar/libexec/gnuman:$PATH"
+	export PATH="${HOMEBREW_PREFIX}/opt/util-linux/bin:$PATH"
+	export PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:$PATH"
+	FPATH="${HOMEBREW_PREFIX}/share/zsh/site-functions:${FPATH}"
+fi

@@ -1,61 +1,79 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Disable the cursor style feature
-ZVM_CURSOR_STYLE_ENABLED=false
-eval $(/opt/homebrew/bin/brew shellenv)
-# for completions
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-
-if [[ ! -d ~/.zplug ]]; then
-  git clone https://github.com/zplug/zplug ~/.zplug
-  source ~/.zplug/init.zsh && zplug update --self
+### Added by Zinit's installer
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
 fi
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+### End
 
-source ~/.zplug/init.zsh
-
-zplug "romkatv/powerlevel10k", as:theme, depth:1
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug "plugins/tmux", from:oh-my-zsh, defer:3
-zplug "jeffreytse/zsh-vi-mode"
-zplug "plugins/golang", from:oh-my-zsh
-zplug "plugins/kubectl", from:oh-my-zsh, defer:3
-zplug "plugins/terraform", from:oh-my-zsh, defer:3
-zplug "plugins/docker", from:oh-my-zsh, defer:3
-zplug "redxtech/zsh-asdf-direnv" # https://github.com/redxtech/zsh-asdf-direnv
-zplug "plugins/docker-compose", from:oh-my-zsh, defer:3
-zplug "~/.zshrc.d", use:"*", from:local
-
-zplug "zsh-users/zsh-completions"              
-zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
-zplug "zsh-users/zsh-syntax-highlighting",      defer:3, on:"zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
-zplug "modules/completion", from:prezto
-
+ZVM_VI_HIGHLIGHT_FOREGROUND=black
+ZVM_VI_HIGHLIGHT_BACKGROUND=green
+SHELL="/bin/zsh" # idk why it's set to /bin/sh
 zstyle ':completion:*' menu select
+zle_highlight+=(paste:none) # no highlight on paste
+setopt autocd	interactive_comments
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt inc_append_history     # add commands to HISTFILE in order of execution
+setopt share_history          # share command history data
 
-if ! zplug check; then
-  zplug install
-fi
+# Don't bind these keys until ready
+bindkey -r '^[[A'
+bindkey -r '^[[B'
+function __bind_history_keys() {
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+}
 
-zplug load
+# Regular plugins, loaded in turbe mode
+zinit wait lucid light-mode for \
+        OMZP::golang \
+        OMZP::tmux \
+        Dbz/kube-aliases \
+        OMZP::terraform \
+        redxtech/zsh-asdf-direnv \
+      as"completion" \
+        OMZP::docker/_docker \
+      as"completion" \
+        OMZP::docker-compose/_docker-compose \
+      atload'__bind_history_keys' \
+        zsh-users/zsh-history-substring-search \
 
+# Fast-syntax-highlighting & autosuggestions
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
+    zdharma/fast-syntax-highlighting \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions \
+ blockf atpull'zinit creinstall -q .' \
+    zsh-users/zsh-completions
+
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
+
+zinit ice depth=1
+zinit light jeffreytse/zsh-vi-mode
+
+autoload -U colors && colors
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc"
 
-
-# autoload -U colors && colors	# Load colors
-zle_highlight+=(paste:none) # no highlight on paste
-zstyle ':bracketed-paste-magic' active-widgets '.self-*' # instant paste
-setopt autocd		# Automatically cd into typed directory.
-setopt interactive_comments
+[[ -n $(ls ~/.zshrc.d/) ]] && for file in ~/.zshrc.d/*; do source "${file}"; done
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
