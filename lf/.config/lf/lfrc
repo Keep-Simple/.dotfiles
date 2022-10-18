@@ -17,6 +17,7 @@ set scrolloff 10
 set icons
 set hidden true
 set period 1
+set wrapscroll true
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set previewer ~/.config/lf/preview
 
@@ -31,33 +32,39 @@ ${{
 }}
 
 
+# unmap default keybings
 map gh
 map d
 map y
 map ,
-map yy copy
-map yn copy-filename
-map yP copy-absolute-path
-map dd cut
-map \\ find-prev
-map U fzf-restore
+
+map yy :copy
+map yn :copy-filename
+map yP :copy-absolute-path
+map dd :cut
+map \\ :find-prev
+map U :fzf-restore
 map X push !$f<space>
 map x !$f
-map gg top
+map gg :top
 map gd :delete
 map gc $code $fx
-map gl follow_link
+map gl :follow_link
 map D :trash
-map t toggle
+map t :toggle
 map A push :mkdir<space>
 map a push :touch<space>
-map <c-r> reload
+map <c-r> :reload
 map <c-a> :select-files
-map <enter> shell
+map <enter> :shell
 map o $open $f
 map <c-z> $kill -STOP $PPID
-map p paste_try_cow
-map ,r bulk-rename
+map p :paste_try_cow
+# duplicate lf with current dir in another terminal
+map S &open -na Alacritty --args --working-directory=$PWD -e "lf"
+
+# vim like mappings with <leader> being ","
+map ,r :bulk-rename
 map ,st :fzf_search
 map ,sh :share
 map ,ch :chmod
@@ -66,3 +73,12 @@ map ,t push :tar<space>
 map ,z push :zip<space>
 map ,e :extract
 map ,Sl $lvim +"lua require('persistence').load({ last = true })"
+map ,Sc $lvim +"lua require('persistence').load()" # pwd is current lf dir
+
+# command mode mappings
+map <up> cmd-history-prev
+map <down> cmd-history-next
+cmap <up> cmd-history-prev
+cmap <down> cmd-history-next
+cmap <tab> cmd-menu-complete
+cmap <backtab> cmd-menu-complete-back
