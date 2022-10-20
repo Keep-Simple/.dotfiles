@@ -106,7 +106,7 @@ font:
 draw_bold_text_with_bright_colors: true
 
 import:
-  - ~/.config/alacritty/onedark.yml
+  - ~/.config/alacritty/tokyonight-storm.yml
 
 mouse:
   double_click: { threshold: 300 }
