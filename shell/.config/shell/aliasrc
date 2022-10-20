@@ -32,6 +32,7 @@ alias \
 alias \
 	g="git" \
 	c="clear" \
+	k="kubectl" \
 	trem="transmission-remote" \
 	YT="youtube-viewer" \
 	sdn="sudo shutdown -h now" \

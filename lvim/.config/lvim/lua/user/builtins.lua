@@ -11,6 +11,7 @@ lvim.builtin.lir.active = false
 lvim.builtin.indentlines.active = false
 lvim.builtin.illuminate.active = false
 lvim.builtin.nvimtree.active = false
+lvim.builtin.notify.opts.stages = "fade_in_slide_out"
 
 lvim.builtin.terminal.direction = "horizontal"
 lvim.builtin.terminal.shading_factor = 1

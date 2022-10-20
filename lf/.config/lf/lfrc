@@ -17,7 +17,7 @@ set scrolloff 10
 set icons
 set hidden true
 set period 1
-set wrapscroll true
+# set wrapscroll true
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set previewer ~/.config/lf/preview
 

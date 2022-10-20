@@ -49,9 +49,7 @@ installAsdf() {
 	echo "[INFO] Installing Asdf runtime env manager"
   export PATH="$PATH:$HOME/.asdf/bin" # can't just reload zinit, because it's waiting for prompt
 
-	for plugin in direnv nodejs python rust golang java yarn poetry; do
-		asdf plugin-add $plugin
-	done
+  cat ~/.tool-versions | awk '{print $1}' | xargs -I _ asdf plugin add _
 
   asdf install
   export PATH="$PATH:$HOME/.asdf/shims"
