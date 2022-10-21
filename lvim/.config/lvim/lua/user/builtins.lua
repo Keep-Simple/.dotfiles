@@ -2,7 +2,7 @@ lvim.transparent_window = false
 lvim.debug = true
 lvim.log.level = "warn"
 
-lvim.builtin.notify.active = true
+lvim.builtin.notify.active = false
 lvim.builtin.terminal.active = true
 lvim.builtin.project.active = true -- keep enabled for setting cwd correctly
 lvim.builtin.dap.active = false
@@ -11,7 +11,6 @@ lvim.builtin.lir.active = false
 lvim.builtin.indentlines.active = false
 lvim.builtin.illuminate.active = false
 lvim.builtin.nvimtree.active = false
-lvim.builtin.notify.opts.stages = "fade_in_slide_out"
 
 lvim.builtin.terminal.direction = "horizontal"
 lvim.builtin.terminal.shading_factor = 1
