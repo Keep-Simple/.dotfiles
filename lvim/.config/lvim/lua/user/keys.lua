@@ -154,7 +154,7 @@ whk["d"] = {
 
 whk["a"] = { "<cmd>lua require('harpoon.mark').add_file()<cr>", "Add Mark" }
 whk["<leader>"] = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", "Harpoon" }
-whk["C"] = { "<cmd>lua require('harpoon.cmd-ui').toggle_quick_menu()<cr>", "Harpoon" }
+whk["C"] = { "<cmd>lua require('harpoon.cmd-ui').toggle_quick_menu()<cr>", "Commands" }
 
 whk["?"] = { "<cmd>Cheat<cr>", "Cheat.sh" }
 -- Navigate merge conflict markers

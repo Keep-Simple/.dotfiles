@@ -202,6 +202,7 @@ lvim.plugins = {
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-neotest/neotest-python",
 			"nvim-neotest/neotest-go",
+			"haydenmeade/neotest-jest",
 		},
 		config = function()
 			require("user.neotest").config()
