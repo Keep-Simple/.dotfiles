@@ -32,6 +32,17 @@ lvim.plugins = {
 			require("user.gitlinker").config()
 		end,
 	},
+	-- harpoon
+	{ "ThePrimeagen/harpoon", requires = "nvim-lua/plenary.nvim" },
+	{
+		"RishabhRD/nvim-cheat.sh",
+		requires = "RishabhRD/popfix",
+		config = function()
+			vim.g.cheat_default_window_layout = "vertical_split"
+		end,
+		opt = true,
+		cmd = { "Cheat", "CheatWithoutComments", "CheatList", "CheatListWithoutComments" },
+	},
 	-- smart git wrapper
 	{
 		"tpope/vim-fugitive",

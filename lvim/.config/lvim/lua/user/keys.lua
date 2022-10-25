@@ -3,11 +3,12 @@ lvim.leader = ","
 lvim.builtin.terminal.open_mapping = [[<c-\>]]
 
 -- ignore project.nvim mapping, use only packer
-lvim.builtin.which_key.mappings["P"] = lvim.builtin.which_key.mappings["p"]
-lvim.builtin.which_key.mappings["p"] = nil
-lvim.builtin.which_key.mappings[";"] = nil
+local whk = lvim.builtin.which_key.mappings
+whk["P"] = whk["p"]
+whk["p"] = nil
+whk[";"] = nil
 lvim.lsp.buffer_mappings.normal_mode["gr"] = nil
-lvim.builtin.which_key.mappings["/"] = nil
+whk["/"] = nil
 
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
@@ -17,13 +18,13 @@ lvim.keys.normal_mode = {
 	["]e"] = "<cmd>lua vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })<cr>",
 	["gr"] = "<cmd>TroubleToggle lsp_references<cr>",
 	["gS"] = "<cmd>setlocal spell!<cr>",
-	["<C-Up>"] = ":resize +2<CR>",
-	["<C-Down>"] = ":resize -2<CR>",
-	["<C-Left>"] = ":vertical resize +2<CR>",
-	["<C-Right>"] = ":vertical resize -2<CR>",
-	["<S-l>"] = ":BufferLineCycleNext<CR>",
-	["<S-h>"] = ":BufferLineCyclePrev<CR>",
-	["<S-x>"] = ":BufferKill<CR>",
+	["<C-Up>"] = ":resize +2<cr>",
+	["<C-Down>"] = ":resize -2<cr>",
+	["<C-Left>"] = ":vertical resize +2<cr>",
+	["<C-Right>"] = ":vertical resize -2<cr>",
+	["<S-l>"] = ":BufferLineCycleNext<cr>",
+	["<S-h>"] = ":BufferLineCyclePrev<cr>",
+	["<S-x>"] = ":BufferKill<cr>",
 }
 
 vim.cmd([[
@@ -40,8 +41,8 @@ vim.cmd([[
      vnoremap ,y "+y
 ]])
 
-lvim.builtin.which_key.mappings["LC"] = { "<cmd>LvimCacheReset<cr>", "Lvim cache reset" }
-lvim.builtin.which_key.mappings["W"] = {
+whk["LC"] = { "<cmd>LvimCacheReset<cr>", "Lvim cache reset" }
+whk["W"] = {
 	name = "Save options",
 	s = { "<cmd>SudaWrite<cr>", "sudo save" },
 	n = { "<cmd>noautocmd w<cr>", "no format save" },
@@ -50,7 +51,7 @@ lvim.builtin.which_key.mappings["W"] = {
 	N = { "<cmd>noautocmd wa<cr>", "no format save all" },
 }
 
-lvim.builtin.which_key.mappings["T"] = {
+whk["T"] = {
 	name = "Trouble",
 	r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
 	f = { "<cmd>TroubleToggle lsp_definitions<cr>", "Definitions" },
@@ -60,39 +61,39 @@ lvim.builtin.which_key.mappings["T"] = {
 	w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
 }
 
-lvim.builtin.which_key.mappings["gv"] = {
+whk["gv"] = {
 	name = "Diffview",
 	o = { "<cmd>DiffviewOpen<cr>", "Open" },
 	c = { "<cmd>DiffviewClose<cr>", "Close" },
 	r = { "<cmd>DiffviewRefresh<cr>", "Refresh" },
 	f = { "<cmd>DiffviewRefresh<cr>", "Files History" },
 }
-lvim.builtin.which_key.mappings["gy"] = { "<cmd>lua require'gitlinker'.get_buf_range_url('n')<cr>", "Copy link" }
-lvim.builtin.which_key.mappings["gm"] = { "<cmd>Git<cr>", "Git menu" }
+whk["gy"] = { "<cmd>lua require'gitlinker'.get_buf_range_url('n')<cr>", "Copy link" }
+whk["gm"] = { "<cmd>Git<cr>", "Git menu" }
 
-lvim.builtin.which_key.mappings["m"] = { "<cmd>MarkdownPreviewToggle<cr>", "Live Markdown" }
+whk["m"] = { "<cmd>MarkdownPreviewToggle<cr>", "Live Markdown" }
 
-lvim.builtin.which_key.mappings["lo"] = { "<cmd>SymbolsOutline<cr>", "Outline" }
+whk["lo"] = { "<cmd>SymbolsOutline<cr>", "Outline" }
 
-lvim.builtin.which_key.mappings["S"] = {
+whk["S"] = {
 	name = "Session",
 	c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
 	l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
 	Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
 }
 
-lvim.builtin.which_key.mappings["r"] = {
+whk["r"] = {
 	name = "Replace",
 	r = { "<cmd>lua require('spectre').open()<cr>", "Replace" },
 	w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "Replace Word" },
 	f = { "<cmd>lua require('spectre').open_file_search()<cr>", "Replace Buffer" },
 }
 
-lvim.builtin.which_key.mappings["Y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
-lvim.builtin.which_key.mappings["e"] = { "<cmd>Lf<cr>", "Explorer" }
-lvim.builtin.which_key.mappings["ss"] = { "<cmd>Telescope resume<cr>", "Resume search" }
+whk["Y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
+whk["e"] = { "<cmd>Lf<cr>", "Explorer" }
+whk["ss"] = { "<cmd>Telescope resume<cr>", "Resume search" }
 
-lvim.builtin.which_key.mappings["t"] = {
+whk["t"] = {
 	name = "Test Runner",
 	f = { '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', "Run file" },
 	n = { "<cmd>lua require('neotest').run.run()<cr>", "Run nearest" },
@@ -125,7 +126,7 @@ lvim.builtin.telescope.defaults.mappings = {
 	},
 }
 
-lvim.builtin.which_key.mappings["d"] = {
+whk["d"] = {
 	name = "Debug",
 	t = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
 	l = {
@@ -150,6 +151,15 @@ lvim.builtin.which_key.mappings["d"] = {
 	-- R = { "<cmd>lua require'dap'.repl.close()<cr>", "Close Repl" },
 	q = { "<cmd>lua require'dap'.terminate()<cr>", "Quit" },
 }
+
+whk["a"] = { "<cmd>lua require('harpoon.mark').add_file()<cr>", "Add Mark" }
+whk["<leader>"] = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", "Harpoon" }
+whk["C"] = { "<cmd>lua require('harpoon.cmd-ui').toggle_quick_menu()<cr>", "Harpoon" }
+
+whk["?"] = { "<cmd>Cheat<cr>", "Cheat.sh" }
+-- Navigate merge conflict markers
+whk["]n"] = { "[[:call search('^(@@ .* @@|[<=>|]{7}[<=>|]@!)', 'W')<cr>]]", "next merge conflict" }
+whk["[n"] = { "[[:call search('^(@@ .* @@|[<=>|]{7}[<=>|]@!)', 'bW')<cr>]]", "prev merge conflict" }
 
 local cmp = require("cmp")
 lvim.builtin.cmp.mapping["<C-l>"] = cmp.mapping.complete()
