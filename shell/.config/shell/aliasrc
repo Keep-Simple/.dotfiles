@@ -15,9 +15,7 @@ done
 alias \
 	cp="cp -iv" \
 	mv="mv -iv" \
-	rm="rm -v" \
 	bc="bc -ql" \
-	mkd="mkdir -pv" \
 	yt="youtube-dl --add-metadata -i" \
 	yta="yt -x -f bestaudio/best" \
 	ffmpeg="ffmpeg -hide_banner"
@@ -36,14 +34,11 @@ alias \
 	trem="transmission-remote" \
 	YT="youtube-viewer" \
 	sdn="sudo shutdown -h now" \
-	e="$EDITOR" \
 	v="$EDITOR" \
-	p="sudo pacman" \
 	xi="sudo xbps-install" \
 	xr="sudo xbps-remove -R" \
 	xq="xbps-query"
 
 alias \
-	magit="nvim -c MagitOnly" \
 	reload-shortcuts="apply-shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" \
 	weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport"

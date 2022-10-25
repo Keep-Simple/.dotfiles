@@ -3,7 +3,7 @@ D   ${XDG_DOWNLOAD_DIR:-$HOME/Downloads}
 d   ${XDG_DOCUMENTS_DIR:-$HOME/Documents}
 cdf $HOME/.dotfiles
 o   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca}
-P   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal}
+p   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal}
 u   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/university/labs}
 lo  $HOME/.local
 h   $HOME
