@@ -30,6 +30,7 @@ alias \
 alias \
 	g="git" \
 	c="clear" \
+	s="spt" \
 	t="btop" \
 	top="btop" \
 	htop="btop" \
@@ -37,10 +38,7 @@ alias \
 	trem="transmission-remote" \
 	YT="youtube-viewer" \
 	sdn="sudo shutdown -h now" \
-	v="$EDITOR" \
-	xi="sudo xbps-install" \
-	xr="sudo xbps-remove -R" \
-	xq="xbps-query"
+	v="$EDITOR"
 
 alias \
 	reload-shortcuts="apply-shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" \

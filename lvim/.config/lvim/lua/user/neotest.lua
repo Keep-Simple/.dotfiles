@@ -31,7 +31,7 @@ M.config = function()
 				next_failed = "]e",
 				prev_failed = "[e",
 				target = nil,
-				clear_target = nil,
+				clear_target = "c",
 			},
 		},
 		adapters = {

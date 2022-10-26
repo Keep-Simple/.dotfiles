@@ -33,7 +33,7 @@ lvim.plugins = {
 		end,
 	},
 	-- harpoon
-	{ "ThePrimeagen/harpoon", requires = "nvim-lua/plenary.nvim" },
+	{ "Keep-Simple/harpoon", requires = "nvim-lua/plenary.nvim" },
 	{
 		"RishabhRD/nvim-cheat.sh",
 		requires = "RishabhRD/popfix",
