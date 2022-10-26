@@ -9,7 +9,8 @@ karabiner,skhd,yabai,
 shell,zsh,
 zathura,k9s,
 git,spotify-tui,
-asdf,tmux
+asdf,tmux,
+btop
 "
 
 cd $(dirname "${BASH_SOURCE[0]}")

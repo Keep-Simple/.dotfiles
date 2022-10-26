@@ -30,6 +30,9 @@ alias \
 alias \
 	g="git" \
 	c="clear" \
+	t="btop" \
+	top="btop" \
+	htop="btop" \
 	k="kubectl" \
 	trem="transmission-remote" \
 	YT="youtube-viewer" \
