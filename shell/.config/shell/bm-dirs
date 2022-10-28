@@ -1,10 +1,15 @@
 cf  ${XDG_CONFIG_HOME:-$HOME/.config}
 D   ${XDG_DOWNLOAD_DIR:-$HOME/Downloads}
 d   ${XDG_DOCUMENTS_DIR:-$HOME/Documents}
+m   ${XDG_MUSIC_DIR:-$HOME/Music}
 cdf $HOME/.dotfiles
-o   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca}
-p   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal}
-u   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/university/labs}
 lo  $HOME/.local
 h   $HOME
-m   ${XDG_MUSIC_DIR:-$HOME/Music}
+
+O   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca}
+oc   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/cli}
+oa   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca/apisec/services}
+
+P   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal}
+pu   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/university/labs}
+pl   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/leetcode}

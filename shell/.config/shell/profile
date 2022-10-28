@@ -75,8 +75,6 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
 	export MANPATH="${HOMEBREW_PREFIX}/opt/gnu-tar/libexec/gnuman:$PATH"
 	export PATH="${HOMEBREW_PREFIX}/opt/util-linux/bin:$PATH"
 	export PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:$PATH"
-	# completions
-	export FPATH="${HOMEBREW_PREFIX}/share/zsh/site-functions:${FPATH}"
 fi
 
 # put it into .zshenv

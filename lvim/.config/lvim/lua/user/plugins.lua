@@ -253,4 +253,6 @@ lvim.plugins = {
 		event = "InsertEnter",
 		disable = true,
 	},
+	-- vim training
+	{ "ThePrimeagen/vim-be-good" },
 }

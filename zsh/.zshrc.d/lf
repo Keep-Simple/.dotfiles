@@ -9,9 +9,9 @@ lf () {
     command rm -f -- "$tempfile" 2>/dev/null
 }
 
+_zinit_lf() {
+  bindkey -r '^E' 
+  bindkey -s '^E' 'lf^M'
+}
 
-zle     -N            lf
-bindkey -M emacs '^O' lf
-bindkey -M vicmd '^O' lf
-bindkey -M viins '^O' lf
 
