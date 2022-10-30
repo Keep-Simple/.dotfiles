@@ -5,8 +5,7 @@
 if [[ -z "${YABAI_SPACE_ID}" ]]; then
 	space_sel="mouse"
 else
-	export space_id=$YABAI_SPACE_ID
-	space_sel=$(yabai -m query --spaces | jq -r '.[] | select(.id==(env.space_id|tonumber)).index')
+	space_sel=$(yabai -m query --spaces | jq -r '.[] | select(.id==(env.YABAI_SPACE_ID|tonumber)).index')
 fi
 
 windows_ids=$(yabai -m query --windows --space $space_sel | jq '.[] | select(."is-floating"==false).id')

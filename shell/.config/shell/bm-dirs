@@ -3,13 +3,15 @@ D   ${XDG_DOWNLOAD_DIR:-$HOME/Downloads}
 d   ${XDG_DOCUMENTS_DIR:-$HOME/Documents}
 m   ${XDG_MUSIC_DIR:-$HOME/Music}
 cdf $HOME/.dotfiles
-lo  $HOME/.local
 h   $HOME
+
+L  $HOME/.local
+lv $HOME/.local/share/lunarvim
 
 O   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca}
 oc   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/cli}
 oa   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca/apisec/services}
 
 P   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal}
-pu   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/university/labs}
+pu   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/university/labs/3_term/}
 pl   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/leetcode}

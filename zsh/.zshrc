@@ -83,7 +83,11 @@ zinit wait lucid light-mode for \
   zdharma-continuum/null \
   \
   atload='_zinit_lf' \
-  id-as'lf' \
+  id-as'lf' nocompile \
+  zdharma-continuum/null \
+  \
+  atload='_zinit_lvim' \
+  id-as'lvim' nocompile \
   zdharma-continuum/null 
   
 autoload -U colors && colors
