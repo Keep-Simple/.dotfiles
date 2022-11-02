@@ -248,7 +248,8 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
                                             "alacritty$",
-                                            "^net\\.kovidgoyal\\.kitty$"
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -306,7 +307,8 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
                                             "alacritty$",
-                                            "^net\\.kovidgoyal\\.kitty$"
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -364,7 +366,8 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
                                             "alacritty$",
-                                            "^net\\.kovidgoyal\\.kitty$"
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -427,7 +430,8 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
                                             "alacritty$",
-                                            "^net\\.kovidgoyal\\.kitty$"
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -490,7 +494,8 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
                                             "alacritty$",
-                                            "^net\\.kovidgoyal\\.kitty$"
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -554,7 +559,8 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
                                             "alacritty$",
-                                            "^net\\.kovidgoyal\\.kitty$"
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -617,7 +623,8 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
                                             "alacritty$",
-                                            "^net\\.kovidgoyal\\.kitty$"
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }

@@ -71,9 +71,9 @@ syncConfig() {
 
 installLunarvim() {
 	echo "[INFO] Installing LunarVim"
-	curl https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh --output install_script.sh
+	curl https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh --output install_script.sh
 	chmod +x install_script.sh
-	LV_BRANCH=rolling ./install_script.sh -y
+	./install_script.sh -y
 	rm install_script.sh
 }
 

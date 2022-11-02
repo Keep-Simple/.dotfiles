@@ -23,7 +23,7 @@ M.config = function()
 			"solidity",
 			"sqls",
 			"tailwindcss-language-server",
-			"taplo",
+			-- "taplo",
 			"terraform-ls",
 			"typescript-language-server",
 			"vim-language-server",
