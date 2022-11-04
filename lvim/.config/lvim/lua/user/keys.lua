@@ -61,13 +61,6 @@ whk["T"] = {
 	w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
 }
 
-whk["gv"] = {
-	name = "Diffview",
-	o = { "<cmd>DiffviewOpen<cr>", "Open" },
-	c = { "<cmd>DiffviewClose<cr>", "Close" },
-	r = { "<cmd>DiffviewRefresh<cr>", "Refresh" },
-	f = { "<cmd>DiffviewRefresh<cr>", "Files History" },
-}
 whk["gy"] = { "<cmd>lua require'gitlinker'.get_buf_range_url('n')<cr>", "Copy link" }
 whk["gm"] = { "<cmd>Git<cr>", "Git menu" }
 

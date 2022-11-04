@@ -3,6 +3,7 @@ lvim.plugins = {
 	{ "ojroques/vim-oscyank" },
 	{
 		"folke/trouble.nvim",
+		as = "trouble",
 		cmd = "TroubleToggle",
 		requires = "kyazdani42/nvim-web-devicons",
 		config = function()
@@ -87,17 +88,15 @@ lvim.plugins = {
 			require("user.neoscroll").config()
 		end,
 	},
-	-- Git diffview
-	{
-		"sindrets/diffview.nvim",
-		requires = "nvim-lua/plenary.nvim",
-	},
 	-- Sudo save
 	{ "lambdalisue/suda.vim" },
 	-- :Codi [name] opens buffers with [name] language interpreter
 	{
 		"metakirby5/codi.vim",
 		cmd = "Codi",
+		config = function()
+			require("user.codi").config()
+		end,
 	},
 	-- Live markdown preview in browser
 	{

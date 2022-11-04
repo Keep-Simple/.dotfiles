@@ -57,7 +57,7 @@ map a push :touch<space>
 map <c-r> :reload
 map <c-a> :select-files
 map <enter> :shell
-map o $open $f
+map o :open 
 map <c-z> $kill -STOP $PPID
 map p :paste_try_cow
 # duplicate lf with current dir in another terminal

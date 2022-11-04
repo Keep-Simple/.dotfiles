@@ -13,5 +13,6 @@ asdf,tmux,
 btop
 "
 
-cd $(dirname "${BASH_SOURCE[0]}")
-ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS ./install-dotfiles "$@"
+cd ~/.dotfiles
+
+ROOT_APPS=$ROOT_APPS USER_APPS=$USER_APPS ./backup/install-dotfiles "$@"

@@ -5,6 +5,7 @@ export EDITOR="lvim"
 export VISUAL="$EDITOR"
 export TERMINAL="alacritty"
 export BROWSER="open-in-brave"
+export OPENER="open" # for mac
 
 paths=$(find -L ~/.local/bin -type d -print | xargs printf -- '%s:')%%:
 export PATH="$PATH:${paths}"

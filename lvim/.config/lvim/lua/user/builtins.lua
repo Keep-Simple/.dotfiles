@@ -21,7 +21,7 @@ lvim.builtin.gitsigns.opts.current_line_blame = true
 
 lvim.builtin.project.detection_methods = { "lsp", "pattern" }
 
-lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true } }
+-- lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true } }
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
 	"__pycache__/*",
 	"__pycache__/",
@@ -33,7 +33,7 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = {
 	".idea/",
 	".vscode/",
 }
-lvim.builtin.telescope.defaults.path_display = { "smart" }
+-- lvim.builtin.telescope.defaults.path_display = { "smart" }
 
 lvim.lsp.diagnostics.float.focusable = true
 lvim.lsp.float.focusable = true
