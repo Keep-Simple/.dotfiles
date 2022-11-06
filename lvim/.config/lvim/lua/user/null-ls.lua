@@ -26,6 +26,7 @@ formatters.setup({
 	{ command = "shfmt" },
 	{ command = "qmlformat" },
 	{ command = "buf" },
+	{ command = "asmfmt", filettypes = { "asm", "nams", "masm" } },
 })
 
 local linters = require("lvim.lsp.null-ls.linters")

@@ -19,21 +19,11 @@ lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.cmp.completion.autocomplete = false
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
-lvim.builtin.project.detection_methods = { "lsp", "pattern" }
+lvim.builtin.project.detection_methods = { "pattern", "lsp" }
+lvim.builtin.project.patterns =
+	{ ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "pom.xml", ".root" }
 
--- lvim.builtin.telescope.pickers = { find_files = { hidden = true, no_ignore = true } }
-lvim.builtin.telescope.defaults.file_ignore_patterns = {
-	"__pycache__/*",
-	"__pycache__/",
-	"node_modules/*",
-	"node_modules/",
-	".git/",
-	".github/",
-	".gradle/",
-	".idea/",
-	".vscode/",
-}
--- lvim.builtin.telescope.defaults.path_display = { "smart" }
+lvim.builtin.telescope.pickers.find_files = { hidden = true, no_ignore = true }
 
 lvim.lsp.diagnostics.float.focusable = true
 lvim.lsp.float.focusable = true

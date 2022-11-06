@@ -102,23 +102,6 @@ whk["t"] = {
 	o = { "<cmd>lua require('neotest').output.open({ enter = true, short = false })<cr>", "Show output" },
 }
 
-local _, trouble = pcall(require, "trouble.providers.telescope")
-local _, actions = pcall(require, "telescope.actions")
-lvim.builtin.telescope.defaults.mappings = {
-	i = {
-		["<C-j>"] = actions.move_selection_next,
-		["<C-k>"] = actions.move_selection_previous,
-		["<C-n>"] = actions.cycle_history_next,
-		["<C-p>"] = actions.cycle_history_prev,
-		["<C-q>"] = trouble.open_with_trouble,
-	},
-	n = {
-		["<C-j>"] = actions.move_selection_next,
-		["<C-k>"] = actions.move_selection_previous,
-		["<C-q>"] = trouble.open_with_trouble,
-	},
-}
-
 whk["d"] = {
 	name = "Debug",
 	t = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
