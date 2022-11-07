@@ -40,6 +40,7 @@ M.config = function()
 				runner = "pytest",
 				dap = {
 					justMyCode = false,
+					console = "integratedTerminal",
 				},
 			}),
 			require("neotest-go"),

@@ -26,28 +26,12 @@ M.config = function()
 			},
 			{
 				elements = {
+					"console",
 					"repl",
-					-- "console",
 				},
 				size = 0.25,
 				position = "bottom",
 			},
-			-- controls = {
-			-- 	enabled = false,
-			--      icons = nil,
-			--      element = nil,
-			-- element = "repl",
-			-- icons = {
-			-- 	pause = "",
-			-- 	play = "",
-			-- 	step_into = "",
-			-- 	step_over = "",
-			-- 	step_out = "",
-			-- 	step_back = "",
-			-- 	run_last = "↻",
-			-- 	terminate = "□",
-			-- },
-			-- },
 			floating = {
 				max_height = 0.9,
 				max_width = 0.5, -- Floats will be treated as percentage of your screen.

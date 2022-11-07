@@ -116,7 +116,6 @@ dap.configurations.cpp = {
 }
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
-
 dap.adapters.python = {
 	type = "executable",
 	command = "debugpy-adapter",
@@ -144,7 +143,7 @@ dap.configurations.python = {
 		env = function()
 			return { ["PYTHONPATH"] = vim.fn.getcwd() }
 		end,
-		-- console = "externalTerminal",
+		console = "integratedTerminal",
 		args = function()
 			local args = {}
 			local i = 1

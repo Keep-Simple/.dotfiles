@@ -27,6 +27,7 @@ formatters.setup({
 	{ command = "qmlformat" },
 	{ command = "buf" },
 	{ command = "asmfmt", filettypes = { "asm", "nams", "masm" } },
+	{ command = "google_java_format", filetypes = { "java" } },
 })
 
 local linters = require("lvim.lsp.null-ls.linters")

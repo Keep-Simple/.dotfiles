@@ -5,3 +5,4 @@ golang 1.19.2
 yarn 1.22.19
 poetry 1.2.2
 direnv 2.32.1
+java openjdk-18

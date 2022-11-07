@@ -1,20 +1,23 @@
 local clangd_flags = {
-	"--all-scopes-completion",
-	"--suggest-missing-includes",
 	"--background-index",
-	"--pch-storage=disk",
-	"--cross-file-rename",
-	"--log=info",
-	"--completion-style=detailed",
-	"--enable-config", -- clangd 11+ supports reading from .clangd configuration file
-	"--clang-tidy",
-	"--clang-tidy-checks=-*,llvm-*,clang-analyzer-*,modernize-*,-modernize-use-trailing-return-type",
 	"--fallback-style=Google",
-	"--header-insertion=never",
-	"--query-driver=<list-of-white-listed-complers>",
+	"--all-scopes-completion",
+	"--clang-tidy",
+	"--log=error",
+	"--suggest-missing-includes",
+	"--cross-file-rename",
+	"--completion-style=detailed",
+	"--pch-storage=memory", -- could also be disk
+	"--folding-ranges",
+	"--enable-config", -- clangd 11+ supports reading from .clangd configuration file
+	"--offset-encoding=utf-16", --temporary fix for null-ls
+	-- "--limit-references=1000",
+	-- "--limit-resutls=1000",
+	-- "--malloc-trim",
+	-- "--clang-tidy-checks=-*,llvm-*,clang-analyzer-*,modernize-*,-modernize-use-trailing-return-type",
+	-- "--header-insertion=never",
+	-- "--query-driver=<list-of-white-listed-complers>"
 }
-
-local clangd_bin = "clangd"
 
 local custom_on_attach = function(client, bufnr)
 	require("lvim.lsp").common_on_attach(client, bufnr)
@@ -23,7 +26,7 @@ local custom_on_attach = function(client, bufnr)
 end
 
 local opts = {
-	cmd = { clangd_bin, unpack(clangd_flags) },
+	cmd = { "clangd", unpack(clangd_flags) },
 	on_attach = custom_on_attach,
 }
 

@@ -8,7 +8,7 @@ require("typescript").setup({
 	-- },
 })
 
-lvim.builtin.which_key.mappings["lt"] = {
+lvim.builtin.which_key.mappings["lc"] = {
 	name = "Typescript",
 	i = { "<cmd>TypescriptAddMissingImports<cr>", "Import All" },
 	f = { "<cmd>TypescriptFixAll<cr>", "Fix all" },

@@ -235,7 +235,7 @@ lvim.plugins = {
 	{
 		"jose-elias-alvarez/typescript.nvim",
 	},
-
+	{ "mfussenegger/nvim-jdtls" },
 	-- ai autocompletions
 	{
 		"gelfand/copilot.vim",

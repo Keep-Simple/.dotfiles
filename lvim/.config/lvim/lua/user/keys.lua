@@ -126,6 +126,7 @@ whk["d"] = {
 	-- With new lvim autocommand to hide repl, no longer needed
 	-- R = { "<cmd>lua require'dap'.repl.close()<cr>", "Close Repl" },
 	q = { "<cmd>lua require'dap'.terminate()<cr>", "Quit" },
+	U = { "<cmd>lua require'dapui'.toggle()<cr>", "Toggle UI" },
 }
 
 -- Harpoon
