@@ -1,13 +1,16 @@
+local dap = require("dap")
 local M = {}
 
 M.config = function()
 	require("rust-tools").setup({
 		tools = {
 			autoSetHints = true,
-			hover_with_actions = true,
 			runnables = {
 				use_telescope = true,
 			},
+		},
+		dap = {
+			adapter = dap.adapters.codelldb,
 		},
 		server = {
 			cmd = { "rust-analyzer" },

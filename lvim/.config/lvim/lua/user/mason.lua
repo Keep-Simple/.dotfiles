@@ -10,6 +10,7 @@ M.config = function()
 			"delve",
 			"debugpy",
 			"node-debug2-adapter",
+			"codelldb",
 
 			-- lsp servers
 			"bash-language-server",
@@ -19,9 +20,11 @@ M.config = function()
 			"kotlin-language-server",
 			"lua-language-server",
 			"pyright",
+			"rust-analyzer",
 			"solargraph",
 			"solidity",
 			"sqls",
+			"html-lsp",
 			"tailwindcss-language-server",
 			"taplo",
 			"terraform-ls",
