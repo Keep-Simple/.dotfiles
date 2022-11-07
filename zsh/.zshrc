@@ -44,7 +44,7 @@ zinit light asdf-vm/asdf
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
-zinit ice depth=1
+zinit ice depth=1 atload'zvm_vi_yank() { zvm_yank; echo ${CUTBUFFER} | pbcopy; zvm_exit_visual_mode; }'
 zinit light jeffreytse/zsh-vi-mode
 
 # Regular plugins, loaded in turbe mode (wait)
@@ -88,8 +88,12 @@ zinit wait lucid light-mode for \
   \
   atload='_zinit_lvim' \
   id-as'lvim' nocompile \
-  zdharma-continuum/null 
-  
+  zdharma-continuum/null \
+  \
+  depth'1' nocompile \
+  src'shell/key-bindings.zsh' \
+  junegunn/fzf
+
 autoload -U colors && colors
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

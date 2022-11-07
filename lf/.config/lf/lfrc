@@ -9,9 +9,9 @@ source "~/.config/lf/commands/open"
 source "~/.config/lf/commands/files_and_dirs"
 source "~/.config/lf/commands/archives"
 
-set shell sh
-# set shellopts '-ey' # for zsh
-set shellopts '-eu'
+set shell zsh
+# set shellopts '-eu' # for sh
+set shellopts '-ey'
 set ifs "\n"
 set scrolloff 10
 set icons
@@ -57,7 +57,8 @@ map a push :touch<space>
 map <c-r> :reload
 map <c-a> :select-files
 map <enter> :shell
-map o :open 
+map o push :open-with<space>
+map O %open "$fx"
 map <c-z> $kill -STOP $PPID
 map p :paste_try_cow
 # duplicate lf with current dir in another terminal

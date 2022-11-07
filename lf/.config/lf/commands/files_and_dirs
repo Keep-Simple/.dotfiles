@@ -10,6 +10,8 @@ cmd mkdir %{{
     lf -remote "send $id select \"$@\""
 }}
 
+cmd open-with %"$@" "$fx"
+
 cmd delete ${{
   set -f
   printf "\n$fx\n"
