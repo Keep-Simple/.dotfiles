@@ -86,6 +86,23 @@ whk["Y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 whk["e"] = { "<cmd>Lf<cr>", "Explorer" }
 whk["ss"] = { "<cmd>Telescope resume<cr>", "Resume search" }
 
+local _, trouble = pcall(require, "trouble.providers.telescope")
+local _, actions = pcall(require, "telescope.actions")
+lvim.builtin.telescope.defaults.mappings = {
+	i = {
+		["<C-j>"] = actions.move_selection_next,
+		["<C-k>"] = actions.move_selection_previous,
+		["<C-n>"] = actions.cycle_history_next,
+		["<C-p>"] = actions.cycle_history_prev,
+		["<C-q>"] = trouble.open_with_trouble,
+	},
+	n = {
+		["<C-j>"] = actions.move_selection_next,
+		["<C-k>"] = actions.move_selection_previous,
+		["<C-q>"] = trouble.open_with_trouble,
+	},
+}
+
 whk["t"] = {
 	name = "Test Runner",
 	f = { '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', "Run file" },

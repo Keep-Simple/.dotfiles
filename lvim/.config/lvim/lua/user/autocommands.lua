@@ -3,7 +3,7 @@ lvim.autocommands = {
 	{
 		"FileType",
 		{
-			pattern = { "fugitive", "neotest*" },
+			pattern = { "fugitive" },
 			callback = function()
 				vim.cmd([[
           nnoremap <silent> <buffer> q :close<CR>
