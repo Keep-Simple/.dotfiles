@@ -62,7 +62,7 @@ map O %open "$fx"
 map <c-z> $kill -STOP $PPID
 map p :paste_try_cow
 # duplicate lf with current dir in another terminal
-map S &open -na Alacritty --args --working-directory=$PWD -e "lf"
+map S &open -na Alacritty --args --working-directory=$PWD -e zsh -c ". ~/.zshrc; lf; zsh -i"
 
 # vim like mappings with <leader> being ","
 map ,r :bulk-rename

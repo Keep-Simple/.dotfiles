@@ -85,6 +85,7 @@ whk["r"] = {
 whk["Y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 whk["e"] = { "<cmd>Lf<cr>", "Explorer" }
 whk["ss"] = { "<cmd>Telescope resume<cr>", "Resume search" }
+whk["s"]["t"] = { "<cmd>lua require'telescope'.extensions.live_grep_args.live_grep_args()<cr>", "Text" }
 
 local _, trouble = pcall(require, "trouble.providers.telescope")
 local _, actions = pcall(require, "telescope.actions")

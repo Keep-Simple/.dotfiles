@@ -101,8 +101,12 @@ lvim.plugins = {
 	-- Live markdown preview in browser
 	{
 		"iamcco/markdown-preview.nvim",
-		run = "cd app && npm install",
+		run = function()
+			vim.fn["mkdp#util#install"]()
+		end,
 		ft = "markdown",
+		cmd = { "MarkdownPreview" },
+		requires = { "zhaozg/vim-diagram", "aklt/plantuml-syntax" },
 	},
 	{
 		"folke/persistence.nvim",
@@ -236,6 +240,13 @@ lvim.plugins = {
 		"jose-elias-alvarez/typescript.nvim",
 	},
 	{ "mfussenegger/nvim-jdtls" },
+	-- telescope extension for ripgrep args
+	{
+		"nvim-telescope/telescope-live-grep-args.nvim",
+		config = function()
+			require("telescope").load_extension("live_grep_args")
+		end,
+	},
 	-- ai autocompletions
 	{
 		"gelfand/copilot.vim",

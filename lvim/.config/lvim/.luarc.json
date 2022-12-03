@@ -1,5 +1,8 @@
 {
     "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+    "Lua.diagnostics.disable": [
+        "redundant-parameter"
+    ],
     "Lua.workspace.library": [
         "/opt/homebrew/Cellar/neovim/0.8.0/share/nvim/runtime",
         "/Users/nickyasnogorodskyi/.local/share/lunarvim/lvim",

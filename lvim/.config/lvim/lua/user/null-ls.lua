@@ -26,7 +26,7 @@ formatters.setup({
 	{ command = "shfmt" },
 	{ command = "qmlformat" },
 	{ command = "buf" },
-	{ command = "asmfmt", filettypes = { "asm", "nams", "masm" } },
+	-- { command = "asmfmt", filetypes = { "asm", "nams", "masm" } },
 	{ command = "google_java_format", filetypes = { "java" } },
 })
 
