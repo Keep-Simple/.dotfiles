@@ -12,7 +12,6 @@ if [[ "$1" != "-d" ]]; then
 	defaults write -g InitialKeyRepeat -int 15
 	defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 	defaults write -g NSWindowResizeTime -float 0.001
-	defaults write -g NSWindowResizeTime -float 0.001
 	defaults write -g QLPanelAnimationDuration -float 0
 	defaults write -g NSUseAnimatedFocusRing -bool false
 	defaults write -g NSScrollViewRubberbanding -bool false
@@ -58,7 +57,6 @@ else
 	echo "Back to the defaults"
 	defaults delete -g KeyRepeat
 	defaults delete -g InitialKeyRepeat
-	defaults delete -g NSWindowResizeTime
 	defaults delete -g NSAutomaticWindowAnimationsEnabled
 	defaults delete -g NSWindowResizeTime
 	defaults delete -g QLPanelAnimationDuration

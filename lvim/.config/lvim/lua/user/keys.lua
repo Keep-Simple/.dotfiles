@@ -25,6 +25,10 @@ lvim.keys.normal_mode = {
 	["<S-l>"] = ":BufferLineCycleNext<cr>",
 	["<S-h>"] = ":BufferLineCyclePrev<cr>",
 	["<S-x>"] = ":BufferKill<cr>",
+	["<C-d>"] = "<C-d>zz",
+	["<C-u>"] = "<C-u>zz",
+	["n"] = "nzz",
+	["N"] = "Nzz",
 }
 
 vim.cmd([[

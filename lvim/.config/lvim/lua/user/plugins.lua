@@ -82,12 +82,12 @@ lvim.plugins = {
 		end,
 	},
 	-- smooth scrolling
-	{
-		"karb94/neoscroll.nvim",
-		config = function()
-			require("user.neoscroll").config()
-		end,
-	},
+	-- {
+	-- 	"karb94/neoscroll.nvim",
+	-- 	config = function()
+	-- 		require("user.neoscroll").config()
+	-- 	end,
+	-- },
 	-- Sudo save
 	{ "lambdalisue/suda.vim" },
 	-- :Codi [name] opens buffers with [name] language interpreter
@@ -162,17 +162,6 @@ lvim.plugins = {
 					"hgcommit",
 				},
 				lastplace_open_folds = true,
-			})
-		end,
-	},
-	-- pick on line numbers, when in command mode
-	{
-		"nacro90/numb.nvim",
-		event = "BufRead",
-		config = function()
-			require("numb").setup({
-				show_numbers = true,
-				show_cursorline = true,
 			})
 		end,
 	},
