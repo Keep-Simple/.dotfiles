@@ -4,7 +4,7 @@
 # apps shortcuts
 ctrl + alt + cmd - return : open -n /Applications/Alacritty.app
 ctrl + alt + cmd + shift - return : $YABAI/quick_terminal.sh
-ctrl + alt + cmd - o : open -n /System/Applications/System\ Preferences.app
+ctrl + alt + cmd - o : open -n /System/Applications/System\ Settings.app
 ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
 # selection screenshot to the clipboard without sound
 ctrl + alt + cmd - p : screencapture -cix /dev/null
