@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# unload stage manager
+launchctl unload -F /System/Library/LaunchAgents/com.apple.WindowManager.plist
 # to load $YABAI env
 source $HOME/.profile
 

@@ -112,7 +112,7 @@ brew 'yh'
 brew 'z'
 brew 'zlib'
 brew 'koekeishiya/formulae/skhd', args: ['HEAD']
-brew 'koekeishiya/formulae/yabai'
+brew 'koekeishiya/formulae/yabai', args: ['HEAD']
 cask 'alacritty'
 cask 'brave-browser'
 cask 'dmenu-mac'
