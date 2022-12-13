@@ -174,6 +174,14 @@ lvim.plugins = {
 		end,
 	},
 	{
+		"Weissle/persistent-breakpoints.nvim",
+		config = function()
+			require("persistent-breakpoints").setup({
+				load_breakpoints_event = { "BufReadPost" },
+			})
+		end,
+	},
+	{
 		"rcarriga/nvim-dap-ui",
 		as = "dapui",
 		config = function()
@@ -182,6 +190,7 @@ lvim.plugins = {
 	},
 	{
 		"theHamsta/nvim-dap-virtual-text",
+		as = "dap-virtual-text",
 		config = function()
 			require("user.dap-virtual-text").config()
 		end,

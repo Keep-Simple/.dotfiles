@@ -126,16 +126,16 @@ whk["t"] = {
 
 whk["d"] = {
 	name = "Debug",
-	t = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
+	t = { "<cmd>PBToggleBreakpoint<cr>", "Toggle Breakpoint" },
 	l = {
 		"<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
 		"Toggle Log point",
 	},
 	T = {
-		"<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
+		"<cmd>PBSetConditionalBreakpoint<cr>",
 		"Toggle conditional Breakpoint",
 	},
-	B = { "<cmd>lua require'dap'.clear_breakpoints()<cr>", "Clear all breakpoints" },
+	B = { "<cmd>PBClearAllBreakpoints<cr>", "Clear all breakpoints" },
 	b = { "<cmd>lua require'dap'.step_back()<cr>", "Step Back" },
 	c = { "<cmd>lua require'dap'.continue()<cr>", "Start/Continue" },
 	C = { "<cmd>lua require'dap'.run_to_cursor()<cr>", "Run To Cursor" },

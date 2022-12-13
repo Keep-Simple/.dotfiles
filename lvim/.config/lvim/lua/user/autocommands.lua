@@ -23,6 +23,15 @@ lvim.autocommands = {
 			end,
 		},
 	},
+	{
+		"BufWritePost",
+		{
+			pattern = { "*/.vscode/launch.json" },
+			callback = function()
+				require("dap.ext.vscode").load_launchjs()
+			end,
+		},
+	},
 	-- {
 	-- 	{ "BufWinEnter", "BufRead", "BufNewFile" },
 	-- 	{

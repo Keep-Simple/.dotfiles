@@ -2,6 +2,9 @@
 
 # unload stage manager
 launchctl unload -F /System/Library/LaunchAgents/com.apple.WindowManager.plist
+# fix
+killall dmenu-mac
+
 # to load $YABAI env
 source $HOME/.profile
 

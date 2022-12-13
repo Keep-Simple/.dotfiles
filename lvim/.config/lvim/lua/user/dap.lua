@@ -6,7 +6,7 @@ end
 dap.defaults.fallback.terminal_win_cmd = "50vsplit new"
 dap.defaults.fallback.exception_breakpoints = { "uncaught" }
 dap.defaults.fallback.external_terminal = {
-	command = "alacritty",
+	command = "open -na Alacritty",
 	args = { "-e" },
 }
 
@@ -159,3 +159,4 @@ dap.configurations.python = {
 		end,
 	},
 }
+require("dap.ext.vscode").load_launchjs()
