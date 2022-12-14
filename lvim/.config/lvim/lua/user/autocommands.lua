@@ -1,3 +1,5 @@
+dap = require("dap")
+dapui = require("dapui")
 lvim.autocommands = {
 	-- could also created file fugitive.lua in ftplugin
 	{
@@ -32,12 +34,14 @@ lvim.autocommands = {
 			end,
 		},
 	},
-	-- {
-	-- 	{ "BufWinEnter", "BufRead", "BufNewFile" },
-	-- 	{
-	-- 		group = "_format_options",
-	-- 		pattern = "*",
-	-- 		command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o",
-	-- 	},
-	-- },
+	{
+		"VimResized",
+		{
+			callback = function()
+				if dap.session() then
+					dapui.open({ reset = true })
+				end
+			end,
+		},
+	},
 }

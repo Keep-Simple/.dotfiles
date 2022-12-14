@@ -1,5 +1,4 @@
 local M = {}
-
 M.config = function()
 	local dapui = require("dapui")
 	dapui.setup({
@@ -16,18 +15,18 @@ M.config = function()
 		layouts = {
 			{
 				elements = {
-					{ id = "scopes", size = 0.33 },
-					{ id = "breakpoints", size = 0.17 },
-					{ id = "stacks", size = 0.25 },
-					{ id = "watches", size = 0.25 },
+					{ id = "scopes", size = 0.5 },
+					{ id = "watches", size = 0.3 },
+					{ id = "breakpoints", size = 0.1 },
+					{ id = "stacks", size = 0.1 },
 				},
-				size = 0.33,
+				size = 0.28,
 				position = "left",
 			},
 			{
 				elements = {
-					"console",
-					"repl",
+					{ id = "console", size = 0.75 },
+					{ id = "repl", size = 0.25 },
 				},
 				size = 0.25,
 				position = "bottom",
@@ -53,11 +52,11 @@ M.config = function()
 	end
 	dap.listeners.before.event_terminated["dapui_config"] = function()
 		dapui.close()
-		dap.repl.toggle()
+		-- dap.repl.toggle()
 	end
 	dap.listeners.before.event_exited["dapui_config"] = function()
 		dapui.close()
-		dap.repl.toggle()
+		-- dap.repl.toggle()
 	end
 
 	require("cmp").setup({

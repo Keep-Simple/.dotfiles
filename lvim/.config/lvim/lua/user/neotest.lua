@@ -40,10 +40,8 @@ M.config = function()
 			require("neotest-python")({
 				args = { "-vv", "-s" },
 				runner = "pytest",
-				dap = {
-					justMyCode = false,
-					console = "integratedTerminal",
-				},
+				python = require("user.dap.python").get_python_path,
+				dap = require("user.dap.python").get_dap_config({}),
 			}),
 			require("neotest-go"),
 			require("neotest-jest")({
