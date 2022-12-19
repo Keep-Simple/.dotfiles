@@ -2,8 +2,6 @@
 
 # unload stage manager
 launchctl unload -F /System/Library/LaunchAgents/com.apple.WindowManager.plist > /dev/null 2>&1 &
-# fix
-killall dmenu-mac
 
 # to load $YABAI env
 source $HOME/.profile
@@ -67,7 +65,7 @@ yabai -m rule --add app="^Karabiner-EventViewer$" manage=off
 yabai -m rule --add title="QuickTerminal" grid=40:20:4:7:12:26 sticky=on layer=above opacity=0.9 border=off manage=off
 
 $YABAI/smart_gaps.sh
-$YABAI/create_spaces.sh
+$YABAI/create_spaces.sh 6
 SHELL="/bin/sh" skhd &
 echo "yabai configuration loaded.."
 
