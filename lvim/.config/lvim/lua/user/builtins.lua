@@ -17,6 +17,7 @@ lvim.builtin.terminal.shading_factor = 1
 lvim.builtin.alpha.mode = "dashboard"
 
 lvim.builtin.cmp.completion.autocomplete = false
+lvim.builtin.cmp.cmdline.enable = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
 lvim.builtin.project.detection_methods = { "pattern", "lsp" }
@@ -28,25 +29,46 @@ lvim.builtin.telescope.pickers.find_files = { hidden = true, no_ignore = true }
 lvim.lsp.diagnostics.float.focusable = true
 lvim.lsp.float.focusable = true
 
+-- local telescope = require("telescope")
+-- local lga_actions = require("telescope-live-grep-args.actions")
+
+-- lvim.builtin.telescope.on_config_done = function()
+-- 	telescope.setup({
+-- 		extensions = {
+-- 			live_grep_args = {
+-- 				auto_quoting = true, -- enable/disable auto-quoting
+-- 				-- define mappings, e.g.
+-- 				mappings = { -- extend mappings
+-- 					i = {
+-- 						["<C-b>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+-- 					},
+-- 				},
+-- 				-- ... also accepts theme settings, for example:
+-- 				-- theme = "dropdown", -- use dropdown theme
+-- 				-- theme = { }, -- use own theme spec
+-- 				-- layout_config = { mirror=true }, -- mirror preview pane
+-- 			},
+-- 		},
+-- 	})
+-- end
 local telescope = require("telescope")
 local lga_actions = require("telescope-live-grep-args.actions")
 
-lvim.builtin.telescope.on_config_done = function()
-	telescope.setup({
-		extensions = {
-			live_grep_args = {
-				auto_quoting = true, -- enable/disable auto-quoting
-				-- define mappings, e.g.
-				mappings = { -- extend mappings
-					i = {
-						["<C-f>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-					},
+telescope.setup({
+	extensions = {
+		live_grep_args = {
+			auto_quoting = true, -- enable/disable auto-quoting
+			-- define mappings, e.g.
+			mappings = { -- extend mappings
+				i = {
+					["<C-k>"] = lga_actions.quote_prompt(),
+					["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
 				},
-				-- ... also accepts theme settings, for example:
-				-- theme = "dropdown", -- use dropdown theme
-				-- theme = { }, -- use own theme spec
-				-- layout_config = { mirror=true }, -- mirror preview pane
 			},
+			-- ... also accepts theme settings, for example:
+			-- theme = "dropdown", -- use dropdown theme
+			-- theme = { }, -- use own theme spec
+			-- layout_config = { mirror=true }, -- mirror preview pane
 		},
-	})
-end
+	},
+})

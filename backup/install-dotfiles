@@ -11,9 +11,8 @@ stowit() {
 	usr=$1
 	app=$2
 	# -v verbose
-	# -R recursive
 	# -t target
-	stow -v -R -t ${usr} ${app}
+	stow -v -t ${usr} ${app}
 }
 
 stow_func="stowit"

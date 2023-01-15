@@ -46,6 +46,7 @@ vim.cmd([[
 ]])
 
 whk["LC"] = { "<cmd>LvimCacheReset<cr>", "Lvim cache reset" }
+whk["lR"] = { "<cmd>LspRestart<cr>", "Restart lsp" }
 whk["W"] = {
 	name = "Save options",
 	s = { "<cmd>SudaWrite<cr>", "sudo save" },

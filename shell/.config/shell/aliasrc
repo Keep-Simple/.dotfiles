@@ -38,8 +38,6 @@ alias \
 	trem="transmission-remote" \
 	YT="youtube-viewer" \
 	sdn="sudo shutdown -h now" \
-	v="$EDITOR"
-
-alias \
+	v="$EDITOR" \
 	reload-shortcuts="apply-shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" \
-	weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport"
+	ubuntu="docker run --rm -ti ubuntu /bin/bash"

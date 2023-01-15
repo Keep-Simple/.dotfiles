@@ -85,7 +85,7 @@ font:
     style: Italic
 
   # Point size
-  size: 15
+  size: 16
 
   # Thin stroke font rendering (macOS only)
   #

@@ -3,9 +3,9 @@ lvim.plugins = {
 	{ "ojroques/vim-oscyank" },
 	{
 		"folke/trouble.nvim",
-		as = "trouble",
+		name = "trouble",
 		cmd = "TroubleToggle",
-		requires = "kyazdani42/nvim-web-devicons",
+		dependencies = "kyazdani42/nvim-web-devicons",
 		config = function()
 			require("user.trouble").config()
 		end,
@@ -27,21 +27,21 @@ lvim.plugins = {
 	},
 	{
 		"ruifm/gitlinker.nvim",
-		requires = "nvim-lua/plenary.nvim",
+		dependencies = "nvim-lua/plenary.nvim",
 		event = "BufRead",
 		config = function()
 			require("user.gitlinker").config()
 		end,
 	},
 	-- harpoon
-	{ "Keep-Simple/harpoon", requires = "nvim-lua/plenary.nvim" },
+	{ "Keep-Simple/harpoon", dependencies = "nvim-lua/plenary.nvim" },
 	{
 		"RishabhRD/nvim-cheat.sh",
-		requires = "RishabhRD/popfix",
+		dependencies = "RishabhRD/popfix",
 		config = function()
 			vim.g.cheat_default_window_layout = "vertical_split"
 		end,
-		opt = true,
+		lazy = true,
 		cmd = { "Cheat", "CheatWithoutComments", "CheatList", "CheatListWithoutComments" },
 	},
 	-- smart git wrapper
@@ -101,17 +101,16 @@ lvim.plugins = {
 	-- Live markdown preview in browser
 	{
 		"iamcco/markdown-preview.nvim",
-		run = function()
+		build = function()
 			vim.fn["mkdp#util#install"]()
 		end,
 		ft = "markdown",
 		cmd = { "MarkdownPreview" },
-		requires = { "zhaozg/vim-diagram", "aklt/plantuml-syntax" },
+		dependencies = { "zhaozg/vim-diagram", "aklt/plantuml-syntax" },
 	},
 	{
 		"folke/persistence.nvim",
 		event = "BufReadPre", -- this will only start session saving when an actual file was opened
-		module = "persistence",
 		config = function()
 			require("persistence").setup()
 		end,
@@ -168,7 +167,7 @@ lvim.plugins = {
 	{ "rcarriga/cmp-dap" },
 	{
 		"mfussenegger/nvim-dap",
-		as = "dap",
+		name = "dap",
 		config = function()
 			require("user.dap")
 		end,
@@ -183,14 +182,14 @@ lvim.plugins = {
 	},
 	{
 		"rcarriga/nvim-dap-ui",
-		as = "dapui",
+		name = "dapui",
 		config = function()
 			require("user.dapui").config()
 		end,
 	},
 	{
 		"theHamsta/nvim-dap-virtual-text",
-		as = "dap-virtual-text",
+		name = "dap-virtual-text",
 		config = function()
 			require("user.dap-virtual-text").config()
 		end,
@@ -198,7 +197,7 @@ lvim.plugins = {
 	-- test runner with dap integration
 	{
 		"nvim-neotest/neotest",
-		requires = {
+		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-neotest/neotest-python",
@@ -214,12 +213,12 @@ lvim.plugins = {
 	-- tree sitter based textobjects
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	-- mason is lsp/debugger/formatters/linters installer, this is config
-	{
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		config = function()
-			require("user.mason").config()
-		end,
-	},
+	-- {
+	-- 	"WhoIsSethDaniel/mason-tool-installer.nvim",
+	-- 	config = function()
+	-- 		require("user.mason").config()
+	-- 	end,
+	-- },
 
 	-- language specific
 	{
@@ -248,18 +247,18 @@ lvim.plugins = {
 	-- ai autocompletions
 	{
 		"gelfand/copilot.vim",
-		requires = "hrsh7th/cmp-copilot",
+		dependencies = "hrsh7th/cmp-copilot",
 		config = function()
 			require("user.copilot").config()
 		end,
-		disable = true,
+		enabled = false,
 	},
 	{
 		"tzachar/cmp-tabnine",
-		run = "./install.sh",
-		requires = "hrsh7th/nvim-cmp",
+		build = "./install.sh",
+		dependencies = "hrsh7th/nvim-cmp",
 		event = "InsertEnter",
-		disable = true,
+		enabled = false,
 	},
 	-- vim training
 	{ "ThePrimeagen/vim-be-good" },

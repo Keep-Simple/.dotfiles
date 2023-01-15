@@ -9,6 +9,9 @@ M.config = function()
 		output = {
 			open_on_run = false,
 		},
+		quickfix = {
+			enabled = false,
+		},
 		discovery = {
 			concurrent = 1,
 			enabled = true,
@@ -32,8 +35,8 @@ M.config = function()
 				stop = "q",
 				next_failed = "]e",
 				prev_failed = "[e",
-				target = nil,
-				clear_target = nil,
+				target = "T",
+				clear_target = "C",
 			},
 		},
 		adapters = {
