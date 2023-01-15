@@ -1,5 +1,6 @@
-dap = require("dap")
-dapui = require("dapui")
+local dap = require("dap")
+local dapui = require("dapui")
+
 lvim.autocommands = {
 	-- could also created file fugitive.lua in ftplugin
 	{

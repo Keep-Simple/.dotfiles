@@ -5,7 +5,6 @@ lvim.plugins = {
 		"folke/trouble.nvim",
 		name = "trouble",
 		cmd = "TroubleToggle",
-		dependencies = "kyazdani42/nvim-web-devicons",
 		config = function()
 			require("user.trouble").config()
 		end,
@@ -120,19 +119,13 @@ lvim.plugins = {
 		"felipec/vim-sanegx",
 		event = "BufRead",
 	},
-	-- lf wrapper
+	-- lf wrapper (my fork with current file focus fix)
 	{
-		"ptzz/lf.vim",
+		"Keep-Simple/lf.nvim",
 		config = function()
 			require("user.lf").config()
 		end,
-	},
-	-- needed for lf wrapper
-	{
-		"voldikss/vim-floaterm",
-		config = function()
-			require("user.floaterm").config()
-		end,
+		dependencies = { "plenary.nvim", "toggleterm.nvim" },
 	},
 	-- collaborative editing
 	{
