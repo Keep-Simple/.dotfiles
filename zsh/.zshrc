@@ -2,26 +2,21 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-### Added by Zinit's installer
-if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+if [[ ! -f "$ZINIT_HOME/zinit.zsh" ]]; then
   print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-  command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-  command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
-    print -P "%F{33} %F{34}Installation successful.%f%b" || \
-    print -P "%F{160} The clone has failed.%f%b"
+  mkdir -p "$(dirname $ZINIT_HOME)"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
-source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+source "$ZINIT_HOME/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
-### End
 
 [[ -n $(ls ~/.zshrc.d/) ]] && for file in ~/.zshrc.d/*; do source "${file}"; done
 
 ZVM_VI_HIGHLIGHT_FOREGROUND=green
 ZVM_VI_HIGHLIGHT_BACKGROUND=white
 SHELL="/bin/zsh" # skhd related fix
-# silence asdf-direnv
-export DIRENV_LOG_FORMAT=
 ZVM_CURSOR_STYLE_ENABLED=false
 zstyle ':completion:*' menu select
 zle_highlight+=(paste:none) # no highlight on paste
@@ -35,6 +30,8 @@ setopt hist_verify            # show command with history expansion to user befo
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
 
+# silence asdf-direnv
+export DIRENV_LOG_FORMAT=
 zinit ice lucid as"program" \
     pick'bin/asdf' atinit'export ASDF_DIR="$PWD"' \
     atclone'_zinit_asdf_install' src'lib/asdf.sh' \

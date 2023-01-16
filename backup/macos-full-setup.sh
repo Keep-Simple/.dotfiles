@@ -45,16 +45,6 @@ updateBrew() {
 	fi
 }
 
-installAsdf() {
-	echo "[INFO] Installing Asdf runtime env manager"
-  export PATH="$PATH:$HOME/.asdf/bin" # can't just reload zinit, because it's waiting for prompt
-
-  cat ~/.tool-versions | awk '{print $1}' | xargs -I _ asdf plugin add _
-
-  asdf install
-  export PATH="$PATH:$HOME/.asdf/shims"
-}
-
 syncConfig() {
 	echo "[INFO] Symlinking dotfiles..."
 	cd ..
@@ -82,7 +72,6 @@ doIt() {
 	updateBrew
 	installSoftware
 	syncConfig
-	installAsdf
 	installLunarvim
 }
 
