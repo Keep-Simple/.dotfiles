@@ -80,13 +80,6 @@ lvim.plugins = {
 			require("user.outline").config()
 		end,
 	},
-	-- smooth scrolling
-	-- {
-	-- 	"karb94/neoscroll.nvim",
-	-- 	config = function()
-	-- 		require("user.neoscroll").config()
-	-- 	end,
-	-- },
 	-- Sudo save
 	{ "lambdalisue/suda.vim" },
 	-- :Codi [name] opens buffers with [name] language interpreter
@@ -132,12 +125,6 @@ lvim.plugins = {
 		"jbyuki/instant.nvim",
 		config = function()
 			require("user.instant").config()
-		end,
-	},
-	{
-		"nathom/filetype.nvim",
-		config = function()
-			require("user.filetype").config()
 		end,
 	},
 	-- remember cursor position of the buffers
@@ -206,12 +193,12 @@ lvim.plugins = {
 	-- tree sitter based textobjects
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	-- mason is lsp/debugger/formatters/linters installer, this is config
-	-- {
-	-- 	"WhoIsSethDaniel/mason-tool-installer.nvim",
-	-- 	config = function()
-	-- 		require("user.mason").config()
-	-- 	end,
-	-- },
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		config = function()
+			require("user.mason").config()
+		end,
+	},
 
 	-- language specific
 	{
