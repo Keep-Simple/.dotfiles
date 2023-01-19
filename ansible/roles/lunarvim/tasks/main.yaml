@@ -1,0 +1,35 @@
+---
+
+- name: download
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh
+    dest: /tmp/install-lunarvim.sh
+    mode: '0755'
+  register: download_result
+  until: download_result is succeeded
+  retries: 2
+  delay: 5
+
+- name: install
+  ansible.builtin.command: /tmp/install-lunarvim.sh --yes --overwrite
+  args:
+    creates: "{{ ansible_user_dir }}/.local/share/lunarvim"
+  register: install_result
+
+- name: configure
+  block:
+    - name: remove default config
+      ansible.builtin.file:
+        state: absent
+        path: "{{ ansible_user_dir }}/.config/lvim"
+
+    - name: relink dotfiles
+      ansible.builtin.include_role:
+        name: dotfiles
+
+    - name: init with new config
+      ansible.builtin.shell: ulimit -n 10240; lvim --headless +LvimCacheReset +quitall &> /dev/null
+      register: init
+      until: init is succeeded
+      retries: 1
+  when: install_result.stdout.find('skipped') == -1

@@ -1,0 +1,17 @@
+---
+- name: get current wallpapper
+  ansible.builtin.command:
+    cmd: 'osascript -e "tell app \"finder\" to get posix path of (get desktop picture as alias)"'
+  register: wallpapper
+  changed_when: false
+
+- name: set wallpapper
+  ansible.builtin.command:
+    cmd: 'osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"{{ wallpaper_path }}\" as POSIX file"'
+  when: wallpapper.stdout != wallpaper_path
+
+- name: set macos defaults
+  ansible.builtin.shell:
+    cmd: 'sh {{ osx_script_path }}; touch {{ dotfiles.target }}/backup/mac_settings_update_lock'
+  args:
+    creates: '{{ dotfiles.target }}/backup/mac_settings_update_lock'

@@ -1,0 +1,52 @@
+---
+- name: Ensure dotfiles repository is cloned locally.
+  ansible.builtin.git:
+    repo: "{{ dotfiles.repo }}"
+    dest: "{{ dotfiles.target }}"
+  become: false
+
+- name: create .local/bin directory to prevent stow conflicts
+  file:
+    path: '{{ ansible_user_dir }}/.local/bin'
+    state: directory
+
+- name: stow common dotfiles
+  stow:
+    state: '{{ dotfiles_state }}'
+    dir: "{{ role_path }}/files/common"
+    package: '{{ item }}'
+  with_items:
+    - alacritty
+    - asdf
+    - bat
+    - bin
+    - btop
+    - git
+    - k9s
+    - lvim
+    - spotify-tui
+    - tmux
+
+- name: stow darwin dotfiles
+  stow:
+    state: '{{ dotfiles_state }}'
+    dir: "{{ role_path }}/files/macos"
+    package: '{{ item }}'
+  with_items:
+    - karabiner
+    - lf
+    - shell
+    - bin
+    - skhd
+    - yabai
+    - zsh
+  when: ansible_os_family == "Darwin"
+
+- name: stow archlinux dotfiles
+  stow:
+    state: '{{ dotfiles_state }}'
+    dir: "{{ role_path }}/files/linux"
+    package: '{{ item }}'
+  with_items:
+    - bin
+  when: ansible_os_family == "Arch Linux"
