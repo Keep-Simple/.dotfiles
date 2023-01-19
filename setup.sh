@@ -6,7 +6,7 @@ set -euoE pipefail
 cwd="$(cd "$(dirname ${BASH_SOURCE[0]})" && pwd)"
 
 source="https://github.com/Keep-Simple/.dotfiles"
-branch="${branch:-master}"
+branch="${branch:macos}"
 tarball="$source/tarball/$branch"
 target="$HOME/.dotfiles"
 tar_cmd="tar -xzv -C $target --strip-components=1 --exclude='{.gitignore}'"

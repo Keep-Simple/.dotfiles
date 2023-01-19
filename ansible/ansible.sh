@@ -2,7 +2,7 @@
 
 set -euoE pipefail
 
-cwd="$(cd "$(dirname ${BASH_SOURCE[0]})" && pwd)"
+cwd="$HOME/.dotfiles/ansible"
 
 install_collections() {
 	echo "⚪ [ansible] installing collections..."

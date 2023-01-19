@@ -3,7 +3,7 @@
   ansible.builtin.git:
     repo: "{{ dotfiles.repo }}"
     dest: "{{ dotfiles.target }}"
-  become: false
+    update: false
 
 - name: create .local/bin directory to prevent stow conflicts
   file:

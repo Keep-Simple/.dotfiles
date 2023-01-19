@@ -2,10 +2,10 @@
 
 ![desktop pic](https://i.imgur.com/lc1gM44.jpg)
 
-## Full install (with config)
+## Local Installation
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/Keep-Simple/.dotfiles/macos/full-install)
+curl -fsSL https://raw.githubusercontent.com/Keep-Simple/.dotfiles/macos/setup.sh | sh -s -- --all
 ```
 
 ## Use with a remote Mac
@@ -24,12 +24,3 @@ Then edit the `inventory` file in this repository and change the line that start
 ```
 [ip address or hostname of mac]  ansible_user=[mac ssh username]
 ```
-
-If you need to supply an SSH password (if you don't use SSH keys), make sure to pass the `--ask-pass` parameter to the `ansible-playbook` command.
-
-### Running a specific set of tagged tasks
-
-You can filter which part of the provisioning process to run by specifying a set of tags using `ansible-playbook`'s `--tags` flag. The tags available are `dotfiles`, `homebrew`, `mas`, `extra-packages` and `osx`.
-
-    ansible-playbook main.yml -K --tags "dotfiles,homebrew"
-
