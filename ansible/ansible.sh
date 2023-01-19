@@ -22,7 +22,7 @@ run_playbook() {
 	)
 	playbook_opts+=($@)
 	echo "parameters: ${playbook_opts[*]}"
-	ansible-playbook ${playbook_opts[*]}
+	ANSIBLE_CONFIG="$cwd/ansible.cfg" ansible-playbook ${playbook_opts[*]}
 	echo "✅ [ansible] configured!"
 }
 

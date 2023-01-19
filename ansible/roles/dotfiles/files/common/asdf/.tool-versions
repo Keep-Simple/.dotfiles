@@ -6,4 +6,3 @@ yarn 1.22.19
 poetry 1.2.2
 direnv 2.32.2
 java openjdk-18
-chezmoi 2.29.2

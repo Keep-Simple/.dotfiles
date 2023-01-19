@@ -47,7 +47,6 @@ zinit light jeffreytse/zsh-vi-mode
 # Regular plugins, loaded in turbe mode (wait)
 zinit wait lucid light-mode for \
   OMZP::golang \
-  OMZP::tmux \
   OMZP::terraform \
   \
   as"completion" \

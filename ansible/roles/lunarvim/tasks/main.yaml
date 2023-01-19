@@ -11,7 +11,8 @@
   delay: 5
 
 - name: install
-  ansible.builtin.command: /tmp/install-lunarvim.sh --yes --overwrite
+  ansible.builtin.command:
+    cmd: zsh -l -c '/tmp/install-lunarvim.sh --yes --overwrite'
   args:
     creates: "{{ ansible_user_dir }}/.local/share/lunarvim"
   register: install_result
@@ -28,7 +29,8 @@
         name: dotfiles
 
     - name: init with new config
-      ansible.builtin.shell: ulimit -n 10240; lvim --headless +LvimCacheReset +quitall &> /dev/null
+      ansible.builtin.command:
+        cmd: zsh -l -c 'ulimit -n 10240; lvim --headless +LvimCacheReset +quitall &> /dev/null'
       register: init
       until: init is succeeded
       retries: 1
