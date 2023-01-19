@@ -13,17 +13,8 @@
 
     - name: Install from Brewfile
       command: "{{ homebrew_brew_bin_path }}/brew bundle --no-lock chdir={{ brewfile_dir }} "
-      async: 10000
-      poll: 0
+      async: 100000
+      poll: 5
       register: brew_install
       when: brew_check.rc == 1
-
-    - name: Check on install
-      async_status:
-        jid: '{{ brew_install.ansible_job_id }}'
-      when: brew_check.rc == 1
-      register: job_result
-      until: job_result.finished
-      retries: 1000
-      delay: 10
   when: brew_file.stat.exists

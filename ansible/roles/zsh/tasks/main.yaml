@@ -1,14 +1,14 @@
 ---
 - name: Setup zsh
   ansible.builtin.command:
-    cmd: zsh -i -c -- '@zinit-scheduler burst'
+    cmd: zsh -ilc '@zinit-scheduler burst'
   args:
     creates: "{{ ansible_user_dir }}/.local/share/zinit"
-  async: 1000
+  async: 10000
   poll: 5
 
 - name: create shortcuts
   ansible.builtin.command:
-    cmd: zsh -l -c 'apply-shortcuts'
+    cmd: zsh -lc 'apply-shortcuts'
   args:
     creates: "{{ ansible_user_dir }}/.config/shell/shortcutrc"
