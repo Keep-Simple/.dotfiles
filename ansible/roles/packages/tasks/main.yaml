@@ -1,3 +1,9 @@
 ---
+- name: Ensure dotfiles repository is cloned locally.
+  ansible.builtin.git:
+    repo: "{{ dotfiles.repo }}"
+    dest: "{{ dotfiles.target }}"
+    update: false
+
 - import_tasks: darwin.yaml
   when: ansible_system == "Darwin"

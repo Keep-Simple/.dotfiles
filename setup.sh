@@ -6,7 +6,7 @@ set -euoE pipefail
 cwd="$(cd "$(dirname ${BASH_SOURCE[0]})" && pwd)"
 
 source="https://github.com/Keep-Simple/.dotfiles"
-branch="${branch:macos}"
+branch="${branch:-macos}"
 tarball="$source/tarball/$branch"
 target="$HOME/.dotfiles"
 tar_cmd="tar -xzv -C $target --strip-components=1 --exclude='{.gitignore}'"
@@ -84,8 +84,8 @@ debian_deps() {
 		# Ansible
 		ansible
 	)
-	xargs -a <(echo "$packages") -r -- echo "⚪ [apt] installing packages:"
-	xargs -a <(echo "$packages") -r -- apt --no-install-recommends install
+	echo "⚪ [apt] installing packages: ${packages[*]}"
+	apt --no-install-recommends --assume-yes install ${packages[*]}
 }
 
 macos_deps() {

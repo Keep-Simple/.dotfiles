@@ -10,6 +10,8 @@ RUN sudo ln -snf "/usr/share/zoneinfo/$TIMEZONE" /etc/localtime && \
 ENV DOCKERIZED true
 
 # Configure dotfiles.
+USER root
+RUN apt update
 COPY ./setup.sh /tmp/setup.sh
 RUN /tmp/setup.sh --all
 

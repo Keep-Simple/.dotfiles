@@ -18,7 +18,6 @@ run_playbook() {
 	echo "⚪ [ansible] running playbook..."
 	local playbook_opts=(
 		"--inventory=$cwd/inventory"
-		"-e ansible=user=$(whoami)"
 		"$cwd/main.yaml"
 	)
 	playbook_opts+=($@)
@@ -50,8 +49,9 @@ while [[ $# -gt 0 ]]; do
 		break
 		;;
 	--all)
+		shift
 		install_collections
-		run_playbook -K
+		run_playbook -K $@
 		break
 		;;
 	esac

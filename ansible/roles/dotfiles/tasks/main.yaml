@@ -1,10 +1,4 @@
 ---
-- name: Ensure dotfiles repository is cloned locally.
-  ansible.builtin.git:
-    repo: "{{ dotfiles.repo }}"
-    dest: "{{ dotfiles.target }}"
-    update: false
-
 - name: create .local/bin directory to prevent stow conflicts
   file:
     path: '{{ ansible_user_dir }}/.local/bin'
