@@ -13,7 +13,7 @@ ENV DOCKERIZED true
 USER root
 RUN apt update
 COPY ./setup.sh /tmp/setup.sh
-RUN /tmp/setup.sh --all
+RUN /tmp/setup.sh
 
 # Start zsh login shell.
 CMD ["zsh", "-l"]

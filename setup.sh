@@ -8,18 +8,7 @@ tarball="$source/tarball/$branch"
 target="$HOME/.dotfiles"
 tar_cmd="tar -xzv -C $target --strip-components=1 --exclude='{.gitignore}'"
 
-display_help() {
-	echo "Usage: ./setup.sh [arguments]..."
-	echo
-	echo "  --deps              install deps for linux/macos"
-	echo "  --ansible           execute ansible for linux/macos"
-	echo "  --all               setup everything"
-	echo "  -h, --help          display this help message"
-	echo
-}
-
 exit_help() {
-	display_help
 	echo "Error: $1"
 	exit 1
 }
@@ -83,9 +72,11 @@ debian_deps() {
 	)
 	echo "⚪ [apt] installing packages: ${packages[*]}"
 	apt --no-install-recommends --assume-yes install ${packages[*]}
+	echo "✅ [apt] installed packages!"
 }
 
 macos_deps() {
+	install_brew
 	brew install ansible
 }
 
@@ -98,32 +89,11 @@ install_deps() {
 	fi
 }
 
-run_ansible() {
-	"${target}/ansible/ansible.sh" --all
+run_full_ansible_playbook() {
+	"${target}/ansible/ansible.sh" ansible_deps
+	"${target}/ansible/ansible.sh" run
 }
 
-# process arguments
-while [[ $# -gt 0 ]]; do
-	arg=$1
-	case $arg in
-	-h | --help)
-		display_help
-		exit 0
-		;;
-	--deps)
-		install_deps
-		;;
-	--ansible)
-		run_ansible
-		;;
-	--all)
-		install_deps
-		download_repository
-		run_ansible
-		;;
-	*)
-		exit_help "Unknown argument: $arg"
-		;;
-	esac
-	shift
-done
+install_deps              # for local setup, we need to somehow install ansible before running it
+download_repository       # ansible needs playbook files to run
+run_full_ansible_playbook # run ansible playbook locally

@@ -4,17 +4,33 @@ set -euoE pipefail
 
 cwd="$HOME/.dotfiles/ansible"
 
-install_collections() {
-	echo "⚪ [ansible] installing collections..."
+_usage() {
+	printf "
+Usage:
+  my COMMAND [ARGS]
+  my -h, --help
+  [ARGS] are for ansible-playbook command
+  
+Commands:
+  run             [ARGS]   Run playbook with args on local pc
+  dotfiles_link   [ARGS]   Only link dotfiles, without running other playbook steps
+  dotfiles_unlink [ARGS]   Only unlink dotfiles, without running other playbook steps
+  ansible_deps    [ARGS]   Install ansible dependencies for this playbook
+  run_remote      [ARGS]   Run playbook with args on remote pc, using 'inventory' file "
+}
+
+_install_ansible_deps() {
+	echo "⚪ [ansible] installing deps..."
 	ansible-galaxy install -r $cwd/requirements.yaml
 	if [ ! -f "$cwd/library/stow" ]; then
 		wget https://raw.githubusercontent.com/caian-org/ansible-stow/v1.1.0/stow
 		mkdir -p "$cwd/library"
 		mv stow "$cwd/library"
 	fi
+	echo "✅ [ansible] deps installed!"
 }
 
-run_playbook() {
+_run_playbook() {
 	echo "⚪ [ansible] running playbook..."
 	local playbook_opts=(
 		"--inventory=$cwd/inventory"
@@ -26,33 +42,24 @@ run_playbook() {
 	echo "✅ [ansible] configured!"
 }
 
-while [[ $# -gt 0 ]]; do
-	arg=$1
-	case $arg in
-	--install)
-		install_collections
-		break
-		;;
-	--run)
-		shift
-		run_playbook $@
-		break
-		;;
-	--dotfiles)
-		shift
-		run_playbook --tags "dotfiles" $@
-		break
-		;;
-	--clean-dotfiles)
-		shift
-		run_playbook --tags "dotfiles" -e dotfiles_state=absent $@
-		break
-		;;
-	--all)
-		shift
-		install_collections
-		run_playbook -K $@
-		break
-		;;
-	esac
-done
+command="${1-}"
+case $command in
+run)
+	_run_playbook -K "${@:2}"
+	;;
+run_remote)
+	_run_playbook -Kk -e hosts_var=remote_servers "${@:2}"
+	;;
+dotfiles_link)
+	_run_playbook --tags "dotfiles" "${@:2}"
+	;;
+dotfiles_unlink)
+	_run_playbook --tags "dotfiles" -e dotfiles_state=absent "${@:2}"
+	;;
+ansible_deps)
+	_install_ansible_deps
+	;;
+"" | -h | --help | *)
+	_usage
+	;;
+esac
