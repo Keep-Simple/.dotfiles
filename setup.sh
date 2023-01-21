@@ -2,9 +2,6 @@
 
 set -euoE pipefail
 
-# shellcheck disable=SC2086
-cwd="$(cd "$(dirname ${BASH_SOURCE[0]})" && pwd)"
-
 source="https://github.com/Keep-Simple/.dotfiles"
 branch="${branch:-macos}"
 tarball="$source/tarball/$branch"

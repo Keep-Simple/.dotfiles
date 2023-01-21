@@ -22,7 +22,7 @@ lvim.builtin.gitsigns.opts.current_line_blame = true
 
 lvim.builtin.project.detection_methods = { "pattern", "lsp" }
 lvim.builtin.project.patterns =
-	{ ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "pom.xml", ".root" }
+	{ ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "pom.xml", ".root", "pyproject.toml" }
 
 lvim.builtin.telescope.pickers.find_files = { hidden = true, no_ignore = true }
 
