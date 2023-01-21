@@ -16,7 +16,7 @@
         - name: allow passwordless sudo
           lineinfile:
             path: /etc/sudoers
-            line: '{{ ansible_user }} ALL=(ALL) NOPASSWD: ALL'
+            line: 'ALL ALL=(ALL) NOPASSWD: ALL'
           become: true
 
         - name: Install from Brewfile
@@ -28,7 +28,7 @@
         - name: disable passwordless sudo
           lineinfile:
             path: /etc/sudoers
-            line: '{{ ansible_user }} ALL=(ALL) NOPASSWD: ALL'
+            line: 'ALL ALL=(ALL) NOPASSWD: ALL'
             state: absent
           become: true
       when: brew_check.rc == 1
