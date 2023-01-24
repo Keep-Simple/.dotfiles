@@ -28,51 +28,35 @@ lvim.builtin.telescope.pickers.find_files = { hidden = true, no_ignore = true }
 
 lvim.lsp.diagnostics.float.focusable = true
 lvim.lsp.float.focusable = true
+lvim.lsp.null_ls.setup = {
+	root_dir = function()
+		return nil
+	end,
+}
 
--- local telescope = require("telescope")
--- local lga_actions = require("telescope-live-grep-args.actions")
-
--- lvim.builtin.telescope.on_config_done = function()
--- 	telescope.setup({
--- 		extensions = {
--- 			live_grep_args = {
--- 				auto_quoting = true, -- enable/disable auto-quoting
--- 				-- define mappings, e.g.
--- 				mappings = { -- extend mappings
--- 					i = {
--- 						["<C-b>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
--- 					},
--- 				},
--- 				-- ... also accepts theme settings, for example:
--- 				-- theme = "dropdown", -- use dropdown theme
--- 				-- theme = { }, -- use own theme spec
--- 				-- layout_config = { mirror=true }, -- mirror preview pane
--- 			},
--- 		},
--- 	})
--- end
 local status, lga_actions = pcall(require, "telescope-live-grep-args.actions")
 if not status then
 	return
 end
-
 local telescope = require("telescope")
 
-telescope.setup({
-	extensions = {
-		live_grep_args = {
-			auto_quoting = true, -- enable/disable auto-quoting
-			-- define mappings, e.g.
-			mappings = { -- extend mappings
-				i = {
-					["<C-k>"] = lga_actions.quote_prompt(),
-					["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+lvim.builtin.telescope.on_config_done = function()
+	telescope.setup({
+		extensions = {
+			live_grep_args = {
+				auto_quoting = true, -- enable/disable auto-quoting
+				-- define mappings, e.g.
+				mappings = { -- extend mappings
+					i = {
+						["<C-k>"] = lga_actions.quote_prompt(),
+						["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+					},
 				},
+				-- ... also accepts theme settings, for example:
+				-- theme = "dropdown", -- use dropdown theme
+				-- theme = { }, -- use own theme spec
+				-- layout_config = { mirror=true }, -- mirror preview pane
 			},
-			-- ... also accepts theme settings, for example:
-			-- theme = "dropdown", -- use dropdown theme
-			-- theme = { }, -- use own theme spec
-			-- layout_config = { mirror=true }, -- mirror preview pane
 		},
-	},
-})
+	})
+end
