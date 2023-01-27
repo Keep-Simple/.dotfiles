@@ -1,7 +1,0 @@
----
-
-- import_tasks: common.yaml
-
-- import_tasks: darwin.yaml
-  when: ansible_system == "Darwin"
-

@@ -38,6 +38,8 @@ install_brew() {
 	if hash brew 2>/dev/null; then
 		echo "⚪ [homebrew] already installed."
 	else
+		pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
+		sudo --validate # reset `sudo` timeout
 		echo "⚪ [homebrew] installing..."
 		echo "[INFO] Installing rosetta 2"
 		softwareupdate --install-rosetta --agree-to-license
@@ -90,8 +92,8 @@ install_deps() {
 }
 
 run_full_ansible_playbook() {
-	"${target}/ansible/ansible.sh" ansible_deps
-	"${target}/ansible/ansible.sh" run
+	"${target}/ansible.sh" ansible_deps
+	"${target}/ansible.sh" run
 }
 
 install_deps              # for local setup, we need to somehow install ansible before running it

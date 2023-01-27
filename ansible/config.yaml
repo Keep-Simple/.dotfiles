@@ -1,8 +1,0 @@
-dotfiles:
-  repo: 'https://github.com/Keep-Simple/.dotfiles'
-  target: '{{ ansible_user_dir }}/.dotfiles'
-
-brewfile_dir: '{{ dotfiles.target }}/backup'
-wallpaper_path: '{{ dotfiles.target }}/backup/wall.jpeg'
-osx_script_path: '{{ dotfiles.target }}/backup/mac_settings.sh'
-dotfiles_state: present
