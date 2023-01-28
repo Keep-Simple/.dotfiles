@@ -16,7 +16,7 @@ autoload -Uz _zinit
 
 ZVM_VI_HIGHLIGHT_FOREGROUND=green
 ZVM_VI_HIGHLIGHT_BACKGROUND=white
-SHELL="/bin/zsh" # skhd related fix
+SHELL="/bin/zsh" # skhd related fix, override back to zsh 
 ZVM_CURSOR_STYLE_ENABLED=false
 zstyle ':completion:*' menu select
 zle_highlight+=(paste:none) # no highlight on paste

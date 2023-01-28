@@ -237,10 +237,9 @@ alt_send_esc: true
 #   - AppKeypad
 shell:
   program: /bin/zsh
-#   args:
-#     - -l
-#     - -c
-#     - "source ~/.zshrc && tmux"
+  args:
+    - -l # login shell
+
 key_bindings:
   - { key: V, mods: Control, action: Paste }
   - { key: Key0, mods: Command, action: ResetFontSize }

@@ -311,11 +311,11 @@ macos_defaults:
     type: int
     value: '1'
 
-  - name: Configure builtin Apple trackpad - 3 finger swipe between pages
+  - name: Configure builtin Apple trackpad - 3 finger swipe between desktops
     domain: com.apple.AppleMultitouchtrackpad
     key: TrackpadThreeFingerHorizSwipeGesture
     type: int
-    value: '1'
+    value: '2'
 
   - name: Configure builtin Apple trackpad - smart zoom
     domain: com.apple.AppleMultitouchtrackpad
