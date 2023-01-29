@@ -25,6 +25,7 @@
         - k9s
         - lvim
         - spotify-tui
+        - zsh
 
     - name: stow darwin dotfiles
       stow:
@@ -48,6 +49,7 @@
         package: '{{ item }}'
       with_items:
         - bin
+        - zsh
       when: ansible_os_family == "Arch Linux"
   environment:
     PATH: "{{ homebrew_brew_bin_path }}:{{ ansible_env.PATH }}" # TODO setup PATH to discover stow for linux too

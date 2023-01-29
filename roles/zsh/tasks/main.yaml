@@ -5,7 +5,7 @@
   args:
     creates: "{{ ansible_user_dir }}/.local/share/zinit"
   async: 10000
-  poll: 5
+  poll: 2
 
 - name: create shortcuts
   ansible.builtin.command:
