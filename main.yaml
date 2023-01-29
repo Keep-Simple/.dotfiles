@@ -14,10 +14,8 @@
       tags: ['always']
 
   roles:
-    - role: elliotweiser.osx-command-line-tools
-      tags: ['system']
-    - role: geerlingguy.mac.homebrew
-      tags: ['packages']
+    - role: setup
+      tags: ['setup']
     - role: repo
       tags: ['repo']
     - role: packages
