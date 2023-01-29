@@ -10,46 +10,18 @@
     - .zshrc.d
 
 - block:
-    - name: stow common dotfiles
+    - name: stow dotfiles
       stow:
         state: '{{ dotfiles_state }}'
-        dir: "{{ myansible_dir }}/roles/dotfiles/files/common"
+        dir: "{{ myansible_dir }}/roles/dotfiles/files/all"
         package: '{{ item }}'
-      with_items:
-        - alacritty
-        - asdf
-        - bat
-        - bin
-        - btop
-        - git
-        - k9s
-        - lvim
-        - spotify-tui
-        - zsh
+      loop: "{{ stow_common_items }}"
 
-    - name: stow darwin dotfiles
+    - name: stow os-specific dotfiles
       stow:
         state: '{{ dotfiles_state }}'
-        dir: "{{ myansible_dir }}/roles/dotfiles/files/macos"
+        dir: "{{ myansible_dir }}/roles/dotfiles/files/os_{{ ansible_system }}"
         package: '{{ item }}'
-      with_items:
-        - karabiner
-        - lf
-        - shell
-        - bin
-        - skhd
-        - yabai
-        - zsh
-      when: ansible_os_family == "Darwin"
-
-    - name: stow archlinux dotfiles
-      stow:
-        state: '{{ dotfiles_state }}'
-        dir: "{{ myansible_dir }}/roles/dotfiles/files/linux"
-        package: '{{ item }}'
-      with_items:
-        - bin
-        - zsh
-      when: ansible_os_family == "Arch Linux"
+      loop: "{{ stow_items }}"
   environment:
-    PATH: "{{ homebrew_brew_bin_path }}:{{ ansible_env.PATH }}" # TODO setup PATH to discover stow for linux too
+    PATH: "{{ homebrew_brew_bin_path | default('') }}:{{ ansible_env.PATH }}" # TODO setup PATH to discover stow for linux too

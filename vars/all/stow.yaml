@@ -1,0 +1,13 @@
+stow_common_items:
+    - alacritty
+    - asdf
+    - bat
+    - bin
+    - btop
+    - git
+    - k9s
+    - lvim
+    - spotify-tui
+    - zsh
+
+dotfiles_state: present
