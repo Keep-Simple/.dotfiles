@@ -150,11 +150,17 @@ macos_defaults:
     type: array
     value: '[]'
 
-  - name: Pin dock to the left
+  - name: Pin dock to the right
     domain: com.apple.dock
     key: orientation
     type: string
-    value: left
+    value: right
+
+  - name: Prevent switching desktops automatically
+    domain: com.apple.dock
+    key: workspaces-auto-swoosh
+    type: bool
+    value: 'false'
 
   - name: Save screenshots to ~/Downloads
     domain: com.apple.screencapture

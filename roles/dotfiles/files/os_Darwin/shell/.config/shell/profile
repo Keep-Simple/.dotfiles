@@ -49,8 +49,8 @@ test -f /usr/local/bin/brew && eval $(/usr/local/bin/brew shellenv)
 test -f /opt/homebrew/bin/brew && eval $(/opt/homebrew/bin/brew shellenv)
 
 if [[ -n "$HOMEBREW_PREFIX" ]]; then
-	HOMEBREW_NO_ANALYTICS=1
-	HOMEBREW_BUNDLE_FILE="$HOME/.dotfiles/roles/packages/files/macos/Brewfile"
+	export HOMEBREW_NO_ANALYTICS=1
+	export HOMEBREW_BUNDLE_FILE="$HOME/.dotfiles/roles/packages/files/macos/Brewfile"
 
 	# linux utils for macos
 	PATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
@@ -63,6 +63,7 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
 	PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:$PATH"
 fi
 
+export MANPATH
 export PATH
 
 # put it into .zshenv
