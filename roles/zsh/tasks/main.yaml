@@ -1,11 +1,15 @@
 ---
+- name: Register zinit
+  stat:
+    path: "{{ ansible_user_dir }}/.local/share/zinit"
+  register: zinit
+
 - name: Setup zsh
   ansible.builtin.command:
     cmd: zsh -ilc '@zinit-scheduler burst'
-  args:
-    creates: "{{ ansible_user_dir }}/.local/share/zinit"
   async: 10000
   poll: 2
+  when: not zinit.stat.exists
 
 - name: create shortcuts
   ansible.builtin.command:

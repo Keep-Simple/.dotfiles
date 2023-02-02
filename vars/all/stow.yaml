@@ -9,5 +9,6 @@ stow_common_items:
     - lvim
     - spotify-tui
     - zsh
+    - shell
 
 dotfiles_state: present

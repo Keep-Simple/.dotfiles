@@ -1,37 +1,37 @@
 ---
+- name: Register lvim
+  stat:
+    path: "{{ ansible_user_dir }}/.local/share/lunarvim"
+  register: lvim
 
-- name: download
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh
-    dest: /tmp/install-lunarvim.sh
-    mode: '0755'
-  register: download_result
-  until: download_result is succeeded
-  retries: 2
-  delay: 5
+- block:
+    - name: Download
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh
+        dest: /tmp/install-lunarvim.sh
+        mode: '0755'
+      register: download_result
+      until: download_result is succeeded
+      retries: 2
+      delay: 5
 
-- name: install
-  ansible.builtin.command:
-    cmd: zsh -l -c '/tmp/install-lunarvim.sh --yes --overwrite'
-  args:
-    creates: "{{ ansible_user_dir }}/.local/share/lunarvim"
-  register: install_result
+    - name: Install
+      ansible.builtin.command:
+        cmd: zsh -l -c '/tmp/install-lunarvim.sh --yes --overwrite'
 
-- name: configure
-  block:
-    - name: remove default config
+    - name: Remove default config
       ansible.builtin.file:
         state: absent
         path: "{{ ansible_user_dir }}/.config/lvim"
 
-    - name: relink dotfiles
+    - name: Relink dotfiles
       ansible.builtin.include_role:
         name: dotfiles
 
-    - name: init with new config
+    - name: Init with new config
       ansible.builtin.command:
         cmd: zsh -l -c 'ulimit -n 10240; lvim --headless +LvimCacheReset +quitall &> /dev/null'
       register: init
       until: init is succeeded
       retries: 1
-  when: install_result.stdout.find('skipped') == -1
+  when: not lvim.stat.exists
