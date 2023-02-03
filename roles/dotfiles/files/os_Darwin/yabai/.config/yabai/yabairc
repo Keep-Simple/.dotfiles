@@ -19,6 +19,12 @@ yabai -m signal --add event=window_minimized action="YABAI=$YABAI $YABAI/smart_g
 yabai -m signal --add event=window_deminimized action="YABAI=$YABAI $YABAI/smart_gaps.sh"
 yabai -m signal --add event=space_changed action="YABAI=$YABAI $YABAI/smart_gaps.sh"
 
+# If no window on the current space is focused after a window is destroyed or
+# minimized, or an application is hidden, focus the window under the cursor.
+yabai -m signal --add event=window_destroyed action=$YABAI/focus_space.sh
+yabai -m signal --add event=window_minimized action=$YABAI/focus_space.sh
+yabai -m signal --add event=application_hidden action=$YABAI/focus_space.sh
+
 # global settings
 yabai -m config \
 	mouse_follows_focus off \
@@ -27,6 +33,7 @@ yabai -m config \
 	window_placement second_child \
 	window_topmost off \
 	window_shadow float \
+	window_zoom_persist off \
 	window_opacity off \
 	window_border off \
 	window_border_blur off \
@@ -34,6 +41,7 @@ yabai -m config \
 	active_window_border_color 0xffe1e3e4 \
 	normal_window_border_color 0xff2a2f38 \
 	window_border_width 2 \
+	window_border_radius 12 \
 	window_animation_duration 0.0 \
 	insert_feedback_color 0xff9dd274 \
 	layout bsp \
@@ -76,10 +84,3 @@ echo "yabai configuration loaded.."
 # yabai -m signal --add event=display_added action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NORMAL_BAR:0; fi"
 # yabai -m signal --add event=display_removed action="if [[ \"\$(yabai -m query --displays | jq \".[\$YABAI_DISPLAY_ID].uuid\")\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NORMAL_BAR:0; elif [[ \"\$(yabai -m query --displays | jq '.[].uuid')\" =~ \"$NOTCH_UUID\" ]]; then yabai -m config external_bar all:$NOTCH_BAR:0; fi"
 # if [[ "$(yabai -m query --displays | jq '.[].uuid')" =~ "$NOTCH_UUID" ]]; then if [ "$(yabai -m query --displays | jq length)" -gt "1" ]; then yabai -m config external_bar main:$NORMAL_BAR:0; else yabai -m config external_bar all:$NOTCH_BAR:0; fi else yabai -m config external_bar all:$NORMAL_BAR:0; fi
-
-# don't need this with fyabai, c code handles that
-# If no window on the current space is focused after a window is destroyed or
-# minimized, or an application is hidden, focus the window under the cursor.
-# yabai -m signal --add event=window_destroyed action=$YABAI/focus_space.sh
-# yabai -m signal --add event=window_minimized action=$YABAI/focus_space.sh
-# yabai -m signal --add event=application_hidden action=$YABAI/focus_space.sh

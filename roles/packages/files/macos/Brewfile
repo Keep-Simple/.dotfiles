@@ -1,7 +1,6 @@
 tap "bufbuild/buf"
 tap "cmacrae/formulae"
 tap "deviceinsight/packages"
-tap "felixkratz/formulae"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
@@ -116,9 +115,9 @@ brew "wget"
 brew "yh"
 brew "z"
 brew "deviceinsight/packages/kafkactl"
-brew "felixkratz/formulae/fyabai", args: ["HEAD"]
 brew "hudochenkov/sshpass/sshpass"
 brew "koekeishiya/formulae/skhd", args: ["HEAD"]
+brew "koekeishiya/formulae/yabai", args: ["HEAD"]
 cask "alacritty"
 cask "brave-browser"
 cask "dmenu-mac"
