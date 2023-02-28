@@ -47,6 +47,7 @@ linters.setup({
 	{ command = "flake8" },
 	{ command = "qmllint" },
 	{ command = "buf" },
+	{ command = "hadolint" },
 	-- { command = "mypy" },
 })
 
