@@ -1,8 +1,8 @@
 nodejs 18.10.0
-python 3.10.2
-rust 1.64.0
-golang 1.19.2
+python 3.11.2
+rust 1.68.0
+golang 1.20.2
 yarn 1.22.19
-poetry 1.2.2
+poetry 1.4.0
 direnv 2.32.2
 java openjdk-18

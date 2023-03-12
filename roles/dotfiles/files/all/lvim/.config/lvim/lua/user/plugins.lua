@@ -186,6 +186,13 @@ lvim.plugins = {
 			require("user.neotest").config()
 		end,
 	},
+	-- show lsp server progress
+	{
+		"j-hui/fidget.nvim",
+		config = function()
+			require("fidget").setup({})
+		end,
+	},
 	-- show code context at the top of the buffer
 	"nvim-treesitter/nvim-treesitter-context",
 	-- tree sitter based textobjects
