@@ -15,6 +15,7 @@ vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, {
 	"gopls",
 	"rust_analyzer",
 	"pyright",
+	"pylyzer",
 	"tsserver",
 	"jdtls",
 	"ansiblels",

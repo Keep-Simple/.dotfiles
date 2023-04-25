@@ -3,7 +3,7 @@
   "python.analysis.autoImportCompletions": true,
   "python.analysis.autoSearchPaths": true,
   "python.analysis.diagnosticMode": "workspace",
-  "python.analysis.useLibraryCodeForTypes": true,
   "pyright.disableLanguageServices": false,
-  "pyright.disableOrganizeImports": false
+  "pyright.disableOrganizeImports": true,
+  "python.analysis.useLibraryCodeForTypes": false
 }

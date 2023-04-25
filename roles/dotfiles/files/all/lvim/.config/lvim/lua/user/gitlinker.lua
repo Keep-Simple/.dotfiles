@@ -12,7 +12,7 @@ M.config = function()
 				-- yank to unnamed register
 				vim.api.nvim_command("let @\" = '" .. url .. "'")
 				-- copy to the system clipboard using OSC52
-				vim.fn.OSCYankString(url)
+				vim.fn.OSCYank(url)
 			end,
 		},
 	})

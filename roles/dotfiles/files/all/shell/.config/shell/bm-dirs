@@ -11,8 +11,9 @@ L  $HOME/.local
 lv $HOME/.local/share/lunarvim
 
 O   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca}
-oc   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/cli}
-oa   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca/apisec/services}
+oi   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/cli}
+oc   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca-contracts}
+oa   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/apisec-team}
 
 P   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal}
 pu   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/university/labs/3_term/}
