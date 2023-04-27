@@ -26,8 +26,10 @@ formatters.setup({
 	{ command = "shfmt" },
 	{ command = "qmlformat" },
 	{ command = "buf" },
+	{ command = "fixjson" },
 	-- { command = "asmfmt", filetypes = { "asm", "nams", "masm" } },
 	{ command = "google_java_format", filetypes = { "java" } },
+	null_ls.builtins.formatting.terraform_fmt,
 })
 
 local linters = require("lvim.lsp.null-ls.linters")
@@ -48,6 +50,7 @@ linters.setup({
 	{ command = "qmllint" },
 	{ command = "buf" },
 	{ command = "hadolint" },
+	null_ls.builtins.diagnostics.terraform_validate,
 	-- { command = "mypy" },
 })
 

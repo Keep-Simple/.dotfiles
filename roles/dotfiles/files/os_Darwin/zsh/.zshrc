@@ -29,7 +29,7 @@ setopt share_history          # share command history data
 export DIRENV_LOG_FORMAT=
 zinit ice lucid as"program" \
     pick'bin/asdf' atinit'export ASDF_DIR="$PWD"' \
-    atclone'_zinit_asdf_install' src'lib/asdf.sh' \
+    atclone'_zinit_asdf_install' src'asdf.sh' \
     multisrc'asdf_direnv_hook.zsh' depth=1
 zinit light asdf-vm/asdf
 
