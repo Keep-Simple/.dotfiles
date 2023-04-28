@@ -1,33 +1,35 @@
 #!/usr/bin/sh
 
-usage ()
-{
+usage() {
     printf "Usage : noisereduce <input video file> <output video file>\n"
     exit
 }
 
 # Tests for requirements
-ffmpeg -version >/dev/null || { echo >&2 "We require 'ffmpeg' but it's not installed. Install it by 'sudo apt-get install ffmpeg' Aborting."; exit 1; }
-sox --version >/dev/null || { echo >&2 "We require 'sox' but it's not installed. Install it by 'sudo apt-get install sox' Aborting."; exit 1; }
+ffmpeg -version >/dev/null || {
+    echo >&2 "We require 'ffmpeg' but it's not installed. Install it by 'sudo apt-get install ffmpeg' Aborting."
+    exit 1
+}
+sox --version >/dev/null || {
+    echo >&2 "We require 'sox' but it's not installed. Install it by 'sudo apt-get install sox' Aborting."
+    exit 1
+}
 
-if [ "$#" -ne 2 ]
-then
-  usage
+if [ "$#" -ne 2 ]; then
+    usage
 fi
 
-if [ ! -e "$1" ]
-then
+if [ ! -e "$1" ]; then
     printf "File not found: %s\n" "$1"
     exit
 fi
 
-if [ -e "$2" ]
-then
+if [ -e "$2" ]; then
     printf "File %s already exists, overwrite? [y/N]\n: " "$2"
     read -r yn
     case $yn in
-        [Yy]* ) ;;
-        * ) exit;;
+        [Yy]*) ;;
+        *) exit ;;
     esac
 fi
 
@@ -35,8 +37,7 @@ inBasename=$(basename "$1")
 inExt="${inBasename##*.}"
 
 isVideoStr=$(ffprobe -v warning -show_streams "$1" | grep codec_type=video)
-if [ -n "$isVideoStr" ]
-then
+if [ -n "$isVideoStr" ]; then
     isVideo=1
     printf "Detected %s as a video file\n" "$inBasename"
 else
@@ -46,14 +47,13 @@ fi
 
 printf "Sample noise start time [00:00:00]: "
 read -r sampleStart
-if [ -z "$sampleStart" ] ; then sampleStart="00:00:00"; fi
+if [ -z "$sampleStart" ]; then sampleStart="00:00:00"; fi
 printf "Sample noise end time [00:00:00.900]: "
 read -r sampleEnd
-if [ -z "$sampleEnd" ] ; then sampleEnd="00:00:00.900"; fi
-printf "Noise reduction amount [0.21]: " 
+if [ -z "$sampleEnd" ]; then sampleEnd="00:00:00.900"; fi
+printf "Noise reduction amount [0.21]: "
 read -r sensitivity
-if [ -z "$sensitivity" ] ; then sensitivity="0.21"; fi
-
+if [ -z "$sensitivity" ]; then sensitivity="0.21"; fi
 
 tmpVidFile="/tmp/noiseclean_tmpvid.$inExt"
 tmpAudFile="/tmp/noiseclean_tmpaud.wav"

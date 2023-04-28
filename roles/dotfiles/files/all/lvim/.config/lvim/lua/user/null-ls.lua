@@ -18,18 +18,18 @@ formatters.setup({
 			})
 		end,
 	}),
-	{ command = "black" },
-	{ command = "isort" },
-	{ command = "stylua" },
-	{ command = "rustfmt" },
-	{ command = "gofmt" },
-	{ command = "shfmt" },
-	{ command = "qmlformat" },
-	{ command = "buf" },
-	{ command = "fixjson" },
-	-- { command = "asmfmt", filetypes = { "asm", "nams", "masm" } },
-	{ command = "google_java_format", filetypes = { "java" } },
-	null_ls.builtins.formatting.terraform_fmt,
+	{ name = "black" },
+	{ name = "isort" },
+	{ name = "stylua" },
+	{ name = "rustfmt" },
+	{ name = "gofmt" },
+	{ name = "qmlformat" },
+	{ name = "buf" },
+	{ name = "fixjson" },
+	-- { name = "asmfmt", filetypes = { "asm", "nams", "masm" } },
+	{ name = "google_java_format", filetypes = { "java" } },
+	{ name = "terraform_fmt" },
+	{ name = "beautysh" },
 })
 
 local linters = require("lvim.lsp.null-ls.linters")
@@ -46,12 +46,12 @@ linters.setup({
 			})
 		end,
 	}),
-	{ command = "flake8" },
-	{ command = "qmllint" },
-	{ command = "buf" },
-	{ command = "hadolint" },
-	null_ls.builtins.diagnostics.terraform_validate,
-	-- { command = "mypy" },
+	{ name = "flake8" },
+	{ name = "qmllint" },
+	{ name = "buf" },
+	{ name = "hadolint" },
+	{ name = "terraform_validate" },
+	-- { name = "mypy" },
 })
 
 local actions = require("lvim.lsp.null-ls.code_actions")
@@ -68,4 +68,5 @@ actions.setup({
 			})
 		end,
 	}),
+	{ name = "refactoring" },
 })

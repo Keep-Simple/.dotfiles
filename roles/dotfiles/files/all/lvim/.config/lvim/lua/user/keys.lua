@@ -4,6 +4,7 @@ lvim.builtin.terminal.open_mapping = [[<c-\>]]
 
 -- ignore project.nvim mapping, use only packer
 local whk = lvim.builtin.which_key.mappings
+local whk_v = lvim.builtin.which_key.vmappings
 whk["P"] = whk["p"]
 whk["p"] = nil
 whk[";"] = nil
@@ -77,19 +78,18 @@ whk["S"] = {
 	name = "Session",
 	c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
 	l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
-	Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
+	q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
 }
 
-whk["r"] = {
+whk["R"] = {
 	name = "Replace",
-	r = { "<cmd>lua require('spectre').open()<cr>", "Replace" },
-	w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "Replace Word" },
-	f = { "<cmd>lua require('spectre').open_file_search()<cr>", "Replace Buffer" },
+	r = { "<cmd>lua require('spectre').open()<cr>", "open" },
+	w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "word in project" },
+	f = { "<cmd>lua require('spectre').open_file_search({select_word=true})<cr>", "word in file" },
 }
 
 whk["Y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 whk["e"] = { "<cmd>Lf<cr>", "Explorer" }
-whk["ss"] = { "<cmd>Telescope resume<cr>", "Resume search" }
 whk["s"]["t"] = { "<cmd>lua require'telescope'.extensions.live_grep_args.live_grep_args()<cr>", "Text" }
 
 local _, trouble = pcall(require, "trouble.providers.telescope")
@@ -115,14 +115,15 @@ whk["t"] = {
 	n = { "<cmd>lua require('neotest').run.run()<cr>", "Run nearest" },
 	r = { "<cmd>lua require('neotest').run.run_last()<cr>", "Re-run latest" },
 	q = { "<cmd>lua require('neotest').run.stop()<cr>", "Stop nearest" },
+	s = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Toogle Summary" },
+	o = { "<cmd>lua require('neotest').output.open({ enter = true, short = false })<cr>", "Show output" },
+	a = { "<cmd>lua require('neotest').run.attach()<cr>", "Attach to nearest" },
 	d = {
 		name = "Debug",
 		n = { "<cmd>lua require('neotest').run.run({ strategy='dap' })<cr>", "Debug nearest" },
 		f = { "<cmd>lua require('neotest').run.run({ vim.fn.expand('%'), strategy='dap' })<cr>", "Debug file" },
 		r = { "<cmd>lua require('neotest').run.run_last({ strategy='dap' })<cr>", "Re-run latest with debug" },
 	},
-	s = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Toogle Summary" },
-	o = { "<cmd>lua require('neotest').output.open({ enter = true, short = false })<cr>", "Show output" },
 }
 
 whk["d"] = {
@@ -150,6 +151,28 @@ whk["d"] = {
 	-- R = { "<cmd>lua require'dap'.repl.close()<cr>", "Close Repl" },
 	q = { "<cmd>lua require'dap'.terminate()<cr>", "Quit" },
 	U = { "<cmd>lua require'dapui'.toggle()<cr>", "Toggle UI" },
+}
+
+whk["r"] = {
+	name = "Refactor",
+	i = { "<cmd>lua require('refactoring').refactor('Inline Variable')<CR>", "Inline variable" },
+	d = {
+		name = "Debug Operations",
+		p = { "<cmd>lua require('refactoring').debug.printf({below = false})<CR>", "Print function" },
+		v = { "<cmd>lua require('refactoring').debug.print_var({ normal = true })<CR>", "Pring variable" },
+		c = { "<cmd>lua require('refactoring').debug.cleanup({})<CR>", "Cleanup" },
+	},
+	b = { "<cmd>lua require('refactoring').refactor('Extract Block')<CR>", "Extract block" },
+	B = { "<cmd>lua require('refactoring').refactor('Extract Block To File')<CR>", "Extract block to file" },
+}
+whk_v["r"] = {
+	name = "Refactor",
+	f = { "<Esc><cmd>lua require('refactoring').refactor('Extract Function')<CR>", "Extract function" },
+	F = {
+		"<Esc><cmd>lua require('refactoring').refactor('Extract Function To File')<CR>",
+		"Extract function to file",
+	},
+	v = { "<Esc><cmd>lua require('refactoring').refactor('Extract Variable')<CR>", "Extract variable" },
 }
 
 -- Harpoon

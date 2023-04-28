@@ -33,7 +33,13 @@ lvim.plugins = {
 		end,
 	},
 	-- harpoon
-	{ "Keep-Simple/harpoon", dependencies = "nvim-lua/plenary.nvim" },
+	{
+		"Keep-Simple/harpoon",
+		dependencies = "nvim-lua/plenary.nvim",
+		config = function()
+			require("user.harpoon").config()
+		end,
+	},
 	{
 		"RishabhRD/nvim-cheat.sh",
 		dependencies = "RishabhRD/popfix",
@@ -227,6 +233,16 @@ lvim.plugins = {
 		"nvim-telescope/telescope-live-grep-args.nvim",
 		config = function()
 			require("telescope").load_extension("live_grep_args")
+		end,
+	},
+	{
+		"ThePrimeagen/refactoring.nvim",
+		dependencies = {
+			{ "nvim-lua/plenary.nvim" },
+			{ "nvim-treesitter/nvim-treesitter" },
+		},
+		config = function()
+			require("user.refactoring").config()
 		end,
 	},
 	-- ai autocompletions
