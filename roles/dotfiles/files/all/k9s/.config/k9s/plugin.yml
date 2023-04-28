@@ -1,3 +1,4 @@
+---
 plugin:
   # Leverage stern (https://github.com/wercker/stern) to output logs.
   stern:

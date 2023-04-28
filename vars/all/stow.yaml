@@ -1,14 +1,16 @@
+---
 stow_common_items:
-    - alacritty
-    - asdf
-    - bat
-    - bin
-    - btop
-    - git
-    - k9s
-    - lvim
-    - spotify-tui
-    - zsh
-    - shell
+  - alacritty
+  - asdf
+  - bat
+  - bin
+  - btop
+  - git
+  - k9s
+  - lvim
+  - spotify-tui
+  - zsh
+  - shell
+  - yamlfmt
 
 dotfiles_state: present

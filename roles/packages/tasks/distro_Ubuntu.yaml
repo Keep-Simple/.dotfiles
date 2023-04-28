@@ -44,7 +44,7 @@
     update_cache: true
     cache_valid_time: 3600
     install_recommends: true
-    dpkg_options: force-overwrite  # bugs.launchpad.net/ubuntu/+source/rust-bat/+bug/1868517
+    dpkg_options: force-overwrite # bugs.launchpad.net/ubuntu/+source/rust-bat/+bug/1868517
   become: true
   tags: [packages, apt]
 

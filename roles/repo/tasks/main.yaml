@@ -1,3 +1,4 @@
+---
 - name: Ensure dotfiles repository is cloned locally.
   ansible.builtin.git:
     repo: "{{ dotfiles.repo }}"

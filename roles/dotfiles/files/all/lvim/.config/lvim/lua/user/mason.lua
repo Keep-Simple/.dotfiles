@@ -26,7 +26,6 @@ M.config = function()
 			"sqls",
 			"html-lsp",
 			"tailwindcss-language-server",
-			"taplo",
 			"terraform-ls",
 			"typescript-language-server",
 			"vim-language-server",
@@ -34,6 +33,7 @@ M.config = function()
 
 			-- formatters and linters
 			"shfmt",
+			"taplo",
 			"buf",
 			"stylua",
 			"prettierd",
@@ -43,7 +43,9 @@ M.config = function()
 			"isort",
 			"ansible-lint",
 			"fixjson",
-			"beautysh",
+			"beautysh", -- shell fmt
+			"actionlint", -- github workflows linter
+			"yamlfmt",
 			-- you can pin a tool to a particular version
 			-- { "golangci-lint", version = "1.47.0" },
 			-- you can turn off/on auto_update per tool
