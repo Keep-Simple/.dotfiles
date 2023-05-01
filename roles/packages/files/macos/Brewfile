@@ -103,6 +103,7 @@ brew "stow"
 brew "telnet"
 brew "the_silver_searcher"
 brew "tldr"
+brew "tmux"
 brew "trash", link: false
 brew "trash-cli"
 brew "tree"

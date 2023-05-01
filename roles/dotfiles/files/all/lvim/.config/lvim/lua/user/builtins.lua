@@ -20,6 +20,10 @@ lvim.builtin.cmp.completion.autocomplete = false
 lvim.builtin.cmp.cmdline.enable = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
+local whk_presets = lvim.builtin.which_key.setup.plugins.presets
+whk_presets.z = true
+whk_presets.windows = true
+
 lvim.builtin.project.detection_methods = { "pattern", "lsp" }
 lvim.builtin.project.patterns =
 	{ ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "pom.xml", ".root", "pyproject.toml" }

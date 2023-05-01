@@ -1,6 +1,7 @@
 ---
 stow_common_items:
   - alacritty
+  - tmux
   - asdf
   - bat
   - bin
