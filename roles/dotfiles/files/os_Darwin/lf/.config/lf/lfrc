@@ -10,6 +10,7 @@ source "~/.config/lf/commands/files_and_dirs"
 source "~/.config/lf/commands/archives"
 
 set shell zsh
+set cursorpreviewfmt "\033[7;2m"
 # set shellopts '-eu' # for sh
 set shellopts '-ey'
 set ifs "\n"

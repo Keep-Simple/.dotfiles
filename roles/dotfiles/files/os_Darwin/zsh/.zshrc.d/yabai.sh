@@ -4,7 +4,7 @@ suyabai() {
 }
 
 rmfyabai() {
-    brew services stop fyabai
+    fyabai --uninstall-service
     # uninstall the scripting addition
     sudo yabai --uninstall-sa
     # uninstall yabai
@@ -14,7 +14,7 @@ rmfyabai() {
 }
 
 rmyabai() {
-    brew services stop yabai
+    yabai --uninstall-service
     sudo yabai --uninstall-sa
     brew uninstall yabai
     killall Dock

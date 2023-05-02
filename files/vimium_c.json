@@ -1,9 +1,9 @@
 {
 	"name": "Vimium C",
-	"@time": "12/04/2023, 22:50:39",
-	"time": 1681332639558,
+	"@time": "02/05/2023, 21:20:10",
+	"time": 1683055210200,
 	"environment": {
-		"extension": "1.99.98",
+		"extension": "1.99.99",
 		"platform": "mac",
 		"chromium": 112
 	},
@@ -60,6 +60,9 @@
 		"shortcut userCustomized2 command=\"restoreTab\"",
 		"shortcut userCustomized3 command=\"Vomnibar.activateTabs\"",
 		"shortcut userCustomized4 command=\"visitPreviousTab\"",
+		"shortcut userCustomized5 command=\"moveTabLeft\"",
+		"shortcut userCustomized6 command=\"moveTabRight\"",
+		"shortcut userCustomized7 command=\"moveTabToNextWindow\" last",
 		""
 	],
 	"keyupTime": 100,
