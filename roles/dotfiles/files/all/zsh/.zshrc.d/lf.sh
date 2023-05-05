@@ -9,6 +9,13 @@ lf() {
     command rm -f -- "$tempfile" 2>/dev/null
 }
 
+lfp(){
+    local TEMP=$(mktemp)
+    lf -selection-path=$TEMP $@
+    local PATHS=$(cat $TEMP)
+    echo $PATHS
+}
+
 _zinit_lf() {
     bindkey -r '^E'
     bindkey -s '^E' 'lf^M'

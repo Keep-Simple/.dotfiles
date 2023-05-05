@@ -264,5 +264,8 @@ lvim.plugins = {
 	-- vim training
 	{ "ThePrimeagen/vim-be-good" },
 	-- tmux
-	{ "christoomey/vim-tmux-navigator", lazy = false },
+	{
+		"christoomey/vim-tmux-navigator",
+		lazy = false,
+	},
 }

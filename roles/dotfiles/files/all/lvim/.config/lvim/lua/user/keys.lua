@@ -11,12 +11,13 @@ whk[";"] = nil
 lvim.lsp.buffer_mappings.normal_mode["gr"] = nil
 whk["/"] = nil
 
+vim.g.tmux_navigator_no_mappings = 1
 lvim.keys.normal_mode = {
 	["<C-s>"] = "<cmd>w<cr>",
-	["<C-h"] = "<cmd>TmuxNavigateLeft<cr>",
-	["<C-l"] = "<cmd>TmuxNavigateRight<cr>",
-	["<C-j"] = "<cmd>TmuxNavigateDown<cr>",
-	["<C-k"] = "<cmd>TmuxNavigateUp<cr>",
+	["<C-h>"] = "<cmd>TmuxNavigateLeft<cr>",
+	["<C-l>"] = "<cmd>TmuxNavigateRight<cr>",
+	["<C-j>"] = "<cmd>TmuxNavigateDown<cr>",
+	["<C-k>"] = "<cmd>TmuxNavigateUp<cr>",
 	["[d"] = "<cmd>lua vim.diagnostic.goto_prev()<cr>",
 	["]d"] = "<cmd>lua vim.diagnostic.goto_next()<cr>",
 	["[e"] = "<cmd>lua vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })<cr>",
