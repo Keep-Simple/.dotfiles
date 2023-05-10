@@ -3,11 +3,11 @@
 export PATH="/opt/hack_path/date:$PATH"
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/nickyasnogorodskyi/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/nickyasnogorodskyi/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
 # The next line enables shell command completion for gcloud.
 # if [ -f '/Users/nickyasnogorodskyi/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/nickyasnogorodskyi/google-cloud-sdk/completion.zsh.inc'; fi
 
-apisec_topics=("web_api_data_discovered-v1" "web_api_entity_proccessed-v1" "web_api_entity_enriched-v1")
+apisec_topics=("web-api-data-discovered.v1" "web-api-entity-proccessed.v1" "web-api-entity-enriched.v1")
 
 pick_apisec_topic() {
     printf "$ORCA_ENV.apisec.%s\n" "${apisec_topics[@]}" | fzf --header "Pick topic"
@@ -72,3 +72,4 @@ orca_kafka() {
         kcat -b kafka:9092 -C -t "$topic" -c$consume_count
     fi
 }
+if [ -f  "${SRC_ROOT}/cli/op/shell_rc/bashrc" ]; then source "${SRC_ROOT}/cli/op/shell_rc/bashrc"; fi
