@@ -227,11 +227,8 @@ key_bindings:
   - {key: Equals, mods: Command, action: IncreaseFontSize}
   - {key: Plus, mods: Command, action: IncreaseFontSize}
   - {key: Minus, mods: Command, action: DecreaseFontSize}
-  - {key: V, mods: Command, action: Paste}
-  - {key: C, mods: Command, action: Copy}
-  - {key: Escape, mods: Control, action: ToggleViMode}
-  - {key: Paste, action: Paste}
-  - {key: Copy, action: Copy}
+  - {key: LBracket, mods: Control, action: ToggleViMode}
+  - {key: V, mods: Control|Shift, action: ToggleBlockSelection, mode: Vi}
   - {key: L, mods: Control, action: ClearLogNotice}
   - {key: L, mods: Control, chars: "\f"}
   - {key: H, mods: Control|Shift, chars: "\e[72;6u"} # for vim https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_setup_ctrlshiftkey_mappings_in_neovim_and/

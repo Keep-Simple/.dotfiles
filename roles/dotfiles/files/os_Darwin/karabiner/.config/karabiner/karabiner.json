@@ -17,14 +17,15 @@
                 },
                 "rules": [
                     {
-                        "description": "Change Option + h/j/k/l to Arrows",
+                        "description": "Change Shift + Option + h/j/k/l to Arrows",
                         "manipulators": [
                             {
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": {
                                         "mandatory": [
-                                            "option"
+                                            "option",
+                                            "shift"
                                         ],
                                         "optional": [
                                             "caps_lock"
@@ -43,7 +44,8 @@
                                     "key_code": "j",
                                     "modifiers": {
                                         "mandatory": [
-                                            "option"
+                                            "option",
+                                            "shift"
                                         ],
                                         "optional": [
                                             "caps_lock"
@@ -62,7 +64,8 @@
                                     "key_code": "k",
                                     "modifiers": {
                                         "mandatory": [
-                                            "option"
+                                            "option",
+                                            "shift"
                                         ],
                                         "optional": [
                                             "caps_lock"
@@ -81,7 +84,8 @@
                                     "key_code": "l",
                                     "modifiers": {
                                         "mandatory": [
-                                            "option"
+                                            "option",
+                                            "shift"
                                         ],
                                         "optional": [
                                             "caps_lock"

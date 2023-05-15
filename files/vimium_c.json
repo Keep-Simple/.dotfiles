@@ -1,11 +1,11 @@
 {
 	"name": "Vimium C",
-	"@time": "02/05/2023, 21:20:10",
-	"time": 1683055210200,
+	"@time": "15/05/2023, 19:54:06",
+	"time": 1684173246162,
 	"environment": {
-		"extension": "1.99.99",
+		"extension": "1.99.991",
 		"platform": "mac",
-		"chromium": 112
+		"chromium": 113
 	},
 	"allBrowserUrls": true,
 	"autoReduceMotion": 1,
@@ -45,6 +45,8 @@
 		"unmap J",
 		"unmap K",
 		"unmap H",
+		"unmap <<",
+		"unmap >>",
 		"unmap t",
 		"unmap L",
 		"unmap x",
