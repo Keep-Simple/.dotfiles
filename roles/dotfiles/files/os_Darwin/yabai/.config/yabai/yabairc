@@ -28,7 +28,7 @@ yabai -m signal --add event=application_hidden action=$YABAI/focus_space.sh
 # global settings
 yabai -m config \
     mouse_follows_focus off \
-    focus_follows_mouse autoraise \
+    focus_follows_mouse off \
     window_origin_display default \
     window_placement second_child \
     window_topmost off \
@@ -74,7 +74,7 @@ yabai -m rule --add app="^Karabiner-EventViewer$" manage=off
 yabai -m rule --add title="QuickTerminal" grid=40:20:4:7:12:26 sticky=on layer=above opacity=0.9 border=off manage=off
 
 $YABAI/smart_gaps.sh
-$YABAI/create_spaces.sh 6
+$YABAI/create_spaces.sh 7
 SHELL="/bin/sh" skhd &
 echo "yabai configuration loaded.."
 
