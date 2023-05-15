@@ -268,4 +268,7 @@ lvim.plugins = {
 		"christoomey/vim-tmux-navigator",
 		lazy = false,
 	},
+	{
+		"vim-scripts/LargeFile",
+	},
 }
