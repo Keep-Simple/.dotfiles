@@ -24,7 +24,7 @@ windows:
       root: <%= ENV["SRC_ROOT"] %>/../devenv-infra
       layout: main-vertical
       panes:
-        - echo "Start docker containers? [y/n]"; read reply; if [[ $reply == "y" ]]; then open -a Docker; sleep 15; docker compose up kafka redis; else echo Alright; fi
+        - echo "Start docker containers? [y/n]"; read reply; if [[ $reply == "y" ]]; then ensure_docker_up; docker compose up redpanda-console kafka redis redisinsight; else echo Alright; fi
         - lvim readme.md
 
   - cli:
