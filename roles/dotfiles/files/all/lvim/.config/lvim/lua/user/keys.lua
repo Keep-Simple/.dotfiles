@@ -187,3 +187,26 @@ whk["?"] = { "<cmd>Cheat<cr>", "Cheat.sh" }
 local cmp = require("cmp")
 lvim.builtin.cmp.mapping["<C-l>"] = cmp.mapping.complete()
 lvim.builtin.cmp.mapping["<C-Space>"] = nil
+
+local status, lga_actions = pcall(require, "telescope-live-grep-args.actions")
+if not status then
+	return
+end
+local telescope = require("telescope")
+
+lvim.builtin.telescope.on_config_done = function()
+	---@diagnostic disable-next-line: redundant-parameter
+	telescope.setup({
+		extensions = {
+			live_grep_args = {
+				auto_quoting = true, -- enable/disable auto-quoting
+				mappings = {
+					i = {
+						["<C-k>"] = lga_actions.quote_prompt(),
+						["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+					},
+				},
+			},
+		},
+	})
+end
