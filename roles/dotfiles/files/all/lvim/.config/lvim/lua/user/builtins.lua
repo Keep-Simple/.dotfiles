@@ -33,7 +33,5 @@ lvim.builtin.project.patterns =
 lvim.builtin.telescope.pickers.find_files = { hidden = true, no_ignore = true }
 
 lvim.lsp.null_ls.setup = {
-	root_dir = function()
-		return nil
-	end,
+	debug = true,
 }

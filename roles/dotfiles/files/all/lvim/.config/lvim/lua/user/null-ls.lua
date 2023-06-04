@@ -1,4 +1,6 @@
 local null_ls = require("null-ls")
+local u = require("null-ls.utils")
+local h = require("null-ls.helpers")
 local formatters = require("lvim.lsp.null-ls.formatters")
 
 local eslint_config = {
@@ -32,8 +34,14 @@ formatters.setup({
 		},
 	}),
 	null_ls.builtins.formatting.eslint_d.with(eslint_config),
-	{ name = "black" },
-	{ name = "isort" },
+	{ name = "isort", prefer_local = ".venv/bin" },
+	{
+		name = "black",
+		prefer_local = ".venv/bin",
+		cwd = h.cache.by_bufnr(function(params)
+			return u.root_pattern("pyproject.toml")(params.bufname)
+		end),
+	},
 	{ name = "stylua" },
 	{ name = "rustfmt" },
 	{ name = "gofmt" },
@@ -50,7 +58,8 @@ formatters.setup({
 local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
 	null_ls.builtins.diagnostics.eslint_d.with(eslint_config),
-	{ name = "flake8" },
+	{ name = "flake8", prefer_local = ".venv/bin" },
+	{ name = "mypy", prefer_local = ".venv/bin" },
 	{ name = "qmllint" },
 	{ name = "buf" },
 	{ name = "hadolint" },

@@ -34,23 +34,16 @@ local opts = {
 			"setup.cfg",
 			"requirements.txt",
 			"Pipfile",
-			-- "manage.py",
 			"pyrightconfig.json",
 		}
-		return util.root_pattern(unpack(root_files))(fname)
-			or util.root_pattern(".git")(fname)
-			or util.path.dirname(fname)
+		return util.root_pattern(unpack(root_files))(fname) or util.find_git_ansector(fname)
 	end,
 	single_file_support = true,
-	before_init = function(_, config)
-		config.settings.python.pythonPath = get_python_path(config.root_dir)
+	on_init = function(client)
+		local _path = get_python_path(client.config.root_dir)
+		client.config.settings =
+			vim.tbl_deep_extend("force", client.config.settings, { python = { pythonPath = _path } })
 	end,
 }
-
--- local servers = require("nvim-lsp-installer.servers")
--- local server_available, requested_server = servers.get_server("pyright")
--- if server_available then
--- 	opts.cmd_env = requested_server:get_default_options().cmd_env
--- end
 
 require("lvim.lsp.manager").setup("pyright", opts)
