@@ -59,7 +59,7 @@ local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
 	null_ls.builtins.diagnostics.eslint_d.with(eslint_config),
 	{ name = "flake8", prefer_local = ".venv/bin" },
-	{ name = "mypy", prefer_local = ".venv/bin" },
+	-- { name = "mypy", prefer_local = ".venv/bin" },
 	{ name = "qmllint" },
 	{ name = "buf" },
 	{ name = "hadolint" },
