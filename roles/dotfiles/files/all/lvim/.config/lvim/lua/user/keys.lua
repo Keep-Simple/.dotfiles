@@ -83,15 +83,16 @@ whk["S"] = {
 	q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
 }
 
-whk["R"] = {
+whk["r"] = {
 	name = "Replace",
 	r = { "<cmd>lua require('spectre').open()<cr>", "open" },
 	w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "word in project" },
 	f = { "<cmd>lua require('spectre').open_file_search({select_word=true})<cr>", "word in file" },
 }
 
-whk["Y"] = { ":OSCYank<cr>", "OSC52 Copy (for ssh)", mode = "v" }
+whk["Y"] = { ":OSCYankVisual<cr>", "OSC52 Copy (for ssh)", mode = "v" }
 whk["e"] = { "<cmd>Lf<cr>", "Explorer" }
+whk["c"] = { "<cmd>Copilot panel<cr>", "Copilot" }
 whk["s"]["t"] = { "<cmd>lua require'telescope'.extensions.live_grep_args.live_grep_args()<cr>", "Text" }
 
 local _, trouble = pcall(require, "trouble.providers.telescope")
@@ -155,7 +156,7 @@ whk["d"] = {
 	U = { "<cmd>lua require'dapui'.toggle()<cr>", "Toggle UI" },
 }
 
-whk["r"] = {
+whk["R"] = {
 	name = "Refactor",
 	i = { "<cmd>lua require('refactoring').refactor('Inline Variable')<CR>", "Inline variable" },
 	d = {
@@ -167,7 +168,7 @@ whk["r"] = {
 	b = { "<cmd>lua require('refactoring').refactor('Extract Block')<CR>", "Extract block" },
 	B = { "<cmd>lua require('refactoring').refactor('Extract Block To File')<CR>", "Extract block to file" },
 }
-whk_v["r"] = {
+whk_v["R"] = {
 	name = "Refactor",
 	f = { "<Esc><cmd>lua require('refactoring').refactor('Extract Function')<CR>", "Extract function" },
 	F = {
