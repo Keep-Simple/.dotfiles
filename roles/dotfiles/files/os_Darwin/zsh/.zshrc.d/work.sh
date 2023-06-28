@@ -72,3 +72,4 @@ orca_kafka() {
         kcat -b kafka:9092 -C -t "$topic" -c$consume_count
     fi
 }
+if [ -f  "${SRC_ROOT}/cli/op/shell_rc/bashrc" ]; then source "${SRC_ROOT}/cli/op/shell_rc/bashrc" >/dev/null 2>&1; fi
