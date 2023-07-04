@@ -28,6 +28,7 @@ setopt share_history          # share command history data
 
 # silence asdf-direnv
 export DIRENV_LOG_FORMAT=
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 zinit ice wait lucid as"program" \
     pick'bin/asdf' atinit'export ASDF_DIR="$PWD"' \
     atclone'_zinit_asdf_install' \
@@ -47,19 +48,13 @@ zinit wait lucid light-mode for \
     OMZP::terraform \
     \
     as"completion" \
-    OMZP::docker/_docker \
+    OMZP::docker/completions/_docker \
     \
     as"completion" \
     OMZP::docker-compose/_docker-compose \
     \
-    atload'bindkey "^[[A" history-substring-search-up;
-bindkey "^[[B" history-substring-search-down' \
+    atload'bindkey "^[[A" history-substring-search-up; bindkey "^[[B" history-substring-search-down' \
     zsh-users/zsh-history-substring-search \
-    \
-    as"completion" atclone='kubectl completion zsh > _kubectl' \
-    atpull'%atclone' has'kubectl' nocompile blockf \
-    id-as'kubectl' \
-    zdharma-continuum/null \
     \
     atload='_zinit_lf' \
     id-as'lf' nocompile \
@@ -73,20 +68,18 @@ bindkey "^[[B" history-substring-search-down' \
     src'shell/key-bindings.zsh' \
     junegunn/fzf \
     \
-    src"bin/aws_zsh_completer.sh" \
+    src"bin/aws_zsh_completer.sh" nocompile \
     aws/aws-cli \
     \
     atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zicdreplay" \
     zdharma/fast-syntax-highlighting \
     \
-    blockf atpull'zinit creinstall -q . $HOMEBREW_PREFIX/share/zsh/site-functions' \
+    blockf atclone'zinit creinstall -q $HOMEBREW_PREFIX/share/zsh/site-functions' atpull'%atpull' \
     zsh-users/zsh-completions \
     \
     atload"!_zsh_autosuggest_start; bindkey '^W' forward-word" \
     zsh-users/zsh-autosuggestions
 
-
 autoload -U colors && colors
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
