@@ -49,7 +49,7 @@ local get_python_path_from_lsp = function()
 	-- return path
 end
 
-local get_dap_config = function(tbl)
+local get_python_dap_config = function(tbl)
 	return vim.tbl_extend("force", {
 		type = "python",
 		request = "launch",
@@ -58,41 +58,6 @@ local get_dap_config = function(tbl)
 		console = "integratedTerminal",
 	}, tbl or {})
 end
-
-local dap_setup = function()
-	local dap = require("dap")
-
-	dap.adapters.python = {
-		type = "executable",
-		command = "debugpy-adapter",
-	}
-
-	dap.configurations.python = vim.list_extend(dap.configurations.python or {}, {
-		get_dap_config({
-			name = "Launch file",
-			program = "${file}",
-			pythonPath = get_python_path_from_lsp,
-			env = function()
-				return { ["PYTHONPATH"] = vim.fn.getcwd() }
-			end,
-			args = function()
-				local args = {}
-				local i = 1
-				while true do
-					local arg = vim.fn.input("Argument [" .. i .. "]: ")
-					if arg == "" then
-						break
-					end
-					args[i] = arg
-					i = i + 1
-				end
-				return args
-			end,
-		}),
-	})
-end
-
-dap_setup()
 
 local python_path_per_project_cache = {}
 
@@ -108,7 +73,7 @@ local function find_root_dir(fname)
 	return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
 end
 
-local opts = {
+local pyright_opts = {
 	root_dir = find_root_dir,
 	single_file_support = true,
 	on_init = function()
@@ -137,7 +102,7 @@ return {
 		"neovim/nvim-lspconfig",
 		opts = {
 			servers = {
-				pyright = opts,
+				pyright = pyright_opts,
 				-- ruff_lsp = {},
 			},
 		},
@@ -174,12 +139,42 @@ return {
 							return path
 						end
 					end)(),
-					dap = get_dap_config({}),
+					dap = get_python_dap_config({}),
 				},
 			},
 		},
 	},
 	{
-		"mfussenegger/nvim-dap",
+		"jay-babu/mason-nvim-dap.nvim",
+		opts = {
+			handlers = {
+				python = function(config)
+					config.configurations = {
+						get_python_dap_config({
+							name = "Launch file",
+							program = "${file}",
+							pythonPath = get_python_path_from_lsp,
+							env = function()
+								return { ["PYTHONPATH"] = vim.fn.getcwd() }
+							end,
+							args = function()
+								local args = {}
+								local i = 1
+								while true do
+									local arg = vim.fn.input("Argument [" .. i .. "]: ")
+									if arg == "" then
+										break
+									end
+									args[i] = arg
+									i = i + 1
+								end
+								return args
+							end,
+						}),
+					}
+					require("mason-nvim-dap").default_setup(config)
+				end,
+			},
+		},
 	},
 }

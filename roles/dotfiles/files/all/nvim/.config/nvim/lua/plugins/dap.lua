@@ -128,6 +128,5 @@ return {
 			command = "open -na Alacritty",
 			args = { "-e" },
 		}
-		require("dap.ext.vscode").load_launchjs()
 	end,
 }
