@@ -24,7 +24,7 @@
       tags: ['dotfiles']
     - role: zsh
       tags: ['devenv']
-    - role: lunarvim
+    - role: nvim
       tags: ['devenv']
     - role: system_defaults
       tags: ['system']

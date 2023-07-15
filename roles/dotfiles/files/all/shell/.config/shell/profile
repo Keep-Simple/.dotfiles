@@ -1,7 +1,7 @@
 # vim:ft=sh
 
 # Default programs
-export EDITOR="lvim"
+export EDITOR="nvim"
 export VISUAL="$EDITOR"
 export TERMINAL="alacritty"
 export BROWSER="open-in-brave"

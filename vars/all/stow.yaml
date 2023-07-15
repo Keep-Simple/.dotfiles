@@ -8,7 +8,7 @@ stow_common_items:
   - btop
   - git
   - k9s
-  - lvim
+  - nvim
   - spotify-tui
   - zsh
   - shell
