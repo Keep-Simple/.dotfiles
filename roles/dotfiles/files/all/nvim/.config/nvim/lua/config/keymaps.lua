@@ -12,6 +12,7 @@ map("v", "<leader>y", '"+y', { desc = "Copy to clipboard" })
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
+map({ "n", "i" }, "<leader>q", "<C-w>q", { desc = "Close window" })
 map("n", "n", "nzz")
 map("n", "N", "Nzz")
 
