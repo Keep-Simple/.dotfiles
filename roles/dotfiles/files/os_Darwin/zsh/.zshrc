@@ -60,8 +60,8 @@ zinit wait lucid light-mode for \
     id-as'lf' nocompile \
     zdharma-continuum/null \
     \
-    atload='_zinit_lvim' \
-    id-as'lvim' nocompile \
+    atload='_zinit_nvim' \
+    id-as'nvim' nocompile \
     zdharma-continuum/null \
     \
     depth'1' nocompile \

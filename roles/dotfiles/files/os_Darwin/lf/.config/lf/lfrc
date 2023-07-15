@@ -74,8 +74,8 @@ map ,f :fzf_jump
 map ,t push :tar<space>
 map ,z push :zip<space>
 map ,e :extract
-map <c-o> $lvim +"lua require('persistence').load()" # pwd is current lf dir
-map <c-p> $lvim +"lua require('persistence').load({ last = true })"
+map <c-o> $nvim +"lua require('persistence').load()" # pwd is current lf dir
+map <c-p> $nvim +"lua require('persistence').load({ last = true })"
 
 # command mode mappings
 map <up> cmd-history-prev

@@ -1,5 +1,9 @@
 local Util = require("lazyvim.util")
 
+local function get_git_dir()
+	return vim.fn.fnamemodify(vim.fn.finddir(".git", ".;"), ":h")
+end
+
 return {
 	"nvim-telescope/telescope.nvim",
 	dependencies = {
@@ -31,28 +35,27 @@ return {
 				end,
 				desc = "Find Files",
 			},
-			{ "<leader>Fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-			{ "<leader>Fc", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
-			{
-				"<leader>Fh",
-				function()
-					require("telescope.builtin").find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
-				end,
-				desc = "Hidden (cwd)",
-			},
+			{ "<leader>Fc", require("telescope.builtin").find_files, desc = "files (cwd)" },
 			{
 				"<leader>FH",
 				function()
-					local cwd = vim.fn.fnamemodify(vim.fn.finddir(".git", ".;"), ":h")
+					require("telescope.builtin").find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
+				end,
+				desc = "files (ignore, hidden, cwd)",
+			},
+			{
+				"<leader>Fh",
+				function()
 					require("telescope.builtin").find_files({
 						hidden = true,
 						no_ignore = true,
 						no_ignore_parent = true,
-						cwd = cwd,
+						cwd = get_git_dir(),
 					})
 				end,
-				desc = "Hidden (git dir)",
+				desc = "files (ignore, hidden)",
 			},
+			{ "<leader>Fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
 			{ "<leader>FR", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Recent" },
 			-- git
 			{ "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
@@ -64,7 +67,36 @@ return {
 			{ "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
 			{ "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
 			{ "<leader>sD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
-			{ "<leader>st", Util.telescope("live_grep", { cwd = false }), desc = "Text" },
+			{
+				"<leader>st",
+				function()
+					require("telescope.builtin").live_grep({
+						cwd = get_git_dir(),
+						additional_args = { "--hidden" },
+					})
+				end,
+				desc = "Text",
+			},
+			{
+				"<leader>sT",
+				function()
+					require("telescope.builtin").live_grep({
+						cwd = get_git_dir(),
+						additional_args = { "--hidden" },
+					})
+				end,
+				desc = "Text (cwd)",
+			},
+			{
+				"<leader>sA",
+				function()
+					require("telescope.builtin").live_grep({
+						additional_args = { "--hidden", "--no-ignore" },
+						cwd = get_git_dir(),
+					})
+				end,
+				desc = "Text (with ignore)",
+			},
 			{ "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
 			{ "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
 			{ "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
@@ -72,7 +104,6 @@ return {
 			{ "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
 			{ "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
 			{ "<leader>sr", "<cmd>Telescope resume<cr>", desc = "Resume" },
-			{ "<leader>sw", Util.telescope("grep_string", { cwd = false }), desc = "Word" },
 			{
 				"<leader>uC",
 				Util.telescope("colorscheme", { enable_preview = true }),
