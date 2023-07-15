@@ -1,12 +1,12 @@
 ---
 - name: Register Brewfile
   stat:
-    path: "{{ brewfile_dir }}/Brewfile"
+    path: "{{ dotfiles.target }}/roles/packages/files/macos/Brewfile"
   register: brew_file
 
 - block:
     - name: Check if install is needed
-      command: "{{ homebrew_brew_bin_path }}/brew bundle check chdir={{ brewfile_dir }}"
+      command: "{{ homebrew_brew_bin_path }}/brew bundle check chdir={{ brew_file.stat.path | dirname }}"
       register: brew_check
       changed_when: false
       failed_when: false
@@ -20,7 +20,7 @@
           become: true
 
         - name: Install from Brewfile
-          command: "{{ homebrew_brew_bin_path }}/brew bundle --no-lock chdir={{ brewfile_dir }} "
+          command: "{{ homebrew_brew_bin_path }}/brew bundle --no-lock chdir={{ brew_file.stat.path | dirname }} "
           async: 100000
           poll: 5
 

@@ -17,7 +17,7 @@
 
 - name: Set macOS default settings from xml files
   ansible.builtin.command:
-    cmd: "defaults import {{ item['key'] }} {{ myansible_dir }}/roles/system_defaults/files/macos/xml_settings/{{ item['filename'] }}"
+    cmd: "defaults import {{ item['key'] }} {{ dotfiles.target }}/roles/system_defaults/files/macos/xml_settings/{{ item['filename'] }}"
   loop: "{{ macos_defaults_xml }}"
   loop_control:
     label: "{{ item['key'] }}"
