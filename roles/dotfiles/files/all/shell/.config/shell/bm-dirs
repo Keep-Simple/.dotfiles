@@ -8,7 +8,7 @@ vm  $HOME/VM_Shared
 V   /Volumes
 
 L  $HOME/.local
-lv $HOME/.local/share/lunarvim
+nv $HOME/.local/share/nvim
 
 O   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca}
 oi   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/cli}
