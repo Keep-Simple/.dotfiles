@@ -68,9 +68,25 @@ return {
 						},
 					},
 				},
-				lualine_y = {},
+				lualine_y = {
+					function()
+						local bufnr = vim.api.nvim_get_current_buf()
+						local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+						if next(clients) == nil then
+							return ""
+						end
+
+						local c = {}
+						for _, client in pairs(clients) do
+							if client.name ~= "null-ls" then
+								table.insert(c, client.name)
+							end
+						end
+						return "\u{f085} " .. table.concat(c, "|")
+					end,
+				},
 			},
-			extensions = { "neo-tree", "lazy" },
+			extensions = { "lazy" },
 		}
 	end,
 }
