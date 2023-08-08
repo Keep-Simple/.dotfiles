@@ -30,7 +30,7 @@ alias \
 alias \
     g="git" \
     c="clear" \
-    s="spt" \
+    s="spotify_player" \
     t="btop" \
     top="btop" \
     htop="btop" \

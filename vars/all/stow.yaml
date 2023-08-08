@@ -9,7 +9,7 @@ stow_common_items:
   - git
   - k9s
   - nvim
-  - spotify-tui
+  - spotify-player
   - zsh
   - shell
   - yamlfmt
