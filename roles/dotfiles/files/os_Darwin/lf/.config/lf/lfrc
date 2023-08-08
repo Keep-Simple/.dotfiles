@@ -20,7 +20,8 @@ set hidden true
 set period 1
 # set wrapscroll true
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
-set previewer ~/.config/lf/preview
+set previewer ~/.config/lf/previews/previewer.sh
+set cleaner ~/.config/lf/previews/cleaner.sh
 
 # change columns size dependant on the available space
 ${{
@@ -63,7 +64,9 @@ map O %open "$fx"
 map <c-z> $kill -STOP $PPID
 map p :paste_try_cow
 # duplicate lf with current dir in another terminal
-map S &open -na Alacritty --args --working-directory=$PWD -e zsh -c ". ~/.zshrc; lf; zsh -i"
+# map S &open -na Alacritty --args --working-directory=$PWD -e zsh -c ". ~/.zshrc; lf; zsh -i"
+map S &kitty --single-instance -d $PWD -e zsh -c ". ~/.zshrc; lf; zsh -i"
+
 
 # vim like mappings with <leader> being ","
 map ,r :bulk-rename
@@ -76,6 +79,7 @@ map ,z push :zip<space>
 map ,e :extract
 map <c-o> $nvim +"lua require('persistence').load()" # pwd is current lf dir
 map <c-p> $nvim +"lua require('persistence').load({ last = true })"
+map ,m $mpv $PWD --audio-display=no
 
 # command mode mappings
 map <up> cmd-history-prev

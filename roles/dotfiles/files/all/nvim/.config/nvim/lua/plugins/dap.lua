@@ -124,9 +124,5 @@ return {
 	init = function()
 		local dap = require("dap")
 		dap.defaults.fallback.exception_breakpoints = { "uncaught" }
-		dap.defaults.fallback.external_terminal = {
-			command = "open -na Alacritty",
-			args = { "-e" },
-		}
 	end,
 }

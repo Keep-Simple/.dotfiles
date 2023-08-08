@@ -1,13 +1,33 @@
 #!/bin/sh
 
-QuickTerminal=$(yabai -m query --windows | jq 'map(select(.title=="QuickTerminal")) | .[0]')
+QuickTerminal=$(yabai -m query --windows | jq 'map(select(.title=="QuickTerminal")) | .[0].pid')
+
+
+launch_kitty() {
+    { kitty --single-instance --instance-group quickterm --title QuickTerminal --directory "${HOME}" & } &> /dev/null
+    kitty_pid=$!
+    disown -r "${kitty_pid}"
+}
+
+# launch_alacritty() {
+#     open -n /Applications/Alacritty.app --args --title QuickTerminal
+# }
+
+quick_term_toggle() {
+    osascript -e "
+        tell application \"System Events\"
+            if frontmost of the first process whose unix id is $1 then
+                set visible of the first process whose unix id is $1 to false
+            else
+                set frontmost of the first process whose unix id is $1 to true
+            end if
+        end tell
+    "
+}
+
 
 if [[ $QuickTerminal == "null" ]]; then
-    open -n /Applications/Alacritty.app --args --title QuickTerminal
-elif [[ $(echo $QuickTerminal | jq '."is-visible"') == 'true' ]]; then
-    QuickTerminal_PID=$(echo $QuickTerminal | jq '.pid')
-    osascript -e "tell application \"System Events\" to set visible of first process ¬" \
-        -e "whose unix id = ${QuickTerminal_PID} to false"
+    launch_kitty
 else
-    yabai -m window $(echo $QuickTerminal | jq '.id') --focus
+    quick_term_toggle $QuickTerminal
 fi

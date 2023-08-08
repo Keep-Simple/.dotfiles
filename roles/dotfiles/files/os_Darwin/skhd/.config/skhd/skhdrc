@@ -2,7 +2,8 @@
 # 0x18 maps to =
 
 # apps shortcuts
-ctrl + alt + cmd - return : open -n /Applications/Alacritty.app
+# ctrl + alt + cmd - return : open -n /Applications/Alacritty.app
+ctrl + alt + cmd - return : kitty --single-instance -d ~
 ctrl + alt + cmd + shift - return : $YABAI/quick_terminal.sh
 ctrl + alt + cmd - o : open -n /System/Applications/System\ Settings.app
 ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
