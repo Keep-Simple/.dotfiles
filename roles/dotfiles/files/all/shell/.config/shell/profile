@@ -7,9 +7,6 @@ export TERMINAL="alacritty"
 export BROWSER="open-in-brave"
 export OPENER="open" # for mac
 
-PATH="$HOME/.local/bin:$PATH"
-PATH="/usr/local/bin:$PATH"
-
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_BACKUP_DIR="$XDG_DATA_HOME/backup"
@@ -59,6 +56,9 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
 	PATH="${HOMEBREW_PREFIX}/opt/util-linux/bin:$PATH"
 	PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:$PATH"
 fi
+
+PATH="$HOME/.local/bin:$PATH"
+PATH="/usr/local/bin:$PATH"
 
 export PATH
 

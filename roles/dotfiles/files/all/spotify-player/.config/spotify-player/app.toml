@@ -37,6 +37,6 @@ body = "{album}"
 [device]
 name = "cli-player"
 device_type = "speaker"
-volume = 50
+volume = 70
 bitrate = 320
 audio_cache = true
