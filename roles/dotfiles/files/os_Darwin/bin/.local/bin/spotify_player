@@ -1,42 +1,4 @@
 #!/bin/sh
 
-
-function kill_spotify_hack_window() {
-    osascript <<EOF
-tell application "System Events"
-    set myApp to "spotify_player"
-    set startTime to (current date)
-    set startTimestamp to (time of startTime)
-
-    repeat
-        set currentTime to (current date)
-        set currentTimestamp to (time of currentTime)
-        set timeElapsed to (currentTimestamp - startTimestamp)
-
-        if timeElapsed > 10 then
-            exit repeat
-        end if
-
-        set processRunning to (exists process myApp)
-        set newWindow to missing value
-
-        if processRunning then
-            try
-              set newWindow to first window of process myApp
-            end try
-            if newWindow is not missing value then
-                try
-                    click button "Cancel" of newWindow
-                    exit repeat
-                end try
-            end if
-        else
-            delay 0.1
-        end if
-    end repeat
-end tell
-EOF
-}
-
-{ kill_spotify_hack_window; sleep 0.2; yabai -m window --focus mouse 2>/dev/null; } &
+{ sleep 1; yabai -m window --focus mouse 2>/dev/null; } &
 $HOMEBREW_PREFIX/bin/spotify_player
