@@ -26,10 +26,11 @@ setopt hist_verify            # show command with history expansion to user befo
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
 
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+
 # silence asdf-direnv
 export DIRENV_LOG_FORMAT=
-ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-zinit ice wait lucid as"program" \
+zinit ice lucid as"program" \
     pick'bin/asdf' atinit'export ASDF_DIR="$PWD"' \
     atclone'_zinit_asdf_install' \
     atpull'%atclone'  \
