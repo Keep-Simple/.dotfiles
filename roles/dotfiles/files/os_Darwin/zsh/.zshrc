@@ -75,7 +75,7 @@ zinit wait lucid light-mode for \
     atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zicdreplay" \
     zdharma/fast-syntax-highlighting \
     \
-    blockf atclone'zinit creinstall -q $HOMEBREW_PREFIX/share/zsh/site-functions' atpull'%atpull' \
+    blockf atclone'zinit creinstall -q $HOMEBREW_PREFIX/share/zsh/site-functions' atpull'%atclone' \
     zsh-users/zsh-completions \
     \
     atload"!_zsh_autosuggest_start; bindkey '^W' forward-word" \

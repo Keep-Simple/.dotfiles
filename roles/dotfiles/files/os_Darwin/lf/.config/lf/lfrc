@@ -79,7 +79,7 @@ map ,z push :zip<space>
 map ,e :extract
 map <c-o> $nvim +"lua require('persistence').load()" # pwd is current lf dir
 map <c-p> $nvim +"lua require('persistence').load({ last = true })"
-map ,m $mpv $PWD --audio-display=no
+map ,m $mpv $PWD --audio-display=no --volume=35
 
 # command mode mappings
 map <up> cmd-history-prev
