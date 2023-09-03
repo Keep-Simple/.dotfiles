@@ -33,8 +33,8 @@ export DIRENV_LOG_FORMAT=
 zinit ice lucid as"program" \
     pick'bin/asdf' atinit'export ASDF_DIR="$PWD"' \
     atclone'_zinit_asdf_install' \
-    atpull'%atclone'  \
-    multisrc'asdf_direnv_hook.zsh asdf.sh' depth=1
+    atpull'%atclone' depth=1  \
+    multisrc'asdf_direnv_hook.zsh' # from 'asdf_direnv_hook.zsh asdf.sh'; not sourcing asdf.sh for perfomance https://github.com/asdf-community/asdf-direnv#pro-tips
 zinit light asdf-vm/asdf
 
 zinit ice depth=1
