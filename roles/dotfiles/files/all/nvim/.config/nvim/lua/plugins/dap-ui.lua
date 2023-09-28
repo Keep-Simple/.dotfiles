@@ -1,5 +1,13 @@
 return {
 	"rcarriga/nvim-dap-ui",
+	keys = {
+		{
+			"ge",
+			require("dapui").eval,
+			desc = "Eval",
+			mode = { "n", "v" },
+		},
+	},
 	opts = {
 		icons = { expanded = "▾", collapsed = "▸" },
 		mappings = {
