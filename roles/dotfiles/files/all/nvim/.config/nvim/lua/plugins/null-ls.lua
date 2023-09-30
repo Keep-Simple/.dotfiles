@@ -15,7 +15,7 @@ local eslint_config = {
 }
 
 return {
-	"jose-elias-alvarez/null-ls.nvim",
+	"nvimtools/none-ls.nvim",
 	opts = function()
 		local nls = require("null-ls")
 		local base = nls.builtins
