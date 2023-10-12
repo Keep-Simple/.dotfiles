@@ -59,14 +59,14 @@ if not Util.has("trouble.nvim") then
 end
 
 -- toggle options
-map("n", "<leader>uf", require("lazyvim.plugins.lsp.format").toggle, { desc = "Toggle format on Save" })
+map("n", "<leader>uf", require("lazyvim.util.format").toggle, { desc = "Toggle format on Save" })
 map("n", "<leader>us", function()
 	Util.toggle("spell")
 end, { desc = "Toggle Spelling" })
 map("n", "<leader>uw", function()
 	Util.toggle("wrap")
 end, { desc = "Toggle Word Wrap" })
-map("n", "<leader>ud", Util.toggle_diagnostics, { desc = "Toggle Diagnostics" })
+map("n", "<leader>ud", Util.toggle.diagnostics, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 map("n", "<leader>uc", function()
 	Util.toggle("conceallevel", false, { 0, conceallevel })
@@ -81,9 +81,6 @@ end
 if vim.fn.has("nvim-0.9.0") == 1 then
 	map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
 end
-
--- LazyVim Changelog
-map("n", "<leader>L", Util.changelog, { desc = "LazyVim Changelog" })
 
 -- Terminal Mappings
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })

@@ -7,7 +7,7 @@ export PATH="/opt/hack_path/date:$PATH"
 # The next line enables shell command completion for gcloud.
 # if [ -f '/Users/nickyasnogorodskyi/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/nickyasnogorodskyi/google-cloud-sdk/completion.zsh.inc'; fi
 
-apisec_topics=("web-api-data-discovered.v1" "web-api-entity-proccessed.v1" "web-api-entity-enriched.v1")
+apisec_topics=("web-api-data-discovered.v2" "web-api-entity-proccessed.v2" "web-api-entity-enriched.v2")
 
 pick_apisec_topic() {
     printf "$ORCA_ENV.apisec.%s\n" "${apisec_topics[@]}" | fzf --header "Pick topic"

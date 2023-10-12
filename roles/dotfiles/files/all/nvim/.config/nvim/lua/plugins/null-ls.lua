@@ -1,6 +1,3 @@
-local u = require("null-ls.utils")
-local h = require("null-ls.helpers")
-
 local eslint_config = {
 	prefer_local = "node_modules/.bin",
 	condition = function(utils)
@@ -19,6 +16,8 @@ return {
 	opts = function()
 		local nls = require("null-ls")
 		local base = nls.builtins
+		local u = require("null-ls.utils")
+		local h = require("null-ls.helpers")
 		return {
 			sources = {
 				base.formatting.stylua,
