@@ -15,8 +15,8 @@ ctrl + alt + cmd - 0x18 : yabai -m space --toggle mission-control
 ctrl + alt + cmd - d : killall dmenu-mac; exec dmenu-mac
 
 # change layouts
-ctrl + alt + cmd - t : yabai -m space --layout bsp; $YABAI/smart_gaps.sh
-ctrl + alt + cmd - u : yabai -m space --layout stack; $YABAI/smart_gaps.sh
+ctrl + alt + cmd - t : yabai -m space --layout bsp;
+ctrl + alt + cmd - u : yabai -m space --layout stack;
 ctrl + alt + cmd - y : yabai -m space --layout float;
 
 # focus window
