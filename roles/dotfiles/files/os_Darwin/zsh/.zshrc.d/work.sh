@@ -73,6 +73,6 @@ orca_kafka() {
     fi
 }
 
-zinit id-as"work" wait lucid nocompile \
-    atload="if [ -f  "${SRC_ROOT}/cli/op/shell_rc/bashrc" ]; then source "${SRC_ROOT}/cli/op/shell_rc/bashrc" >/dev/null 2>&1; fi" for \
-    zdharma-continuum/null
+# zinit id-as"work" wait lucid nocompile \
+    #     atload="if [ -f  "${SRC_ROOT}/cli/op/shell_rc/bashrc" ]; then source "${SRC_ROOT}/cli/op/shell_rc/bashrc" >/dev/null 2>&1; fi" for \
+    #     zdharma-continuum/null
