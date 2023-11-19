@@ -81,7 +81,6 @@ return {
 				"<leader>sT",
 				function()
 					require("telescope.builtin").live_grep({
-						cwd = get_git_dir(),
 						additional_args = { "--hidden", "--glob=!.git/" },
 					})
 				end,

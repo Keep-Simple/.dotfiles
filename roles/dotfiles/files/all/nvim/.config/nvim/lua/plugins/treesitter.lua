@@ -1,6 +1,10 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
 	opts = {
+		indent = {
+			enable = true,
+			disable = { "python" },
+		},
 		rainbow = {
 			enable = true,
 			disable = { "html", "jsx" },
