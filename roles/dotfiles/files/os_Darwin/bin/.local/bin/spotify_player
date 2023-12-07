@@ -1,4 +1,0 @@
-#!/bin/sh
-
-{ sleep 1; yabai -m window --focus mouse 2>/dev/null; } &
-$HOMEBREW_PREFIX/bin/spotify_player
