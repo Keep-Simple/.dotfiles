@@ -423,3 +423,6 @@ macos_defaults_xml:
 
   - key: com.dshnkao.SpaceId
     filename: spaceid
+
+  - key: org.hammerspoon.Hammerspoon
+    filename: hammerspoon

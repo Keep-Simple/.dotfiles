@@ -19,6 +19,12 @@ yabai -m signal --add event=window_destroyed action=$YABAI/focus_space.sh
 yabai -m signal --add event=window_minimized action=$YABAI/focus_space.sh
 yabai -m signal --add event=application_hidden action=$YABAI/focus_space.sh
 
+yabai -m signal --add event=window_created action=$YABAI/smart_indicator.sh
+yabai -m signal --add event=window_destroyed action=$YABAI/smart_indicator.sh
+yabai -m signal --add event=window_minimized action=$YABAI/smart_indicator.sh
+yabai -m signal --add event=window_deminimized action=$YABAI/smart_indicator.sh
+yabai -m signal --add event=space_changed action=$YABAI/smart_indicator.sh
+
 # global settings
 yabai -m config \
     mouse_follows_focus off \
@@ -59,6 +65,7 @@ yabai -m rule --add app="^Karabiner-EventViewer$" manage=off
 yabai -m rule --add title="QuickTerminal" grid=40:20:4:7:12:26 sticky=on opacity=0.9
 
 $YABAI/create_spaces.sh 7
+$YABAI/smart_indicator.sh
 SHELL="/bin/sh" skhd &
 echo "yabai configuration loaded.."
 
