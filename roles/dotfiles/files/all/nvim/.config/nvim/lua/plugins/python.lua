@@ -6,19 +6,20 @@ local function get_python_path(workspace)
 		return util.path.join(vim.env.VIRTUAL_ENV, "bin", "python")
 	end
 
-	-- Find and use virtualenv in workspace directory.
-	local match = vim.fn.glob(util.path.join(workspace, "pyproject.toml"))
-	if match ~= "" then
-		local venv = vim.fn.trim(vim.fn.system("poetry env info -p")):match("[^\n]*$") -- poetry 1.5 throws deprecation notice, pick only the last line with actual path
-		if venv then
-			return util.path.join(venv, "bin", "python")
+	for _, pattern in ipairs({ "*", ".*" }) do
+		local match = vim.fn.glob(util.path.join(workspace, pattern, "pyvenv.cfg"))
+		if match ~= "" then
+			return util.path.join(util.path.dirname(match), "bin", "python")
 		end
 	end
 
-	for _, pattern in ipairs({ "*", ".*" }) do
-		match = vim.fn.glob(util.path.join(workspace, pattern, "pyvenv.cfg"))
-		if match ~= "" then
-			return util.path.join(util.path.dirname(match), "bin", "python")
+	-- Find and use virtualenv in workspace directory.
+	local match = vim.fn.glob(util.path.join(workspace, "pyproject.toml"))
+	if match ~= "" then
+		local command = string.format("cd %s && poetry env info -p", vim.fn.shellescape(workspace))
+		local venv = vim.fn.trim(vim.fn.system(command)):match("[^\n]*$") -- poetry 1.5 throws deprecation notice, pick only the last line with actual path
+		if venv then
+			return util.path.join(venv, "bin", "python")
 		end
 	end
 
@@ -34,6 +35,7 @@ local function set_python_path(client, path)
 		return
 	end
 	client.config.settings = vim.tbl_deep_extend("force", client.config.settings, { python = { pythonPath = path } })
+	-- technically lsp client should be notified about pythonPath change, but it works without it somehow. During notify lsp refreshes all files which is not good
 	-- client.notify("workspace/didChangeConfiguration", { settings = nil })
 end
 
@@ -59,7 +61,7 @@ local get_python_dap_config = function(tbl)
 	}, tbl or {})
 end
 
-local python_path_per_project_cache = {}
+Python_path_per_project_cache = {}
 
 local function find_root_dir(fname)
 	local root_files = {
@@ -77,21 +79,21 @@ local pyright_opts = {
 	root_dir = find_root_dir,
 	single_file_support = true,
 	on_init = function()
-		python_path_per_project_cache = {}
+		Python_path_per_project_cache = {}
 	end,
 	on_attach = function(client, bufnr)
 		local root_dir = find_root_dir(vim.api.nvim_buf_get_name(bufnr)) -- can't use client.config.root_dir, because it's not updated when this function is invoked
 		if not root_dir then
 			return
 		end
-		if not python_path_per_project_cache[root_dir] then
-			python_path_per_project_cache[root_dir] = get_python_path(root_dir)
+		if not Python_path_per_project_cache[root_dir] then
+			Python_path_per_project_cache[root_dir] = get_python_path(root_dir)
 		end
-		set_python_path(client, python_path_per_project_cache[root_dir])
+		set_python_path(client, Python_path_per_project_cache[root_dir])
 		vim.api.nvim_create_autocmd("BufEnter", {
 			buffer = bufnr,
 			callback = function()
-				set_python_path(client, python_path_per_project_cache[root_dir])
+				set_python_path(client, Python_path_per_project_cache[root_dir])
 			end,
 		})
 	end,

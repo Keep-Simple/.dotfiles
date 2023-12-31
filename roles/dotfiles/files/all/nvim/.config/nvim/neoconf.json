@@ -9,7 +9,15 @@
     "plugins": {
       "lua_ls": {
         "enabled": true
+      },
+      "lspconfig": {
+        "enabled": true
       }
+    }
+  },
+  "lspconfig": {
+    "pyright": {
+      "python.analysis.diagnosticMode": "workspace"
     }
   }
 }
