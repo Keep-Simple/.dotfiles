@@ -20,11 +20,11 @@ ctrl + alt + cmd - u : yabai -m space --layout stack;
 ctrl + alt + cmd - y : yabai -m space --layout float;
 
 # focus window
-ctrl + alt + cmd - x : yabai -m window --focus recent
-ctrl + alt + cmd - h : yabai -m window --focus west || yabai -m window --focus stack.prev || yabai -m window --focus stack.last
-ctrl + alt + cmd - j : yabai -m window --focus south 
-ctrl + alt + cmd - k : yabai -m window --focus north
-ctrl + alt + cmd - l : yabai -m window --focus east || yabai -m window --focus stack.next || yabai -m window --focus stack.first
+ctrl + alt + cmd - x : $YABAI/unzoom.sh; yabai -m window --focus recent
+ctrl + alt + cmd - h : $YABAI/unzoom.sh; yabai -m window --focus west || yabai -m window --focus stack.prev || yabai -m window --focus stack.last
+ctrl + alt + cmd - j : $YABAI/unzoom.sh; yabai -m window --focus south 
+ctrl + alt + cmd - k : $YABAI/unzoom.sh; yabai -m window --focus north
+ctrl + alt + cmd - l : $YABAI/unzoom.sh; yabai -m window --focus east || yabai -m window --focus stack.next || yabai -m window --focus stack.first
 
 # warp windows
 ctrl + alt + cmd + shift - h : yabai -m window --warp west
