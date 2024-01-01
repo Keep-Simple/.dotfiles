@@ -48,9 +48,9 @@ return {
 					},
 				}),
 				base.formatting.eslint_d.with(eslint_config),
-				base.formatting.isort.with({ only_local = ".venv/bin" }),
+				base.formatting.isort.with({ prefer_local = ".venv/bin" }),
 				base.formatting.black.with({
-					only_local = ".venv/bin",
+					prefer_local = ".venv/bin",
 					cwd = h.cache.by_bufnr(function(params)
 						return u.root_pattern("pyproject.toml")(params.bufname)
 					end),
@@ -60,7 +60,7 @@ return {
 				base.code_actions.refactoring,
 
 				base.diagnostics.eslint_d.with(eslint_config),
-				base.diagnostics.flake8.with({ only_local = ".venv/bin" }),
+				base.diagnostics.flake8.with({ prefer_local = ".venv/bin" }),
 				base.diagnostics.qmllint,
 				base.diagnostics.buf,
 				base.diagnostics.hadolint,

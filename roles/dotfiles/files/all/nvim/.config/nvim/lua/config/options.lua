@@ -6,4 +6,5 @@ vim.g.mapleader = ","
 vim.g.maplocalleader = ","
 vim.opt.clipboard = ""
 vim.opt.list = false
+vim.o.exrc = true
 vim.opt.formatoptions = "jcroqln"
