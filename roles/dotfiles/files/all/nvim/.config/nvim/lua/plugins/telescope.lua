@@ -28,23 +28,27 @@ return {
 			-- find
 			{
 				"<leader>f",
+				require("telescope.builtin").find_files,
+				desc = "Find Files",
+			},
+			{
+				"<leader>Fg",
 				function()
 					if not pcall(require("telescope.builtin").git_files, { show_untracked = true }) then
 						require("telescope.builtin").find_files()
 					end
 				end,
-				desc = "Find Files",
-			},
-			{ "<leader>Fc", require("telescope.builtin").find_files, desc = "files (cwd)" },
-			{
-				"<leader>FH",
-				function()
-					require("telescope.builtin").find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
-				end,
-				desc = "files (ignore, hidden, cwd)",
+				desc = "git files",
 			},
 			{
 				"<leader>Fh",
+				function()
+					require("telescope.builtin").find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
+				end,
+				desc = "files (ignore, hidden)",
+			},
+			{
+				"<leader>FG",
 				function()
 					require("telescope.builtin").find_files({
 						hidden = true,
@@ -53,7 +57,7 @@ return {
 						cwd = get_git_dir(),
 					})
 				end,
-				desc = "files (ignore, hidden)",
+				desc = "git files (ignore, hidden)",
 			},
 			{ "<leader>Fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
 			{ "<leader>FR", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Recent" },
@@ -71,7 +75,6 @@ return {
 				"<leader>st",
 				function()
 					require("telescope.builtin").live_grep({
-						cwd = get_git_dir(),
 						additional_args = { "--hidden", "--glob=!.git/" },
 					})
 				end,
@@ -81,10 +84,11 @@ return {
 				"<leader>sT",
 				function()
 					require("telescope.builtin").live_grep({
+						cwd = get_git_dir(),
 						additional_args = { "--hidden", "--glob=!.git/" },
 					})
 				end,
-				desc = "Text (cwd)",
+				desc = "Text (git)",
 			},
 			{
 				"<leader>sA",
@@ -94,7 +98,7 @@ return {
 						cwd = get_git_dir(),
 					})
 				end,
-				desc = "Text (with ignore)",
+				desc = "Text (git with ignore)",
 			},
 			{ "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
 			{ "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },

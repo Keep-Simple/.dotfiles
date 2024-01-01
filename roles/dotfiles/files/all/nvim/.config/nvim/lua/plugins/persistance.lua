@@ -3,4 +3,7 @@ return {
 	keys = function()
 		return {}
 	end,
+	opts = {
+		save_empty = true,
+	},
 }
