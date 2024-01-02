@@ -17,12 +17,12 @@ map("n", "n", "nzz")
 map("n", "N", "Nzz")
 map("n", "]e", function()
 	vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
-end)
+end, { desc = "Goto next error" })
 map("n", "[e", function()
 	vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-end)
-map("n", "]d", vim.diagnostic.goto_next)
-map("n", "[d", vim.diagnostic.goto_prev)
+end, { desc = "Goto prev error" })
+map("n", "]d", vim.diagnostic.goto_next, { desc = "Goto next diagnostic" })
+map("n", "[d", vim.diagnostic.goto_prev, { desc = "Goto prev diagnostic" })
 
 -- better up/down
 -- map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -60,11 +60,6 @@ map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
 map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
 map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
-
-if not Util.has("trouble.nvim") then
-	map("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
-	map("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
-end
 
 -- toggle options
 map("n", "<leader>uf", require("lazyvim.util.format").toggle, { desc = "Toggle format on Save" })

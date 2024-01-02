@@ -44,9 +44,6 @@ ctrl + alt + cmd + shift - a : yabai -m space --toggle padding --toggle gap
 # toggle sticky (show on all spaces)
 ctrl + alt + cmd + shift - s : yabai -m window --toggle sticky 
 
-# toggle topmost (keep above other windows)
-ctrl + alt + cmd + shift - o : yabai -m window --toggle topmost
-
 # Close active application
 ctrl + alt + cmd - q : yabai -m window --close
 
