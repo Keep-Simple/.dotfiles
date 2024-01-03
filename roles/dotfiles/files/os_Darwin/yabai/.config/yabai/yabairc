@@ -46,7 +46,7 @@ yabai -m config \
     mouse_action2 resize \
     mouse_drop_action swap
 
-# float system preferences. Most of these just diable Yabai form resizing them.
+yabai -m rule --add app=".*" layer=normal
 yabai -m rule --add title='Preferences$' manage=off
 yabai -m rule --add title='^General' manage=off
 yabai -m rule --add title='Settings$' manage=off
