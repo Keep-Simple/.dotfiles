@@ -24,6 +24,7 @@ playback_window_width = 6
 enable_media_control = true
 enable_streaming = true
 enable_cover_image_cache = true
+enable_notify = false
 default_device = "cli-player"
 
 [copy_command]
