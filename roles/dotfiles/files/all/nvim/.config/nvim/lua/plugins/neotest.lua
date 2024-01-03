@@ -3,7 +3,7 @@ return {
 	dependencies = {
 		"folke/which-key.nvim",
 		opts = {
-			defaults = {
+			prefixes = {
 				["<leader>td"] = { name = "+debug" },
 			},
 		},

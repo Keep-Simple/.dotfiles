@@ -1,25 +1,27 @@
 return {
 	"folke/which-key.nvim",
 	opts = {
-		defaults = {
-			["<leader>q"] = false,
-			["<leader>w"] = false,
-			["gz"] = false,
+		prefixes = {
+			mode = { "n", "v" },
+			["g"] = { name = "+goto" },
+			["]"] = { name = "+next" },
+			["["] = { name = "+prev" },
+			["<leader><tab>"] = { name = "+tabs" },
+			["<leader>c"] = { name = "+code" },
+			["<leader>d"] = { name = "+debug" },
+			["<leader>t"] = { name = "+test" },
+			["<leader>g"] = { name = "+git" },
+			["<leader>gh"] = { name = "+hunks" },
+			["<leader>s"] = { name = "+search" },
+			["<leader>u"] = { name = "+ui" },
+			["<leader>x"] = { name = "+diagnostics/quickfix" },
 		},
 	},
 	config = function(_, opts)
 		local wk = require("which-key")
-		local function filterTable(table)
-			local filteredTable = {}
-			for key, value in pairs(table) do
-				if value ~= false then
-					filteredTable[key] = value
-				end
-			end
-			return filteredTable
-		end
-
 		wk.setup(opts)
-		wk.register(filterTable(opts.defaults))
+		-- lazynvim has not extensible setup with opts.defaults.
+		-- to avoid overwritting each default value, I just introduced my opts.prefixes
+		wk.register(opts.prefixes)
 	end,
 }

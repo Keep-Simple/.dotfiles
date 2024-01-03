@@ -4,7 +4,7 @@ return {
 		{
 			"folke/which-key.nvim",
 			opts = {
-				defaults = {
+				prefixes = {
 					["<leader>r"] = { name = "+search & replace" },
 				},
 			},

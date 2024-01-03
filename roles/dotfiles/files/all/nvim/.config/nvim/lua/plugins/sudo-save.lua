@@ -4,7 +4,7 @@ return {
 	dependencies = {
 		"folke/which-key.nvim",
 		opts = {
-			defaults = {
+			prefixes = {
 				["<leader>W"] = { name = "+save options" },
 			},
 		},

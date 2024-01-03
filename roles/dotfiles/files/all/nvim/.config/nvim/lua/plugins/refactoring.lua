@@ -7,7 +7,7 @@ return {
 		{
 			"folke/which-key.nvim",
 			opts = {
-				defaults = {
+				prefixes = {
 					["<leader>R"] = { name = "+refactor", mode = { "n", "v" } },
 					["<leader>Rd"] = { name = "+prints" },
 				},

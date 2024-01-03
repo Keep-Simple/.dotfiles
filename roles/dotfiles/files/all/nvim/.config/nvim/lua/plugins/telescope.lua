@@ -17,8 +17,8 @@ return {
 		{
 			"folke/which-key.nvim",
 			opts = {
-				defaults = {
-					["<leader>F"] = { name = "+find" },
+				prefixes = {
+					["<leader>F"] = { name = "+find/files" },
 				},
 			},
 		},
@@ -29,10 +29,10 @@ return {
 			{
 				"<leader>f",
 				require("telescope.builtin").find_files,
-				desc = "Find Files",
+				desc = "Find files (cwd)",
 			},
 			{
-				"<leader>Fg",
+				"<leader>FF",
 				function()
 					if not pcall(require("telescope.builtin").git_files, { show_untracked = true }) then
 						require("telescope.builtin").find_files()
@@ -41,14 +41,14 @@ return {
 				desc = "git files",
 			},
 			{
-				"<leader>Fh",
+				"<leader>Fa",
 				function()
 					require("telescope.builtin").find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
 				end,
-				desc = "files (ignore, hidden)",
+				desc = "all cwd files (ignore, hidden)",
 			},
 			{
-				"<leader>FG",
+				"<leader>FA",
 				function()
 					require("telescope.builtin").find_files({
 						hidden = true,
@@ -57,10 +57,9 @@ return {
 						cwd = get_git_dir(),
 					})
 				end,
-				desc = "git files (ignore, hidden)",
+				desc = "all git files (ignore, hidden)",
 			},
-			{ "<leader>Fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-			{ "<leader>FR", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Recent" },
+			{ "<leader>b", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
 			-- git
 			{ "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
 			{ "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
@@ -98,7 +97,7 @@ return {
 						cwd = get_git_dir(),
 					})
 				end,
-				desc = "Text (git with ignore)",
+				desc = "All text (git with ignore)",
 			},
 			{ "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
 			{ "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
