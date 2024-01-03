@@ -121,7 +121,7 @@ brew "hudochenkov/sshpass/sshpass"
 brew "keep-simple/formulae/spotify_player", args: ["HEAD"]
 brew "keep-simple/formulae/vtclean"
 brew "koekeishiya/formulae/skhd", args: ["HEAD"]
-brew "koekeishiya/formulae/yabai"
+brew "koekeishiya/formulae/yabai", args: ["HEAD"]
 cask "alacritty"
 cask "brave-browser"
 cask "dmenu-mac"
