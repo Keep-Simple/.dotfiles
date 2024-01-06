@@ -34,9 +34,7 @@ return {
 			{
 				"<leader>FF",
 				function()
-					if not pcall(require("telescope.builtin").git_files, { show_untracked = true }) then
-						require("telescope.builtin").find_files()
-					end
+					require("telescope.builtin").git_files({ show_untracked = true })
 				end,
 				desc = "git files",
 			},
@@ -59,7 +57,7 @@ return {
 				end,
 				desc = "all git files (ignore, hidden)",
 			},
-			{ "<leader>b", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+			{ "<leader>b", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
 			-- git
 			{ "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
 			{ "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
@@ -150,26 +148,25 @@ return {
 		}
 	end,
 	opts = {
+		pickers = {
+			buffers = {
+				mappings = {
+					n = {
+						["<C-d>"] = require("telescope.actions").delete_buffer,
+					},
+				},
+			},
+		},
 		defaults = {
 			mappings = {
 				i = {
-					["<C-j>"] = function(...)
-						return require("telescope.actions").move_selection_next(...)
-					end,
-					["<C-k>"] = function(...)
-						return require("telescope.actions").move_selection_previous(...)
-					end,
-					["<C-n>"] = function(...)
-						return require("telescope.actions").cycle_history_next(...)
-					end,
-					["<C-p>"] = function(...)
-						return require("telescope.actions").cycle_history_prev(...)
-					end,
+					["<C-j>"] = require("telescope.actions").move_selection_next,
+					["<C-k>"] = require("telescope.actions").move_selection_previous,
+					["<C-n>"] = require("telescope.actions").cycle_history_next,
+					["<C-p>"] = require("telescope.actions").cycle_history_prev,
 				},
 				n = {
-					["q"] = function(...)
-						return require("telescope.actions").close(...)
-					end,
+					["q"] = require("telescope.actions").close,
 				},
 			},
 		},

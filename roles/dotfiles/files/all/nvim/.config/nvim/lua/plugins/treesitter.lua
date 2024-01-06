@@ -33,6 +33,7 @@ return {
 			"vim",
 			"vimdoc",
 			"yaml",
+			"gitcommit",
 		},
 		textobjects = {
 			move = {
