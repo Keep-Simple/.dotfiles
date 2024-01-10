@@ -1,13 +1,17 @@
 return {
 	"nvim-lualine/lualine.nvim",
 	opts = function()
+		-- PERF: we don't need this lualine require madness 🤷
+		local lualine_require = require("lualine_require")
+		lualine_require.require = require
+
 		local icons = require("lazyvim.config").icons
 		local Util = require("lazyvim.util")
 
 		return {
 			options = {
 				theme = "auto",
-				globalstatus = true,
+				globalstatus = false,
 				disabled_filetypes = { statusline = { "dashboard", "alpha" } },
 			},
 			sections = {
@@ -25,20 +29,9 @@ return {
 					},
 					{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
 					{
-						function()
-							return string.format("terminal (%d)", vim.b.toggle_number)
-						end,
-						cond = function()
-							return vim.bo.filetype == "toggleterm"
-						end,
-					},
-					{
 						"filename",
-						path = 1,
-						symbols = { modified = "  ", readonly = "", unnamed = "" },
-						cond = function()
-							return vim.bo.filetype ~= "toggleterm"
-						end,
+						path = 1, -- relative path
+						symbols = { modified = "  ", readonly = " 🔒 " },
 					},
 				},
 				lualine_x = {
@@ -86,7 +79,17 @@ return {
 					end,
 				},
 			},
-			extensions = { "lazy" },
+			extensions = {
+				"lazy",
+				"nvim-dap-ui",
+				"fugitive",
+				"mason",
+				"quickfix",
+				"symbols-outline",
+				"toggleterm",
+				"trouble",
+				"man",
+			},
 		}
 	end,
 }

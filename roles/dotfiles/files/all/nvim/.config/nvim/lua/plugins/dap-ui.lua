@@ -7,6 +7,13 @@ return {
 			desc = "Eval",
 			mode = { "n", "v" },
 		},
+		{
+			"<leader>dU",
+			function()
+				require("dapui").toggle({ reset = true })
+			end,
+			desc = "Dap UI (reset size)",
+		},
 	},
 	opts = {
 		icons = { expanded = "▾", collapsed = "▸" },
