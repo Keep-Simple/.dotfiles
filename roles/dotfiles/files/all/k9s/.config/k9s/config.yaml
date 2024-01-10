@@ -1,3 +1,4 @@
+---
 k9s:
   liveViewAutoRefresh: false
   screenDumpDir: /Users/nickyasnogorodskyi/Library/Application Support/k9s/screen-dumps
@@ -6,9 +7,9 @@ k9s:
   readOnly: false
   noExitOnCtrlC: false
   ui:
-    enableMouse: false
+    logoless: true
+    reactive: true
     headless: false
-    logoless: false
     crumbsless: false
     noIcons: false
     skin: onedark
@@ -29,7 +30,6 @@ k9s:
     tail: 100
     buffer: 5000
     sinceSeconds: -1
-    fullScreenLogs: false
     textWrap: false
     showTime: false
   thresholds:

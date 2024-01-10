@@ -3,6 +3,12 @@ suyabai() {
     echo $str | sudo tee /private/etc/sudoers.d/yabai
 }
 
+postbrewyabai() {
+    yabai --stop-service
+    suyabai
+    yabai --start-service
+}
+
 rmfyabai() {
     fyabai --uninstall-service
     # uninstall the scripting addition
