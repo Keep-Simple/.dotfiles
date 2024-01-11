@@ -153,6 +153,11 @@ return {
 				mappings = {
 					n = {
 						["<C-d>"] = require("telescope.actions").delete_buffer,
+						["<C-a>"] = require("telescope.actions").toggle_all,
+					},
+					i = {
+						["<C-d>"] = require("telescope.actions").delete_buffer,
+						["<C-a>"] = require("telescope.actions").toggle_all,
 					},
 				},
 			},
