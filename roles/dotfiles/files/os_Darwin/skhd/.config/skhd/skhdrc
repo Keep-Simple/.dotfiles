@@ -45,7 +45,9 @@ ctrl + alt + cmd + shift - a : yabai -m space --toggle padding --toggle gap
 ctrl + alt + cmd + shift - s : yabai -m window --toggle sticky 
 
 # Close active application
-ctrl + alt + cmd - q : yabai -m window --close
+# TODO: cleanup focus_space invocation after window_destroyed event works again
+# https://github.com/koekeishiya/yabai/issues/2048
+ctrl + alt + cmd - q : yabai -m window --close; $YABAI/focus_space.sh
 
 # toggle window zoom
 ctrl + alt + cmd - f : yabai -m window --toggle zoom-fullscreen 
