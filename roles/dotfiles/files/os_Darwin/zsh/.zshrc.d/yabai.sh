@@ -9,15 +9,11 @@ postbrewyabai() {
     yabai --start-service
 }
 
-rmfyabai() {
-    fyabai --uninstall-service
-    # uninstall the scripting addition
-    sudo yabai --uninstall-sa
-    # uninstall yabai
-    brew uninstall fyabai
-    # unload the scripting addition by forcing a restart of Dock.app
-    killall Dock
-}
+# Updating/installing from head additional steps
+# codesign -fs "yabai-cert" "$(brew --prefix yabai)/bin/yabai" > /dev/null
+# sudo yabai --uninstall-sa
+# sudo yabai --load-sa
+# pkill -x Dock
 
 rmyabai() {
     yabai --uninstall-service
