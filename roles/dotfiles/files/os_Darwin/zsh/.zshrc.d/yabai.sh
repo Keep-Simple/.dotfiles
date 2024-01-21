@@ -9,11 +9,15 @@ postbrewyabai() {
     yabai --start-service
 }
 
-# Updating/installing from head additional steps
-# codesign -fs "yabai-cert" "$(brew --prefix yabai)/bin/yabai" > /dev/null
-# sudo yabai --uninstall-sa
-# sudo yabai --load-sa
-# pkill -x Dock
+yabaiheadupdate() {
+    yabai --stop-service
+    sudo yabai --uninstall-sa
+    pkill -x Dock
+    brew reinstall koekeishiya/formulae/yabai
+    codesign -fs "yabai-cert" "$(brew --prefix yabai)/bin/yabai"
+    suyabai
+    yabai --start-service
+}
 
 rmyabai() {
     yabai --uninstall-service
