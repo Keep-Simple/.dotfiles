@@ -13,6 +13,7 @@ local eslint_config = {
 
 return {
 	"nvimtools/none-ls.nvim",
+	commit = "bb680d7",
 	opts = function()
 		local nls = require("null-ls")
 		local base = nls.builtins

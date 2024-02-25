@@ -57,7 +57,13 @@ return {
 				end,
 				desc = "all git files (ignore, hidden)",
 			},
-			{ "<leader>b", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
+			{
+				"<leader>b",
+				function()
+					require("telescope.builtin").buffers({ sort_mru = true })
+				end,
+				desc = "Buffers",
+			},
 			-- git
 			{ "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
 			{ "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
