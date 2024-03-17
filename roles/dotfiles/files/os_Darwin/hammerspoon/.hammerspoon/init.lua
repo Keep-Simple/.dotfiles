@@ -1,7 +1,6 @@
 require("hs.ipc")
 menubarIcon = hs.menubar.new(false, "MultiWindowIcon")
-icon =
-	hs.image.imageFromPath("/Users/nickyasnogorodskyi/Downloads/two-overlapping-square.png"):setSize({ w = 16, h = 16 })
+icon = hs.image.imageFromPath("./two-overlapping-square.png"):setSize({ w = 16, h = 16 })
 
 menubarIcon:setIcon(icon)
 function ToggleMultiWindowIcon(flag)

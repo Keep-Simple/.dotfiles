@@ -108,6 +108,12 @@ macos_defaults:
     type: bool
     value: 'true'
 
+  - name: Auto-hide Dock Delay
+    domain: com.apple.dock
+    key: autohide-delay
+    type: float
+    value: 1000
+
   - name: Disable recent apps in the Dock
     domain: com.apple.dock
     key: show-recents

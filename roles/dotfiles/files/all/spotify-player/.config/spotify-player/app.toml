@@ -1,5 +1,5 @@
 theme = "dracula"
-client_id = "c27628fedbfa4a608706d18f0fab6eeb"
+client_id = "03a0b49e35304e2180b96f8251849a6e"
 client_port = 8080
 playback_format = """
 {track} • {artists}
@@ -27,10 +27,6 @@ enable_cover_image_cache = true
 enable_notify = false
 default_device = "cli-player"
 
-[copy_command]
-command = "pbcopy"
-args = []
-
 [notify_format]
 summary = "{track} • {artists}"
 body = "{album}"
@@ -40,4 +36,4 @@ name = "cli-player"
 device_type = "speaker"
 volume = 70
 bitrate = 320
-audio_cache = true
+audio_cache = false
