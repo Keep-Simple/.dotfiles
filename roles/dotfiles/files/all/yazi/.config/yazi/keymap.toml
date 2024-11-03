@@ -1,0 +1,92 @@
+"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
+
+[[manager.prepend_keymap]]
+on = "<C-o>"
+run = '''
+	shell --block 'nvim +"lua require(\"persistence\").load()"' --confirm
+'''
+
+[[manager.prepend_keymap]]
+on = "U"
+run = '''
+	shell --block "ids=$(echo -ne '\n' | trash-restore | awk '$1 ~ /^[0-9]+/ {print $0}' | fzf --multi | awk '{print $1}' | sed -z 's/\n/,/g;s/,$/\n/'); echo $ids | trash-restore; clear" --confirm
+'''
+desc = "Restory deleted files"
+
+[[manager.prepend_keymap]]
+on = ["c", "D"]
+run = '''
+	shell 'ripdrag -x --all -b "$@"' --confirm
+'''
+desc = "Drag and drop"
+
+[[manager.prepend_keymap]]
+on = ["c", "s"]
+run = '''
+  shell 'curl -F"file=@$1" https://0x0.st | pbcopy' --confirm
+'''
+desc = "Share file"
+
+[[manager.prepend_keymap]]
+on = ["c", "a"]
+run = "plugin compress"
+desc = "Archive selected files"
+
+[[manager.prepend_keymap]]
+on = ["c", "m"]
+run = "plugin chmod"
+desc = "chmod"
+
+[[manager.prepend_keymap]]
+on = "T"
+run = "plugin --sync max-preview"
+desc = "Toggle preview"
+
+[[manager.prepend_keymap]]
+on = "l"
+run = "plugin --sync smart-enter"
+desc = "Enter the child directory, or open the file"
+
+[[manager.prepend_keymap]]
+on = ["g", "r"]
+run = '''
+	shell 'ya pub dds-cd --str "$(git rev-parse --show-toplevel)"' --confirm
+'''
+desc = "Go to git root"
+
+[[manager.prepend_keymap]]
+on = ["g", "l"]
+run = "plugin --sync follow-link"
+desc = "Go to the symlink original directory"
+
+[[manager.prepend_keymap]]
+on = ["C", "d"]
+run = "cd ~/Documents"
+
+[[manager.prepend_keymap]]
+on = ["C", "h"]
+run = "cd ~"
+
+[[manager.prepend_keymap]]
+on = ["C", "D"]
+run = "cd ~/Downloads"
+
+[[manager.prepend_keymap]]
+on = ["C", "c"]
+run = "cd ~/.config"
+
+[[manager.prepend_keymap]]
+on = ["C", "C"]
+run = "cd ~/.dotfiles"
+
+[[manager.prepend_keymap]]
+on = ["C", "l"]
+run = "cd ~/.local"
+
+[[manager.prepend_keymap]]
+on = ["C", "P"]
+run = "cd ~/Documents/personal"
+
+[[manager.prepend_keymap]]
+on = ["C", "O"]
+run = "cd ~/Documents/commercial/orca"

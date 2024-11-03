@@ -2,7 +2,7 @@ cf  ${XDG_CONFIG_HOME:-$HOME/.config}
 D   ${XDG_DOWNLOAD_DIR:-$HOME/Downloads}
 d   ${XDG_DOCUMENTS_DIR:-$HOME/Documents}
 M   ${XDG_MUSIC_DIR:-$HOME/Music}
-cdf $HOME/.dotfiles
+C $HOME/.dotfiles
 h   $HOME
 vm  $HOME/VM_Shared
 V   /Volumes
@@ -11,10 +11,4 @@ L  $HOME/.local
 nv $HOME/.local/share/nvim
 
 O   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca}
-oi   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/cli}
-oc   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/orca-contracts}
-oa   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/commercial/apisec}
-
 P   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal}
-pu   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/labs/5_term}
-pl   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/personal/leetcode}

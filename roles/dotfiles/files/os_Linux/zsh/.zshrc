@@ -68,10 +68,6 @@ bindkey "^[[B" history-substring-search-down' \
     id-as'kubectl' \
     zdharma-continuum/null \
     \
-    atload='_zinit_lf' \
-    id-as'lf' nocompile \
-    zdharma-continuum/null \
-    \
     atload='_zinit_nvim' \
     id-as'nvim' nocompile \
     zdharma-continuum/null \

@@ -1,0 +1,36 @@
+# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[manager]
+ratio = [1, 2, 3]
+sort_by = "natural"
+sort_translit = true
+show_hidden = true
+show_symlink = false
+
+[preview]
+wrap = "yes"
+# to use dynamic values provided by my system instead
+max_width = 9999
+max_height = 9999
+
+[[opener.open_in_browser]]
+run = '$BROWSER "$@"'
+desc = "$BROWSER"
+orphan = true
+for = "unix"
+
+[[open.prepend_rules]]
+mime = "application/pdf"
+use = ["open_in_browser"]
+
+[[plugin.prepend_fetchers]]
+id = "git"
+name = "*"
+run = "git"
+
+[[plugin.prepend_fetchers]]
+id = "git"
+name = "*/"
+run = "git"

@@ -1,0 +1,10 @@
+[plugin]
+deps = [
+  { use = "yazi-rs/plugins:git", rev = "ad52adf" },
+  { use = "yazi-rs/plugins:chmod", rev = "ad52adf" },
+  { use = "yazi-rs/plugins:max-preview", rev = "ad52adf" },
+  { use = "KKV9/compress", rev = "60b24af" },
+]
+
+[flavor]
+deps = [{ use = "BennyOe/tokyo-night", rev = "024fb09" }]
