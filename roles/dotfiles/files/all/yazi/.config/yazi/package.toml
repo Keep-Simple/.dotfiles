@@ -1,8 +1,8 @@
 [plugin]
 deps = [
-  { use = "yazi-rs/plugins:git", rev = "ad52adf" },
-  { use = "yazi-rs/plugins:chmod", rev = "ad52adf" },
-  { use = "yazi-rs/plugins:max-preview", rev = "ad52adf" },
+  { use = "yazi-rs/plugins:git", rev = "102a0cd" },
+  { use = "yazi-rs/plugins:chmod", rev = "102a0cd" },
+  { use = "yazi-rs/plugins:max-preview", rev = "102a0cd" },
   { use = "KKV9/compress", rev = "60b24af" },
 ]
 

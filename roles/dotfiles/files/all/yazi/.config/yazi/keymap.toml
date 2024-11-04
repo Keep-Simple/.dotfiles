@@ -28,6 +28,21 @@ run = '''
 desc = "Share file"
 
 [[manager.prepend_keymap]]
+on = "e"
+run = "plugin run-file --args=1"
+desc = "Execute file (sync)"
+
+[[manager.prepend_keymap]]
+on = "E"
+run = "plugin run-file --args=2"
+desc = "Execute file with args (sync)"
+
+[[manager.prepend_keymap]]
+on = "<C-e>"
+run = "plugin run-file --args=3"
+desc = "Execute file with args (async)"
+
+[[manager.prepend_keymap]]
 on = ["c", "a"]
 run = "plugin compress"
 desc = "Archive selected files"
