@@ -1,5 +1,9 @@
 require("git"):setup()
 
+require("session"):setup({
+	sync_yanked = true,
+})
+
 function Status:name()
 	local h = self._tab.current.hovered
 	if not h then
