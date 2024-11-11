@@ -1,11 +1,11 @@
 {
 	"name": "Vimium C",
-	"@time": "04/01/2024, 13:17:36",
-	"time": 1704370656682,
+	"@time": "11/4/2024, 8:10:24 PM",
+	"time": 1730747424340,
 	"environment": {
-		"extension": "1.99.994",
+		"extension": "2.11.3",
 		"platform": "mac",
-		"chromium": 120
+		"chromium": 130
 	},
 	"allBrowserUrls": true,
 	"autoReduceMotion": 1,
@@ -17,6 +17,14 @@
 		{
 			"passKeys": "",
 			"pattern": ":https://www.hackerrank.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://www.pdfescape.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://www.pdfescape.com/"
 		}
 	],
 	"extAllowList": [
@@ -51,6 +59,7 @@
 		"unmap L",
 		"unmap x",
 		"unmap X",
+		"unmap 0",
 		"",
 		"map t Vomnibar.activateTabs currentWindow",
 		"map ' Marks.activate",
@@ -59,9 +68,13 @@
 		"map j scrollDown keepHover=\"auto\"",
 		"map k scrollUp keepHover=\"auto\"",
 		"map S moveTabToNewWindow",
-		"map <c-s-f> LinkHints.activateOpenIncognito",
-		"map <c-f> LinkHints.activateOpenInNewForegroundTab",
+		"map <a-f> LinkHints.activateOpenIncognito",
+		"map <c-f> LinkHints.activateOpenInNewTab",
+		"map F LinkHints.activateOpenInNewForegroundTab ",
+		"map <c-s-f> LinkHints.activateWithQueue",
 		"mapKey <c-d:o> <s-delete>",
+		"map 0 scrollToLeft",
+		"map $ scrollToRight",
 		"",
 		"shortcut userCustomized1 command=\"removeTab\"",
 		"shortcut userCustomized2 command=\"restoreTab\"",
@@ -114,12 +127,15 @@
 		"",
 		"/* #ui */",
 		".HUD.D:after { background: #2f343f; }",
+		"",
+		"/* scroll links always on top */",
+		".BH {z-index: 9999; margin-top: -18px;}",
 		""
 	],
 	"vimSync": true,
 	"vomnibarOptions": {
 		"actions": "",
-		"maxMatches": 10,
+		"maxMatches": 12,
 		"queryInterval": 333,
 		"sizes": "77,3,44,0.8",
 		"styles": "dark"

@@ -37,9 +37,11 @@ local function set_python_path(client, path)
 	-- client.notify("workspace/didChangeConfiguration", { settings = nil })
 end
 
+local python_servers = { "pyright", "pylance", "pylyzer", "basedpyright" }
+
 local get_python_path_from_lsp = function()
-	for _, server in pairs(vim.lsp.get_active_clients()) do
-		if server.name == "pyright" or server.name == "pylance" then
+	for _, server in pairs(vim.lsp.get_clients()) do
+		if vim.tbl_contains(python_servers, server.name) then
 			local path = vim.tbl_get(server, "config", "settings", "python", "pythonPath")
 			if not path then
 				path = vim.tbl_get(server, "settings", "python", "pythonPath")
@@ -78,7 +80,7 @@ end
 
 -- Function to list LSP clients attached to the current buffer with their configs
 function ListLSPClientsWithConfigs()
-	local buf_clients = vim.lsp.buf_get_clients()
+	local buf_clients = vim.lsp.get_clients()
 	if next(buf_clients) == nil then
 		print("No LSP clients attached to this buffer.")
 		return
@@ -131,7 +133,10 @@ return {
 		"neovim/nvim-lspconfig",
 		opts = {
 			servers = {
-				pyright = pyright_opts,
+				basedpyright = pyright_opts,
+				pyright = {
+					enabled = false,
+				},
 			},
 		},
 		setup = {

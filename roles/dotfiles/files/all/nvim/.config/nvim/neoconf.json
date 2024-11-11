@@ -16,9 +16,10 @@
     }
   },
   "lspconfig": {
-    "pyright": {
-      "python.analysis.diagnosticMode": "workspace",
-      "pyright.disableOrganizeImports": true
+    "basedpyright": {
+      "basedpyright.disableOrganizeImports": true,
+      "basedpyright.analysis.typeCheckingMode": "basic",
+      "basedpyright.analysis.diagnosticMode": "workspace"
     }
   }
 }

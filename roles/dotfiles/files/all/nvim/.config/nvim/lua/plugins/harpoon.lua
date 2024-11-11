@@ -10,7 +10,7 @@ return {
 	},
 	init = function()
 		local harpoon = require("harpoon")
-		vim.keymap.set("n", "<leader>a", function()
+		vim.keymap.set("n", "<leader>A", function()
 			harpoon:list():add()
 		end, { desc = "Add harpoon mark" })
 
@@ -46,16 +46,6 @@ return {
 		vim.keymap.set("n", "<leader>6", function()
 			harpoon:list():select(6)
 		end, { desc = "Switch to harpoon 6" })
-
-		vim.keymap.set("n", "<leader>7", function()
-			harpoon:list():select(7)
-		end, { desc = "Switch to harpoon 7" })
-		vim.keymap.set("n", "<leader>8", function()
-			harpoon:list():select(8)
-		end, { desc = "Switch to harpoon 8" })
-		vim.keymap.set("n", "<leader>9", function()
-			harpoon:list():select(9)
-		end, { desc = "Switch to harpoon 9" })
 
 		-- basic telescope configuration
 		local conf = require("telescope.config").values
