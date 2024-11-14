@@ -58,7 +58,9 @@ return {
 		},
 		opts = {
 			opts = {
+				mappings = nil,
 				print_url = false,
+				add_current_line_on_normal_mode = false,
 				action_callback = function(url)
 					-- yank to unnamed register
 					vim.api.nvim_command("let @\" = '" .. url .. "'")
@@ -72,6 +74,31 @@ return {
 		"lewis6991/gitsigns.nvim",
 		opts = {
 			current_line_blame = true,
+		},
+	},
+	{
+		"sindrets/diffview.nvim",
+		keys = {
+			{
+				"<leader>gM",
+				"<cmd>DiffviewOpen<cr>",
+				desc = "Tab diff view",
+			},
+		},
+		opts = {
+			file_panel = {
+				win_config = {
+					win_opts = {
+						relativenumber = true,
+						number = true,
+					},
+				},
+			},
+		},
+		cmd = {
+			"DiffviewClose",
+			"DiffviewOpen",
+			"DiffviewFileHistory",
 		},
 	},
 }
