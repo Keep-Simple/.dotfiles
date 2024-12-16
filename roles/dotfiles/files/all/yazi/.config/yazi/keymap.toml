@@ -54,24 +54,24 @@ desc = "chmod"
 
 [[manager.prepend_keymap]]
 on = "T"
-run = "plugin --sync max-preview"
+run = "plugin max-preview"
 desc = "Toggle preview"
 
 [[manager.prepend_keymap]]
 on = "l"
-run = "plugin --sync smart-enter"
+run = "plugin smart-enter"
 desc = "Enter the child directory, or open the file"
 
 [[manager.prepend_keymap]]
 on = ["g", "r"]
 run = '''
-	shell 'ya pub dds-cd --str "$(git rev-parse --show-toplevel)"' --confirm
+	shell 'ya pub dds-cd --str "$(git rev-parse --show-toplevel)"' 
 '''
 desc = "Go to git root"
 
 [[manager.prepend_keymap]]
 on = ["g", "l"]
-run = "plugin --sync follow-link"
+run = "plugin follow-link"
 desc = "Go to the symlink original directory"
 
 [[manager.prepend_keymap]]

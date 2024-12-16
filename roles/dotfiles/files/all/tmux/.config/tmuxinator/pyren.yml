@@ -1,0 +1,12 @@
+---
+
+name: pyren
+root: ~/Documents/personal/pyren
+
+
+windows:
+  - ble:
+      layout: main-vertical
+      panes:
+        - sudo ble-serial -d 96396EFC-5D60-1D65-3634-9DEA1CEE6916 -r BEF8D6C9-9C21-4C9E-B632-BD58C1009F9F -w BEF8D6C9-9C21-4C9E-B632-BD58C1009F9F -p /dev/obd2
+        - ./run.sh
