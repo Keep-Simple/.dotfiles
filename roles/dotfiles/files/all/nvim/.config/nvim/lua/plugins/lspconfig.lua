@@ -2,6 +2,7 @@ return {
 	"neovim/nvim-lspconfig",
 	init = function()
 		local keys = require("lazyvim.plugins.lsp.keymaps").get()
+		table.remove(keys, 9) -- remove <C-k>
 		keys[#keys + 1] = { "gs", vim.lsp.buf.signature_help, desc = "show signature help" }
 		keys[#keys + 1] = {
 			"gl",

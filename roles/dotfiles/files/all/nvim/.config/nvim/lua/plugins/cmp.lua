@@ -1,85 +1,22 @@
 return {
-	"hrsh7th/nvim-cmp",
-	dependencies = {
-		{
-			"rcarriga/cmp-dap",
-			config = function()
-				local cmp = require("cmp")
-				cmp.setup({
-					enabled = function()
-						return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-							or require("cmp_dap").is_dap_buffer()
-					end,
-				})
-
-				cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
-					sources = {
-						{ name = "dap" },
-					},
-				})
-			end,
+	"saghen/blink.cmp",
+	opts = {
+		keymap = {
+			["<C-space>"] = {},
+			["<C-j>"] = { "show", "select_next", "fallback" },
+			["<C-k>"] = { "show", "select_prev", "fallback" },
 		},
-		{
-			"hrsh7th/cmp-cmdline",
-			config = function()
-				local cmp = require("cmp")
-				cmp.setup.cmdline(":", {
-					mapping = cmp.mapping.preset.cmdline({
-						["<C-j>"] = {
-							c = function()
-								if cmp.visible() then
-									cmp.select_next_item()
-								else
-									cmp.complete()
-								end
-							end,
-						},
-						["<C-k>"] = {
-							c = function()
-								if cmp.visible() then
-									cmp.select_prev_item()
-								else
-									cmp.complete()
-								end
-							end,
-						},
-					}),
-					sources = cmp.config.sources({
-						{ name = "path" },
-					}, {
-						{ name = "cmdline" },
-					}),
-				})
-			end,
+		documentation = {
+			auto_show = true,
+		},
+		completion = {
+			trigger = {
+				show_on_insert_on_trigger_character = false,
+				show_on_accept_on_trigger_character = false,
+				show_in_snippet = false,
+				show_on_keyword = false,
+				show_on_trigger_character = false,
+			},
 		},
 	},
-	---@param opts cmp.ConfigSchema
-	opts = function(_, opts)
-		local cmp = require("cmp")
-
-		opts.completion.autocomplete = false
-
-		opts.mapping = vim.tbl_extend("force", opts.mapping, {
-			["<C-j>"] = {
-				i = function()
-					if cmp.visible() then
-						cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-					else
-						cmp.complete()
-					end
-				end,
-			},
-			["<C-k>"] = {
-				i = function()
-					if cmp.visible() then
-						cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-					else
-						cmp.complete()
-					end
-				end,
-			},
-			["<C-Space>"] = cmp.config.disable,
-		})
-		return opts
-	end,
 }
