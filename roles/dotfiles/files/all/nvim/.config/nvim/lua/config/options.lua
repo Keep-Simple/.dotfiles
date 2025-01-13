@@ -9,3 +9,4 @@ vim.opt.cursorlineopt = "line"
 vim.opt.list = false
 vim.o.exrc = true
 vim.opt.formatoptions = "jcroqln"
+vim.g.lazyvim_picker = "telescope"
