@@ -12,6 +12,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_BACKUP_DIR="$XDG_DATA_HOME/backup"
 export XDG_CACHE_HOME="$HOME/.cache"
 
+export DIRENV_LOG_FORMAT=""
 HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
 HISTSIZE=100000
 SAVEHIST=1000000
@@ -59,6 +60,7 @@ fi
 
 PATH="$HOME/.local/bin:$PATH"
 PATH="/usr/local/bin:$PATH"
+PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 export PATH
 

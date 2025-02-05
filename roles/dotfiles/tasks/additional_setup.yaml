@@ -11,5 +11,16 @@
 
 - name: Install tpm plugins
   ansible.builtin.command:
-    cmd: ~/.tmux/plugins/tpm/bin/install_plugins
+    cmd: "{{ ansible_user_dir }}/.tmux/plugins/tpm/bin/install_plugins"
   when: not tpm_plugins.stat.exists
+
+- name: Install asdf packages
+  ansible.builtin.shell: |
+    awk '{print $1}' {{ ansible_user_dir }}/.tool-versions | xargs -I _ asdf plugin add _ || true
+    asdf install
+  args:
+    chdir: "{{ ansible_user_dir }}"
+  register: asdf_result
+  changed_when: >
+    'The installation was successful!' in asdf_result.stdout
+  failed_when: false
