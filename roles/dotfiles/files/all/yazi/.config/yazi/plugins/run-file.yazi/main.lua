@@ -1,5 +1,6 @@
 return {
-	entry = function(_, args)
+	entry = function(_, job)
+		local args = job.args
 		if not args[1] then
 			return
 		end

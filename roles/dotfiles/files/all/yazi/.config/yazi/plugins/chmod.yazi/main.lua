@@ -1,3 +1,5 @@
+--- @since 25.2.7
+
 local selected_or_hovered = ya.sync(function()
 	local tab, paths = cx.active, {}
 	for _, u in pairs(tab.selected) do
@@ -30,7 +32,7 @@ return {
 		if not status or not status.success then
 			ya.notify {
 				title = "Chmod",
-				content = string.format("Chmod with selected files failed, exit code %s", status and status.code or err),
+				content = string.format("Chmod on selected files failed, error: %s", status and status.code or err),
 				level = "error",
 				timeout = 5,
 			}
