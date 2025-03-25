@@ -72,6 +72,9 @@ return {
 	},
 	{
 		"lewis6991/gitsigns.nvim",
+		dependencies = {
+			"folke/snacks.nvim",
+		},
 		opts = {
 			current_line_blame = true,
 		},

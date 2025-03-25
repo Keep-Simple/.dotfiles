@@ -12,7 +12,6 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_BACKUP_DIR="$XDG_DATA_HOME/backup"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-export DIRENV_LOG_FORMAT=""
 export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
 HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
 HISTSIZE=100000
