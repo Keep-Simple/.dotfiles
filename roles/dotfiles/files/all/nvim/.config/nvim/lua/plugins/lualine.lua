@@ -1,14 +1,12 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	opts = function()
+	config = function()
 		-- PERF: we don't need this lualine require madness 🤷
 		local lualine_require = require("lualine_require")
 		lualine_require.require = require
-
 		local icons = require("lazyvim.config").icons
-		local Util = require("lazyvim.util")
 
-		return {
+		require("lualine").setup({
 			options = {
 				theme = "auto",
 				globalstatus = false,
@@ -64,7 +62,7 @@ return {
 				lualine_y = {
 					function()
 						local bufnr = vim.api.nvim_get_current_buf()
-						local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+						local clients = vim.lsp.get_clients({ bufnr = bufnr })
 						if next(clients) == nil then
 							return ""
 						end
@@ -90,6 +88,6 @@ return {
 				"trouble",
 				"man",
 			},
-		}
+		})
 	end,
 }

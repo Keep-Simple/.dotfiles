@@ -13,7 +13,6 @@ local eslint_config = {
 
 return {
 	"nvimtools/none-ls.nvim",
-	commit = "bb680d7",
 	opts = function()
 		local nls = require("null-ls")
 		local base = nls.builtins
@@ -22,15 +21,15 @@ return {
 		return {
 			sources = {
 				base.formatting.stylua,
-				base.formatting.rustfmt,
+				--base.formatting.rustfmt,
 				base.formatting.gofmt,
 				base.formatting.qmlformat,
 				base.formatting.buf,
-				base.formatting.fixjson,
+				--base.formatting.fixjson,
 				base.formatting.google_java_format,
 				base.formatting.terraform_fmt,
-				base.formatting.beautysh,
-				base.formatting.taplo,
+				--base.formatting.beautysh,
+				--base.formatting.taplo,
 				base.formatting.yamlfmt,
 				base.formatting.prettierd.with({
 					env = {
@@ -41,6 +40,7 @@ return {
 						"javascriptreact",
 						"typescript",
 						"typescriptreact",
+						"json",
 						"vue",
 						"css",
 						"scss",
@@ -48,7 +48,7 @@ return {
 						"html",
 					},
 				}),
-				base.formatting.eslint_d.with(eslint_config),
+				--base.formatting.eslint_d.with(eslint_config),
 				base.formatting.isort.with({ prefer_local = ".venv/bin" }),
 				base.formatting.black.with({
 					prefer_local = ".venv/bin",
@@ -57,11 +57,11 @@ return {
 					end),
 				}),
 
-				base.code_actions.eslint_d.with(eslint_config),
+				--base.code_actions.eslint_d.with(eslint_config),
 				base.code_actions.refactoring,
 
-				base.diagnostics.eslint_d.with(eslint_config),
-				base.diagnostics.flake8.with({ prefer_local = ".venv/bin" }),
+				--base.diagnostics.eslint_d.with(eslint_config),
+				--base.diagnostics.flake8.with({ prefer_local = ".venv/bin" }),
 				base.diagnostics.qmllint,
 				base.diagnostics.buf,
 				base.diagnostics.hadolint,
