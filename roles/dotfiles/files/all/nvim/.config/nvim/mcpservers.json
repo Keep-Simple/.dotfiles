@@ -1,46 +1,43 @@
 {
-  "nativeMCPServers": [
-    
-  ],
   "mcpServers": {
-    "sequential-thinking": {
-      "disabled": false,
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ],
-      "custom_instructions": {
-        "text": ""
-      }
-    },
-    "github": {
-      "command": "npx",
-      "disabled": false,
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": ""
-      }
-    },
-    "git": {
-      "disabled": false,
-      "args": [
-        "mcp-server-git"
-      ],
-      "command": "uvx"
-    },
     "playwright": {
-      "disabled": false,
       "args": [
         "@playwright/mcp@latest",
         "--executable-path",
         "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
         "--vision"
       ],
-      "command": "npx"
+      "command": "npx",
+      "disabled": true
+    },
+    "sequential-thinking": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "command": "npx",
+      "custom_instructions": {
+        "text": ""
+      },
+      "disabled": false
+    },
+    "github": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "command": "npx",
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": ""
+      },
+      "disabled": false
+    },
+    "git": {
+      "args": [
+        "mcp-server-git"
+      ],
+      "command": "uvx",
+      "disabled": false
     },
     "fetch": {
       "args": [
@@ -48,5 +45,8 @@
       ],
       "command": "uvx"
     }
-  }
+  },
+  "nativeMCPServers": [
+    
+  ]
 }

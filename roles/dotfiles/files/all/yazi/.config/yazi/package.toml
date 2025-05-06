@@ -18,6 +18,11 @@ use = "KKV9/compress"
 rev = "60b24af"
 hash = "ee025be766240cc98e671754ac836da3"
 
+[[plugin.deps]]
+use = "yazi-rs/plugins:toggle-pane"
+rev = "864a021"
+hash = "f3853bbdd1da2fad09d059ab5464abfd"
+
 [[flavor.deps]]
 use = "BennyOe/tokyo-night"
 rev = "695dac6"

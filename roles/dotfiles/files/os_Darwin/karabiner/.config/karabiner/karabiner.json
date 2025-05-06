@@ -563,12 +563,15 @@
             ],
             "virtual_hid_keyboard": {
                 "country_code": 0,
-                "keyboard_type_v2": "iso"
+                "keyboard_type_v2": "ansi"
             }
         },
         {
             "name": "New profile",
-            "virtual_hid_keyboard": { "country_code": 0 }
+            "virtual_hid_keyboard": {
+                "country_code": 0,
+                "keyboard_type_v2": "ansi"
+            }
         }
     ]
 }
