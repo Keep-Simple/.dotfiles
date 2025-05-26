@@ -1,17 +1,15 @@
 return {
 	"yetone/avante.nvim",
 	event = "VeryLazy",
-	keys = {
-		{ "<leader>aC", "<cmd>AvanteClear<cr>", desc = "Clear chat" },
-	},
 	version = false, -- Never set this value to "*"! Never!
 	opts = {
 		provider = "copilot", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
 		copilot = {
-			model = "claude-3.7-sonnet",
+			model = "claude-sonnet-4",
+			max_tokens = 200000,
 		},
 		behaviour = {
-			auto_focus_sidebar = true,
+			auto_focus_sidebar = false,
 			auto_suggestions = false, -- Experimental stage
 			auto_suggestions_respect_ignore = false,
 			auto_set_highlight_group = true,
@@ -20,7 +18,7 @@ return {
 			jump_result_buffer_on_finish = false,
 			support_paste_from_clipboard = true,
 			minimize_diff = true,
-			enable_token_counting = false,
+			enable_token_counting = true,
 			enable_cursor_planning_mode = false,
 			enable_claude_text_editor_tool_mode = false,
 			use_cwd_as_project_root = true,
@@ -35,43 +33,6 @@ return {
 			embed_model = "nomic-embed-text", -- The embedding model to use for RAG service
 			endpoint = "http://localhost:11434",
 		},
-		mappings = {
-			--- @class AvanteConflictMappings
-			diff = {
-				ours = "co",
-				theirs = "ct",
-				all_theirs = "ca",
-				both = "cb",
-				cursor = "cc",
-				next = "]x",
-				prev = "[x",
-			},
-			jump = {
-				next = "]]",
-				prev = "[[",
-			},
-			submit = {
-				normal = "<CR>",
-				insert = "<C-s>",
-			},
-			cancel = {
-				normal = { "<C-c>", "<Esc>", "q" },
-				insert = { "<C-c>" },
-			},
-			sidebar = {
-				apply_all = "A",
-				apply_cursor = "a",
-				retry_user_request = "r",
-				edit_user_request = "e",
-				switch_windows = "<Tab>",
-				reverse_switch_windows = "<S-Tab>",
-				remove_file = "d",
-				add_file = "@",
-				close = { "<Esc>", "q" },
-				close_from_input = nil, -- e.g., { normal = "<Esc>", insert = "<C-d>" }
-			},
-		},
-		hints = { enabled = true },
 	},
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter",
