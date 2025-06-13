@@ -3,11 +3,15 @@ return {
 	event = "VeryLazy",
 	version = false, -- Never set this value to "*"! Never!
 	opts = {
-		provider = "copilot", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
-		copilot = {
-			model = "claude-sonnet-4",
-			max_tokens = 200000,
+		providers = {
+			copilot = {
+				model = "claude-sonnet-4",
+				extra_request_body = {
+					max_tokens = 200000,
+				},
+			},
 		},
+		provider = "copilot", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
 		behaviour = {
 			auto_focus_sidebar = false,
 			auto_suggestions = false, -- Experimental stage

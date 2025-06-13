@@ -1,6 +1,6 @@
 "$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
 
-[manager]
+[mgr]
 prepend_keymap = [
   { on = "j", run = "arrow +1" },
   { on = "k", run = "arrow -1" },
