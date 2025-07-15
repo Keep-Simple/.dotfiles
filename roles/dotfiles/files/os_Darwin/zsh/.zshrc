@@ -83,3 +83,5 @@ zinit wait lucid light-mode for \
 autoload -U colors && colors
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+alias claude="/Users/nickyasnogorodskyi/.claude/local/claude"

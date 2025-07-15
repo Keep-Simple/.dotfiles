@@ -25,6 +25,8 @@ require("lazy").setup({
 
 		{ import = "lazyvim.plugins.extras.util.dot" },
 
+		{ import = "lazyvim.plugins.extras.formatting.biome" },
+
 		{ import = "lazyvim.plugins.extras.ai.copilot" },
 
 		{ import = "lazyvim.plugins.extras.editor.aerial" },

@@ -1,6 +1,13 @@
 return {
 	"yetone/avante.nvim",
 	event = "VeryLazy",
+	keys = {
+		{
+			"<leader>aC",
+			"<cmd>AvanteClear<cr>",
+			desc = "Clear Chat",
+		},
+	},
 	version = false, -- Never set this value to "*"! Never!
 	opts = {
 		providers = {
