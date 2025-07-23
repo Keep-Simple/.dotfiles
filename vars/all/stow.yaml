@@ -14,5 +14,6 @@ stow_common_items:
   - shell
   - yamlfmt
   - yazi
+  - claude-code
 
 dotfiles_state: present
