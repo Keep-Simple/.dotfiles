@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm:*)",
+      "Bash(npm:*)",
+      "Bash(git:*)"
+    ],
+    "deny": []
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "read EVENT; SESSION_ID=$(jq -r '.session_id' <<< \"$EVENT\"); tmux display-message -p '#{pane_id}' > \"/tmp/claude_${SESSION_ID}_pane\""
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "read EVENT; terminal-notifier -group \"$(basename $PWD)\" -contentImage \"$HOME/.claude/claude.webp\" -title \"$(basename $PWD)\" -subtitle \"$(jq -r '.message' <<< \"$EVENT\")\" -message \"\" -sound \"Basso\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "read EVENT; SESSION_ID=$(jq -r '.session_id' <<< \"$EVENT\"); CLAUDE_PANE=$(cat \"/tmp/claude_${SESSION_ID}_pane\" 2>/dev/null); CURRENT_PANE=$(tmux display-message -p '#{pane_id}'); FRONT_APP=$(osascript -e 'tell application \"System Events\" to get name of first process whose frontmost is true'); if { [ \"$FRONT_APP\" != \"kitty\" ] || [ \"$CLAUDE_PANE\" != \"$CURRENT_PANE\" ]; } && [ -n \"$CLAUDE_PANE\" ]; then terminal-notifier -group \"$SESSION_ID\" -contentImage \"$HOME/.claude/claude.webp\" -title \"$(basename $PWD)\" -subtitle \"✅ Claude task finished\" -message \"\" -sound \"Glass\"; fi"
+          }
+        ]
+      }
+    ]
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1754068563130
+  },
+  "$schema": "https://json.schemastore.org/claude-code-settings.json"
+}

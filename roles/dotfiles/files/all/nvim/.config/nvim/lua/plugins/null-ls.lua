@@ -25,7 +25,7 @@ return {
 				base.formatting.gofmt,
 				base.formatting.qmlformat,
 				base.formatting.buf,
-				--base.formatting.fixjson,
+				base.formatting.fixjson,
 				base.formatting.google_java_format,
 				base.formatting.terraform_fmt,
 				--base.formatting.beautysh,
