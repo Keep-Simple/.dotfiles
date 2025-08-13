@@ -24,8 +24,3 @@
   changed_when: >
     'The installation was successful!' in asdf_result.stdout
   failed_when: false
-
-- name: Install ripdrag from cargo
-  community.general.cargo:
-    name: ripdrag
-    state: latest
