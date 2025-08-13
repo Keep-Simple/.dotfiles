@@ -58,7 +58,7 @@ macos_defaults:
     domain: com.apple.finder
     key: CreateDesktop
     type: bool
-    value: 'true'
+    value: 'false'
 
   - name: Enable status bar in Finder
     domain: com.apple.finder
