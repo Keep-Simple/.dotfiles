@@ -20,7 +20,7 @@
           become: true
 
         - name: Install from Brewfile
-          command: "{{ homebrew_brew_bin_path }}/brew bundle --no-lock chdir={{ brew_file.stat.path | dirname }} "
+          command: "{{ homebrew_brew_bin_path }}/brew bundle chdir={{ brew_file.stat.path | dirname }} "
           async: 100000
           poll: 5
 
