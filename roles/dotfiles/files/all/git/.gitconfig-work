@@ -1,0 +1,13 @@
+[user]
+	email = nikita.yasnohorodskyi@snyk.io
+	name = Nick Yasnohorodskyi
+ 	signingkey = ~/.ssh/id_ed25519.pub
+[core]
+  sshCommand = "ssh -i ~/.ssh/id_ed25519"
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
+
