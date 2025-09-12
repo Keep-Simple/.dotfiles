@@ -22,14 +22,10 @@ return {
 			sources = {
 				base.formatting.stylua,
 				--base.formatting.rustfmt,
-				base.formatting.gofmt,
 				base.formatting.qmlformat,
 				base.formatting.buf,
-				-- base.formatting.fixjson,
 				base.formatting.google_java_format,
 				base.formatting.terraform_fmt,
-				--base.formatting.beautysh,
-				--base.formatting.taplo,
 				base.formatting.yamlfmt,
 				base.formatting.prettierd.with({
 					env = {

@@ -3,10 +3,8 @@ return {
 	opts = {
 		ensure_installed = {
 			-- debugers
-			"chrome-debug-adapter",
 			"delve",
 			"debugpy",
-			"node-debug2-adapter",
 			"codelldb",
 
 			-- lsp servers
