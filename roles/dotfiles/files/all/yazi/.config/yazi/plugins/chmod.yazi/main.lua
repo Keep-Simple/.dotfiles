@@ -1,4 +1,4 @@
---- @since 25.5.28
+--- @since 25.5.31
 
 local selected_or_hovered = ya.sync(function()
 	local tab, paths = cx.active, {}
@@ -22,7 +22,8 @@ return {
 
 		local value, event = ya.input {
 			title = "Chmod:",
-			position = { "top-center", y = 3, w = 40 },
+			pos = { "top-center", y = 3, w = 40 },
+			position = { "top-center", y = 3, w = 40 }, -- TODO: remove
 		}
 		if event ~= 1 then
 			return

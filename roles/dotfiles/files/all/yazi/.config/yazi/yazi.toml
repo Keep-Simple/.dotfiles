@@ -15,6 +15,10 @@ wrap = "yes"
 max_width = 9999
 max_height = 9999
 
+[tasks]
+image_alloc = 0
+image_bound = [0, 0]
+
 [[opener.open_in_browser]]
 run = '$BROWSER "$@"'
 desc = "$BROWSER"

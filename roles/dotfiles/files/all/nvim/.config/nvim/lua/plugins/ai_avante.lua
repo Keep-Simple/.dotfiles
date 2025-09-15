@@ -1,5 +1,6 @@
 return {
 	"yetone/avante.nvim",
+	build = "make",
 	event = "VeryLazy",
 	keys = {
 		{
@@ -8,17 +9,16 @@ return {
 			desc = "Clear Chat",
 		},
 	},
-	version = false, -- Never set this value to "*"! Never!
+	version = false,
 	opts = {
+		instructions_file = "avante.md",
 		providers = {
 			copilot = {
 				model = "claude-sonnet-4",
-				extra_request_body = {
-					max_tokens = 200000,
-				},
 			},
 		},
-		provider = "copilot", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
+		provider = "gemini-cli", -- acp provider (use nvim as wrapper to gemini-cli/claude-code)
+		-- provider = "copilot", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
 		behaviour = {
 			auto_focus_sidebar = false,
 			auto_suggestions = false, -- Experimental stage
@@ -73,8 +73,7 @@ return {
 					providers = {
 						avante = {
 							module = "blink-cmp-avante",
-							name = "Avante",
-							opts = {},
+							name = "avante",
 						},
 					},
 				},

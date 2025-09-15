@@ -9,14 +9,9 @@ else
             echo ~/.dotfiles;
             fd . \
                 ~/Documents/commercial \
-                ~/Documents/commercial/apisec/services ~/Documents/commercial/apisec/lib \
-                ~/Documents/commercial/orca-contracts/services ~/Documents/commercial/sonar-ai/services \
                 ~/Documents/personal/labs \
                 ~/Documents/personal/projects \
                 --type d --max-depth 1 2>/dev/null;
-            fd . \
-                ~/Documents/commercial/orca-contracts/lib \
-                --type d --max-depth 3;
             echo $tmuxinator_list
     } | fzf)
 fi
