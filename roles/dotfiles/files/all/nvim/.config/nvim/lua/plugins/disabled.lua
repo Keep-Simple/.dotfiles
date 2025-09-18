@@ -10,10 +10,8 @@ local plugins = {
 	"folke/flash.nvim",
 	"nvim-neo-tree/neo-tree.nvim",
 	"RRethy/vim-illuminate",
-	"echasnovski/mini.indentscope",
-	"echasnovski/mini.surround",
-	"echasnovski/mini.ai",
-	"echasnovski/mini.pairs",
+	"nvim-mini/mini.indentscope",
+	"nvim-mini/mini.surround",
 	"SmiteshP/nvim-navic",
 	"akinsho/bufferline.nvim",
 }
