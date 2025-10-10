@@ -17,8 +17,8 @@ return {
 				model = "claude-sonnet-4",
 			},
 		},
-		provider = "gemini-cli", -- acp provider (use nvim as wrapper to gemini-cli/claude-code)
-		-- provider = "copilot", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
+		-- provider = "gemini-cli", -- acp provider (use nvim as wrapper to gemini-cli/claude-code)
+		provider = "copilot", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
 		behaviour = {
 			auto_focus_sidebar = false,
 			auto_suggestions = false, -- Experimental stage
