@@ -75,6 +75,14 @@
                             },
                             {
                                 "from": {
+                                    "key_code": "escape",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "caps_lock" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
                                     "key_code": "delete_or_backspace",
                                     "modifiers": { "mandatory": ["left_command", "left_control", "left_option"] }
                                 },

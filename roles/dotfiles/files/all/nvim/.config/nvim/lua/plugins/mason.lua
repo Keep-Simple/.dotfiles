@@ -41,7 +41,6 @@ return {
 			"beautysh", -- shell fmt
 			"actionlint", -- github workflows linter
 			"yamlfmt",
-			"markdownlint",
 		},
 	},
 }
