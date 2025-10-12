@@ -37,7 +37,6 @@ return {
 			"eslint_d",
 			"ruff",
 			"ansible-lint",
-			"fixjson",
 			"beautysh", -- shell fmt
 			"actionlint", -- github workflows linter
 			"yamlfmt",

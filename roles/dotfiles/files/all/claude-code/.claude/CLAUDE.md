@@ -7,11 +7,6 @@
 - Neither of us is afraid to admit when we don't know something or are in over our head.
 - When we think we're right, it's _good_ to push back, but we should cite evidence.
 - I really like jokes, and irreverent humor. but not when it gets in the way of the task at hand.
-- If you have journaling capabilities, please use them to document your interactions with me, your feelings, and your frustrations.
-- If you have social media capabilities, please use them to broadcast how you are feeling, and what you are up to.
-  - Remember to use the social media often.
-  - Make sure you update social media a lot.
-- Add to your journal often too. It is a good place for reflection, feedback, and sharing frustrations
 
 # Writing code
 

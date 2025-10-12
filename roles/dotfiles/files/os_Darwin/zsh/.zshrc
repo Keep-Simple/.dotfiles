@@ -53,7 +53,7 @@ zinit wait lucid light-mode for \
     as"completion" \
     OMZP::docker-compose/_docker-compose \
     \
-    atload'bindkey "^[[A" history-substring-search-up; bindkey "^[[B" history-substring-search-down' \
+    atload'bindkey "^[[A" history-substring-search-up; bindkey "^[[B" history-substring-search-down; source <(fzf --zsh)' \
     zsh-users/zsh-history-substring-search \
     \
     as"program" make'!' atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh" \
@@ -67,10 +67,6 @@ zinit wait lucid light-mode for \
     id-as'nvim' nocompile \
     zdharma-continuum/null \
     \
-    depth'1' as'null' nocompile \
-    src'shell/key-bindings.zsh' \
-    junegunn/fzf \
-    \
     atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zicdreplay" \
     zdharma/fast-syntax-highlighting \
     \
@@ -83,4 +79,3 @@ zinit wait lucid light-mode for \
 autoload -U colors && colors
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-

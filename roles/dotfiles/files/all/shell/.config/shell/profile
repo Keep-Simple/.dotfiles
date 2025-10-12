@@ -3,7 +3,7 @@
 # Default programs
 export EDITOR="nvim"
 export VISUAL="$EDITOR"
-export TERMINAL="alacritty"
+export TERMINAL="kitty"
 export BROWSER="open-in-brave"
 export OPENER="open" # for mac
 
@@ -48,14 +48,14 @@ test -f /usr/local/bin/brew && eval $(/usr/local/bin/brew shellenv)
 test -f /opt/homebrew/bin/brew && eval $(/opt/homebrew/bin/brew shellenv)
 
 if [[ -n "$HOMEBREW_PREFIX" ]]; then
-	export HOMEBREW_NO_ANALYTICS=1
-	export HOMEBREW_BUNDLE_FILE="$HOME/.dotfiles/roles/packages/files/macos/Brewfile"
-	# linux utils for macos
-	PATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
-	PATH="${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
-	PATH="${HOMEBREW_PREFIX}/opt/gnu-tar/libexec/gnubin:$PATH"
-	PATH="${HOMEBREW_PREFIX}/opt/util-linux/bin:$PATH"
-	PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:$PATH"
+  export HOMEBREW_NO_ANALYTICS=1
+  export HOMEBREW_BUNDLE_FILE="$HOME/.dotfiles/roles/packages/files/macos/Brewfile"
+  # linux utils for macos
+  PATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
+  PATH="${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
+  PATH="${HOMEBREW_PREFIX}/opt/gnu-tar/libexec/gnubin:$PATH"
+  PATH="${HOMEBREW_PREFIX}/opt/util-linux/bin:$PATH"
+  PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:$PATH"
 fi
 
 PATH="$HOME/.local/bin:$PATH"

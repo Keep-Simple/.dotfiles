@@ -1,0 +1,66 @@
+{
+  "general": {
+    "vimMode": true,
+    "preferredEditor": "nvim",
+    "disableUpdateNag": true,
+    "checkpointing": {
+      "enabled": true
+    },
+    "disableAutoUpdate": true,
+    "enablePromptCompletion": true
+  },
+  "security": {
+    "auth": {
+      "selectedType": "gemini-api-key"
+    }
+  },
+  "ui": {
+    "customThemes": {
+      "Tokyo Night Storm": {
+        "type": "custom",
+        "Background": "#24283b",
+        "Foreground": "#a9b1d6",
+        "LightBlue": "#7dcfff",
+        "AccentBlue": "#565f89",
+        "AccentPurple": "#bb9af7",
+        "AccentCyan": "#7dcfff",
+        "AccentGreen": "#9ece6a",
+        "AccentYellow": "#ff9e64",
+        "AccentRed": "#f7768e",
+        "Comment": "#565f89",
+        "Gray": "#414868",
+        "DiffAdded": "#9ece6a",
+        "DiffRemoved": "#f7768e",
+        "DiffModified": "#ff9e64"
+      }
+    },
+    "theme": "Tokyo Night Storm",
+    "hideBanner": true,
+    "hideTips": true,
+    "showLineNumbers": true,
+    "footer": {
+      "hideSandboxStatus": true
+    }
+  },
+  "telemetry": {
+    "enabled": false
+  },
+  "mcpServers": {
+    "context7": {
+      "httpUrl": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}",
+        "Accept": "application/json, text/event-stream"
+      }
+    }
+  },
+  "tools": {
+    "sandbox": true
+  },
+  "privacy": {
+    "usageStatisticsEnabled": false
+  },
+  "experimental": {
+    "useModelRouter": true
+  }
+}

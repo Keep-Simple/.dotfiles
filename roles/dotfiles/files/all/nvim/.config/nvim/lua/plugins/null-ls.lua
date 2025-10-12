@@ -36,7 +36,6 @@ return {
 						"javascriptreact",
 						"typescript",
 						"typescriptreact",
-						"json",
 						"vue",
 						"css",
 						"scss",

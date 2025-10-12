@@ -15,5 +15,6 @@ stow_common_items:
   - yamlfmt
   - yazi
   - claude-code
+  - gemini
 
 dotfiles_state: present
