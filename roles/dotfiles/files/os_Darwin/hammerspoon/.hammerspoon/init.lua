@@ -14,11 +14,6 @@ function ToggleMultiWindowIcon(flag)
 end
 
 Install = spoon.SpoonInstall
-Install:andUse("MicMute", {
-	hotkeys = {
-		toggle = { { "ctrl", "cmd", "alt" }, "m" },
-	},
-})
 Install:andUse("ClipboardTool", {
 	hotkeys = {
 		toggle_clipboard = { { "ctrl", "cmd", "alt" }, "\\" },

@@ -58,7 +58,7 @@ macos_defaults:
     domain: com.apple.finder
     key: CreateDesktop
     type: bool
-    value: 'false'
+    value: 'true'
 
   - name: Enable status bar in Finder
     domain: com.apple.finder
@@ -130,7 +130,7 @@ macos_defaults:
     domain: com.apple.dock
     key: mineffect
     type: string
-    value: scale
+    value: genie
 
   - name: Disable minimize to app effect
     domain: com.apple.dock
@@ -154,7 +154,7 @@ macos_defaults:
     domain: com.apple.dock
     key: persistent-apps
     type: array
-    value: '[]'
+    value: []
 
   - name: Pin dock to the right
     domain: com.apple.dock
@@ -166,7 +166,7 @@ macos_defaults:
     domain: com.apple.dock
     key: workspaces-auto-swoosh
     type: bool
-    value: 'false'
+    value: 'true'
 
   - name: Save screenshots to ~/Downloads
     domain: com.apple.screencapture
@@ -424,6 +424,20 @@ macos_defaults:
     key: ApplePressAndHoldEnabled
     type: bool
     value: 'false'
+
+  - name: Disable Stage Manager
+    domain: com.apple.WindowManager
+    key: GloballyEnabled
+    type: bool
+    value: 'false'
+
+
+  - name: Disable 'Click wallpaper to reveal desktop'
+    domain: com.apple.WindowManager
+    key: EnableStandardClickToShowDesktop
+    type: bool
+    value: 'false'
+
 
 macos_defaults_xml:
   - key: com.apple.symbolichotkeys

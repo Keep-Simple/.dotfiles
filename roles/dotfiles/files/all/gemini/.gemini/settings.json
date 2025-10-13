@@ -1,13 +1,25 @@
 {
+  "mcpServers": {
+    "context7": {
+      "httpUrl": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}",
+        "Accept": "application/json, text/event-stream"
+      }
+    }
+  },
   "general": {
     "vimMode": true,
-    "preferredEditor": "nvim",
     "disableUpdateNag": true,
     "checkpointing": {
       "enabled": true
     },
     "disableAutoUpdate": true,
-    "enablePromptCompletion": true
+    "enablePromptCompletion": true,
+    "preferredEditor": "vim"
+  },
+  "telemetry": {
+    "enabled": false
   },
   "security": {
     "auth": {
@@ -42,25 +54,35 @@
       "hideSandboxStatus": true
     }
   },
-  "telemetry": {
-    "enabled": false
-  },
-  "mcpServers": {
-    "context7": {
-      "httpUrl": "https://mcp.context7.com/mcp",
-      "headers": {
-        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}",
-        "Accept": "application/json, text/event-stream"
-      }
-    }
-  },
   "tools": {
-    "sandbox": true
+    "sandbox": true,
+    "allowed": [
+      "run_shell_command(git status)",
+      "run_shell_command(git diff)",
+      "run_shell_command(git log)",
+      "run_shell_command(git show)",
+      "run_shell_command(git branch)",
+      "run_shell_command(git tag)",
+      "run_shell_command(ls)",
+      "run_shell_command(cat)",
+      "run_shell_command(grep)",
+      "run_shell_command(find)",
+      "run_shell_command(npm list)",
+      "run_shell_command(docker ps)",
+      "run_shell_command(docker images)",
+      "run_shell_command(kubectl get)",
+      "run_shell_command(kubectl describe)",
+      "run_shell_command(terraform show)",
+      "run_shell_command(tree)",
+      "run_shell_command(stat)",
+      "run_shell_command(file)"
+    ]
   },
   "privacy": {
     "usageStatisticsEnabled": false
   },
   "experimental": {
     "useModelRouter": true
-  }
+  },
+  "preferredEditor": "vim"
 }

@@ -55,4 +55,9 @@ return {
 			},
 		},
 	},
+	init = function()
+		require("lazydev").setup({
+			library = { "nvim-dap-ui" },
+		})
+	end,
 }
