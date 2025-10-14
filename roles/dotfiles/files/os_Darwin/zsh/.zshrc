@@ -1,3 +1,4 @@
+# zmodload zsh/zprof
 p10k_cache="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 if [[ -r $p10k_cache ]]; then
     source $p10k_cache
@@ -78,4 +79,6 @@ zinit wait lucid light-mode for \
 
 autoload -U colors && colors
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# zprof
