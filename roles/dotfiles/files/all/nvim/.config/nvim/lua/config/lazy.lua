@@ -34,6 +34,7 @@ require("lazy").setup({
 		{ import = "lazyvim.plugins.extras.ai.copilot" },
 
 		{ import = "lazyvim.plugins.extras.editor.aerial" },
+		{ import = "lazyvim.plugins.extras.editor.overseer" },
 		-- import/override with your plugins
 		{ import = "plugins" },
 	},

@@ -76,15 +76,15 @@ ctrl + alt + cmd - 0x29 : $YABAI/focus_space.sh next
 ctrl + alt + cmd - p : $YABAI/focus_space.sh recent
 
 # send window to desktop and follow focus
-ctrl + alt + cmd + shift - 1 : yabai -m window --space  1; $YABAI/focus_space.sh 1 
-ctrl + alt + cmd + shift - 2 : yabai -m window --space  2; $YABAI/focus_space.sh 2 
-ctrl + alt + cmd + shift - 3 : yabai -m window --space  3; $YABAI/focus_space.sh 3 
-ctrl + alt + cmd + shift - 4 : yabai -m window --space  4; $YABAI/focus_space.sh 4 
-ctrl + alt + cmd + shift - 5 : yabai -m window --space  5; $YABAI/focus_space.sh 5 
-ctrl + alt + cmd + shift - 6 : yabai -m window --space  6; $YABAI/focus_space.sh 6 
-ctrl + alt + cmd + shift - 7 : yabai -m window --space  7; $YABAI/focus_space.sh 7 
-ctrl + alt + cmd + shift - 8 : yabai -m window --space  8; $YABAI/focus_space.sh 8 
-ctrl + alt + cmd + shift - 9 : yabai -m window --space  9; $YABAI/focus_space.sh 9 
-ctrl + alt + cmd + shift - g : yabai -m window --space prev || yabai -m window --space last; $YABAI/focus_space.sh prev
-ctrl + alt + cmd + shift - 0x29 : yabai -m window --space next || yabai -m window --space first; $YABAI/focus_space.sh next 
-ctrl + alt + cmd + shift - p : yabai -m window --space recent; $YABAI/focus_space.sh recent
+ctrl + alt + cmd + shift - 1 : yabai -m window --space 1 --focus
+ctrl + alt + cmd + shift - 2 : yabai -m window --space 2 --focus
+ctrl + alt + cmd + shift - 3 : yabai -m window --space 3 --focus
+ctrl + alt + cmd + shift - 4 : yabai -m window --space 4 --focus
+ctrl + alt + cmd + shift - 5 : yabai -m window --space 5 --focus
+ctrl + alt + cmd + shift - 6 : yabai -m window --space 6 --focus
+ctrl + alt + cmd + shift - 7 : yabai -m window --space 7 --focus
+ctrl + alt + cmd + shift - 8 : yabai -m window --space 8 --focus
+ctrl + alt + cmd + shift - 9 : yabai -m window --space 9 --focus
+ctrl + alt + cmd + shift - g : yabai -m window --space prev --focus || yabai -m window --space last --focus
+ctrl + alt + cmd + shift - 0x29 : yabai -m window --space next --focus || yabai -m window --space first --focus
+ctrl + alt + cmd + shift - p : yabai -m window --space recent --focus

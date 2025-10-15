@@ -4,6 +4,6 @@ return {
 		return {}
 	end,
 	opts = {
-		save_empty = true,
+		need = 1,
 	},
 }
