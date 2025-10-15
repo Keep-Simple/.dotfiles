@@ -26,7 +26,6 @@ return {
 				base.formatting.buf,
 				base.formatting.google_java_format,
 				base.formatting.terraform_fmt,
-				base.formatting.yamlfmt,
 				base.formatting.prettierd.with({
 					env = {
 						PRETTIERD_LOCAL_PRETTIER_ONLY = 1,

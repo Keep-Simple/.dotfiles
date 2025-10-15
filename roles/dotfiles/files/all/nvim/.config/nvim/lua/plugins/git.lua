@@ -84,8 +84,8 @@ return {
 		keys = {
 			{
 				"<leader>gM",
-				"<cmd>DiffviewOpen<cr>",
-				desc = "Tab diff view",
+				"<cmd>DiffviewOpen origin/HEAD<cr>",
+				desc = "Diff against main (origin/HEAD)",
 			},
 		},
 		opts = {

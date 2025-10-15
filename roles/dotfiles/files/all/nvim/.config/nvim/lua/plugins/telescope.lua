@@ -26,57 +26,153 @@ return {
 			-- find
 			{
 				"<leader>f",
-				require("telescope.builtin").find_files,
-				desc = "Find files (cwd)",
+				function()
+					Snacks.picker.files()
+				end,
+				desc = "Find files",
 			},
 			{
-				"<leader>FF",
+				"<leader>Fg",
 				function()
-					require("telescope.builtin").git_files({ show_untracked = true })
+					Snacks.picker.git_files({ untracked = true })
 				end,
 				desc = "git files",
 			},
 			{
 				"<leader>Fa",
 				function()
-					require("telescope.builtin").find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
+					Snacks.picker.files({ hidden = true, ignored = true })
 				end,
-				desc = "all cwd files (ignore, hidden)",
+				desc = "files (ignore, hidden)",
 			},
 			{
 				"<leader>FA",
 				function()
-					require("telescope.builtin").find_files({
-						hidden = true,
-						no_ignore = true,
-						no_ignore_parent = true,
-						cwd = get_git_dir(),
-					})
+					Snacks.picker.files({ hidden = true, ignored = true, dirs = { get_git_dir() } })
 				end,
-				desc = "all git files (ignore, hidden)",
+				desc = "dir=(git root) files (ignore, hidden)",
 			},
 			{
 				"<leader>b",
 				function()
-					require("telescope.builtin").buffers({ sort_mru = true })
+					Snacks.picker.buffers({
+						win = {
+							input = {
+								keys = {
+									["<c-d>"] = { "bufdelete", mode = { "n", "i" } },
+								},
+							},
+							list = { keys = { ["dd"] = "bufdelete" } },
+						},
+					})
 				end,
 				desc = "Buffers",
 			},
 			-- git
-			{ "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
-			{ "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
-			-- search
-			{ "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
-			{ "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
-			{ "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-			{ "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
-			{ "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
-			{ "<leader>sD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
+			{
+				"<leader>gb",
+				function()
+					Snacks.picker.git_branches()
+				end,
+				desc = "Git Branches",
+			},
+			{
+				"<leader>gl",
+				function()
+					Snacks.picker.git_log()
+				end,
+				desc = "Git Log",
+			},
+			{
+				"<leader>gL",
+				function()
+					Snacks.picker.git_log_line()
+				end,
+				desc = "Git Log Line",
+			},
+			{
+				"<leader>gs",
+				function()
+					Snacks.picker.git_status()
+				end,
+				desc = "Git Status",
+			},
+			{
+				"<leader>gS",
+				function()
+					Snacks.picker.git_stash()
+				end,
+				desc = "Git Stash",
+			},
+			{
+				"<leader>gd",
+				function()
+					Snacks.picker.git_diff()
+				end,
+				desc = "Git Diff (Hunks)",
+			},
+			{
+				"<leader>gf",
+				function()
+					Snacks.picker.git_log_file()
+				end,
+				desc = "Git Log File",
+			},
+
+			{
+				"<leader>sa",
+				function()
+					Snacks.picker.autocmds()
+				end,
+				desc = "Autocmds",
+			},
+			{
+				"<leader>sb",
+				function()
+					Snacks.picker.lines()
+				end,
+				desc = "Buffer Lines",
+			},
+			{
+				"<leader>sc",
+				function()
+					Snacks.picker.command_history()
+				end,
+				desc = "Command History",
+			},
+			{
+				"<leader>sC",
+				function()
+					Snacks.picker.commands()
+				end,
+				desc = "Commands",
+			},
+			{
+				"<leader>sd",
+				function()
+					Snacks.picker.diagnostics()
+				end,
+				desc = "Diagnostics",
+			},
+			{
+				"<leader>sD",
+				function()
+					Snacks.picker.diagnostics_buffer()
+				end,
+				desc = "Buffer Diagnostics",
+			},
+			{
+				"<leader>sh",
+				function()
+					Snacks.picker.help()
+				end,
+				desc = "Help Pages",
+			},
 			{
 				"<leader>st",
 				function()
-					require("telescope.builtin").live_grep({
-						additional_args = { "--hidden", "--glob=!.git/" },
+					Snacks.picker.grep({
+						hidden = true,
 					})
 				end,
 				desc = "Text",
@@ -84,107 +180,70 @@ return {
 			{
 				"<leader>sT",
 				function()
-					require("telescope.builtin").live_grep({
-						cwd = get_git_dir(),
-						additional_args = { "--hidden", "--glob=!.git/" },
+					Snacks.picker.grep({
+						hidden = true,
+						dirs = { get_git_dir() },
 					})
 				end,
-				desc = "Text (git)",
+				desc = "dir=(git root) Text",
 			},
 			{
 				"<leader>sA",
 				function()
-					require("telescope.builtin").live_grep({
-						additional_args = { "--hidden", "--no-ignore" },
-						cwd = get_git_dir(),
+					Snacks.picker.grep({
+						hidden = true,
+						ignored = true,
+						dirs = { get_git_dir() },
 					})
 				end,
-				desc = "All text (git with ignore)",
+				desc = "dir=(git root) Text (with ignore)",
 			},
 			{
 				"<leader>sW",
 				function()
-					require("telescope.builtin").grep_string({
-						additional_args = { "--hidden", "--glob=!.git/" },
-						cwd = get_git_dir(),
+					Snacks.picker.grep_word({
+						hidden = true,
+						dirs = { get_git_dir() },
 					})
 				end,
-				desc = "Word (git)",
+				mode = { "n", "x" },
+				desc = "dir=(git root) Word",
 			},
 			{
 				"<leader>sw",
 				function()
-					require("telescope.builtin").grep_string({
-						additional_args = { "--hidden", "--glob=!.git/" },
+					Snacks.picker.grep_word({
+						hidden = true,
 					})
 				end,
+				mode = { "n", "x" },
 				desc = "Word",
 			},
-			{ "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
-			{ "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
-			{ "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
-			{ "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-			{ "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
+			{
+				"<leader>sk",
+				function()
+					Snacks.picker.keymaps()
+				end,
+				desc = "Keymaps",
+			},
+			{
+				"<leader>sm",
+				function()
+					Snacks.picker.marks()
+				end,
+				desc = "Marks",
+			},
 			{ "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
-			{ "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
 			{
-				"<leader>uC",
-				LazyVim.pick("colorscheme", { enable_preview = true }),
-				desc = "Colorscheme with preview",
-			},
-			{
-				"<leader>ss",
-				LazyVim.pick("lsp_document_symbols", {
-					symbols = {
-						"Class",
-						"Function",
-						"Method",
-						"Constructor",
-						"Interface",
-						"Module",
-						"Struct",
-						"Trait",
-						"Field",
-						"Property",
-					},
-				}),
-				desc = "Goto Symbol",
-			},
-			{
-				"<leader>sS",
-				LazyVim.pick("lsp_dynamic_workspace_symbols", {
-					symbols = {
-						"Class",
-						"Function",
-						"Method",
-						"Constructor",
-						"Interface",
-						"Module",
-						"Struct",
-						"Trait",
-						"Field",
-						"Property",
-					},
-				}),
-				desc = "Goto Symbol (Workspace)",
+				"<leader>sR",
+				function()
+					Snacks.picker.resume()
+				end,
+				desc = "Resume",
 			},
 		}
 	end,
 	opts = {
-		pickers = {
-			buffers = {
-				mappings = {
-					n = {
-						["<C-d>"] = require("telescope.actions").delete_buffer,
-						["<C-a>"] = require("telescope.actions").toggle_all,
-					},
-					i = {
-						["<C-d>"] = require("telescope.actions").delete_buffer,
-						["<C-a>"] = require("telescope.actions").toggle_all,
-					},
-				},
-			},
-		},
 		defaults = {
 			mappings = {
 				i = {

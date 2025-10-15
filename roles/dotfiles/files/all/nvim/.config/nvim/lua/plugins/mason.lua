@@ -15,7 +15,6 @@ return {
 			"gopls",
 			"omnisharp",
 			"json-lsp",
-			"kotlin-language-server",
 			"lua-language-server",
 			"basedpyright",
 			"rust-analyzer",
@@ -24,7 +23,6 @@ return {
 			"terraform-ls",
 			"typescript-language-server",
 			"vim-language-server",
-			"yaml-language-server",
 			"marksman",
 
 			-- formatters and linters
@@ -39,7 +37,6 @@ return {
 			"ansible-lint",
 			"beautysh", -- shell fmt
 			"actionlint", -- github workflows linter
-			"yamlfmt",
 		},
 	},
 }
