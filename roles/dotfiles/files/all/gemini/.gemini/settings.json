@@ -6,6 +6,9 @@
         "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}",
         "Accept": "application/json, text/event-stream"
       }
+    },
+    "atlassian-mcp-server": {
+      "url": "https://mcp.atlassian.com/v1/sse"
     }
   },
   "general": {
@@ -15,8 +18,7 @@
       "enabled": true
     },
     "disableAutoUpdate": true,
-    "enablePromptCompletion": true,
-    "preferredEditor": "vim"
+    "enablePromptCompletion": true
   },
   "telemetry": {
     "enabled": false
@@ -55,7 +57,7 @@
     }
   },
   "tools": {
-    "sandbox": true,
+    "sandbox": false,
     "allowed": [
       "run_shell_command(git status)",
       "run_shell_command(git diff)",
@@ -81,8 +83,5 @@
   "privacy": {
     "usageStatisticsEnabled": false
   },
-  "experimental": {
-    "useModelRouter": true
-  },
-  "preferredEditor": "vim"
+  "preferredEditor": "neovim"
 }

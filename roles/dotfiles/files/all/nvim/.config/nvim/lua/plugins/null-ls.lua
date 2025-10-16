@@ -61,6 +61,11 @@ return {
 				base.diagnostics.hadolint,
 				base.diagnostics.terraform_validate,
 				base.diagnostics.actionlint,
+				base.diagnostics.golangci_lint.with({
+					prefer_local = ".bin",
+					method = nls.methods.DIAGNOSTICS_ON_SAVE,
+					timeout = 10000, -- ms
+				}),
 				-- { name = "mypy", prefer_local = ".venv/bin" },
 			},
 		}
