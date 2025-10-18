@@ -98,16 +98,17 @@ return {
 		output = {
 			open_on_run = false,
 		},
-		quickfix = {
-			enabled = false,
-		},
+		-- quickfix = {
+		-- 	open = true,
+		-- 	enabled = true,
+		-- },
 		discovery = {
 			concurrent = 1,
 			enabled = true,
 		},
 		summary = {
 			follow = true,
-			expand_errors = false,
+			expand_errors = true,
 			mappings = {
 				attach = "a",
 				expand = { "l", "h" }, -- any letter just toggles, keep both

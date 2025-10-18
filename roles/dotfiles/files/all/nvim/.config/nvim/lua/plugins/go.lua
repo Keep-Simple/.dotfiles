@@ -1,10 +1,14 @@
 return {
 	{
 		"nvim-neotest/neotest",
+		dependencies = {
+			"fredrikaverpil/neotest-golang",
+		},
 		opts = {
 			adapters = {
 				["neotest-golang"] = {
 					warn_test_name_dupes = false,
+					runner = "gotestsum",
 				},
 			},
 		},

@@ -38,9 +38,9 @@ return {
 			},
 			{
 				elements = {
-					{ id = "console", size = 1 },
+					-- { id = "console", size = 1 },
 					-- { id = "console", size = 0.75 },
-					-- { id = "repl", size = 0.25 },
+					{ id = "repl", size = 1 },
 				},
 				size = 0.25,
 				position = "bottom",
