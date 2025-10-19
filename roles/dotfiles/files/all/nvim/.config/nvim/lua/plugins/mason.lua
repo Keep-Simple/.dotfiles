@@ -1,10 +1,13 @@
 return {
 	"mason-org/mason.nvim",
 	opts = {
+		PATH = "append",
 		ensure_installed = {
+			-- other
 			"tree-sitter-cli",
+			"gotestsum",
+
 			-- debugers
-			"delve",
 			"debugpy",
 			"codelldb",
 
@@ -12,7 +15,6 @@ return {
 			"bash-language-server",
 			"ansible-language-server",
 			"clangd",
-			"gopls",
 			"omnisharp",
 			"json-lsp",
 			"lua-language-server",
@@ -23,6 +25,7 @@ return {
 			"terraform-ls",
 			"typescript-language-server",
 			"vim-language-server",
+			"golangci-lint-langserver",
 			"marksman",
 
 			-- formatters and linters
@@ -37,6 +40,7 @@ return {
 			"ansible-lint",
 			"beautysh", -- shell fmt
 			"actionlint", -- github workflows linter
+			"golangci-lint",
 		},
 	},
 }

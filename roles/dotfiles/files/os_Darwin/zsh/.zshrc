@@ -29,19 +29,17 @@ setopt share_history          # share command history data
 
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 
-# silence asdf-direnv
-# zinit ice lucid as"program" wait \
-#     pick'bin/asdf' atinit'export ASDF_DIR="$PWD"' \
-#     atclone'_zinit_asdf_install' \
-#     atpull'%atclone' depth=1 \
-#     atload'source asdf_direnv_hook.zsh && _direnv_hook'  # from 'asdf_direnv_hook.zsh asdf.sh'; not sourcing asdf.sh for perfomance https://github.com/asdf-community/asdf-direnv#pro-tips
-# zinit light asdf-vm/asdf
-
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
 zinit ice depth=1 atload'zvm_vi_yank() { zvm_yank; echo ${CUTBUFFER} | pbcopy; zvm_exit_visual_mode; }'
 zinit light jeffreytse/zsh-vi-mode
+
+# silence asdf-direnv
+export DIRENV_LOG_FORMAT=
+zinit as"program" make'!' atclone'./direnv hook zsh > zhook.zsh' \
+    atpull'%atclone' pick"direnv" src"zhook.zsh" for \
+        direnv/direnv
 
 # Regular plugins, loaded in turbe mode (wait)
 zinit wait lucid light-mode for \
@@ -56,9 +54,6 @@ zinit wait lucid light-mode for \
     \
     atload'bindkey "^[[A" history-substring-search-up; bindkey "^[[B" history-substring-search-down; source <(fzf --zsh)' \
     zsh-users/zsh-history-substring-search \
-    \
-    as"program" make'!' atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh" \
-    direnv/direnv \
     \
     atload='_zinit_yazi' \
     id-as'yazi' nocompile \

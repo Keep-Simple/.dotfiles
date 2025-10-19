@@ -62,10 +62,8 @@ return {
 		opts = {
 			copilot_node_command = (function()
 				local version_output = vim.fn.system("node --version")
-				print(version_output)
 				if vim.v.shell_error == 0 then
 					local major_version = tonumber(vim.fn.matchstr(version_output, "\\v(\\d+)."))
-					print(major_version)
 					if major_version and major_version >= 22 then
 						return "node"
 					end

@@ -18,6 +18,7 @@ return {
 		local base = nls.builtins
 		local u = require("null-ls.utils")
 		local h = require("null-ls.helpers")
+
 		opts.sources = vim.list_extend(opts.sources or {}, {
 			base.formatting.stylua,
 			--base.formatting.rustfmt,
@@ -60,11 +61,6 @@ return {
 			base.diagnostics.hadolint,
 			base.diagnostics.terraform_validate,
 			base.diagnostics.actionlint,
-			base.diagnostics.golangci_lint.with({
-				prefer_local = ".bin",
-				method = nls.methods.DIAGNOSTICS_ON_SAVE,
-				timeout = 10000, -- ms
-			}),
 			-- { name = "mypy", prefer_local = ".venv/bin" },
 		})
 	end,

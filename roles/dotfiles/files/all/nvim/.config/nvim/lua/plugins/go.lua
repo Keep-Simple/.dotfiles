@@ -20,9 +20,10 @@ return {
 				gopls = {
 					settings = {
 						gopls = {
+							gofumpt = false, -- I'm using none-ls
 							hints = {
 								assignVariableTypes = false,
-								compositeLiteralFields = false,
+								compositeLiteralFields = true,
 								compositeLiteralTypes = false,
 								constantValues = false,
 								functionTypeParameters = true,

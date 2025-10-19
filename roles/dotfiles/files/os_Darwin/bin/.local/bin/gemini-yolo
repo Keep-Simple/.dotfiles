@@ -1,0 +1,3 @@
+#!/bin/sh
+
+GEMINI_SANDBOX=docker gemini -y
