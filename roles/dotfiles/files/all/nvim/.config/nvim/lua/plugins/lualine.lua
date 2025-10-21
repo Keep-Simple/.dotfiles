@@ -46,9 +46,16 @@ return {
             color = { fg = Snacks.util.color("Debug") },
           },
 					{
-						require("lazy.status").updates,
-						cond = require("lazy.status").has_updates,
-						color = { fg = Snacks.util.color("Special") },
+						function()
+							local status = require("sidekick.status").cli()
+							return " " .. (#status > 1 and #status or "")
+						end,
+						cond = function()
+							return #require("sidekick.status").cli() > 0
+						end,
+						color = function()
+							return { fg = Snacks.util.color("Special") }
+						end,
 					},
 					{
 						"diff",
