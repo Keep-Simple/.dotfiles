@@ -1,87 +1,87 @@
 {
-  "mcpServers": {
-    "context7": {
-      "httpUrl": "https://mcp.context7.com/mcp",
-      "headers": {
-        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}",
-        "Accept": "application/json, text/event-stream"
-      }
-    },
-    "atlassian-mcp-server": {
-      "url": "https://mcp.atlassian.com/v1/sse"
-    }
-  },
-  "general": {
-    "vimMode": true,
-    "disableUpdateNag": true,
-    "checkpointing": {
-      "enabled": true
-    },
-    "disableAutoUpdate": true,
-    "enablePromptCompletion": true
-  },
-  "telemetry": {
-    "enabled": false
-  },
-  "security": {
-    "auth": {
-      "selectedType": "gemini-api-key"
-    }
-  },
-  "ui": {
-    "customThemes": {
-      "Tokyo Night Storm": {
-        "type": "custom",
-        "Background": "#24283b",
-        "Foreground": "#a9b1d6",
-        "LightBlue": "#7dcfff",
-        "AccentBlue": "#565f89",
-        "AccentPurple": "#bb9af7",
-        "AccentCyan": "#7dcfff",
-        "AccentGreen": "#9ece6a",
-        "AccentYellow": "#ff9e64",
-        "AccentRed": "#f7768e",
-        "Comment": "#565f89",
-        "Gray": "#414868",
-        "DiffAdded": "#9ece6a",
-        "DiffRemoved": "#f7768e",
-        "DiffModified": "#ff9e64"
-      }
-    },
-    "theme": "Tokyo Night Storm",
-    "hideBanner": true,
-    "hideTips": true,
-    "showLineNumbers": true,
-    "footer": {
-      "hideSandboxStatus": true
-    }
-  },
-  "tools": {
-    "sandbox": false,
-    "allowed": [
-      "run_shell_command(git status)",
-      "run_shell_command(git diff)",
-      "run_shell_command(git log)",
-      "run_shell_command(git show)",
-      "run_shell_command(git branch)",
-      "run_shell_command(git tag)",
-      "run_shell_command(ls)",
-      "run_shell_command(cat)",
-      "run_shell_command(grep)",
-      "run_shell_command(find)",
-      "run_shell_command(npm list)",
-      "run_shell_command(docker ps)",
-      "run_shell_command(docker images)",
-      "run_shell_command(kubectl get)",
-      "run_shell_command(kubectl describe)",
-      "run_shell_command(terraform show)",
-      "run_shell_command(tree)",
-      "run_shell_command(stat)",
-      "run_shell_command(file)"
-    ]
-  },
-  "privacy": {
-    "usageStatisticsEnabled": false
-  },
-  "preferredEditor": "neovim"
+	"mcpServers": {
+		"context7": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@upstash/context7-mcp",
+				"--api-key",
+				"${CONTEXT7_API_KEY}"
+			]
+		},
+		"atlassian-mcp-server": {
+			"url": "https://mcp.atlassian.com/v1/sse"
+		}
+	},
+	"general": {
+		"vimMode": true,
+		"disableUpdateNag": true,
+		"checkpointing": {
+			"enabled": true
+		},
+		"disableAutoUpdate": true,
+		"enablePromptCompletion": true,
+		"preferredEditor": "neovim"
+	},
+	"telemetry": {
+		"enabled": false
+	},
+	"security": {
+		"auth": {
+			"selectedType": "gemini-api-key"
+		}
+	},
+	"ui": {
+		"customThemes": {
+			"Tokyo Night Storm": {
+				"type": "custom",
+				"Background": "#24283b",
+				"Foreground": "#a9b1d6",
+				"LightBlue": "#7dcfff",
+				"AccentBlue": "#565f89",
+				"AccentPurple": "#bb9af7",
+				"AccentCyan": "#7dcfff",
+				"AccentGreen": "#9ece6a",
+				"AccentYellow": "#ff9e64",
+				"AccentRed": "#f7768e",
+				"Comment": "#565f89",
+				"Gray": "#414868"
+			}
+		},
+		"theme": "Tokyo Night Storm",
+		"hideBanner": true,
+		"hideTips": true,
+		"showLineNumbers": true,
+		"footer": {
+			"hideSandboxStatus": true
+		}
+	},
+	"tools": {
+		"sandbox": false,
+		"allowed": [
+			"run_shell_command(git status)",
+			"run_shell_command(git diff)",
+			"run_shell_command(git log)",
+			"run_shell_command(git show)",
+			"run_shell_command(git branch)",
+			"run_shell_command(git tag)",
+			"run_shell_command(ls)",
+			"run_shell_command(cat)",
+			"run_shell_command(grep)",
+			"run_shell_command(find)",
+			"run_shell_command(npm list)",
+			"run_shell_command(docker ps)",
+			"run_shell_command(docker images)",
+			"run_shell_command(kubectl get)",
+			"run_shell_command(kubectl describe)",
+			"run_shell_command(terraform show)",
+			"run_shell_command(tree)",
+			"run_shell_command(stat)",
+			"run_shell_command(file)",
+			"run_shell_command(go test)"
+		]
+	},
+	"privacy": {
+		"usageStatisticsEnabled": false
+	}
 }

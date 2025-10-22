@@ -27,16 +27,16 @@ return {
 			{
 				"<leader>f",
 				function()
-					Snacks.picker.files()
-				end,
-				desc = "Find files",
-			},
-			{
-				"<leader>Fg",
-				function()
 					Snacks.picker.git_files({ untracked = true })
 				end,
-				desc = "git files",
+				desc = "Find git files",
+			},
+			{
+				"<leader>Ff",
+				function()
+					Snacks.picker.files()
+				end,
+				desc = "files",
 			},
 			{
 				"<leader>Fa",

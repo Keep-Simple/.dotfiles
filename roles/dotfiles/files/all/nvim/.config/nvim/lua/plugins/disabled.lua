@@ -15,6 +15,7 @@ local plugins = {
 	"SmiteshP/nvim-navic",
 	"akinsho/bufferline.nvim",
 	"stevearc/conform.nvim",
+	"mfussenegger/nvim-lint",
 }
 
 return disable_plugins(plugins)

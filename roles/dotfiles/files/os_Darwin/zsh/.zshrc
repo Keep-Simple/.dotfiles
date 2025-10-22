@@ -1,9 +1,4 @@
 # zmodload zsh/zprof
-p10k_cache="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-if [[ -r $p10k_cache ]]; then
-    source $p10k_cache
-fi
-
 SHELL="/bin/zsh" # skhd related fix, override back to zsh
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
@@ -29,13 +24,10 @@ setopt share_history          # share command history data
 
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 
-zinit ice depth=1
-zinit light romkatv/powerlevel10k
-
 zinit ice depth=1 atload'zvm_vi_yank() { zvm_yank; echo ${CUTBUFFER} | pbcopy; zvm_exit_visual_mode; }'
 zinit light jeffreytse/zsh-vi-mode
 
-# silence asdf-direnv
+# silence direnv
 export DIRENV_LOG_FORMAT=
 zinit as"program" make'!' atclone'./direnv hook zsh > zhook.zsh' \
     atpull'%atclone' pick"direnv" src"zhook.zsh" for \
@@ -74,6 +66,5 @@ zinit wait lucid light-mode for \
 
 autoload -U colors && colors
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# zprof
+eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/tokyonight_storm.omp.json)"
+# zprof >> ~/Documents/zprof
