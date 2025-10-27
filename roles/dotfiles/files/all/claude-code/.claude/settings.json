@@ -2,18 +2,32 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 20,
   "includeCoAuthoredBy": false,
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y ccusage statusline",
-    "padding": 0  
-  },
   "permissions": {
     "allow": [
-      "Bash(pnpm:*)",
-      "Bash(npm:*)",
-      "Bash(git:*)"
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git tag:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(npm list:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker images:*)",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(terraform show:*)",
+      "Bash(tree:*)",
+      "Bash(stat:*)",
+      "Bash(file:*)",
+      "Bash(go test:*)",
+      "Bash(go build:*)"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "plan"
   },
   "hooks": {
     "UserPromptSubmit": [
@@ -47,6 +61,12 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccusage statusline",
+    "padding": 0
+  },
+  "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1755539101692
   }

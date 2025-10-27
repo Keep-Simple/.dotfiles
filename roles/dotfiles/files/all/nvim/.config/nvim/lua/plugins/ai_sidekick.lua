@@ -49,7 +49,7 @@ return {
 			{
 				"<leader>at",
 				function()
-					require("sidekick.cli").send({ msg = "i\b" }) -- needed for gemini vim mode
+					-- require("sidekick.cli").send({ msg = "i\b" }) -- needed for gemini vim mode
 					require("sidekick.cli").send({ msg = "{this}" })
 				end,
 				mode = { "x", "n" },
@@ -58,7 +58,6 @@ return {
 			{
 				"<leader>av",
 				function()
-					require("sidekick.cli").send({ msg = "i\b" })
 					require("sidekick.cli").send({ msg = "{selection}" })
 				end,
 				mode = { "x" },
@@ -67,7 +66,6 @@ return {
 			{
 				"<leader>af",
 				function()
-					require("sidekick.cli").send({ msg = "i\b" })
 					require("sidekick.cli").send({ msg = "{file}" })
 				end,
 				desc = "Send File",
@@ -75,7 +73,6 @@ return {
 			{
 				"<leader>ap",
 				function()
-					require("sidekick.cli").send({ msg = "i\b" })
 					require("sidekick.cli").prompt()
 				end,
 				mode = { "n", "x" },
@@ -84,7 +81,7 @@ return {
 			{
 				"<leader>aa",
 				function()
-					require("sidekick.cli").toggle({ name = "gemini" })
+					require("sidekick.cli").toggle({ name = "claude" })
 				end,
 				desc = "Sidekick Toggle",
 			},

@@ -1,0 +1,10 @@
+# Ignore everything by default
+*
+
+# Explicitly allow only currently tracked files and folders
+!.gitignore
+!CLAUDE.md
+!agents/
+!claude.webp
+!commands/
+!settings.json
