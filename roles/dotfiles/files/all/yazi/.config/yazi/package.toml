@@ -1,11 +1,11 @@
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "9a52857"
+rev = "8f1d971"
 hash = "63b6c222bf2103b3023389dde5e2ecfe"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "9a52857"
+rev = "8f1d971"
 hash = "8ad3e90b079190b4905f24a44f4ca06b"
 
 [[plugin.deps]]
@@ -15,7 +15,7 @@ hash = "e17c11b605d989568a1d1741ca17c584"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:toggle-pane"
-rev = "9a52857"
+rev = "8f1d971"
 hash = "8a7c58225816a163a6e8730c0adafbc8"
 
 [[flavor.deps]]

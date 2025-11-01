@@ -3,7 +3,8 @@ return {
 	opts = function(_, opts)
 		opts.format.timeout_ms = 8000
 		opts.codelens.enabled = true
-		local keys = require("lazyvim.plugins.lsp.keymaps").get()
+		local keys = opts.servers["*"].keys
+
 		table.remove(keys, 9) -- remove <C-k>
 		vim.list_extend(keys, {
 			{ "gs", vim.lsp.buf.signature_help, desc = "show signature help" },
