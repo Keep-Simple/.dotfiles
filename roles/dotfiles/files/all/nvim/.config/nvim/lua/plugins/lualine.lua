@@ -16,6 +16,7 @@ return {
 				lualine_a = { "mode" },
 				lualine_b = { "branch" },
 				lualine_c = {
+					LazyVim.lualine.root_dir(),
 					{
 						"diagnostics",
 						symbols = {
@@ -26,24 +27,21 @@ return {
 						},
 					},
 					{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-					{
-						"filename",
-						path = 1, -- relative path
-						symbols = { modified = "  ", readonly = " 🔒 " },
-					},
+					{ LazyVim.lualine.pretty_path() },
 				},
 				lualine_x = {
+					Snacks.profiler.status(),
           -- stylua: ignore
           {
             function() return require("noice").api.status.mode.get() end,
             cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-            color = { fg = Snacks.util.color("Constant") },
+            color = function() return { fg = Snacks.util.color("Constant") } end,
           },
           -- stylua: ignore
           {
             function() return "  " .. require("dap").status() end,
-            cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-            color = { fg = Snacks.util.color("Debug") },
+            cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
+            color = function() return { fg = Snacks.util.color("Debug") } end,
           },
 					{
 						function()
@@ -83,6 +81,7 @@ return {
 						return "\u{f085} " .. table.concat(c, "|")
 					end,
 				},
+				lualine_z = { "searchcount", "location" },
 			},
 			extensions = {
 				"lazy",

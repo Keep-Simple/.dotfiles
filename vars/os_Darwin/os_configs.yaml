@@ -54,7 +54,7 @@ macos_defaults:
     type: bool
     value: 'false'
 
-  - name: Hide icons on desktop
+  - name: Yabai space focus thing
     domain: com.apple.finder
     key: CreateDesktop
     type: bool
