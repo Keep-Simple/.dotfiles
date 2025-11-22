@@ -1,6 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "env": {},
+  "env": {
+    "DISABLE_AUTOUPDATER": "1"
+  },
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
@@ -33,7 +35,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "read EVENT; SESSION_ID=$(jq -r '.session_id' <<< \"$EVENT\"); CLAUDE_PANE=$(cat \"/tmp/claude_${SESSION_ID}_pane\" 2>/dev/null); REPO_NAME=$(cat \"/tmp/claude_${SESSION_ID}_repo\" 2>/dev/null); CURRENT_PANE=$(tmux display-message -p '#{pane_id}'); FRONT_APP=$(osascript -e 'tell application \"System Events\" to get name of first process whose frontmost is true'); if { [ \"$FRONT_APP\" != \"kitty\" ] || [ \"$CLAUDE_PANE\" != \"$CURRENT_PANE\" ]; } && [ -n \"$CLAUDE_PANE\" ]; then terminal-notifier -group \"$SESSION_ID\" -contentImage \"$HOME/.claude/claude.webp\" -title \"$REPO_NAME\" -subtitle \"✅ Claude task finished\" -message \"\" -sound \"Glass\"; fi"
+            "command": "$HOME/.claude/hooks/on-stop.sh"
           }
         ]
       }
@@ -43,7 +45,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "read EVENT; SESSION_ID=$(jq -r '.session_id' <<< \"$EVENT\"); tmux display-message -p '#{pane_id}' > \"/tmp/claude_${SESSION_ID}_pane\"; basename $(git rev-parse --show-toplevel 2>/dev/null || echo $PWD) > \"/tmp/claude_${SESSION_ID}_repo\""
+            "command": "$HOME/.claude/hooks/on-user-prompt-submit.sh"
           }
         ]
       }
@@ -53,7 +55,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "read EVENT; SESSION_ID=$(jq -r '.session_id' <<< \"$EVENT\"); REPO_NAME=$(cat \"/tmp/claude_${SESSION_ID}_repo\" 2>/dev/null); terminal-notifier -group \"$REPO_NAME\" -contentImage \"$HOME/.claude/claude.webp\" -title \"$REPO_NAME\" -subtitle \"$(jq -r '.message' <<< \"$EVENT\")\" -message \"\" -sound \"Basso\""
+            "command": "$HOME/.claude/hooks/on-notification.sh"
           }
         ]
       }

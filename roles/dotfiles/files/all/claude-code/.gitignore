@@ -5,6 +5,9 @@
 !.gitignore
 !CLAUDE.md
 !agents/
+!hooks/
+!hooks/**
 !claude.webp
 !commands/
 !settings.json
+!.mcp.json
