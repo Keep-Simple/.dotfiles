@@ -1,7 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
-    "DISABLE_AUTOUPDATER": "1"
+    "DISABLE_AUTOUPDATER": "1",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-1@20250805",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5@20250929",
+    "ANTHROPIC_MODEL": "opusplan"
   },
   "includeCoAuthoredBy": false,
   "permissions": {
@@ -63,7 +66,8 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "npx -y ccusage statusline"
+    "command": "npx -y ccstatusline@latest",
+    "padding": 0
   },
   "alwaysThinkingEnabled": true
 }
