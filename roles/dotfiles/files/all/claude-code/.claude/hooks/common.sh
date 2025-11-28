@@ -18,25 +18,31 @@ log_debug() {
 should_send_notification() {
     local claude_pane="$1"
 
-    # Get current tmux pane
-    local current_pane=$(tmux display-message -p '#{pane_id}')
-    log_debug "CURRENT_PANE: $current_pane"
+    # Get the focused/active tmux session (the one user is currently viewing)
+    # This gets the most recently active client's session
+    local focused_session=$(tmux list-clients -F '#{client_activity} #{client_session}' 2>/dev/null | sort -rn | head -1 | cut -d' ' -f2)
+    log_debug "FOCUSED_SESSION: $focused_session"
+
+    # Get Claude's session from the pane
+    local claude_session=$(tmux display-message -p -t "$claude_pane" '#{session_name}' 2>/dev/null)
+    log_debug "CLAUDE_SESSION: $claude_session"
 
     # Get frontmost application
     local front_app=$(osascript -e 'tell application "System Events" to get name of first process whose frontmost is true')
     log_debug "FRONT_APP: $front_app"
 
     # Check if notification should be sent
-    if { [ "$front_app" != "kitty" ] || [ "$claude_pane" != "$current_pane" ]; } && [ -n "$claude_pane" ]; then
+    # Send notification if: not in kitty OR in different session
+    if { [ "$front_app" != "kitty" ] || [ "$claude_session" != "$focused_session" ]; } && [ -n "$claude_pane" ]; then
         log_debug "Conditions met for notification:"
         log_debug "  - FRONT_APP != kitty: $([ "$front_app" != "kitty" ] && echo "true" || echo "false")"
-        log_debug "  - CLAUDE_PANE != CURRENT_PANE: $([ "$claude_pane" != "$current_pane" ] && echo "true" || echo "false")"
+        log_debug "  - CLAUDE_SESSION != FOCUSED_SESSION: $([ "$claude_session" != "$focused_session" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_PANE is set: $([ -n "$claude_pane" ] && echo "true" || echo "false")"
         return 0
     else
         log_debug "Notification NOT sent. Reasons:"
         log_debug "  - FRONT_APP == kitty: $([ "$front_app" = "kitty" ] && echo "true" || echo "false")"
-        log_debug "  - CLAUDE_PANE == CURRENT_PANE: $([ "$claude_pane" = "$current_pane" ] && echo "true" || echo "false")"
+        log_debug "  - CLAUDE_SESSION == FOCUSED_SESSION: $([ "$claude_session" = "$focused_session" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_PANE is empty: $([ -z "$claude_pane" ] && echo "true" || echo "false")"
         return 1
     fi
