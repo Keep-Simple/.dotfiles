@@ -1,0 +1,6 @@
+name: yabai
+
+windows:
+  - yabai:
+      panes:
+        - yabai

@@ -23,6 +23,7 @@ yabai -m signal --add event=window_destroyed action=$YABAI/smart_indicator.sh
 yabai -m signal --add event=window_minimized action=$YABAI/smart_indicator.sh
 yabai -m signal --add event=window_deminimized action=$YABAI/smart_indicator.sh
 yabai -m signal --add event=space_changed action=$YABAI/smart_indicator.sh
+yabai -m signal --add event=space_changed action=$YABAI/focus_space.sh
 
 # global settings
 yabai -m config \
@@ -70,8 +71,8 @@ yabai -m rule --add title="QuickTerminal" grid=40:20:4:7:12:26 opacity=0.9 scrat
 
 $YABAI/create_spaces.sh 8
 $YABAI/smart_indicator.sh
-SHELL="/bin/sh" skhd &
 echo "yabai configuration loaded.."
+SHELL="/bin/sh" skhd
 
 # can be usefull for focus problems https://github.com/koekeishiya/yabai/issues/2030#issuecomment-1873351137
 # yabai -m signal --add event=space_changed action="yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id)"
