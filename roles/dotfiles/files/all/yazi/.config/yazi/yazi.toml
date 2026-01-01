@@ -4,7 +4,7 @@
 
 [mgr]
 ratio = [1, 2, 3]
-sort_by = "natural"
+sort_by = "btime"
 sort_translit = true
 show_hidden = true
 show_symlink = false

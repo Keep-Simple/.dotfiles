@@ -1,11 +1,11 @@
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "da5b695"
+rev = "398796d"
 hash = "73788c7dc5827ef4677c502c3ea8fa19"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "da5b695"
+rev = "398796d"
 hash = "8da0b15a97b5dfd13941d1ecc617ac7c"
 
 [[plugin.deps]]
@@ -15,10 +15,10 @@ hash = "e17c11b605d989568a1d1741ca17c584"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:toggle-pane"
-rev = "da5b695"
+rev = "398796d"
 hash = "8a7c58225816a163a6e8730c0adafbc8"
 
 [[flavor.deps]]
 use = "BennyOe/tokyo-night"
-rev = "5f56364"
-hash = "ea25e1f0f25b0521ef78fd4e9698ff52"
+rev = "8e6296f"
+hash = "d9da921c3bd37ba32ee27a8a7a40461f"
