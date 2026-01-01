@@ -35,7 +35,7 @@ yabai -m config \
 	window_zoom_persist off \
 	window_opacity on \
 	menubar_opacity 1.0 \
-	normal_window_opacity 0.6 \
+	normal_window_opacity 0.8 \
 	window_animation_duration 0.0 \
 	insert_feedback_color 0xff9dd274 \
 	layout bsp \

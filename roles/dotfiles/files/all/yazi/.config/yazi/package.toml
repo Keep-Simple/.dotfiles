@@ -1,12 +1,12 @@
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "8f1d971"
-hash = "63b6c222bf2103b3023389dde5e2ecfe"
+rev = "da5b695"
+hash = "73788c7dc5827ef4677c502c3ea8fa19"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "8f1d971"
-hash = "8ad3e90b079190b4905f24a44f4ca06b"
+rev = "da5b695"
+hash = "8da0b15a97b5dfd13941d1ecc617ac7c"
 
 [[plugin.deps]]
 use = "KKV9/compress"
@@ -15,10 +15,10 @@ hash = "e17c11b605d989568a1d1741ca17c584"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:toggle-pane"
-rev = "8f1d971"
+rev = "da5b695"
 hash = "8a7c58225816a163a6e8730c0adafbc8"
 
 [[flavor.deps]]
 use = "BennyOe/tokyo-night"
 rev = "5f56364"
-hash = "c0bf69ad2c44005892d586e9693993c6"
+hash = "ea25e1f0f25b0521ef78fd4e9698ff52"

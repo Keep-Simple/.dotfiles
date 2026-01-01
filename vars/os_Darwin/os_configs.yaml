@@ -30,6 +30,12 @@ macos_defaults:
     type: bool
     value: 'true'
 
+  - name: Finder disable animation
+    domain: com.apple.finder
+    key: DisableAllAnimations 
+    type: bool
+    value: 'true'
+
   - name: Hide external hard drives on desktop
     domain: com.apple.finder
     key: ShowExternalHardDrivesOnDesktop

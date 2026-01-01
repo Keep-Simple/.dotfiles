@@ -59,7 +59,7 @@ ctrl + alt + cmd + shift - f : yabai -m window --toggle native-fullscreen
 ctrl + alt + cmd + shift - space : yabai -m window --toggle float --grid 4:4:1:1:2:2
 
 # Restart Yabai
-# ctrl + alt + cmd - r : notify "Restarting yabai..."; if yabai --restart-service; then notify "Restart successful"; else notify "Restart failed"; fi
+ctrl + alt + cmd - r : notify "Restarting yabai..."; if yabai --restart-service; then notify "Restart successful"; else notify "Restart failed"; fi
 
 # focus desktop
 ctrl + alt + cmd - 1 : $YABAI/focus_space.sh 1
