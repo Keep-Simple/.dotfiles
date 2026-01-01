@@ -6,10 +6,7 @@ case "$1" in
     recent) yabai -m space --focus recent ;;
     *)
         if [[ -z $1 ]]; then
-            if yabai -m query --windows --space |
-            jq -er 'map(select(."has-focus" == true)) | length == 0' >/dev/null; then
-                yabai -m window --focus mouse 2>/dev/null || true
-            fi
+            yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus $(yabai -m query --windows --space | jq .[0].id) &> /dev/null || true
         else
             yabai -m space --focus $1
         fi
