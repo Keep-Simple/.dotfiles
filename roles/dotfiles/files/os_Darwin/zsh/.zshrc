@@ -23,6 +23,8 @@ fi
 ZVM_VI_HIGHLIGHT_FOREGROUND=white
 ZVM_VI_HIGHLIGHT_BACKGROUND=black
 ZVM_CURSOR_STYLE_ENABLED=false
+ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+ZVM_INIT_MODE=sourcing
 zstyle ':completion:*' menu select
 zle_highlight+=(paste:none) # no highlight on paste
 
@@ -36,8 +38,7 @@ setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
 
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-# Change to Zsh's default readkey engine
-ZVM_READKEY_ENGINE=$ZVM_READKEY_ENGINE_ZLE
+
 zinit ice depth=1 atload'zvm_vi_yank() { zvm_yank; echo ${CUTBUFFER} | pbcopy; zvm_exit_visual_mode; }'
 zinit light jeffreytse/zsh-vi-mode
 

@@ -31,6 +31,11 @@ map("n", "[d", vim.diagnostic.goto_prev, { desc = "Goto prev diagnostic" })
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
+-- better home/end
+map({ "n", "x" }, "0", "v:count == 0 ? 'g0' : '0'", { expr = true, silent = true })
+map({ "n", "x" }, "^", "v:count == 0 ? 'g^' : '^'", { expr = true, silent = true })
+map({ "n", "x" }, "$", "v:count == 0 ? 'g$' : '$'", { expr = true, silent = true })
+
 -- Resize window using <ctrl> arrow keys
 map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
 map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })

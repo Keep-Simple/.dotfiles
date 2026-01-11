@@ -71,7 +71,7 @@ ctrl + alt + cmd + shift - f : @toggle_window("native-fullscreen")
 ctrl + alt + cmd + shift - space : @toggle_window_with_grid("float", "4:4:1:1:2:2")
 
 # Restart Yabai
-ctrl + alt + cmd - r : notify "Restarting yabai..."; if yabai --restart-service; then notify "Restart successful"; else notify "Restart failed"; fi
+ctrl + alt + cmd - r : pkill -f "title QuickTerminal" 2>/dev/null || true; notify "Restarting yabai..."; if yabai --restart-service; then notify "Restart successful"; else notify "Restart failed"; fi
 
 # focus desktop
 ctrl + alt + cmd - 1 : @focus_space("1")
