@@ -81,9 +81,19 @@ return {
 			{
 				"<leader>aa",
 				function()
-					require("sidekick.cli").toggle({ name = "claude" })
+					-- Show CLI picker to select claude instance or create new one
+					local State = require("sidekick.cli.state")
+					require("sidekick.cli.ui.select").select({
+						auto = false, -- Always show picker, never auto-select
+						filter = { name = "claude" },
+						cb = function(state)
+							if state then
+								State.attach(state, { show = true, focus = true })
+							end
+						end,
+					})
 				end,
-				desc = "Sidekick Toggle",
+				desc = "Sidekick Select/Attach Claude",
 			},
 		},
 	},
