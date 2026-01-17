@@ -1,5 +1,4 @@
 .DS_Store
 library
-.bmad/
-.bmad-ephemeral/
+_bmad/
 /.claude

@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+# ABOUTME: Interactive Snyk config viewer with fuzzy selection for config files and projects
+# ABOUTME: Optionally uses jqp for interactive jq filtering with -j flag
+
+set -euo pipefail
+
+SNYK_CONFIG_DIR="${XDG_CONFIG_HOME}/snyk"
+
+# Function to select config file
+select_config_file() {
+	local config_file="${1:-}"
+
+	if [[ -n "$config_file" ]]; then
+		echo "$config_file"
+		return
+	fi
+
+	# Find ls-config-* files, excluding snyk-ls and .lock files
+	local files
+	files=$(find "$SNYK_CONFIG_DIR" -maxdepth 1 -type f -name 'ls-config-*' \
+		! -name 'ls-config-snyk-ls*' \
+		! -name '*.lock' \
+		-exec basename {} \; | sort)
+
+	if [[ -z "$files" ]]; then
+		echo "No matching config files found in $SNYK_CONFIG_DIR" >&2
+		exit 1
+	fi
+
+	# Use fzf for fuzzy selection
+	echo "$files" | fzf --prompt="Select config file: " --height=40% --reverse
+}
+
+# Function to select project from config
+select_project() {
+	local config_path="$1"
+	local project="${2:-}"
+
+	if [[ -n "$project" ]]; then
+		echo "$project"
+		return
+	fi
+
+	# Extract project paths from the config file
+	local projects
+	projects=$(jq -r '.INTERNAL_LS_CONFIG | fromjson | .folderConfigs | keys[]' "$config_path" 2>/dev/null || echo "")
+
+	if [[ -z "$projects" ]]; then
+		echo "No projects found in config file" >&2
+		exit 1
+	fi
+
+	# Use fzf for fuzzy selection
+	echo "$projects" | fzf --prompt="Select project: " --height=40% --reverse
+}
+
+# Main function
+main() {
+	local config_file=""
+	local project=""
+	local use_jqp=false
+
+	# Parse arguments
+	while [[ $# -gt 0 ]]; do
+		case $1 in
+		-c | --config)
+			config_file="$2"
+			shift 2
+			;;
+		-p | --project)
+			project="$2"
+			shift 2
+			;;
+		-j | --jqp)
+			use_jqp=true
+			shift
+			;;
+		-h | --help)
+			cat <<EOF
+Usage: $0 [OPTIONS]
+
+Options:
+    -c, --config FILE       Specify config file (or select interactively)
+    -p, --project PATH      Specify project path (or select interactively)
+    -j, --jqp              Use jqp for interactive filtering with del filter
+    -h, --help             Show this help message
+
+Examples:
+    $0                              # Interactive selection, display full object
+    $0 -j                           # Interactive selection with jqp
+    $0 -c ls-config-Visual-Studio-Code -p /path/to/project
+EOF
+			exit 0
+			;;
+		*)
+			echo "Unknown option: $1" >&2
+			echo "Use -h for help" >&2
+			exit 1
+			;;
+		esac
+	done
+
+	# Select config file
+	local selected_config
+	selected_config=$(select_config_file "$config_file")
+	local config_path="${SNYK_CONFIG_DIR}/${selected_config}"
+
+	if [[ ! -f "$config_path" ]]; then
+		echo "Config file not found: $config_path" >&2
+		exit 1
+	fi
+
+	echo "Using config: $selected_config" >&2
+
+	# Select project
+	local selected_project
+	selected_project=$(select_project "$config_path" "$project")
+
+	echo "Selected project: $selected_project" >&2
+
+	# Extract project config
+	if [[ "$use_jqp" == true ]]; then
+		# Check if jqp is available
+		if ! command -v jqp &>/dev/null; then
+			echo "Error: jqp is required for -j/--jqp option but not installed" >&2
+			exit 1
+		fi
+		# Use jqp with del filter
+		jq ".INTERNAL_LS_CONFIG |= fromjson | .INTERNAL_LS_CONFIG.folderConfigs[\"$selected_project\"]" "$config_path" | jqp
+	else
+		# Display full object
+		jq ".INTERNAL_LS_CONFIG |= fromjson | .INTERNAL_LS_CONFIG.folderConfigs[\"$selected_project\"]" "$config_path"
+	fi
+}
+
+# Check for required commands
+for cmd in jq fzf; do
+	if ! command -v "$cmd" &>/dev/null; then
+		echo "Error: $cmd is required but not installed" >&2
+		exit 1
+	fi
+done
+
+main "$@"

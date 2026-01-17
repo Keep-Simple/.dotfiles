@@ -18,13 +18,15 @@ log_debug() {
 should_send_notification() {
     local claude_pane="$1"
 
-    # Get the focused/active tmux session (the one user is currently viewing)
-    # This gets the most recently active client's session
+    # Get the currently active pane and session
+    local active_pane=$(tmux display-message -p '#{pane_id}' 2>/dev/null)
     local focused_session=$(tmux list-clients -F '#{client_activity} #{client_session}' 2>/dev/null | sort -rn | head -1 | cut -d' ' -f2)
+    log_debug "ACTIVE_PANE: $active_pane"
     log_debug "FOCUSED_SESSION: $focused_session"
 
     # Get Claude's session from the pane
     local claude_session=$(tmux display-message -p -t "$claude_pane" '#{session_name}' 2>/dev/null)
+    log_debug "CLAUDE_PANE: $claude_pane"
     log_debug "CLAUDE_SESSION: $claude_session"
 
     # Get frontmost application
@@ -32,17 +34,19 @@ should_send_notification() {
     log_debug "FRONT_APP: $front_app"
 
     # Check if notification should be sent
-    # Send notification if: not in kitty OR in different session
-    if { [ "$front_app" != "kitty" ] || [ "$claude_session" != "$focused_session" ]; } && [ -n "$claude_pane" ]; then
+    # Send notification if: not in kitty OR different session OR different pane
+    if { [ "$front_app" != "kitty" ] || [ "$claude_session" != "$focused_session" ] || [ "$claude_pane" != "$active_pane" ]; } && [ -n "$claude_pane" ]; then
         log_debug "Conditions met for notification:"
         log_debug "  - FRONT_APP != kitty: $([ "$front_app" != "kitty" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_SESSION != FOCUSED_SESSION: $([ "$claude_session" != "$focused_session" ] && echo "true" || echo "false")"
+        log_debug "  - CLAUDE_PANE != ACTIVE_PANE: $([ "$claude_pane" != "$active_pane" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_PANE is set: $([ -n "$claude_pane" ] && echo "true" || echo "false")"
         return 0
     else
         log_debug "Notification NOT sent. Reasons:"
         log_debug "  - FRONT_APP == kitty: $([ "$front_app" = "kitty" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_SESSION == FOCUSED_SESSION: $([ "$claude_session" = "$focused_session" ] && echo "true" || echo "false")"
+        log_debug "  - CLAUDE_PANE == ACTIVE_PANE: $([ "$claude_pane" = "$active_pane" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_PANE is empty: $([ -z "$claude_pane" ] && echo "true" || echo "false")"
         return 1
     fi

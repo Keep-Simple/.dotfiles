@@ -24,14 +24,14 @@ return {
 			})
 
 			if event == 1 then
-				ya.manager_emit("shell", {
+				ya.emit("shell", {
 					"$0 " .. cmd_args,
 					block = block,
 					confirm = true,
 				})
 			end
 		else
-			ya.manager_emit("shell", {
+			ya.emit("shell", {
 				"$0",
 				block = block,
 				confirm = true,
