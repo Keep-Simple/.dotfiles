@@ -37,4 +37,25 @@ return {
 			},
 		},
 	},
+	{
+		"leoluz/nvim-dap-go",
+		config = function()
+			require("dap-go").setup()
+
+			-- Fix: Replace nvim-dap-go's filtered_pick_process (which shows vim.ui.input + pick_process)
+			-- with plain pick_process (single picker via dressing.nvim)
+			vim.schedule(function()
+				local dap = require("dap")
+				if dap.configurations.go then
+					for _, config in ipairs(dap.configurations.go) do
+						if config.name == "Attach" and config.processId then
+							config.processId = function()
+								return require("dap.utils").pick_process()
+							end
+						end
+					end
+				end
+			end)
+		end,
+	},
 }

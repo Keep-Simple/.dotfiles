@@ -14,6 +14,55 @@ return {
 			},
 			{ "<leader>dB", "<cmd>PBClearAllBreakpoints<cr>", desc = "Clear all breakpoints" },
 			{
+				"<leader>dm",
+				function()
+					local pb_utils = require("persistent-breakpoints.utils")
+					local pb_api = require("persistent-breakpoints.api")
+					local inmemory = require("persistent-breakpoints.inmemory")
+
+					local normal_path = pb_utils.get_bps_path()
+					local muted_path = normal_path:gsub("%.json$", ".muted.json")
+
+					-- Check if currently muted by looking for .muted.json file
+					local muted_file = io.open(muted_path, "r")
+
+					if muted_file then
+						-- UNMUTE: restore from .muted.json
+						muted_file:close()
+						local muted_bps = pb_utils.load_bps(muted_path)
+						inmemory.bps = muted_bps
+						pb_utils.write_bps(normal_path, muted_bps)
+						os.remove(muted_path)
+						pb_api.reload_breakpoints()
+
+						-- Refresh dap-ui to show restored breakpoints
+						local ok, dapui = pcall(require, "dapui")
+						if ok then
+							dapui.update_render({})
+						end
+
+						vim.notify("🔊 Breakpoints unmuted", vim.log.levels.INFO)
+					else
+						-- MUTE: save to .muted.json, clear normal
+						local current_bps = vim.deepcopy(inmemory.bps)
+						if vim.tbl_isempty(current_bps) then
+							vim.notify("No breakpoints to mute", vim.log.levels.WARN)
+							return
+						end
+						pb_utils.write_bps(muted_path, current_bps)
+						pb_api.clear_all_breakpoints()
+
+						local ok, dapui = pcall(require, "dapui")
+						if ok then
+							dapui.update_render({})
+						end
+
+						vim.notify("🔇 Breakpoints muted", vim.log.levels.WARN)
+					end
+				end,
+				desc = "Toggle Mute/Unmute All Breakpoints",
+			},
+			{
 				"<leader>dc",
 				function()
 					require("dap").continue()
@@ -121,4 +170,28 @@ return {
 			},
 		},
 	},
+	config = function()
+		-- Register dynamic description for mute/unmute keybind
+		vim.schedule(function()
+			local wk = require("which-key")
+			wk.add({
+				{
+					"<leader>dm",
+					desc = function()
+						local pb_utils = require("persistent-breakpoints.utils")
+						local normal_path = pb_utils.get_bps_path()
+						local muted_path = normal_path:gsub("%.json$", ".muted.json")
+
+						local muted_file = io.open(muted_path, "r")
+						if muted_file then
+							muted_file:close()
+							return "🔇 Unmute All Breakpoints"
+						else
+							return "🔊 Mute All Breakpoints"
+						end
+					end,
+				},
+			})
+		end)
+	end,
 }
