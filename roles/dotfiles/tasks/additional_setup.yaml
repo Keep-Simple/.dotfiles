@@ -2,24 +2,24 @@
 - name: Install tmux plugin manager
   ansible.builtin.git:
     repo: https://github.com/tmux-plugins/tpm
-    dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
+    dest: "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm"
 
 - name: Register tpm plugins
   stat:
-    path: "{{ ansible_user_dir }}/.config/tmux/plugins"
+    path: "{{ ansible_facts['user_dir'] }}/.config/tmux/plugins"
   register: tpm_plugins
 
 - name: Install tpm plugins
   ansible.builtin.command:
-    cmd: "{{ ansible_user_dir }}/.tmux/plugins/tpm/bin/install_plugins"
+    cmd: "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm/bin/install_plugins"
   when: not tpm_plugins.stat.exists
 
 - name: Install asdf packages
   ansible.builtin.shell: |
-    awk '{print $1}' {{ ansible_user_dir }}/.tool-versions | xargs -I _ asdf plugin add _ || true
+    awk '{print $1}' {{ ansible_facts['user_dir'] }}/.tool-versions | xargs -I _ asdf plugin add _ || true
     asdf install
   args:
-    chdir: "{{ ansible_user_dir }}"
+    chdir: "{{ ansible_facts['user_dir'] }}"
   register: asdf_result
   changed_when: >
     'The installation was successful!' in asdf_result.stdout

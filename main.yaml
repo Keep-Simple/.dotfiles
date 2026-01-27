@@ -10,7 +10,7 @@
 
     - name: include os-specific variables
       include_vars:
-        dir: "vars/os_{{ ansible_system }}"
+        dir: "vars/os_{{ ansible_facts['system'] }}"
       tags: ['always']
 
   roles:

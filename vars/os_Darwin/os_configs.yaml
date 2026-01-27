@@ -106,7 +106,7 @@ macos_defaults:
     domain: com.apple.finder
     key: NewWindowTargetPath
     type: string
-    value: file://{{ ansible_user_dir }}/Downloads/
+    value: file://{{ ansible_facts['user_dir'] }}/Downloads/
 
   - name: Auto-hide the Dock
     domain: com.apple.dock
@@ -177,7 +177,7 @@ macos_defaults:
   - name: Save screenshots to ~/Downloads
     domain: com.apple.screencapture
     key: location
-    value: '{{ ansible_user_dir }}/Downloads'
+    value: "{{ ansible_facts['user_dir'] }}/Downloads"
 
   - name: Set expose hot corner bottom-left
     domain: com.apple.dock

@@ -1,7 +1,7 @@
 ---
 - name: Register lazy nvim
   stat:
-    path: "{{ ansible_user_dir }}/.local/share/nvim/lazy"
+    path: "{{ ansible_facts['user_dir'] }}/.local/share/nvim/lazy"
   register: lazy_nvim
 
 - name: First headless run

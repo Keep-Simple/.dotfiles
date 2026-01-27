@@ -25,11 +25,11 @@
   notify: Restart dock
 
 - name: Unhide ~/Library
-  ansible.builtin.command: "chflags nohidden {{ ansible_user_dir }}/Library"
+  ansible.builtin.command: "chflags nohidden {{ ansible_facts['user_dir'] }}/Library"
   changed_when: false
 
 - name: Remove extended attributes on ~/Library
-  ansible.builtin.command: "xattr -c {{ ansible_user_dir }}/Library"
+  ansible.builtin.command: "xattr -c {{ ansible_facts['user_dir'] }}/Library"
   changed_when: false
 
 - name: Unhide /Volumes
