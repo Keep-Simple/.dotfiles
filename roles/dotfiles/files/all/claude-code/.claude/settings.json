@@ -9,9 +9,6 @@
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
-      "Bash(npm run lint)",
-      "Bash(npm run test:*)",
-      "Bash(npm test:*)",
       "Bash(git status)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
@@ -21,14 +18,21 @@
       "Bash(git checkout:*)",
       "Bash(git stash:*)",
       "Bash(jq:*)",
-      "Bash(node:*)",
-      "Bash(which:*)",
-      "Bash(pwd)",
+      "Bash(gh:*)",
       "Bash(ls:*)",
+      "Bash(pwd)",
+      "Bash(cat:*)",
       "Bash(find:*)",
       "Bash(grep:*)",
-      "Bash(go test:*)",
-      "Bash(go build:*)"
+      "Bash(which:*)",
+      "Bash(npm:*)",
+      "Bash(make:*)",
+      "Bash(yarn:*)",
+      "Bash(pnpm:*)",
+      "Bash(bun:*)",
+      "Bash(pip:*)",
+      "Bash(cargo:*)",
+      "Bash(go:*)"
     ],
     "deny": [
       "Bash(rm -rf /)"
@@ -74,7 +78,8 @@
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true
+    "pr-review-toolkit@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true
 }
