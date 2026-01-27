@@ -17,7 +17,3 @@
   args:
     creates: "{{ ansible_user_dir }}/.config/shell/shortcutrc"
 
-- name: Install ripdrag from cargo
-  community.general.cargo:
-    name: ripdrag
-    state: latest

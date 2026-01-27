@@ -7,10 +7,6 @@ prepend_keymap = [
   { on = "<C-o>", run = '''shell --block "nvim +'lua require(\"persistence\").load()'" --confirm''' },
   { on = [
     "c",
-    "D",
-  ], run = '''shell 'ripdrag -x --all -b "$@"' --confirm''', desc = "Drag and drop" },
-  { on = [
-    "c",
     "s",
   ], run = '''shell 'curl -F"file=@$1" https://0x0.st | pbcopy' --confirm''', desc = "Share file" },
   { on = "e", run = "plugin run-file 1", desc = "Execute file (sync)" },
