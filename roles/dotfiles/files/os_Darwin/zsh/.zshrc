@@ -20,6 +20,8 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
   PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:$PATH"
 fi
 
+PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
 ZVM_VI_HIGHLIGHT_FOREGROUND=white
 ZVM_VI_HIGHLIGHT_BACKGROUND=black
 ZVM_CURSOR_STYLE_ENABLED=false

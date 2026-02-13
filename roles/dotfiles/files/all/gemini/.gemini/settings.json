@@ -21,7 +21,9 @@
     },
     "disableAutoUpdate": true,
     "enablePromptCompletion": true,
-    "preferredEditor": "neovim"
+    "preferredEditor": "neovim",
+    "enableAutoUpdate": false,
+    "enableAutoUpdateNotification": false
   },
   "telemetry": {
     "enabled": false

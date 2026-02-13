@@ -45,7 +45,6 @@ export POETRY_CONFIG_DIR="$XDG_CONFIG_HOME/pypoetry"
 
 PATH="$HOME/.local/bin:$PATH"
 PATH="/usr/local/bin:$PATH"
-PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 export PATH
 

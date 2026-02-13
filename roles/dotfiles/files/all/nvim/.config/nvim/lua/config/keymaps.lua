@@ -32,17 +32,17 @@ map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
 -- better home/end
-map({ "n", "x" }, "0", function()
-	return vim.v.count == 0 and "g0" or "0"
-end, { expr = true, silent = true })
-
-map({ "n", "x" }, "^", function()
-	return vim.v.count == 0 and "g^" or "^"
-end, { expr = true, silent = true })
-
-map({ "n", "x" }, "$", function()
-	return vim.v.count == 0 and "g$" or "$"
-end, { expr = true, silent = true })
+-- map({ "n", "x" }, "0", function()
+-- 	return vim.v.count == 0 and "g0" or "0"
+-- end, { expr = true, silent = true })
+--
+-- map({ "n", "x" }, "^", function()
+-- 	return vim.v.count == 0 and "g^" or "^"
+-- end, { expr = true, silent = true })
+--
+-- map({ "n", "x" }, "$", function()
+-- 	return vim.v.count == 0 and "g$" or "$"
+-- end, { expr = true, silent = true })
 
 -- Resize window using <ctrl> arrow keys
 map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
