@@ -2,9 +2,9 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
     "DISABLE_AUTOUPDATER": "1",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-1@20250805",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5@20250929",
-    "ANTHROPIC_MODEL": "opusplan"
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-sonnet-4-6",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-6",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6"
   },
   "includeCoAuthoredBy": false,
   "permissions": {
@@ -32,23 +32,17 @@
       "Bash(bun:*)",
       "Bash(pip:*)",
       "Bash(cargo:*)",
-      "Bash(go:*)"
+      "Bash(go:*)",
+      "mcp__context7__query-docs",
+      "WebSearch"
     ],
     "deny": [
       "Bash(rm -rf /)"
-    ]
-  },
-  "hooks": {
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/roles/dotfiles/files/all/claude-code/.claude/hooks/permission_request.py --auto-allow"
-          }
-        ]
-      }
     ],
+    "defaultMode": "default"
+  },
+  "model": "opus",
+  "hooks": {
     "Stop": [
       {
         "hooks": [
@@ -92,5 +86,6 @@
     "gopls-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "skipDangerousModePermissionPrompt": true
 }
