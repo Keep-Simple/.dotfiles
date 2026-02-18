@@ -66,12 +66,11 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 zinit ice depth=1 atload'zvm_vi_yank() { zvm_yank; echo ${CUTBUFFER} | pbcopy; zvm_exit_visual_mode; }'
 zinit light jeffreytse/zsh-vi-mode
 
-# Silence direnv and load in turbo mode
+# silence direnv
 export DIRENV_LOG_FORMAT=
-zinit ice wait'0b' lucid as"program" make'!' \
-  atclone'./direnv hook zsh > zhook.zsh' \
-  atpull'%atclone' pick"direnv" src"zhook.zsh"
-zinit light direnv/direnv
+zinit as"program" make'!' atclone'./direnv hook zsh > zhook.zsh' \
+    atpull'%atclone' pick"direnv" src"zhook.zsh" for \
+        direnv/direnv
 
 # oh-my-posh with zinit caching (loads immediately, cached for speed)
 zinit ice id-as'oh-my-posh' lucid \
@@ -81,55 +80,36 @@ zinit ice id-as'oh-my-posh' lucid \
   run-atpull
 zinit light zdharma-continuum/null
 
-# fzf integration in turbo mode
-zinit ice wait'0c' lucid \
-  atclone'fzf --zsh > fzf.zsh' \
-  atpull'%atclone' \
-  src'fzf.zsh' nocompile'!' \
-  id-as'fzf-integration' \
-  run-atpull
-zinit light zdharma-continuum/null
-
-# OMZ plugins in turbo mode (wait'0d' for slightly later load)
-zinit wait'0d' lucid light-mode for \
+# Regular plugins, loaded in turbo mode (wait)
+zinit wait lucid light-mode for \
     OMZP::golang \
-    OMZP::terraform
-
-# Completions (load early in turbo)
-zinit wait'0b' lucid light-mode for \
+    OMZP::terraform \
+    \
     as"completion" \
     OMZP::docker/completions/_docker \
     \
     as"completion" \
     OMZP::docker-compose/_docker-compose \
     \
-    blockf \
-    zsh-users/zsh-completions
-
-# History substring search with keybindings
-zinit wait'0c' lucid light-mode \
-  atload'bindkey "^[[A" history-substring-search-up; bindkey "^[[B" history-substring-search-down' \
-  for zsh-users/zsh-history-substring-search
-
-# Custom zinit hooks for yazi and nvim
-zinit wait'0d' lucid light-mode for \
+    atload'bindkey "^[[A" history-substring-search-up; bindkey "^[[B" history-substring-search-down; source <(fzf --zsh)' \
+    zsh-users/zsh-history-substring-search \
+    \
     atload='_zinit_yazi' \
     id-as'yazi' nocompile \
     zdharma-continuum/null \
     \
     atload='_zinit_nvim' \
     id-as'nvim' nocompile \
-    zdharma-continuum/null
-
-# Fast syntax highlighting with compinit
-zinit wait'0c' lucid light-mode \
-  atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zicdreplay" \
-  for zdharma/fast-syntax-highlighting
-
-# Autosuggestions (load last to not interfere)
-zinit wait'0e' lucid light-mode \
-  atload"!_zsh_autosuggest_start; bindkey '^W' forward-word" \
-  for zsh-users/zsh-autosuggestions
+    zdharma-continuum/null \
+    \
+    atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zicdreplay" \
+    zdharma/fast-syntax-highlighting \
+    \
+    blockf \
+    zsh-users/zsh-completions \
+    \
+    atload"!_zsh_autosuggest_start; bindkey '^W' forward-word" \
+    zsh-users/zsh-autosuggestions
 
 autoload -U colors && colors
 
