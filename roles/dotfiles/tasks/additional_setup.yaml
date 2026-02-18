@@ -14,6 +14,14 @@
     cmd: "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm/bin/install_plugins"
   when: not tpm_plugins.stat.exists
 
+- name: Install pre-commit hooks in dotfiles repo
+  ansible.builtin.command:
+    cmd: pre-commit install
+    chdir: "{{ dotfiles.target }}"
+    creates: "{{ dotfiles.target }}/.git/hooks/pre-commit"
+  environment:
+    PATH: "{{ homebrew_brew_bin_path | default('') }}:{{ ansible_facts['env'].PATH }}"
+
 - name: Install asdf packages
   ansible.builtin.shell: |
     awk '{print $1}' {{ ansible_facts['user_dir'] }}/.tool-versions | xargs -I _ asdf plugin add _ || true
