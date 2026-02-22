@@ -9,6 +9,10 @@
 !hooks/**
 !claude.webp
 !commands/
-!settings.json
+!.claude/
+!.claude/settings.json
 !keybindings.json
 !.mcp.json
+!.config/
+!.config/ccstatusline/
+!.config/ccstatusline/settings.json
