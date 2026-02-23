@@ -34,7 +34,12 @@
       "Bash(cargo:*)",
       "Bash(go:*)",
       "mcp__context7__query-docs",
-      "WebSearch"
+      "mcp__slack__slack_search_public",
+      "mcp__slack__slack_search_channels",
+      "mcp__atlassian__getAccessibleAtlassianResources",
+      "mcp__atlassian__search",
+      "mcp__atlassian__searchConfluenceUsingCql",
+      "mcp__atlassian__searchJiraIssuesUsingJql"
     ],
     "deny": [
       "Bash(rm -rf /)"
