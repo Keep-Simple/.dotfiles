@@ -2,9 +2,10 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
     "DISABLE_AUTOUPDATER": "1",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-sonnet-4-6",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5@20251001",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-6[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6[1m]"
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6[1m]",
+    "ENABLE_TOOL_SEARCH": "true"
   },
   "includeCoAuthoredBy": false,
   "permissions": {
@@ -39,14 +40,17 @@
       "mcp__atlassian__getAccessibleAtlassianResources",
       "mcp__atlassian__search",
       "mcp__atlassian__searchConfluenceUsingCql",
-      "mcp__atlassian__searchJiraIssuesUsingJql"
+      "mcp__atlassian__searchJiraIssuesUsingJql",
+      "mcp__atlassian__getJiraIssue",
+      "mcp__atlassian__getConfluencePage",
+      "mcp__atlassian__fetch"
     ],
     "deny": [
       "Bash(rm -rf /)"
     ],
     "defaultMode": "default"
   },
-  "model": "opusplan",
+  "model": "opus",
   "hooks": {
     "Stop": [
       {
@@ -79,18 +83,42 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccstatusline@latest",
+    "padding": 0
+  },
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "jdtls-lsp@claude-plugins-official": true
+  },
+  "sandbox": {
+    "enabled": true,
+    "excludedCommands": [
+      "git",
+      "gh",
+      "jq",
+      "ls",
+      "pwd",
+      "cat",
+      "find",
+      "grep",
+      "which",
+      "npm",
+      "make",
+      "yarn",
+      "pnpm",
+      "bun",
+      "pip",
+      "cargo",
+      "go"
+    ]
   },
   "alwaysThinkingEnabled": true,
-  "skipDangerousModePermissionPrompt": true,
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y ccstatusline@latest",
-    "padding": 0
-  }
+  "skipDangerousModePermissionPrompt": true
 }

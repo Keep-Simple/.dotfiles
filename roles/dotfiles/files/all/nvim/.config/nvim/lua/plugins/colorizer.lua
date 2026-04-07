@@ -1,4 +1,15 @@
 return {
-  "NvChad/nvim-colorizer.lua",
-  config = true,
+  "catgoose/nvim-colorizer.lua",
+  event = "BufReadPre",
+  opts = {
+    filetypes = { "*" },
+    options = {
+      parsers = {
+        css = true,
+      },
+      display = {
+        mode = "background",
+      },
+    },
+  },
 }
