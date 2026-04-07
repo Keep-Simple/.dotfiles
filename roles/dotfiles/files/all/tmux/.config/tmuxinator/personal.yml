@@ -1,8 +1,0 @@
-name: personal
-root: ~/Documents/personal
-
-
-windows:
-  - personal:
-      panes:
-        - yazi

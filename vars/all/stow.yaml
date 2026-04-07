@@ -12,6 +12,7 @@ stow_common_items:
   - spotify-player
   - zsh
   - shell
+  - sesh
   - yamlfmt
   - yazi
   - claude-code

@@ -1,0 +1,59 @@
+blacklist = ["quickterm"]
+
+[default_session]
+startup_command = "nvim_restore_session_for_curr_dir"
+
+[[session]]
+name = "personal"
+path = "~/Documents/personal"
+startup_command = "yazi"
+
+[[session]]
+name = "spotify"
+path = "~"
+startup_command = "spotify_player"
+
+[[session]]
+name = "dotfiles"
+path = "~/.dotfiles"
+
+[[session]]
+name = "pyren"
+path = "~/Documents/personal/pyren"
+startup_command = "~/.config/sesh/scripts/pyren.sh"
+
+[[session]]
+name = "cli"
+path = "~/Documents/commercial/cli"
+
+[[session]]
+name = "snyk-ls"
+path = "~/Documents/commercial/snyk-ls"
+
+[[session]]
+name = "go-application-framework"
+path = "~/Documents/commercial/go-application-framework"
+
+[[session]]
+name = "analytics-service"
+path = "~/Documents/commercial/analytics-service"
+
+[[session]]
+name = "ldx-sync"
+path = "~/Documents/commercial/ldx-sync"
+
+[[session]]
+name = "vscode-extension"
+path = "~/Documents/commercial/vscode-extension"
+
+[[session]]
+name = "snyk-eclipse-plugin"
+path = "~/Documents/commercial/snyk-eclipse-plugin"
+
+[[session]]
+name = "snyk-visual-studio-plugin"
+path = "~/Documents/commercial/snyk-visual-studio-plugin"
+
+[[session]]
+name = "snyk-intellij-plugin"
+path = "~/Documents/commercial/snyk-intellij-plugin"

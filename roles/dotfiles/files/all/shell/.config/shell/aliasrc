@@ -35,7 +35,6 @@ alias \
     top="btop" \
     htop="btop" \
     k="kubectl" \
-    mux="tmuxinator" \
     trem="transmission-remote" \
     YT="youtube-viewer" \
     sdn="sudo shutdown -h now" \
