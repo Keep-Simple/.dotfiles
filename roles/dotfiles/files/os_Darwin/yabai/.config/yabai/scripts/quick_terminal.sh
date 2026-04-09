@@ -9,10 +9,6 @@ launch_kitty() {
     disown -r "${kitty_pid}"
 }
 
-# launch_alacritty() {
-#     open -n /Applications/Alacritty.app --args --title QuickTerminal
-# }
-
 quick_term_toggle() {
     osascript -e "
         tell application \"System Events\"
