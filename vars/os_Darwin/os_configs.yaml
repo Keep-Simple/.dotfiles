@@ -444,6 +444,12 @@ macos_defaults:
     type: bool
     value: 'false'
 
+  - name: Disable switching to a Space with open windows for the activated app
+    domain: NSGlobalDomain
+    key: AppleSpacesSwitchOnActivate
+    type: bool
+    value: 'false'
+
 
 macos_defaults_xml:
   - key: com.apple.symbolichotkeys

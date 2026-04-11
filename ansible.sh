@@ -24,11 +24,6 @@ COMMAND:
 _install_ansible_deps() {
   echo "⚪ [ansible] installing deps..."
   ansible-galaxy install -r $cwd/requirements.yaml --force
-  if [ ! -f "$cwd/library/stow" ]; then
-    wget https://raw.githubusercontent.com/caian-org/ansible-stow/v1.2.1/stow
-    mkdir -p "$cwd/library"
-    mv stow "$cwd/library"
-  fi
   echo "✅ [ansible] deps installed!"
 }
 
