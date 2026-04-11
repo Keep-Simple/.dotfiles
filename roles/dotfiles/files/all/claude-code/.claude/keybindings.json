@@ -1,9 +1,10 @@
-[
-	{
-		"context": "Chat",
-		"bindings": {
-			"ctrl+shift+v": "chat:imagePaste",
-			"ctrl+v": null
+{
+	"bindings": [
+		{
+			"context": "Chat",
+			"bindings": {
+				"ctrl+shift+v": "chat:imagePaste"
+			}
 		}
-	}
-]
+	]
+}

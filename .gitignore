@@ -1,4 +1,5 @@
 .DS_Store
-library
+library/*
+!library/stow
 _bmad/
 /.claude
