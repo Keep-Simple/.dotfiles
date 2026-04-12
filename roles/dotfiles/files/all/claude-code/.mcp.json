@@ -21,6 +21,10 @@
 				"clientId": "1601185624273.8899143856786",
 				"callbackPort": 3118
 			}
+		},
+		"reddit": {
+			"command": "npx",
+			"args": ["-y", "reddit-mcp-buddy"]
 		}
 	}
 }

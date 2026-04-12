@@ -15,11 +15,9 @@
   },
   "general": {
     "vimMode": true,
-    "disableUpdateNag": true,
     "checkpointing": {
       "enabled": true
     },
-    "disableAutoUpdate": true,
     "enablePromptCompletion": true,
     "preferredEditor": "neovim",
     "enableAutoUpdate": false,

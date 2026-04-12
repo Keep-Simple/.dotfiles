@@ -43,7 +43,8 @@
       "mcp__atlassian__searchJiraIssuesUsingJql",
       "mcp__atlassian__getJiraIssue",
       "mcp__atlassian__getConfluencePage",
-      "mcp__atlassian__fetch"
+      "mcp__atlassian__fetch",
+      "mcp__reddit__*"
     ],
     "deny": [
       "Bash(rm -rf /)"
@@ -95,7 +96,23 @@
     "gopls-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
-    "jdtls-lsp@claude-plugins-official": true
+    "jdtls-lsp@claude-plugins-official": true,
+    "caveman@caveman": true,
+    "andrej-karpathy-skills@karpathy-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "karpathy-skills": {
+      "source": {
+        "source": "github",
+        "repo": "forrestchang/andrej-karpathy-skills"
+      }
+    }
   },
   "sandbox": {
     "enabled": true,

@@ -99,5 +99,10 @@ return {
 	},
 	{
 		"zbirenbaum/copilot.lua",
+		opts = {
+			copilot_node_command = vim.fn.trim(
+				vim.fn.system("asdf where nodejs $(awk '/^nodejs/ {print $2}' ~/.tool-versions)")
+			) .. "/bin/node",
+		},
 	},
 }
