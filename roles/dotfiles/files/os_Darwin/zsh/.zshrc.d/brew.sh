@@ -15,6 +15,14 @@ brew() {
     return $exit_code
 }
 
+brew-backup() {
+    command brew bundle dump --force "$@"
+}
+
+brew-cleanup() {
+    command brew bundle cleanup --force "$@"
+}
+
 # List installed brew packages not tracked in the Brewfile
 brew-orphans() {
     local brewfile_formulae installed_formulae brewfile_casks installed_casks
