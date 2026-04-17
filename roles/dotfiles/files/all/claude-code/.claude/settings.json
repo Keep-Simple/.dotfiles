@@ -3,7 +3,7 @@
   "env": {
     "DISABLE_AUTOUPDATER": "1",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5@20251001",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-6[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-7[1m]",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6[1m]",
     "ENABLE_TOOL_SEARCH": "true",
     "CAVEMAN_DEFAULT_MODE": "ultra"
@@ -116,6 +116,7 @@
   },
   "sandbox": {
     "enabled": true,
+    "enableWeakerNetworkIsolation": true,
     "excludedCommands": [
       "git",
       "gh",
@@ -137,5 +138,6 @@
     ]
   },
   "alwaysThinkingEnabled": true,
+  "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true
 }

@@ -1,5 +1,11 @@
 #!/bin/sh
 
+LOCKDIR="/tmp/yabai_create_spaces.lock"
+if ! mkdir "$LOCKDIR" 2>/dev/null; then
+    exit 0
+fi
+trap 'rmdir "$LOCKDIR"' EXIT
+
 DESIRED_SPACES_PER_DISPLAY=${1:-4}
 CURRENT_SPACES="$(yabai -m query --displays | jq -r '.[].spaces | @sh')"
 
@@ -16,7 +22,7 @@ do
     elif [ "$MISSING_SPACES" -lt 0 ]; then
         for i in $(seq 1 $((-$MISSING_SPACES)))
         do
-            yabai -m space --destroy 
+            yabai -m space --destroy
         done
     fi
     DELTA=$(($DELTA+$MISSING_SPACES))
