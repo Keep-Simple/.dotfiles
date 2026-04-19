@@ -116,19 +116,32 @@
   },
   "sandbox": {
     "enabled": true,
+    "failIfUnavailable": true,
     "enableWeakerNetworkIsolation": true,
+    "filesystem": {
+      "allowWrite": [
+        "/Users/nickyasnohorodskyi/.cache",
+        "/Users/nickyasnohorodskyi/Library/Caches",
+        "/Users/nickyasnohorodskyi/.local/share",
+        "/Users/nickyasnohorodskyi/.local/state"
+      ],
+      "denyWrite": [
+        "/Users/nickyasnohorodskyi/.ssh",
+        "/Users/nickyasnohorodskyi/.aws",
+        "/Users/nickyasnohorodskyi/.gnupg",
+        "/Users/nickyasnohorodskyi/.config/gh/hosts.yml"
+      ]
+    },
+    "network": {
+      "allowUnixSockets": [
+        "/var/run/docker.sock"
+      ]
+    },
     "excludedCommands": [
       "git",
       "gh",
-      "jq",
-      "ls",
-      "pwd",
-      "cat",
-      "find",
-      "grep",
-      "which",
-      "npm",
       "make",
+      "npm",
       "yarn",
       "pnpm",
       "bun",
