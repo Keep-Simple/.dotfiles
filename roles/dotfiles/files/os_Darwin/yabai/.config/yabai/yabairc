@@ -67,6 +67,9 @@ yabai -m rule --add app="^Parallels Desktop$" space=^8
 yabai -m rule --add title="QuickTerminal" grid=40:20:4:7:12:26 opacity=0.9 scratchpad="QuickTerminal"
 
 $YABAI/create_spaces.sh 8
+# Re-apply bsp layout: post-restart, spaces sometimes lose layout state
+# and windows render as untiled native macOS frames until forced.
+yabai -m query --spaces | jq -r '.[].index' | xargs -I{} yabai -m space {} --layout bsp
 $YABAI/smart_indicator.sh
 echo "yabai configuration loaded.."
 skhd
