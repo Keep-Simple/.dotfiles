@@ -80,10 +80,52 @@ return {
 			{
 				"<leader>aa",
 				function()
-					-- Show CLI picker to select claude instance or create new one
 					local State = require("sidekick.cli.state")
-					require("sidekick.cli.ui.select").select({
-						auto = false, -- Always show picker, never auto-select
+					local Select = require("sidekick.cli.ui.select")
+
+					-- Patch picker format once: append tmux window index for disambiguation.
+					if not Select._window_idx_patched then
+						Select._window_idx_patched = true
+						local Util = require("sidekick.util")
+						local orig = Select.format
+						local pane_window = {} ---@type table<string,string>
+						local function refresh_panes()
+							pane_window = {}
+							local lines = Util.exec(
+								{ "tmux", "list-panes", "-a", "-F", "#{pane_id} #{window_index}" },
+								{ notify = false }
+							) or {}
+							for _, line in ipairs(lines) do
+								local id, idx = line:match("^(%%%d+)%s+(%d+)$")
+								if id then
+									pane_window[id] = idx
+								end
+							end
+						end
+						Select.format = function(state, picker)
+							local ret = orig(state, picker)
+							local pane_id = state.session and state.session.tmux_pane_id
+							local idx = pane_id and pane_window[pane_id]
+							if idx then
+								ret[#ret + 1] = { (" w%s"):format(idx), "Special" }
+							end
+							return ret
+						end
+						-- Wrap select() so cache refreshes before each open.
+						local orig_select = Select.select
+						Select.select = function(opts)
+							refresh_panes()
+							return orig_select(opts)
+						end
+					end
+
+					-- Detach attached claude sessions so picker re-prompts.
+					for _, s in ipairs(State.get({ name = "claude", attached = true })) do
+						State.detach(s)
+					end
+
+					Select.select({
+						auto = false,
 						filter = { name = "claude" },
 						cb = function(state)
 							if state then
