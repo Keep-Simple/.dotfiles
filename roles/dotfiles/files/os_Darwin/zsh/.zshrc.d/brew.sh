@@ -1,6 +1,13 @@
 BREWFILE="$HOME/.dotfiles/roles/packages/files/macos/Brewfile"
 
 brew() {
+    local pre_yabai post_yabai
+    case "$1" in
+        upgrade|reinstall|install)
+            pre_yabai=$(command brew list --versions yabai 2>/dev/null)
+            ;;
+    esac
+
     command brew "$@"
     local exit_code=$?
 
@@ -8,6 +15,16 @@ brew() {
         install|uninstall|remove|tap|untap|reinstall)
             if [[ $exit_code -eq 0 ]]; then
                 command brew bundle dump --force --file="$BREWFILE" --brews --casks --taps
+            fi
+            ;;
+    esac
+
+    case "$1" in
+        upgrade|reinstall|install)
+            post_yabai=$(command brew list --versions yabai 2>/dev/null)
+            if [[ -n "$pre_yabai" && "$pre_yabai" != "$post_yabai" ]] && \
+               typeset -f yabaipostupgrade >/dev/null; then
+                yabaipostupgrade
             fi
             ;;
     esac

@@ -1,22 +1,25 @@
+YABAI_CERT="${YABAI_CERT:-yabai-cert}"
+
 suyabai() {
     str="$(whoami) ALL = (root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai) | awk "{print \$1;}") $(which yabai) --load-sa"
     echo $str | sudo tee /private/etc/sudoers.d/yabai
 }
 
-postbrewyabai() {
+# Re-sign + reload after brew swapped the binary.
+# Triggered automatically by the brew() wrapper on yabai version change.
+yabaipostupgrade() {
+    local bin="$(brew --prefix yabai)/bin/yabai"
     yabai --stop-service
+    sudo yabai --uninstall-sa
+    sudo xattr -cr "$bin"
+    codesign -fs "$YABAI_CERT" "$bin"
     suyabai
     yabai --start-service
 }
 
-yabaiheadupdate() {
-    yabai --stop-service
-    sudo yabai --uninstall-sa
-    pkill -x Dock
+# Manual full-cycle update; brew wrapper will fire yabaipostupgrade on the reinstall.
+yabaiupdate() {
     brew reinstall koekeishiya/formulae/yabai
-    codesign -fs "yabai-cert" "$(brew --prefix yabai)/bin/yabai"
-    suyabai
-    yabai --start-service
 }
 
 rmyabai() {
