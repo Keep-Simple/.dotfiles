@@ -37,6 +37,18 @@
   changed_when: false
   become: true
 
+- name: Enable Touch ID for sudo (with tmux/ssh reattach)
+  ansible.builtin.copy:
+    dest: /etc/pam.d/sudo_local
+    owner: root
+    group: wheel
+    mode: '0444'
+    content: |
+      # Managed by ansible (dotfiles). Survives macOS updates.
+      auth       optional       {{ homebrew_brew_bin_path | dirname }}/lib/pam/pam_reattach.so ignore_ssh
+      auth       sufficient     pam_tid.so
+  become: true
+
 # - name: get current wallpapper
 #   ansible.builtin.command:
 #     cmd: 'osascript -e "tell app \"finder\" to get posix path of (get desktop picture as alias)"'
