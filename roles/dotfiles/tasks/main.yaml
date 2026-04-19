@@ -1,11 +1,61 @@
 ---
 - block:
+    - name: list common stow source dirs
+      ansible.builtin.find:
+        paths: "{{ dotfiles.target }}/roles/dotfiles/files/all"
+        file_type: directory
+        depth: 1
+      register: stow_common_source_dirs
+      when: dotfiles_state == 'present'
+
+    - name: compute orphaned common stow packages
+      ansible.builtin.set_fact:
+        stow_common_orphans: >-
+          {{ stow_common_source_dirs.files
+             | map(attribute='path') | map('basename')
+             | difference(stow_common_items) }}
+      when: dotfiles_state == 'present'
+
+    - name: unstow orphaned common packages
+      stow:
+        state: absent
+        dir: "{{ dotfiles.target }}/roles/dotfiles/files/all"
+        package: '{{ item }}'
+        no_folding: true
+      loop: "{{ stow_common_orphans }}"
+      when: dotfiles_state == 'present' and stow_common_orphans | length > 0
+
     - name: stow dotfiles
       stow:
         state: '{{ dotfiles_state }}'
         dir: "{{ dotfiles.target }}/roles/dotfiles/files/all"
         package: '{{ stow_common_items }}'
         no_folding: true
+
+    - name: list os-specific stow source dirs
+      ansible.builtin.find:
+        paths: "{{ dotfiles.target }}/roles/dotfiles/files/os_{{ ansible_facts['system'] }}"
+        file_type: directory
+        depth: 1
+      register: stow_os_source_dirs
+      when: dotfiles_state == 'present'
+
+    - name: compute orphaned os-specific stow packages
+      ansible.builtin.set_fact:
+        stow_os_orphans: >-
+          {{ stow_os_source_dirs.files
+             | map(attribute='path') | map('basename')
+             | difference(stow_items) }}
+      when: dotfiles_state == 'present'
+
+    - name: unstow orphaned os-specific packages
+      stow:
+        state: absent
+        dir: "{{ dotfiles.target }}/roles/dotfiles/files/os_{{ ansible_facts['system'] }}"
+        package: '{{ item }}'
+        no_folding: true
+      loop: "{{ stow_os_orphans }}"
+      when: dotfiles_state == 'present' and stow_os_orphans | length > 0
 
     - name: stow os-specific dotfiles
       stow:
