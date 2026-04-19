@@ -1,0 +1,7 @@
+---
+# Per-project files symlinked into checked-out project dirs.
+# src is relative to roles/dotfiles/files/project-overrides/.
+# Symlinks are skipped (with a warning) when dest's parent dir is absent.
+project_overrides:
+  - src: snyk-ls/nvim.lua
+    dest: "{{ ansible_facts['user_dir'] }}/Documents/commercial/snyk-ls/.nvim.lua"

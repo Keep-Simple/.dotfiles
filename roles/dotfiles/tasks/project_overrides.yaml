@@ -1,0 +1,27 @@
+---
+- name: Check project override destinations
+  ansible.builtin.stat:
+    path: "{{ item.dest | dirname }}"
+  loop: "{{ project_overrides | default([]) }}"
+  loop_control:
+    label: "{{ item.dest }}"
+  register: project_override_parents
+
+- name: Symlink project overrides
+  ansible.builtin.file:
+    src: "{{ dotfiles.target }}/roles/dotfiles/files/project-overrides/{{ item.item.src }}"
+    dest: "{{ item.item.dest }}"
+    state: link
+    force: true
+  loop: "{{ project_override_parents.results }}"
+  loop_control:
+    label: "{{ item.item.dest }}"
+  when: item.stat.exists and item.stat.isdir
+
+- name: Warn on missing project override destinations
+  ansible.builtin.debug:
+    msg: "Skipping {{ item.item.dest }} — parent dir does not exist (project not cloned?)"
+  loop: "{{ project_override_parents.results }}"
+  loop_control:
+    label: "{{ item.item.dest }}"
+  when: not (item.stat.exists and item.stat.isdir)

@@ -1,4 +1,7 @@
 ---
+- name: Symlink project overrides
+  ansible.builtin.include_tasks: project_overrides.yaml
+
 - name: Install tmux plugin manager
   ansible.builtin.git:
     repo: https://github.com/tmux-plugins/tpm
