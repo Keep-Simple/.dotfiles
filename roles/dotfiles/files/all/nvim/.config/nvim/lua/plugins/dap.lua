@@ -171,6 +171,14 @@ return {
 		},
 	},
 	config = function()
+		local sign = vim.fn.sign_define
+		-- Nerd Font glyphs (UTF-8 byte escapes to survive editor serialization)
+		sign("DapBreakpoint", { text = "\xef\x86\x92", texthl = "DapBreakpoint" }) -- nf-fa-circle
+		sign("DapBreakpointCondition", { text = "\xef\x81\x95", texthl = "DapBreakpointCondition" }) -- nf-fa-question
+		sign("DapBreakpointRejected", { text = "\xef\x97\xb3", texthl = "DiagnosticError" }) -- nf-cod-debug_breakpoint_unsupported
+		sign("DapLogPoint", { text = "\xef\x80\xb1", texthl = "DapLogPoint" }) -- nf-fa-list
+		sign("DapStopped", { text = "\xef\x81\x8b", texthl = "DiagnosticWarn", linehl = "DapStoppedLine" }) -- nf-fa-play
+
 		-- Register dynamic description for mute/unmute keybind
 		vim.schedule(function()
 			local wk = require("which-key")

@@ -8,6 +8,7 @@ return {
 			{ "]", group = "next" },
 			{ "[", group = "prev" },
 			{ "<leader><tab>", group = "tabs" },
+			{ "<leader>a", group = "ai" },
 			{ "<leader>c", group = "code" },
 			{ "<leader>d", group = "debug" },
 			{ "<leader>g", group = "git" },

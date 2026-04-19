@@ -45,7 +45,6 @@ return {
 			debug = false,
 		},
 		keys = {
-			{ "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
 			{
 				"<leader>at",
 				function()
