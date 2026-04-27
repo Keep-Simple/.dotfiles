@@ -13,7 +13,7 @@ These are saved to `/tmp/claude_${SESSION_ID}_pane` and `/tmp/claude_${SESSION_I
 
 ### on-stop.sh
 Runs when Claude Code finishes a task. Sends a notification if:
-- The frontmost app is NOT kitty, OR
+- The frontmost app is NOT the terminal configured via `CLAUDE_HOOK_TERMINAL_APP` (default: `Ghostty`), OR
 - The current pane is NOT the pane where Claude was invoked
 
 This prevents notifications when you're actively watching Claude work.

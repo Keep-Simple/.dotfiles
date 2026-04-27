@@ -170,7 +170,7 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
 
-                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
@@ -223,7 +223,7 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
 
-                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
@@ -276,7 +276,7 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
 
-                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
@@ -334,7 +334,7 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
 
-                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
@@ -392,7 +392,7 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
 
-                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
@@ -450,7 +450,7 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
 
-                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
@@ -508,7 +508,7 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
 
-                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^com\\.utmapp\\.UTM"
                                         ],
                                         "type": "frontmost_application_unless"
