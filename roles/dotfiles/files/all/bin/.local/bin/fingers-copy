@@ -1,0 +1,4 @@
+#!/bin/sh
+text=$(cat)
+printf '%s' "$text" | pbcopy
+tmux display-message -d 5000 "Copied: $text"
