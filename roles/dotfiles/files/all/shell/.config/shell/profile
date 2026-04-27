@@ -28,9 +28,11 @@ FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 
 FZF_DEFAULT_OPTS="--layout=reverse --inline-info --height=50%"
 FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
---color=dark
---color=fg:-1,bg:-1,hl:#c678dd,fg+:#ffffff,bg+:#4b5263,hl+:#d858fe
---color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef
+--color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796
+--color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6
+--color=marker:#b7bdf8,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796
+--color=selected-bg:#494d64
+--color=border:#363a4f,label:#cad3f5
 '
 export LESS=-R
 export LESS_TERMCAP_mb="$(printf '%b' '[1;31m')"

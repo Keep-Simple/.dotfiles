@@ -1,4 +1,4 @@
-theme = "dracula"
+theme = "Catppuccin-macchiato"
 client_id = "06fb85c0d06d4b6d8af256dce9223aad"
 client_port = 8080
 playback_format = """

@@ -1,5 +1,5 @@
 # Vim keys built-in: h/j/k/l, gg/G, / search, dd kill, tab switch widget, ? help.
-# Custom tokyonight-storm palette below.
+# Custom catppuccin-macchiato palette below.
 
 [flags]
 group_processes = false
@@ -28,46 +28,47 @@ type = "mem"
 [cpu]
 default = "average"
 
-# Tokyonight Storm palette
-# bg #24283b  fg #c0caf5  blue #7aa2f7  cyan #7dcfff  magenta #bb9af7
-# purple #9d7cd8  green #9ece6a  teal #73daca  yellow #e0af68
-# orange #ff9e64  red #f7768e  comment #565f89
+# Catppuccin Macchiato palette
+# bg #24273a  mantle #1e2030  surface1 #494d64  text #cad3f5
+# blue #8aadf4  teal #8bd5ca  mauve #c6a0f6  lavender #b7bdf8
+# green #a6da95  sapphire #7dc4e4  yellow #eed49f
+# peach #f5a97f  red #ed8796  overlay0 #6e738d  subtext0 #a5adcb
 
 [styles.cpu]
-all_entry_color = "#c0caf5"
-avg_entry_color = "#f7768e"
+all_entry_color = "#cad3f5"
+avg_entry_color = "#ed8796"
 cpu_core_colors = [
-    "#7aa2f7", "#7dcfff", "#9ece6a", "#e0af68",
-    "#bb9af7", "#73daca", "#ff9e64", "#9d7cd8",
+    "#8aadf4", "#8bd5ca", "#a6da95", "#eed49f",
+    "#c6a0f6", "#7dc4e4", "#f5a97f", "#b7bdf8",
 ]
 
 [styles.memory]
-ram_color = "#7aa2f7"
-cache_color = "#7dcfff"
-swap_color = "#bb9af7"
-arc_color = "#73daca"
-gpu_colors = ["#9ece6a", "#e0af68", "#ff9e64"]
+ram_color = "#8aadf4"
+cache_color = "#8bd5ca"
+swap_color = "#c6a0f6"
+arc_color = "#7dc4e4"
+gpu_colors = ["#a6da95", "#eed49f", "#f5a97f"]
 
 [styles.network]
-rx_color = "#9ece6a"
-tx_color = "#f7768e"
-rx_total_color = "#73daca"
-tx_total_color = "#ff9e64"
+rx_color = "#a6da95"
+tx_color = "#ed8796"
+rx_total_color = "#7dc4e4"
+tx_total_color = "#f5a97f"
 
 [styles.widgets]
-border_color = "#3b4261"
-selected_border_color = "#7aa2f7"
-widget_title = { color = "#7aa2f7", bold = true }
-text = "#c0caf5"
-selected_text = { color = "#1f2335", bg_color = "#7aa2f7", bold = true }
-disabled_text = "#565f89"
+border_color = "#494d64"
+selected_border_color = "#8aadf4"
+widget_title = { color = "#8aadf4", bold = true }
+text = "#cad3f5"
+selected_text = { color = "#1e2030", bg_color = "#8aadf4", bold = true }
+disabled_text = "#6e738d"
 
 [styles.graphs]
-graph_color = "#a9b1d6"
-legend_text = { color = "#c0caf5" }
+graph_color = "#a5adcb"
+legend_text = { color = "#cad3f5" }
 
 [styles.tables]
-headers = { color = "#7aa2f7", bold = true }
+headers = { color = "#8aadf4", bold = true }
 
 [styles.battery]
-battery_colors = ["#f7768e", "#ff9e64", "#e0af68", "#9ece6a"]
+battery_colors = ["#ed8796", "#f5a97f", "#eed49f", "#a6da95"]

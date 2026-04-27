@@ -74,7 +74,7 @@ zinit as"program" make'!' atclone'./direnv hook zsh > zhook.zsh' \
 
 # oh-my-posh with zinit caching (loads immediately, cached for speed)
 zinit ice id-as'oh-my-posh' lucid \
-  atclone'oh-my-posh init zsh --config ~/.config/ohmyposh/tokyonight_storm.omp.json > omp.zsh' \
+  atclone'oh-my-posh init zsh --config ~/.config/ohmyposh/catppuccin_macchiato.omp.json > omp.zsh' \
   atpull'%atclone' \
   src'omp.zsh' nocompile'!' \
   run-atpull
