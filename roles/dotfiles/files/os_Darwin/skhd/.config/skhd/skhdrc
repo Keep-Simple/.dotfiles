@@ -19,8 +19,8 @@
 .define toggle_space : yabai -m space --toggle {{1}}
 
 # apps shortcuts
-ctrl + alt + cmd - return : kitty --single-instance --instance-group base -d ~ tmux
-ctrl + alt + cmd + shift - return : yabai -m window --toggle QuickTerminal || kitty --single-instance --instance-group quickterm --title QuickTerminal --directory "${HOME}" tmux new -A -s quickterm
+ctrl + alt + cmd - return : open -na Ghostty.app --args --working-directory="${HOME}"
+ctrl + alt + cmd + shift - return : yabai -m window --toggle QuickTerminal || open -na Ghostty --args --title=QuickTerminal --working-directory="${HOME}" -e tmux new -A -s quickterm
 ctrl + alt + cmd - 0x2B : open -n /System/Applications/System\ Settings.app
 ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
 # selection screenshot to the clipboard without sound
