@@ -1,25 +1,7 @@
 return {
 	{
 		"tpope/vim-fugitive",
-		cmd = {
-			"G",
-			"Git",
-			"Gdiffsplit",
-			"Gvdiffsplit",
-			"Gdiff",
-			"Gread",
-			"Gclog",
-			"Gwrite",
-			"Ggrep",
-			"GMove",
-			"GDelete",
-			"GBrowse",
-			"GRemove",
-			"GRename",
-			"Glgrep",
-			"Gedit",
-		},
-		ft = { "fugitive" },
+		lazy = false,
 		keys = {
 			{
 				"<leader>gm",
