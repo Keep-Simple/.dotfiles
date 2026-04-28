@@ -3,10 +3,10 @@
 QuickTerminal=$(yabai -m query --windows | jq 'map(select(.title=="QuickTerminal")) | .[0].pid')
 
 
-launch_ghostty() {
-    { open -na Ghostty --args --title=QuickTerminal --working-directory="${HOME}" -e tmux new -A -s quickterm & } &> /dev/null
-    ghostty_pid=$!
-    disown -r "${ghostty_pid}"
+launch_kitty() {
+    { kitty --single-instance --instance-group quickterm --title QuickTerminal --directory "${HOME}" tmux new -A -s quickterm & } &> /dev/null
+    kitty_pid=$!
+    disown -r "${kitty_pid}"
 }
 
 quick_term_toggle() {
@@ -23,7 +23,7 @@ quick_term_toggle() {
 
 
 if [[ $QuickTerminal == "null" ]]; then
-    launch_ghostty
+    launch_kitty
 else
     quick_term_toggle $QuickTerminal
 fi
