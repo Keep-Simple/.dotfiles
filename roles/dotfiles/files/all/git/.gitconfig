@@ -32,5 +32,7 @@
 	smudge = git-lfs smudge -- %f
 [includeIf "gitdir:~/Documents/commercial/"]
   path = ~/.gitconfig-work
+[includeIf "hasconfig:remote.*.url:**/snyk/**"]
+  path = ~/.gitconfig-work
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
