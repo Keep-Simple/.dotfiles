@@ -11,9 +11,23 @@
   poll: 2
   when: not zinit.stat.exists
 
+- name: Stat shortcut sources and outputs
+  ansible.builtin.stat:
+    path: "{{ ansible_facts['user_dir'] }}/.config/shell/{{ item }}"
+    follow: true
+  loop:
+    - bm-dirs
+    - bm-files
+    - shortcutrc
+    - zshnameddirrc
+  register: shortcut_stats
+
 - name: create shortcuts
   ansible.builtin.command:
     cmd: zsh -lc 'apply-shortcuts'
-  args:
-    creates: "{{ ansible_facts['user_dir'] }}/.config/shell/shortcutrc"
+  vars:
+    src_mtime: "{{ shortcut_stats.results[:2] | map(attribute='stat.mtime', default=0) | max }}"
+    outs_exist: "{{ shortcut_stats.results[2:] | map(attribute='stat.exists') | min }}"
+    out_mtime: "{{ shortcut_stats.results[2:] | map(attribute='stat.mtime', default=0) | min }}"
+  when: not outs_exist or src_mtime | float > out_mtime | float
 
