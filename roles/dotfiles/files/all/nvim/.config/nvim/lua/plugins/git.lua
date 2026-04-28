@@ -12,13 +12,7 @@ return {
 	},
 	{
 		"ruifm/gitlinker.nvim",
-		dependencies = {
-			{ "nvim-lua/plenary.nvim" },
-			{
-				"ojroques/vim-oscyank",
-				keys = { { "<leader>Y", "<cmd>OSCYankVisual<cr>", desc = "OSC52 Copy (for ssh)", mode = "v" } },
-			},
-		},
+		dependencies = { "nvim-lua/plenary.nvim" },
 		lazy = true,
 		keys = {
 			{
