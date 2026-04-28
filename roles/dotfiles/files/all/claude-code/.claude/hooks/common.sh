@@ -2,8 +2,6 @@
 # ABOUTME: Shared functions for Claude Code notification hooks
 # ABOUTME: Provides common logging and notification logic used across multiple hooks
 
-TERMINAL_APP="${CLAUDE_HOOK_TERMINAL_APP:-Ghostty}"
-
 # Setup debug logging
 setup_debug_log() {
     local log_name="$1"
@@ -36,17 +34,17 @@ should_send_notification() {
     log_debug "FRONT_APP: $front_app"
 
     # Check if notification should be sent
-    # Send notification if: not in $TERMINAL_APP OR different session OR different pane
-    if { [ "$front_app" != "$TERMINAL_APP" ] || [ "$claude_session" != "$focused_session" ] || [ "$claude_pane" != "$active_pane" ]; } && [ -n "$claude_pane" ]; then
+    # Send notification if: not in kitty OR different session OR different pane
+    if { [ "$front_app" != "kitty" ] || [ "$claude_session" != "$focused_session" ] || [ "$claude_pane" != "$active_pane" ]; } && [ -n "$claude_pane" ]; then
         log_debug "Conditions met for notification:"
-        log_debug "  - FRONT_APP != $TERMINAL_APP: $([ "$front_app" != "$TERMINAL_APP" ] && echo "true" || echo "false")"
+        log_debug "  - FRONT_APP != kitty: $([ "$front_app" != "kitty" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_SESSION != FOCUSED_SESSION: $([ "$claude_session" != "$focused_session" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_PANE != ACTIVE_PANE: $([ "$claude_pane" != "$active_pane" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_PANE is set: $([ -n "$claude_pane" ] && echo "true" || echo "false")"
         return 0
     else
         log_debug "Notification NOT sent. Reasons:"
-        log_debug "  - FRONT_APP == $TERMINAL_APP: $([ "$front_app" = "$TERMINAL_APP" ] && echo "true" || echo "false")"
+        log_debug "  - FRONT_APP == kitty: $([ "$front_app" = "kitty" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_SESSION == FOCUSED_SESSION: $([ "$claude_session" = "$focused_session" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_PANE == ACTIVE_PANE: $([ "$claude_pane" = "$active_pane" ] && echo "true" || echo "false")"
         log_debug "  - CLAUDE_PANE is empty: $([ -z "$claude_pane" ] && echo "true" || echo "false")"

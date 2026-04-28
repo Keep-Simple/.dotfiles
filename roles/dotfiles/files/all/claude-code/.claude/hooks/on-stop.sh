@@ -1,6 +1,6 @@
 #!/bin/bash
 # ABOUTME: Hook script that runs when Claude Code stops/finishes a task
-# ABOUTME: Sends a notification if the configured terminal is not frontmost or Claude pane is not current
+# ABOUTME: Sends a notification if kitty terminal is not frontmost or Claude pane is not current
 
 # Load common functions
 source "$(dirname "$0")/common.sh"
