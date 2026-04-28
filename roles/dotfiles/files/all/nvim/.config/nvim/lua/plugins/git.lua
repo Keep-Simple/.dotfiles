@@ -44,10 +44,8 @@ return {
 				print_url = false,
 				add_current_line_on_normal_mode = false,
 				action_callback = function(url)
-					-- yank to unnamed register
-					vim.api.nvim_command("let @\" = '" .. url .. "'")
-					-- copy to the system clipboard using OSC52
-					vim.fn.OSCYank(url)
+					vim.fn.setreg('"', url)
+					vim.fn.setreg("+", url)
 				end,
 			},
 		},
