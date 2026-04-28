@@ -1,5 +1,5 @@
 # Vim keys built-in: h/j/k/l, gg/G, / search, dd kill, tab switch widget, ? help.
-# Custom catppuccin-macchiato palette below.
+# Custom catppuccin-mocha palette below.
 
 [flags]
 group_processes = false
@@ -28,47 +28,47 @@ type = "mem"
 [cpu]
 default = "average"
 
-# Catppuccin Macchiato palette
-# bg #24273a  mantle #1e2030  surface1 #494d64  text #cad3f5
-# blue #8aadf4  teal #8bd5ca  mauve #c6a0f6  lavender #b7bdf8
-# green #a6da95  sapphire #7dc4e4  yellow #eed49f
-# peach #f5a97f  red #ed8796  overlay0 #6e738d  subtext0 #a5adcb
+# Catppuccin Mocha palette
+# bg #1e1e2e  mantle #181825  surface1 #45475a  text #cdd6f4
+# blue #89b4fa  teal #94e2d5  mauve #cba6f7  lavender #b4befe
+# green #a6e3a1  sapphire #74c7ec  yellow #f9e2af
+# peach #fab387  red #f38ba8  overlay0 #6c7086  subtext0 #a6adc8
 
 [styles.cpu]
-all_entry_color = "#cad3f5"
-avg_entry_color = "#ed8796"
+all_entry_color = "#cdd6f4"
+avg_entry_color = "#f38ba8"
 cpu_core_colors = [
-    "#8aadf4", "#8bd5ca", "#a6da95", "#eed49f",
-    "#c6a0f6", "#7dc4e4", "#f5a97f", "#b7bdf8",
+    "#89b4fa", "#94e2d5", "#a6e3a1", "#f9e2af",
+    "#cba6f7", "#74c7ec", "#fab387", "#b4befe",
 ]
 
 [styles.memory]
-ram_color = "#8aadf4"
-cache_color = "#8bd5ca"
-swap_color = "#c6a0f6"
-arc_color = "#7dc4e4"
-gpu_colors = ["#a6da95", "#eed49f", "#f5a97f"]
+ram_color = "#89b4fa"
+cache_color = "#94e2d5"
+swap_color = "#cba6f7"
+arc_color = "#74c7ec"
+gpu_colors = ["#a6e3a1", "#f9e2af", "#fab387"]
 
 [styles.network]
-rx_color = "#a6da95"
-tx_color = "#ed8796"
-rx_total_color = "#7dc4e4"
-tx_total_color = "#f5a97f"
+rx_color = "#a6e3a1"
+tx_color = "#f38ba8"
+rx_total_color = "#74c7ec"
+tx_total_color = "#fab387"
 
 [styles.widgets]
-border_color = "#494d64"
-selected_border_color = "#8aadf4"
-widget_title = { color = "#8aadf4", bold = true }
-text = "#cad3f5"
-selected_text = { color = "#1e2030", bg_color = "#8aadf4", bold = true }
-disabled_text = "#6e738d"
+border_color = "#45475a"
+selected_border_color = "#89b4fa"
+widget_title = { color = "#89b4fa", bold = true }
+text = "#cdd6f4"
+selected_text = { color = "#181825", bg_color = "#89b4fa", bold = true }
+disabled_text = "#6c7086"
 
 [styles.graphs]
-graph_color = "#a5adcb"
-legend_text = { color = "#cad3f5" }
+graph_color = "#a6adc8"
+legend_text = { color = "#cdd6f4" }
 
 [styles.tables]
-headers = { color = "#8aadf4", bold = true }
+headers = { color = "#89b4fa", bold = true }
 
 [styles.battery]
-battery_colors = ["#ed8796", "#f5a97f", "#eed49f", "#a6da95"]
+battery_colors = ["#f38ba8", "#fab387", "#f9e2af", "#a6e3a1"]

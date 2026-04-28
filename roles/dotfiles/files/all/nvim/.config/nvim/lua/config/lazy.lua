@@ -49,7 +49,7 @@ require("lazy").setup({
 		version = false, -- always use the latest git commit
 		-- version = "*", -- try installing the latest stable version for plugins that support semver
 	},
-	install = { colorscheme = { "catppuccin-macchiato" } },
+	install = { colorscheme = { "catppuccin-mocha" } },
 	checker = { enabled = false }, -- automatically check for plugin updates
 	performance = {
 		rtp = {

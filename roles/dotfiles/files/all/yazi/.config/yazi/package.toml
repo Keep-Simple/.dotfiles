@@ -19,5 +19,5 @@ rev = "398796d"
 hash = "8a7c58225816a163a6e8730c0adafbc8"
 
 [[flavor.deps]]
-use = "yazi-rs/flavors:catppuccin-macchiato"
+use = "yazi-rs/flavors:catppuccin-mocha"
 rev = "main"
