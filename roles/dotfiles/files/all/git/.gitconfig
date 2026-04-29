@@ -3,7 +3,7 @@
 	name = Nick Yasnogorodskyi
 [core]
 	pager = delta 
-  sshCommand = "ssh -i ~/.ssh/personal_key"
+  sshCommand = "ssh -i ~/.ssh/personal_key -o IdentitiesOnly=yes"
 [alias]
   c = checkout
   b = branch
