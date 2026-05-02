@@ -11,7 +11,7 @@
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
-      "Bash(git status)",
+      "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git tag:*)",
@@ -45,6 +45,20 @@
       "Bash(pip:*)",
       "Bash(cargo:*)",
       "Bash(go:*)",
+      "Bash(tee:*)",
+      "Bash(echo:*)",
+      "Bash(printf:*)",
+      "Bash(true)",
+      "Bash(false)",
+      "Bash(test:*)",
+      "Bash(/usr/bin/grep:*)",
+      "Bash(/usr/bin/find:*)",
+      "Bash(/usr/bin/sed:*)",
+      "Bash(/usr/bin/awk:*)",
+      "Bash(/bin/cat:*)",
+      "Bash(/bin/ls:*)",
+      "Bash(/usr/bin/head:*)",
+      "Bash(/usr/bin/tail:*)",
       "mcp__context7__query-docs",
       "mcp__slack__slack_read_canvas",
       "mcp__slack__slack_read_channel",
@@ -81,7 +95,10 @@
     "deny": [
       "Bash(rm -rf /)"
     ],
-    "defaultMode": "default"
+    "defaultMode": "default",
+    "additionalDirectories": [
+      "/tmp"
+    ]
   },
   "model": "opus",
   "hooks": {
@@ -151,6 +168,24 @@
     "network": {
       "allowUnixSockets": [
         "/var/run/docker.sock"
+      ],
+      "allowedHosts": [
+        "proxy.golang.org",
+        "sum.golang.org",
+        "golang.org",
+        "go.dev",
+        "registry.npmjs.org",
+        "registry.yarnpkg.com",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "crates.io",
+        "static.crates.io",
+        "index.crates.io",
+        "codeload.github.com",
+        "objects.githubusercontent.com",
+        "github.com",
+        "api.github.com",
+        "raw.githubusercontent.com"
       ]
     },
     "filesystem": {
@@ -158,27 +193,46 @@
         "/Users/nickyasnohorodskyi/.cache",
         "/Users/nickyasnohorodskyi/Library/Caches",
         "/Users/nickyasnohorodskyi/.local/share",
-        "/Users/nickyasnohorodskyi/.local/state"
+        "/Users/nickyasnohorodskyi/.local/state",
+        "/Users/nickyasnohorodskyi/go",
+        "/Users/nickyasnohorodskyi/.cargo/registry",
+        "/Users/nickyasnohorodskyi/.cargo/git",
+        "/Users/nickyasnohorodskyi/.npm",
+        "/Users/nickyasnohorodskyi/.yarn",
+        "/Users/nickyasnohorodskyi/.pnpm-store",
+        "/Users/nickyasnohorodskyi/.bun",
+        "/Users/nickyasnohorodskyi/.asdf/installs",
+        "/Users/nickyasnohorodskyi/.asdf/shims",
+        "/Users/nickyasnohorodskyi/.asdf/plugins"
       ],
       "denyWrite": [
         "/Users/nickyasnohorodskyi/.ssh",
         "/Users/nickyasnohorodskyi/.aws",
         "/Users/nickyasnohorodskyi/.gnupg",
-        "/Users/nickyasnohorodskyi/.config/gh/hosts.yml"
+        "/Users/nickyasnohorodskyi/.config/gh/hosts.yml",
+        "/Users/nickyasnohorodskyi/.zsh_history",
+        "/Users/nickyasnohorodskyi/.bash_history",
+        "/Users/nickyasnohorodskyi/.npmrc",
+        "/Users/nickyasnohorodskyi/.yarnrc",
+        "/Users/nickyasnohorodskyi/.yarnrc.yml",
+        "/Users/nickyasnohorodskyi/.pypirc",
+        "/Users/nickyasnohorodskyi/.netrc",
+        "/Users/nickyasnohorodskyi/.docker/config.json",
+        "/Users/nickyasnohorodskyi/.kube/config",
+        "/Users/nickyasnohorodskyi/.cargo/credentials.toml",
+        "/Users/nickyasnohorodskyi/.claude/hooks",
+        "/Users/nickyasnohorodskyi/Library/Application Support/Google/Chrome",
+        "/Users/nickyasnohorodskyi/Library/Application Support/Firefox",
+        "/Users/nickyasnohorodskyi/Library/Cookies",
+        "/Users/nickyasnohorodskyi/Library/Keychains",
+        "/Users/nickyasnohorodskyi/Library/Mail",
+        "/Users/nickyasnohorodskyi/Library/Messages"
       ]
     },
     "enableWeakerNetworkIsolation": true,
     "excludedCommands": [
       "git",
-      "gh",
-      "make",
-      "npm",
-      "yarn",
-      "pnpm",
-      "bun",
-      "pip",
-      "cargo",
-      "go"
+      "gh"
     ]
   },
   "alwaysThinkingEnabled": true,

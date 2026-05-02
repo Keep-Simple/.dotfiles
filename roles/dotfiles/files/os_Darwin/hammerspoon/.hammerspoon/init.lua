@@ -1,4 +1,8 @@
 require("hs.ipc")
+if hs.ipc.cliInstall then
+	pcall(hs.ipc.cliInstall)
+end
+
 hs.loadSpoon("SpoonInstall")
 menubarIcon = hs.menubar.new(false, "MultiWindowIcon")
 icon = hs.image.imageFromPath("./two-overlapping-square.png"):setSize({ w = 16, h = 16 })
@@ -15,9 +19,6 @@ end
 
 Install = spoon.SpoonInstall
 Install:andUse("ClipboardTool", {
-	hotkeys = {
-		toggle_clipboard = { { "ctrl", "cmd", "alt" }, "\\" },
-	},
 	config = {
 		hist_size = 30,
 		max_size = false,
@@ -26,5 +27,9 @@ Install:andUse("ClipboardTool", {
 	},
 	start = true,
 })
+
+function ToggleClipboard()
+	spoon.ClipboardTool:toggleClipboard()
+end
 
 hs.notify.show("Hammerspoon started", "", "")

@@ -1,10 +1,5 @@
 .shell "/bin/dash"
 
-# 0x29 maps to ;
-# 0x18 maps to =
-# 0x2B maps to ,
-# 0x1B maps to -
-
 # Command definitions for common patterns
 .define unzoom_focus : $YABAI/unzoom.sh; yabai -m window --focus {{1}}
 .define unzoom_focus_with_stack : $YABAI/unzoom.sh; yabai -m window --focus {{1}} || yabai -m window --focus stack.{{2}} || yabai -m window --focus stack.{{3}}
@@ -21,12 +16,14 @@
 # apps shortcuts
 ctrl + alt + cmd - return : kitty --single-instance --instance-group base -d ~ tmux
 ctrl + alt + cmd + shift - return : yabai -m window --toggle QuickTerminal || kitty --single-instance --instance-group quickterm --title QuickTerminal --directory "${HOME}" tmux new -A -s quickterm
+# 0x2B = comma
 ctrl + alt + cmd - 0x2B : open -n /System/Applications/System\ Settings.app
 ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
-# selection screenshot to the clipboard without sound
+# selection screenshot to the clipboard without sound (0x1B = minus)
 ctrl + alt + cmd - 0x1B : screencapture -cix /dev/null
 # screenshot with options
 ctrl + alt + cmd + shift - 0x1B : screencapture -iU /dev/null
+# 0x18 = equals
 ctrl + alt + cmd - 0x18 : @toggle_space("mission-control")
 ctrl + alt + cmd - d : killall dmenu-mac; exec dmenu-mac
 
@@ -61,6 +58,9 @@ ctrl + alt + cmd + shift - s : @toggle_window("sticky")
 # Close active application
 ctrl + alt + cmd - q : yabai -m window --close
 
+# Clipboard history, ClipboardTool spoon (0x27 = apostrophe ')
+ctrl + alt + cmd - 0x27 : hs -c "ToggleClipboard()"
+
 # toggle window zoom
 ctrl + alt + cmd - f : @toggle_window("zoom-fullscreen")
 
@@ -84,6 +84,7 @@ ctrl + alt + cmd - 7 : @focus_space("7")
 ctrl + alt + cmd - 8 : @focus_space("8")
 ctrl + alt + cmd - 9 : @focus_space("9")
 ctrl + alt + cmd - g : @focus_space("prev")
+# 0x29 = semicolon
 ctrl + alt + cmd - 0x29 : @focus_space("next")
 ctrl + alt + cmd - p : @focus_space("recent")
 
@@ -98,5 +99,6 @@ ctrl + alt + cmd + shift - 7 : @move_to_space("7")
 ctrl + alt + cmd + shift - 8 : @move_to_space("8")
 ctrl + alt + cmd + shift - 9 : @move_to_space("9")
 ctrl + alt + cmd + shift - g : @move_to_space_with_fallback("prev", "last")
+# 0x29 = semicolon
 ctrl + alt + cmd + shift - 0x29 : @move_to_space_with_fallback("next", "first")
 ctrl + alt + cmd + shift - p : @move_to_space("recent")
