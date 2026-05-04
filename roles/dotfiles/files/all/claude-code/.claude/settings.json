@@ -169,7 +169,7 @@
       "allowUnixSockets": [
         "/var/run/docker.sock"
       ],
-      "allowedHosts": [
+      "allowedDomains": [
         "proxy.golang.org",
         "sum.golang.org",
         "golang.org",
