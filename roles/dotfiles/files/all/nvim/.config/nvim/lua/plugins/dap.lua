@@ -114,16 +114,16 @@ return {
 			{
 				"<leader>do",
 				function()
-					require("dap").step_out()
+					require("dap").step_over()
 				end,
-				desc = "Step Out",
+				desc = "Step Over",
 			},
 			{
 				"<leader>dO",
 				function()
-					require("dap").step_over()
+					require("dap").step_out()
 				end,
-				desc = "Step Over",
+				desc = "Step Out",
 			},
 			{
 				"<leader>dp",

@@ -2,6 +2,24 @@ local function get_git_dir()
 	return vim.fn.fnamemodify(vim.fn.finddir(".git", ".;"), ":h")
 end
 
+local function toggle_root(picker)
+	picker.opts.dirs = (picker.opts.dirs and #picker.opts.dirs > 0) and {} or { get_git_dir() }
+	picker:find()
+end
+
+local picker_toggles = {
+	actions = { toggle_root = toggle_root },
+	win = {
+		input = {
+			keys = {
+				["H"] = { "toggle_hidden", mode = "n", desc = "Toggle hidden" },
+				["I"] = { "toggle_ignored", mode = "n", desc = "Toggle ignored" },
+				["R"] = { "toggle_root", mode = "n", desc = "Toggle git root" },
+			},
+		},
+	},
+}
+
 return {
 	"nvim-telescope/telescope.nvim",
 	version = false,
@@ -13,13 +31,6 @@ return {
 				require("telescope").load_extension("fzf")
 			end,
 		},
-		{
-			"folke/which-key.nvim",
-			opts = function(_, opts)
-				require("which-key").add({ "<leader>F", group = "find/files" })
-				return opts
-			end,
-		},
 	},
 	keys = function()
 		return {
@@ -27,30 +38,19 @@ return {
 			{
 				"<leader>f",
 				function()
-					Snacks.picker.git_files({ untracked = true })
+					Snacks.picker.smart(vim.tbl_deep_extend("force", {
+						multi = { "buffers", "recent", "files" },
+						matcher = { cwd_bonus = true, frecency = true, sort_empty = true },
+					}, picker_toggles))
 				end,
-				desc = "Find git files",
+				desc = "Find (smart)",
 			},
 			{
-				"<leader>Ff",
+				"<leader>r",
 				function()
-					Snacks.picker.files()
+					Snacks.picker.resume()
 				end,
-				desc = "files",
-			},
-			{
-				"<leader>Fa",
-				function()
-					Snacks.picker.files({ hidden = true, ignored = true })
-				end,
-				desc = "files (ignore, hidden)",
-			},
-			{
-				"<leader>FA",
-				function()
-					Snacks.picker.files({ hidden = true, ignored = true, dirs = { get_git_dir() } })
-				end,
-				desc = "dir=(git root) files (ignore, hidden)",
+				desc = "Resume picker",
 			},
 			{
 				"<leader>b",
@@ -171,53 +171,17 @@ return {
 			{
 				"<leader>st",
 				function()
-					Snacks.picker.grep({
-						hidden = true,
-					})
+					Snacks.picker.grep(vim.tbl_deep_extend("force", { hidden = true }, picker_toggles))
 				end,
-				desc = "Text",
-			},
-			{
-				"<leader>sT",
-				function()
-					Snacks.picker.grep({
-						hidden = true,
-						dirs = { get_git_dir() },
-					})
-				end,
-				desc = "dir=(git root) Text",
-			},
-			{
-				"<leader>sA",
-				function()
-					Snacks.picker.grep({
-						hidden = true,
-						ignored = true,
-						dirs = { get_git_dir() },
-					})
-				end,
-				desc = "dir=(git root) Text (with ignore)",
-			},
-			{
-				"<leader>sW",
-				function()
-					Snacks.picker.grep_word({
-						hidden = true,
-						dirs = { get_git_dir() },
-					})
-				end,
-				mode = { "n", "x" },
-				desc = "dir=(git root) Word",
+				desc = "Grep",
 			},
 			{
 				"<leader>sw",
 				function()
-					Snacks.picker.grep_word({
-						hidden = true,
-					})
+					Snacks.picker.grep_word(vim.tbl_deep_extend("force", { hidden = true }, picker_toggles))
 				end,
 				mode = { "n", "x" },
-				desc = "Word",
+				desc = "Grep word",
 			},
 			{
 				"<leader>sk",
@@ -234,13 +198,6 @@ return {
 				desc = "Marks",
 			},
 			{ "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
-			{
-				"<leader>sR",
-				function()
-					Snacks.picker.resume()
-				end,
-				desc = "Resume",
-			},
 		}
 	end,
 	opts = {
