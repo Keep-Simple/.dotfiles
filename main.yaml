@@ -13,6 +13,27 @@
         dir: "vars/os_{{ ansible_facts['system'] }}"
       tags: ['always']
 
+    # Disable pam_tid for the play. One Touch ID popup happens here (this very
+    # sudo call); afterwards pam_tid is bypassed and ansible's stdin password
+    # satisfies pam_opendirectory directly, so all subsequent become tasks are
+    # silent. The system_defaults role restores /etc/pam.d/sudo_local at its
+    # natural place (last become task in play).
+    - name: stat /etc/pam.d/sudo_local
+      ansible.builtin.stat:
+        path: /etc/pam.d/sudo_local
+      register: sudo_local_stat
+      when: ansible_facts['system'] == 'Darwin'
+      tags: ['always']
+
+    - name: blank /etc/pam.d/sudo_local
+      ansible.builtin.shell: ": > /etc/pam.d/sudo_local"
+      become: true
+      changed_when: false
+      when:
+        - ansible_facts['system'] == 'Darwin'
+        - sudo_local_stat.stat.exists | default(false)
+      tags: ['always']
+
   roles:
     - role: setup
       tags: ['setup']
