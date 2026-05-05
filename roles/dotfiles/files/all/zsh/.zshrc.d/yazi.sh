@@ -6,8 +6,3 @@ function yazi() {
 	fi
 	rm -f -- "$tmp"
 }
-
-_zinit_yazi() {
-    bindkey -r '^E'
-    bindkey -s '^E' 'yazi^M'
-}

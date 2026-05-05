@@ -94,14 +94,6 @@ zinit wait lucid light-mode for \
     atload'bindkey "^[[A" history-substring-search-up; bindkey "^[[B" history-substring-search-down; source <(fzf --zsh)' \
     zsh-users/zsh-history-substring-search \
     \
-    atload='_zinit_yazi' \
-    id-as'yazi' nocompile \
-    zdharma-continuum/null \
-    \
-    atload='_zinit_nvim' \
-    id-as'nvim' nocompile \
-    zdharma-continuum/null \
-    \
     atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zicdreplay" \
     zdharma/fast-syntax-highlighting \
     \
