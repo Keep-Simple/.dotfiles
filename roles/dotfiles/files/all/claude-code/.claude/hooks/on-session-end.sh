@@ -20,14 +20,16 @@ log_debug "SESSION_ID: $SESSION_ID"
 if [ -n "$SESSION_ID" ] && [ "$SESSION_ID" != "null" ]; then
     rm -f "/tmp/claude_${SESSION_ID}_pane" \
           "/tmp/claude_${SESSION_ID}_repo" \
-          "/tmp/claude_${SESSION_ID}_started"
-    log_debug "Removed /tmp/claude_${SESSION_ID}_{pane,repo,started}"
+          "/tmp/claude_${SESSION_ID}_started" \
+          "/tmp/claude_${SESSION_ID}_completed"
+    log_debug "Removed /tmp/claude_${SESSION_ID}_{pane,repo,started,completed}"
 fi
 
 # Sweep stale files (>7 days) from any prior crashed/killed sessions
 find /tmp -maxdepth 1 -name 'claude_*_pane' -mtime +7 -delete 2>/dev/null
 find /tmp -maxdepth 1 -name 'claude_*_repo' -mtime +7 -delete 2>/dev/null
 find /tmp -maxdepth 1 -name 'claude_*_started' -mtime +7 -delete 2>/dev/null
-log_debug "Swept stale claude_*_{pane,repo,started} files older than 7 days"
+find /tmp -maxdepth 1 -name 'claude_*_completed' -mtime +7 -delete 2>/dev/null
+log_debug "Swept stale claude_*_{pane,repo,started,completed} files older than 7 days"
 
 log_debug "========== SessionEnd Hook Finished =========="

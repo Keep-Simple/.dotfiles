@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
-# Count recon sessions awaiting user input. Print "⏸N " when N>0, else nothing.
-n=$(recon json 2>/dev/null | jq -r '[.sessions[]?|select(.status=="Input")]|length // 0' 2>/dev/null)
-[ "${n:-0}" -gt 0 ] && printf '#[fg=#fab387]⏸%s #[default]' "$n"
+# Status-line indicators:
+#   ⏸N — sessions awaiting permission (recon Input)
+#   ✓M — sessions completed since last user prompt (Stop-hook markers)
+n_input=$(recon json 2>/dev/null | jq -r '[.sessions[]?|select(.status=="Input")]|length // 0' 2>/dev/null)
+shopt -s nullglob
+markers=(/tmp/claude_*_completed)
+n_done=${#markers[@]}
+
+out=""
+[ "${n_input:-0}" -gt 0 ] && out+="#[fg=#fab387]⏸${n_input} #[default]"
+[ "${n_done:-0}" -gt 0 ]  && out+="#[fg=#a6e3a1]✓${n_done} #[default]"
+printf '%s' "$out"

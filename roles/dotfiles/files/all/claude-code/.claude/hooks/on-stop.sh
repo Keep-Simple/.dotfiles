@@ -39,6 +39,9 @@ if [ -n "$STARTED" ]; then
     log_debug "DURATION: $DURATION"
 fi
 
+# Mark session as awaiting user attention (cleared on next UserPromptSubmit / SessionEnd)
+: > "/tmp/claude_${SESSION_ID}_completed"
+
 # Check if notification should be sent and send it
 if should_send_notification "$CLAUDE_PANE"; then
     send_notification "$SESSION_ID" "$TITLE" "$SUBTITLE" "" "Glass"

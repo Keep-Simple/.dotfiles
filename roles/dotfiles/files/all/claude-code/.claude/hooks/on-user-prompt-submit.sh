@@ -32,4 +32,7 @@ log_debug "Saved REPO_NAME to /tmp/claude_${SESSION_ID}_repo: $REPO_NAME (from $
 date +%s > "/tmp/claude_${SESSION_ID}_started"
 log_debug "Saved start timestamp to /tmp/claude_${SESSION_ID}_started"
 
+# Clear completion marker — user is engaging again, prior completion was seen
+rm -f "/tmp/claude_${SESSION_ID}_completed"
+
 log_debug "========== UserPromptSubmit Hook Finished =========="
