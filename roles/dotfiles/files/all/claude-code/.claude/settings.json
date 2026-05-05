@@ -51,6 +51,7 @@
       "Bash(true)",
       "Bash(false)",
       "Bash(test:*)",
+      "Bash(cd:*)",
       "Bash(/usr/bin/grep:*)",
       "Bash(/usr/bin/find:*)",
       "Bash(/usr/bin/sed:*)",
@@ -95,10 +96,7 @@
     "deny": [
       "Bash(rm -rf /)"
     ],
-    "defaultMode": "default",
-    "additionalDirectories": [
-      "/tmp"
-    ]
+    "defaultMode": "default"
   },
   "model": "opus",
   "hooks": {
@@ -128,6 +126,16 @@
           {
             "type": "command",
             "command": "$HOME/.claude/hooks/on-notification.sh"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/on-session-end.sh"
           }
         ]
       }

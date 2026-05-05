@@ -2,18 +2,15 @@
 # ABOUTME: Hook script that runs when user submits a prompt to Claude Code
 # ABOUTME: Captures current tmux pane ID and repository name for later notification use
 
-# Enable debugging
-DEBUG_LOG="/tmp/claude-hook-logs/hook-user-prompt-submit.log"
-mkdir -p "$(dirname "$DEBUG_LOG")"
+# Load common functions
+source "$(dirname "$0")/common.sh"
 
-log_debug() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$DEBUG_LOG"
-}
-
+# Setup logging
+setup_debug_log "user-prompt-submit"
 log_debug "========== UserPromptSubmit Hook Started =========="
 
 # Read the event data from stdin
-read EVENT
+read -r EVENT
 log_debug "EVENT: $EVENT"
 
 # Extract session ID from event
@@ -30,5 +27,9 @@ REPO_PATH=$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")
 REPO_NAME=$(basename "$REPO_PATH")
 echo "$REPO_NAME" > "/tmp/claude_${SESSION_ID}_repo"
 log_debug "Saved REPO_NAME to /tmp/claude_${SESSION_ID}_repo: $REPO_NAME (from $REPO_PATH)"
+
+# Record prompt-submit timestamp for Stop-hook duration calc
+date +%s > "/tmp/claude_${SESSION_ID}_started"
+log_debug "Saved start timestamp to /tmp/claude_${SESSION_ID}_started"
 
 log_debug "========== UserPromptSubmit Hook Finished =========="

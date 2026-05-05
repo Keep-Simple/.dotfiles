@@ -10,7 +10,7 @@ setup_debug_log "notification"
 log_debug "========== Notification Hook Started =========="
 
 # Read the event data from stdin
-read EVENT
+read -r EVENT
 log_debug "EVENT: $EVENT"
 
 # Extract session ID, message, and notification type from event
@@ -38,8 +38,13 @@ log_debug "REPO_NAME: $REPO_NAME"
 CLAUDE_PANE=$(cat "/tmp/claude_${SESSION_ID}_pane" 2>/dev/null)
 log_debug "CLAUDE_PANE: $CLAUDE_PANE"
 
+# Build title with window label (e.g. ".dotfiles · 1:nvim")
+WINDOW_LABEL=$(get_window_label "$CLAUDE_PANE")
+TITLE="$REPO_NAME${WINDOW_LABEL:+ · $WINDOW_LABEL}"
+log_debug "TITLE: $TITLE"
+
 # Check if notification should be sent and send it
 if should_send_notification "$CLAUDE_PANE"; then
-    send_notification "$REPO_NAME" "$REPO_NAME" "$MESSAGE" "" "Basso"
+    send_notification "$REPO_NAME" "$TITLE" "$MESSAGE" "" "Basso"
 fi
 log_debug "========== Notification Hook Finished =========="
