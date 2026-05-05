@@ -43,6 +43,9 @@ WINDOW_LABEL=$(get_window_label "$CLAUDE_PANE")
 TITLE="$REPO_NAME${WINDOW_LABEL:+ · $WINDOW_LABEL}"
 log_debug "TITLE: $TITLE"
 
+# Permission prompt → ⏸ counter likely changed; push status refresh.
+tmux refresh-client -S 2>/dev/null
+
 # Check if notification should be sent and send it
 if should_send_notification "$CLAUDE_PANE"; then
     send_notification "$REPO_NAME" "$TITLE" "$MESSAGE" "" "Basso"
