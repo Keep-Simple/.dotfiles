@@ -34,5 +34,6 @@ log_debug "Saved start timestamp to /tmp/claude_${SESSION_ID}_started"
 
 # Clear completion marker — user is engaging again, prior completion was seen
 rm -f "/tmp/claude_${SESSION_ID}_completed"
+tmux refresh-client -S 2>/dev/null  # push status update without waiting for status-interval
 
 log_debug "========== UserPromptSubmit Hook Finished =========="

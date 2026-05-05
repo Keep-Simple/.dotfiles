@@ -13,8 +13,35 @@ log_debug() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$DEBUG_LOG"
 }
 
-# Check if notification should be sent based on current context
-# Returns 0 if notification should be sent, 1 otherwise
+# Check whether a tmux pane is currently visible to the user.
+# "Visible" = frontmost macOS app is kitty AND the most-recently-active tmux client
+# has this pane focused (active pane in active window of attached session).
+# Handles multiple kitty windows on different macOS workspaces — only the frontmost
+# one matters; tmux clients on background kitties don't count as visible.
+# Returns 0 if visible, 1 if not.
+is_pane_visible() {
+    local pane="$1"
+    [ -z "$pane" ] && return 1
+
+    local front_app
+    front_app=$(osascript -e 'tell application "System Events" to get name of first process whose frontmost is true' 2>/dev/null)
+    if [ "$front_app" != "kitty" ]; then
+        return 1
+    fi
+
+    # Pick most-recently-active client (the one in the frontmost kitty window).
+    local focused_client
+    focused_client=$(tmux list-clients -F '#{client_activity} #{client_name}' 2>/dev/null \
+        | sort -rn | head -1 | cut -d' ' -f2-)
+    [ -z "$focused_client" ] && return 1
+
+    local active_pane
+    active_pane=$(tmux display-message -p -t "$focused_client" '#{pane_id}' 2>/dev/null)
+    [ "$active_pane" = "$pane" ]
+}
+
+# Check if notification should be sent based on current context.
+# Returns 0 if notification should be sent, 1 otherwise.
 should_send_notification() {
     local claude_pane="$1"
 
@@ -23,18 +50,12 @@ should_send_notification() {
         return 1
     fi
 
-    # In kitty/tmux → tmux status line shows recon ⏸N counter, skip notification.
-    # Outside kitty → user can't see status line, notify.
-    local front_app
-    front_app=$(osascript -e 'tell application "System Events" to get name of first process whose frontmost is true' 2>/dev/null)
-    log_debug "FRONT_APP: $front_app"
-
-    if [ "$front_app" = "kitty" ]; then
-        log_debug "kitty frontmost - rely on tmux recon indicator, skipping notification"
+    if is_pane_visible "$claude_pane"; then
+        log_debug "Pane $claude_pane visible to user - skipping notification"
         return 1
     fi
 
-    log_debug "Outside kitty - sending notification"
+    log_debug "Pane $claude_pane not visible - sending notification"
     return 0
 }
 
