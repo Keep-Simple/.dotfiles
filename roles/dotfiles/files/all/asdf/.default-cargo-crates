@@ -1,0 +1,3 @@
+// Auto-installed by asdf-rust on `asdf install rust <ver>`. One entry per line.
+// For git deps use `--git URL` form (no positional name).
+--git https://github.com/gavraz/recon --locked

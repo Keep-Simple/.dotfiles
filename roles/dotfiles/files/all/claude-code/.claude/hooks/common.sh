@@ -13,24 +13,6 @@ log_debug() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$DEBUG_LOG"
 }
 
-# Resolve the most-recently-active tmux client's view of (active_pane, focused_session).
-# Handles multi-client setups; falls back to local query if no clients attached.
-resolve_focused_view() {
-    local clients focused_client
-    clients=$(tmux list-clients -F '#{client_activity} #{client_name}' 2>/dev/null)
-    if [ -n "$clients" ]; then
-        focused_client=$(echo "$clients" | sort -rn | head -1 | cut -d' ' -f2-)
-    fi
-
-    if [ -n "$focused_client" ]; then
-        ACTIVE_PANE=$(tmux display-message -p -t "$focused_client" '#{pane_id}' 2>/dev/null)
-        FOCUSED_SESSION=$(tmux display-message -p -t "$focused_client" '#{session_name}' 2>/dev/null)
-    else
-        ACTIVE_PANE=$(tmux display-message -p '#{pane_id}' 2>/dev/null)
-        FOCUSED_SESSION=$(tmux display-message -p '#{session_name}' 2>/dev/null)
-    fi
-}
-
 # Check if notification should be sent based on current context
 # Returns 0 if notification should be sent, 1 otherwise
 should_send_notification() {
@@ -41,38 +23,19 @@ should_send_notification() {
         return 1
     fi
 
-    resolve_focused_view
-    log_debug "ACTIVE_PANE: $ACTIVE_PANE"
-    log_debug "FOCUSED_SESSION: $FOCUSED_SESSION"
-
-    # Get Claude's session from the saved pane (empty string if pane no longer exists)
-    local claude_session
-    claude_session=$(tmux display-message -p -t "$claude_pane" '#{session_name}' 2>/dev/null)
-    log_debug "CLAUDE_PANE: $claude_pane"
-    log_debug "CLAUDE_SESSION: $claude_session"
-
-    # Pane gone -> user can't see Claude there anyway, notify
-    if [ -z "$claude_session" ]; then
-        log_debug "Claude pane no longer exists - sending notification"
-        return 0
-    fi
-
-    # Get frontmost application
+    # In kitty/tmux → tmux status line shows recon ⏸N counter, skip notification.
+    # Outside kitty → user can't see status line, notify.
     local front_app
     front_app=$(osascript -e 'tell application "System Events" to get name of first process whose frontmost is true' 2>/dev/null)
     log_debug "FRONT_APP: $front_app"
 
-    # Send notification if: not in kitty OR different session OR different pane
-    if [ "$front_app" != "kitty" ] || [ "$claude_session" != "$FOCUSED_SESSION" ] || [ "$claude_pane" != "$ACTIVE_PANE" ]; then
-        log_debug "Conditions met for notification:"
-        log_debug "  - FRONT_APP != kitty: $([ "$front_app" != "kitty" ] && echo "true" || echo "false")"
-        log_debug "  - CLAUDE_SESSION != FOCUSED_SESSION: $([ "$claude_session" != "$FOCUSED_SESSION" ] && echo "true" || echo "false")"
-        log_debug "  - CLAUDE_PANE != ACTIVE_PANE: $([ "$claude_pane" != "$ACTIVE_PANE" ] && echo "true" || echo "false")"
-        return 0
+    if [ "$front_app" = "kitty" ]; then
+        log_debug "kitty frontmost - rely on tmux recon indicator, skipping notification"
+        return 1
     fi
 
-    log_debug "Notification NOT sent (kitty frontmost, same session, same pane)"
-    return 1
+    log_debug "Outside kitty - sending notification"
+    return 0
 }
 
 # Get index of the tmux window hosting the given pane (empty if pane gone)
