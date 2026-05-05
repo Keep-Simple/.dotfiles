@@ -192,6 +192,7 @@
       "git",
       "gh"
     ],
+    "enableWeakerNetworkIsolation": true,
     "enabled": true
   },
   "alwaysThinkingEnabled": true,
