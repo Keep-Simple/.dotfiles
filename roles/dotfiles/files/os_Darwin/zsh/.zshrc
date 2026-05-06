@@ -37,6 +37,7 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
   PATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
   PATH="${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
   PATH="${HOMEBREW_PREFIX}/opt/gnu-tar/libexec/gnubin:$PATH"
+  PATH="${HOMEBREW_PREFIX}/opt/grep/libexec/gnubin:$PATH"
   PATH="${HOMEBREW_PREFIX}/opt/util-linux/bin:$PATH"
   PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:$PATH"
 fi
@@ -63,8 +64,12 @@ setopt share_history          # share command history data
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 
 # Load zsh-vi-mode immediately (needs to be early for keybindings)
-zinit ice depth=1 atload'zvm_vi_yank() { zvm_yank; echo ${CUTBUFFER} | pbcopy; zvm_exit_visual_mode; }'
-zinit light jeffreytse/zsh-vi-mode
+# Skip under Claude Code: plugin source has literal NUL byte (zvm_escape_non_printed_characters),
+# which leaks into shell snapshot and makes Claude's bundled ugrep treat it as binary (-I skips).
+if [[ -z $CLAUDECODE ]]; then
+  zinit ice depth=1 atload'zvm_vi_yank() { zvm_yank; echo ${CUTBUFFER} | pbcopy; zvm_exit_visual_mode; }'
+  zinit light jeffreytse/zsh-vi-mode
+fi
 
 # silence direnv
 export DIRENV_LOG_FORMAT=
