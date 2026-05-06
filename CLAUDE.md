@@ -76,6 +76,10 @@ The `stow` Ansible module is vendored in-repo at `library/stow` (a Python module
 2. Append `<pkg>` to `stow_common_items` (cross-platform) or `stow_items` (OS-specific).
 3. `my dotfiles_link --tags dotfiles`.
 
+### Adding new files to an existing stowed package
+
+Stow uses per-file symlinks (`no_folding: true`), so new files inside an already-stowed package are NOT auto-linked. Always run `my dotfiles_link` after creating any new file under `roles/dotfiles/files/{all,os_*}/<pkg>/...` — never hand-create symlinks in `$HOME`. Symptom of forgetting: the new file works when invoked by absolute path but the bind/script that references it via the stowed `~/.config/...` path silently fails (e.g. tmux window opens and closes immediately).
+
 ### Adding a new macOS default
 
 Append to `macos_defaults` in `vars/os_Darwin/os_configs.yaml` (uses `osx_defaults` keys: `domain/key/type/value`). For settings without a clean `defaults write` form, drop XML into `roles/system_defaults/files/macos/xml_settings/<filename>` and reference via `macos_defaults_xml`.
