@@ -1,7 +1,10 @@
 blacklist = ["quickterm"]
 
 [default_session]
-startup_command = "nvim_restore_session_for_curr_dir"
+# `; exec zsh -i` keeps an interactive shell after nvim quits — sesh wraps
+# startup_command in `zsh -i -c "<cmd>"` which would otherwise exit (and kill
+# the only-window session) once the function returns.
+startup_command = "nvim_restore_session_for_curr_dir; exec zsh -i"
 
 [[session]]
 name = "personal"
