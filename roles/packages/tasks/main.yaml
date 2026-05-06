@@ -1,3 +1,8 @@
 ---
-- name: Include os-specific package tasks
-  ansible.builtin.include_tasks: "os_{{ ansible_facts['system'] }}.yaml"
+- name: Include macOS package tasks
+  ansible.builtin.import_tasks: os_Darwin.yaml
+  when: ansible_facts['system'] == 'Darwin'
+
+- name: Include Linux package tasks
+  ansible.builtin.import_tasks: os_Linux.yaml
+  when: ansible_facts['system'] == 'Linux'

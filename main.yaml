@@ -1,6 +1,13 @@
 ---
 - hosts: "{{ hosts_var | default('local') }}"
   gather_facts: true
+  gather_subset:
+    - "!all"
+    - "!min"
+    - "user_dir"
+    - "env"
+    - "system"
+    - "distribution"
 
   pre_tasks:
     - name: include variables
@@ -23,7 +30,7 @@
         path: /etc/pam.d/sudo_local
       register: sudo_local_stat
       when: ansible_facts['system'] == 'Darwin'
-      tags: ['always']
+      tags: ['setup', 'packages', 'system']
 
     - name: blank /etc/pam.d/sudo_local
       ansible.builtin.shell: ": > /etc/pam.d/sudo_local"
@@ -32,7 +39,50 @@
       when:
         - ansible_facts['system'] == 'Darwin'
         - sudo_local_stat.stat.exists | default(false)
-      tags: ['always']
+      tags: ['setup', 'packages', 'system']
+
+    - name: Ensure update log dir
+      ansible.builtin.file:
+        path: "{{ update_log_dir }}"
+        state: directory
+        mode: '0755'
+      tags: ['update', 'never']
+
+  post_tasks:
+    - name: Wait for update jobs
+      ansible.builtin.async_status:
+        jid: "{{ item.job.ansible_job_id }}"
+      register: update_results
+      until: update_results.finished
+      retries: 360
+      delay: 5
+      failed_when: false
+      loop:
+        - { name: brew, job: "{{ brew_async }}" }
+        - { name: tpm, job: "{{ tpm_async }}" }
+        - { name: asdf, job: "{{ asdf_async }}" }
+        - { name: bmad, job: "{{ bmad_async }}" }
+        - { name: yazi, job: "{{ yazi_async }}" }
+        - { name: claude, job: "{{ claude_async }}" }
+        - { name: zinit, job: "{{ zinit_async }}" }
+        - { name: lazy, job: "{{ lazy_async }}" }
+        - { name: mason, job: "{{ mason_async }}" }
+      loop_control:
+        label: "{{ item.name }}"
+      tags: ['update', 'never']
+
+    - name: Write update summary file
+      ansible.builtin.shell: |
+        : > {{ update_log_dir }}/summary.txt
+        {% for r in update_results.results %}
+        {{ ansible_facts['user_dir'] }}/.local/bin/summarize-update \
+          {{ r.item.name }} '{{ r.delta | default("?") }}' {{ "FAIL" if r.failed | default(false) else "OK" }} \
+          < {{ update_log_dir }}/{{ r.item.name }}.log >> {{ update_log_dir }}/summary.txt
+        {% endfor %}
+      args:
+        executable: /bin/bash
+      changed_when: false
+      tags: ['update', 'never']
 
   roles:
     - role: setup
@@ -42,7 +92,6 @@
     - role: packages
       tags: ['packages']
     - role: dotfiles
-      tags: ['dotfiles']
     - role: zsh
       tags: ['devenv']
     - role: nvim

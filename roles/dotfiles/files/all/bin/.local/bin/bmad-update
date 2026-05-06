@@ -54,8 +54,19 @@ if ! command -v bmad >/dev/null 2>&1; then
     exit 1
 fi
 
+bmad_version() {
+    npm list -g bmad-method --depth=0 2>/dev/null | awk -F@ '/bmad-method/ {print $NF}' | head -1
+}
+
+old_ver=$(bmad_version)
 echo "Updating bmad-method global package..."
 npm update -g bmad-method
+new_ver=$(bmad_version)
+if [ "$old_ver" = "$new_ver" ]; then
+    echo "bmad-method: $new_ver (unchanged)"
+else
+    echo "bmad-method: $old_ver -> $new_ver"
+fi
 echo ""
 
 # Clear external module cache to avoid parallel git clone races

@@ -16,6 +16,7 @@ COMMAND:
   system_defaults [ARGS]   Only apply system defaults, without running other playbook steps
   dotfiles_link   [ARGS]   Only link dotfiles, without running other playbook steps
   dotfiles_unlink [ARGS]   Only unlink dotfiles, without running other playbook steps
+  update          [ARGS]   Upgrade brew, tpm, lazy/mason, zinit, asdf, bmad
   ansible_deps    [ARGS]   Install ansible dependencies for this playbook
   run_remote      [ARGS]   Run playbook with args on remote pc, using 'inventory' file
     \n"
@@ -55,6 +56,11 @@ system_defaults)
   ;;
 dotfiles_unlink)
   _run_playbook --tags "dotfiles" -e dotfiles_state=absent "${@:2}"
+  ;;
+update)
+  _run_playbook --tags "update" "${@:2}"
+  summary="$HOME/.cache/dotfiles-update/summary.txt"
+  [ -s "$summary" ] && { echo; cat "$summary"; }
   ;;
 ansible_deps)
   _install_ansible_deps

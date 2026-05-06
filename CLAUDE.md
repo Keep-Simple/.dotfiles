@@ -17,9 +17,32 @@ my dotfiles_unlink          # unstow (sets dotfiles_state=absent)
 my system_defaults          # only macOS defaults
 my ansible_deps             # ansible-galaxy install -r requirements.yaml --force
 my run_remote               # run on hosts in inventory[remote_servers] (-Kk)
+my update                   # async-parallel upgrade: brew, tpm, asdf, bmad, yazi, claude, zinit, lazy, mason
 ```
 
 Pass extra ansible args after the subcommand (e.g. `my run --check --diff -vv`, `my run --tags dotfiles --start-at-task=...`).
+
+### Debugging `my update`
+
+Per-tool logs (raw, unfiltered): `~/.cache/dotfiles-update/<tool>.log` — `brew | tpm | asdf | bmad | yazi | claude | zinit | lazy | mason`. Each tool's task tee's stdout+stderr to its own log; previous run is overwritten on re-run. Aggregated colored summary: `~/.cache/dotfiles-update/summary.txt` (cat'd by `ansible.sh` post-run).
+
+Where each tool's update runs from:
+- `brew | mason` → `roles/packages/tasks/os_Darwin.yaml`, `roles/nvim/tasks/main.yaml`
+- `tpm | asdf | bmad | yazi | claude` → `roles/dotfiles/tasks/additional_setup.yaml`
+- `zinit` → `roles/zsh/tasks/main.yaml`
+- `lazy` → `roles/nvim/tasks/main.yaml`
+
+Underlying scripts (executable, all stowed to `~/.local/bin/`):
+- `mason-update` — headless nvim lua loop; uses `pkg:get_latest_version()` (registry-cached, matches mason UI's "Outdated" tab) then `pkg:install():once("closed", ...)`. Empty output ≈ registry refresh returned 0 outdated (try `:Mason` in nvim to compare).
+- `bmad-update` — `npm update -g bmad-method` then per-repo `bmad install --action quick-update --yes` in parallel. Prints version diff (`bmad-method: 6.5.0 → 6.6.0` or `(unchanged)`) — npm's "changed N package" line is touched-count, not version-bumped.
+- `summarize-update <tool> <delta> <OK|FAIL>` — reads log on stdin, emits one colored line. Per-tool awk parser dispatched by case. Tweak parser there if log format changes.
+
+Common pitfalls:
+- **lazy update count**: lazy headless emits `HEAD is now at <hash>` for *every* plugin every run (git checkout output, fires even when HEAD didn't move). Don't grep that line — it's misleading. The lazy task snapshots `lazy-lock.json` pre-run, jq-diffs commits post-run, appends `lock-diff: <name>` per actually-changed plugin to `lazy.log` after a `---LOCK-DIFF---` separator. Parser counts only those lines.
+- **yazi exits 1 with `aborted` for `catppuccin-mocha.yazi`**: ya pkg refuses to overwrite locally-modified flavors. Either `--discard` (loses edits) or remove `~/.config/yazi/flavors/catppuccin-mocha.yazi/` and re-run `ya pkg install`. `failed_when: false` on the wait task lets the run continue; parser tags `⚠ WARN` so it surfaces in the summary.
+- **Whole `Wait for update jobs` aborts**: a tool's shell exited non-zero and `failed_when: false` got removed. Re-add to `main.yaml` post_tasks wait task.
+- **Update task didn't run at all**: check tag wiring — task must be `tags: ['update', 'never']` so `--tags update` includes it but full `my run` skips it.
+- **Adding a new tool**: (1) new async task with `register: <tool>_async`, `tags: ['update', 'never']`, tee to `{{ update_log_dir }}/<tool>.log`; (2) add `{ name: <tool>, job: "{{ <tool>_async }}" }` to wait loop in `main.yaml`; (3) add a `case` arm in `summarize-update` for the parser.
 
 Brewfile mutation: shell wrapper in `roles/dotfiles/files/os_Darwin/zsh/.zshrc.d/brew.sh` overrides `brew` so `install/uninstall/tap/...` auto-`brew bundle dump` to `roles/packages/files/macos/Brewfile`. Use `brew-orphans` to find leaves not tracked, `brew-backup` / `brew-cleanup` for manual ops.
 
@@ -29,7 +52,7 @@ Brewfile mutation: shell wrapper in `roles/dotfiles/files/os_Darwin/zsh/.zshrc.d
 
 Roles execute in order, each tagged so subsets work via `--tags`:
 
-1. **setup** (`tags: setup`) — OS-specific bootstrap. macOS: includes `elliotweiser.osx-command-line-tools` + `geerlingguy.mac.homebrew` (the latter `public: true` so its vars like `homebrew_brew_bin_path` are visible to later roles).
+1. **setup** (`tags: setup`) — OS-specific bootstrap. macOS: stats `{{ homebrew_brew_bin_path }}/brew`; includes `elliotweiser.osx-command-line-tools` + `geerlingguy.mac.homebrew` only on first run (when brew binary missing). `homebrew_brew_bin_path` / `homebrew_prefix` defined in `vars/os_Darwin/homebrew.yaml` so they're available without running this role.
 2. **repo** (`tags: repo`) — ensures `~/.dotfiles` exists (idempotent clone, `update: false`).
 3. **packages** (`tags: packages`) — `os_Darwin.yaml` runs `brew bundle check`, temporarily flips `/etc/sudoers` to `NOPASSWD: ALL` around `brew bundle` (cask installs need sudo), then upgrades all formulae.
 4. **dotfiles** (`tags: dotfiles`) — Stow links `stow_common_items` from `roles/dotfiles/files/all/` and `stow_items` from `roles/dotfiles/files/os_<system>/` into `$HOME`. Then `additional_setup.yaml` does: clone `tpm`, install tpm plugins, `pre-commit install`, asdf plugin add + install from `~/.tool-versions`.

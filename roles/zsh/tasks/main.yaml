@@ -31,3 +31,14 @@
     out_mtime: "{{ shortcut_stats.results[2:] | map(attribute='stat.mtime', default=0) | min }}"
   when: not outs_exist or src_mtime | float > out_mtime | float
 
+- name: Update zinit plugins (async)
+  ansible.builtin.shell: |
+    set -o pipefail
+    zsh -ic 'zinit self-update; zi update --parallel 40' 2>&1 | tee {{ update_log_dir }}/zinit.log
+  args:
+    executable: /bin/bash
+  async: 1800
+  poll: 0
+  register: zinit_async
+  tags: ['update', 'never']
+

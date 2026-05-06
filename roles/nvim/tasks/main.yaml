@@ -6,8 +6,42 @@
 
 - name: First headless run
   ansible.builtin.command:
-    cmd: zsh -l -c 'ulimit -n 10240; nvim --headless +quitall &> /dev/null'
+    cmd: zsh -l -c 'nvim --headless +quitall &> /dev/null'
   register: init
   until: init is succeeded
   retries: 1
   when: not lazy_nvim.stat.exists
+
+- name: Update lazy.nvim plugins (async)
+  ansible.builtin.shell: |
+    set -o pipefail
+    lock={{ ansible_facts['user_dir'] }}/.config/nvim/lazy-lock.json
+    snap=$(mktemp)
+    [ -f "$lock" ] && cp "$lock" "$snap"
+    zsh -lc 'nvim --headless "+Lazy! update" +qa' 2>&1 | tee {{ update_log_dir }}/lazy.log
+    {
+      echo "---LOCK-DIFF---"
+      if [ -s "$snap" ] && [ -f "$lock" ]; then
+        diff <(jq -r 'to_entries[] | "\(.key) \(.value.commit)"' "$snap" | sort) \
+             <(jq -r 'to_entries[] | "\(.key) \(.value.commit)"' "$lock" | sort) \
+          | awk '/^> /{print "lock-diff: " $2}'
+      fi
+    } >> {{ update_log_dir }}/lazy.log
+    rm -f "$snap"
+  args:
+    executable: /bin/bash
+  async: 1800
+  poll: 0
+  register: lazy_async
+  tags: ['update', 'never']
+
+- name: Update mason packages (async)
+  ansible.builtin.shell: |
+    set -o pipefail
+    zsh -lc 'mason-update' 2>&1 | tee {{ update_log_dir }}/mason.log
+  args:
+    executable: /bin/bash
+  async: 1800
+  poll: 0
+  register: mason_async
+  tags: ['update', 'never']

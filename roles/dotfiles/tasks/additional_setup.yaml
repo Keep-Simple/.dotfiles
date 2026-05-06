@@ -1,21 +1,33 @@
 ---
 - name: Symlink project overrides
   ansible.builtin.include_tasks: project_overrides.yaml
+  tags: ['dotfiles']
+
+- name: Stat tmux plugin manager
+  ansible.builtin.stat:
+    path: "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm/.git"
+  register: tpm_repo
+  tags: ['bootstrap']
 
 - name: Install tmux plugin manager
   ansible.builtin.git:
     repo: https://github.com/tmux-plugins/tpm
     dest: "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm"
+    update: false
+  when: not tpm_repo.stat.exists
+  tags: ['bootstrap']
 
 - name: Register tpm plugins
   stat:
     path: "{{ ansible_facts['user_dir'] }}/.config/tmux/plugins"
   register: tpm_plugins
+  tags: ['bootstrap']
 
 - name: Install tpm plugins
   ansible.builtin.command:
     cmd: "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm/bin/install_plugins"
   when: not tpm_plugins.stat.exists
+  tags: ['bootstrap']
 
 - name: Install pre-commit hooks in dotfiles repo
   ansible.builtin.command:
@@ -24,6 +36,7 @@
     creates: "{{ dotfiles.target }}/.git/hooks/pre-commit"
   environment:
     PATH: "{{ homebrew_brew_bin_path | default('') }}:{{ ansible_facts['env'].PATH }}"
+  tags: ['bootstrap']
 
 - name: Install asdf packages
   ansible.builtin.shell: |
@@ -35,3 +48,62 @@
   changed_when: >
     'The installation was successful!' in asdf_result.stdout
   failed_when: false
+  tags: ['bootstrap']
+
+- name: Update tmux plugins (async)
+  ansible.builtin.shell: |
+    set -o pipefail
+    {
+      git -C "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm" pull --ff-only
+      "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm/bin/update_plugins" all
+    } 2>&1 | tee {{ update_log_dir }}/tpm.log
+  args:
+    executable: /bin/bash
+  async: 1800
+  poll: 0
+  register: tpm_async
+  tags: ['update', 'never']
+
+- name: Update asdf plugins (async)
+  ansible.builtin.shell: |
+    set -o pipefail
+    asdf plugin list | xargs -n1 -P8 -I{} asdf plugin update {} 2>&1 | tee {{ update_log_dir }}/asdf.log
+  args:
+    executable: /bin/bash
+  async: 1800
+  poll: 0
+  register: asdf_async
+  tags: ['update', 'never']
+
+- name: Update bmad in work repos (async)
+  ansible.builtin.shell: |
+    set -o pipefail
+    zsh -ic 'bmad-update-all' 2>&1 | tee {{ update_log_dir }}/bmad.log
+  args:
+    executable: /bin/bash
+  async: 1800
+  poll: 0
+  register: bmad_async
+  tags: ['update', 'never']
+
+- name: Update yazi plugins (async)
+  ansible.builtin.shell: |
+    set -o pipefail
+    ya pkg upgrade 2>&1 | tee {{ update_log_dir }}/yazi.log
+  args:
+    executable: /bin/bash
+  async: 1800
+  poll: 0
+  register: yazi_async
+  tags: ['update', 'never']
+
+- name: Update claude code plugins (async)
+  ansible.builtin.shell: |
+    set -o pipefail
+    claude plugin list --json | jq -r '.[].id' | xargs -n1 -P4 -I{} claude plugin update {} 2>&1 | tee {{ update_log_dir }}/claude.log
+  args:
+    executable: /bin/bash
+  async: 1800
+  poll: 0
+  register: claude_async
+  tags: ['update', 'never']

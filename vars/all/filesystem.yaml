@@ -2,3 +2,5 @@
 dotfiles:
   repo: 'https://github.com/Keep-Simple/.dotfiles'
   target: "{{ ansible_facts['user_dir'] }}/.dotfiles"
+
+update_log_dir: "{{ ansible_facts['user_dir'] }}/.cache/dotfiles-update"

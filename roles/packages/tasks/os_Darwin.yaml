@@ -11,7 +11,7 @@
       changed_when: false
       failed_when: false
 
-    - name: Install with passowrdless sudo
+    - name: Install with passwordless sudo
       block:
         - name: allow passwordless sudo
           lineinfile:
@@ -20,7 +20,7 @@
           become: true
 
         - name: Install from Brewfile
-          command: "{{ homebrew_brew_bin_path }}/brew bundle chdir={{ brew_file.stat.path | dirname }} "
+          command: "{{ homebrew_brew_bin_path }}/brew bundle chdir={{ brew_file.stat.path | dirname }}"
           async: 100000
           poll: 5
 
@@ -34,7 +34,17 @@
       when: brew_check.rc == 1
   when: brew_file.stat.exists
 
-- name: Update all homebrew packages
-  community.general.homebrew:
-    update_homebrew: true
-    upgrade_all: true
+- name: Update homebrew packages (async)
+  ansible.builtin.shell: |
+    set -o pipefail
+    {
+      {{ homebrew_brew_bin_path }}/brew update
+      {{ homebrew_brew_bin_path }}/brew upgrade
+      {{ homebrew_brew_bin_path }}/brew cleanup
+    } 2>&1 | tee {{ update_log_dir }}/brew.log
+  args:
+    executable: /bin/bash
+  async: 1800
+  poll: 0
+  register: brew_async
+  tags: ['update', 'never']

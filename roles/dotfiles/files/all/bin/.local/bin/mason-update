@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Refresh Mason registry, check each installed package against its source
+# (gh/npm/pypi/...) via check_new_version (matches UI's "Outdated" tab),
+# install latest for any outdated. Headless. Exits non-zero on any failure.
+set -euo pipefail
+
+exec nvim --headless -c 'lua
+local mr = require("mason-registry")
+local refreshed = false
+mr.refresh(function() refreshed = true end)
+if not vim.wait(60000, function() return refreshed end, 200) then
+  io.stderr:write("mason-update: registry refresh timed out\n")
+  vim.cmd("cq 1")
+  return
+end
+
+local pkgs = mr.get_installed_packages()
+local outdated = {}
+for _, p in ipairs(pkgs) do
+  local latest = p:get_latest_version()
+  if latest and latest ~= p:get_installed_version() then
+    table.insert(outdated, { p = p, latest = latest, current = p:get_installed_version() })
+  end
+end
+
+print(string.format("checked %d packages, %d outdated", #pkgs, #outdated))
+if #outdated == 0 then
+  vim.cmd("qa!")
+  return
+end
+
+local pending, failures = #outdated, 0
+for _, o in ipairs(outdated) do
+  print(string.format("%s: %s -> %s", o.p.name, o.current or "?", o.latest))
+  o.p:install():once("closed", function()
+    pending = pending - 1
+    if o.p:get_installed_version() ~= o.latest then
+      failures = failures + 1
+      io.stderr:write(string.format("mason-update: %s install failed\n", o.p.name))
+    else
+      print(string.format("%s: done", o.p.name))
+    end
+  end)
+end
+if not vim.wait(900000, function() return pending == 0 end, 500) then
+  io.stderr:write("mason-update: install wait timed out, pending=" .. pending .. "\n")
+  vim.cmd("cq 1")
+  return
+end
+if failures > 0 then
+  vim.cmd("cq 1")
+  return
+end
+vim.cmd("qa!")
+'

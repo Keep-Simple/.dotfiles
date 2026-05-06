@@ -65,6 +65,7 @@
         no_folding: true
   environment:
     PATH: "{{ homebrew_brew_bin_path | default('') }}:{{ ansible_facts['env'].PATH }}" # TODO setup PATH to discover stow for linux too
+  tags: ['dotfiles']
 
 - name: Include additional setup
-  ansible.builtin.include_tasks: "additional_setup.yaml"
+  ansible.builtin.import_tasks: "additional_setup.yaml"
