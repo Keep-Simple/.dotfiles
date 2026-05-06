@@ -1,7 +1,3 @@
-# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
-# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
-"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
-
 [mgr]
 ratio = [1, 2, 3]
 sort_by = "btime"
@@ -30,11 +26,11 @@ mime = "application/pdf"
 use = ["open_in_browser"]
 
 [[plugin.prepend_fetchers]]
-id = "git"
-name = "*"
-run = "git"
+url   = "*"
+run   = "git"
+group = "git"
 
 [[plugin.prepend_fetchers]]
-id = "git"
-name = "*/"
-run = "git"
+url   = "*/"
+run   = "git"
+group = "git"
