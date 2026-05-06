@@ -2,6 +2,9 @@
 # ABOUTME: Shared functions for Claude Code notification hooks
 # ABOUTME: Provides common logging and notification logic used across multiple hooks
 
+# Terminal app name as macOS frontmost-process reports it. Override via env.
+TERMINAL_APP="${CLAUDE_HOOK_TERMINAL_APP:-kitty}"
+
 # Setup debug logging
 setup_debug_log() {
     local log_name="$1"
@@ -13,23 +16,24 @@ log_debug() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$DEBUG_LOG"
 }
 
+# Frontmost macOS app name (empty on osascript failure).
+frontmost_app() {
+    osascript -e 'tell application "System Events" to get name of first process whose frontmost is true' 2>/dev/null
+}
+
 # Check whether a tmux pane is currently visible to the user.
-# "Visible" = frontmost macOS app is kitty AND the most-recently-active tmux client
-# has this pane focused (active pane in active window of attached session).
-# Handles multiple kitty windows on different macOS workspaces — only the frontmost
-# one matters; tmux clients on background kitties don't count as visible.
+# "Visible" = frontmost macOS app is $TERMINAL_APP AND the most-recently-active
+# tmux client has this pane focused (active pane in active window of session).
+# With multiple terminal windows on different macOS workspaces, only the
+# frontmost one counts; clients on background terminals don't.
 # Returns 0 if visible, 1 if not.
 is_pane_visible() {
     local pane="$1"
     [ -z "$pane" ] && return 1
 
-    local front_app
-    front_app=$(osascript -e 'tell application "System Events" to get name of first process whose frontmost is true' 2>/dev/null)
-    if [ "$front_app" != "kitty" ]; then
-        return 1
-    fi
+    [ "$(frontmost_app)" = "$TERMINAL_APP" ] || return 1
 
-    # Pick most-recently-active client (the one in the frontmost kitty window).
+    # Pick most-recently-active client (the one in the frontmost terminal window).
     local focused_client
     focused_client=$(tmux list-clients -F '#{client_activity} #{client_name}' 2>/dev/null \
         | sort -rn | head -1 | cut -d' ' -f2-)
@@ -40,22 +44,19 @@ is_pane_visible() {
     [ "$active_pane" = "$pane" ]
 }
 
-# Check if notification should be sent based on current context.
-# Returns 0 if notification should be sent, 1 otherwise.
+# Desktop notifications only when user is NOT looking at the terminal app.
+# Status-bar ⏸/✓ icons surface attention while in terminal+tmux.
 should_send_notification() {
-    local claude_pane="$1"
+    local front
+    front=$(frontmost_app)
+    log_debug "FRONT_APP: $front (TERMINAL_APP=$TERMINAL_APP)"
 
-    if [ -z "$claude_pane" ]; then
-        log_debug "CLAUDE_PANE empty - skipping notification"
+    if [ "$front" = "$TERMINAL_APP" ]; then
+        log_debug "terminal frontmost - skipping notification (status bar handles it)"
         return 1
     fi
 
-    if is_pane_visible "$claude_pane"; then
-        log_debug "Pane $claude_pane visible to user - skipping notification"
-        return 1
-    fi
-
-    log_debug "Pane $claude_pane not visible - sending notification"
+    log_debug "terminal not frontmost - sending notification"
     return 0
 }
 

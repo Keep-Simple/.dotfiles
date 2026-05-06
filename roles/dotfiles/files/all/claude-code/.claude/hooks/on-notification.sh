@@ -47,7 +47,7 @@ log_debug "TITLE: $TITLE"
 tmux refresh-client -S 2>/dev/null
 
 # Check if notification should be sent and send it
-if should_send_notification "$CLAUDE_PANE"; then
+if should_send_notification; then
     send_notification "$REPO_NAME" "$TITLE" "$MESSAGE" "" "Basso"
 fi
 log_debug "========== Notification Hook Finished =========="

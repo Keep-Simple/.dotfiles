@@ -1,6 +1,6 @@
 #!/bin/bash
 # ABOUTME: Hook script that runs when Claude Code stops/finishes a task
-# ABOUTME: Sends a notification if kitty terminal is not frontmost or Claude pane is not current
+# ABOUTME: Sends a notification if terminal app ($TERMINAL_APP) is not frontmost
 
 # Load common functions
 source "$(dirname "$0")/common.sh"
@@ -50,7 +50,7 @@ else
 fi
 
 # Check if notification should be sent and send it
-if should_send_notification "$CLAUDE_PANE"; then
+if should_send_notification; then
     send_notification "$SESSION_ID" "$TITLE" "$SUBTITLE" "" "Glass"
 fi
 
