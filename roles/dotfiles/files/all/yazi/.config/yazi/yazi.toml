@@ -1,6 +1,7 @@
 [mgr]
 ratio = [1, 2, 3]
-sort_by = "btime"
+sort_by = "mtime"
+sort_reverse = true
 sort_translit = true
 show_hidden = true
 show_symlink = false
