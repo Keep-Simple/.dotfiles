@@ -56,6 +56,7 @@
     {
       git -C "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm" pull --ff-only
       "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm/bin/update_plugins" all
+      "{{ ansible_facts['user_dir'] }}/.local/bin/tmux-reload"
     } 2>&1 | tee {{ update_log_dir }}/tpm.log
   args:
     executable: /bin/bash
@@ -89,7 +90,7 @@
 - name: Update yazi plugins (async)
   ansible.builtin.shell: |
     set -o pipefail
-    ya pkg upgrade 2>&1 | tee {{ update_log_dir }}/yazi.log
+    "{{ ansible_facts['user_dir'] }}/.local/bin/yazi-update" 2>&1 | tee {{ update_log_dir }}/yazi.log
   args:
     executable: /bin/bash
   async: 1800
@@ -100,7 +101,10 @@
 - name: Update claude code plugins (async)
   ansible.builtin.shell: |
     set -o pipefail
-    claude plugin list --json | jq -r '.[].id' | xargs -n1 -P4 -I{} claude plugin update {} 2>&1 | tee {{ update_log_dir }}/claude.log
+    # Serial (no -P): concurrent `claude plugin update` invocations race on the
+    # shared marketplace git dir, producing flaky `unknown` versions and
+    # occasional half-cloned states. Slower (~4x) but reliable.
+    claude plugin list --json | jq -r '.[].id' | xargs -n1 -I{} claude plugin update {} 2>&1 | tee {{ update_log_dir }}/claude.log
   args:
     executable: /bin/bash
   async: 1800

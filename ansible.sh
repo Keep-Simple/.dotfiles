@@ -59,8 +59,25 @@ dotfiles_unlink)
   ;;
 update)
   _run_playbook --tags "update" "${@:2}"
-  summary="$HOME/.cache/dotfiles-update/summary.txt"
+  cache_dir="$HOME/.cache/dotfiles-update"
+  summary="$cache_dir/summary.txt"
+  details_dir="$cache_dir/details"
   [ -s "$summary" ] && { echo; cat "$summary"; }
+  if [ -d "$details_dir" ]; then
+    has_any=0
+    for f in "$details_dir"/*.txt; do
+      [ -s "$f" ] && { has_any=1; break; }
+    done
+    if [ "$has_any" = 1 ]; then
+      printf '\n\033[2m── details ──\033[0m\n'
+      for f in "$details_dir"/*.txt; do
+        [ -s "$f" ] || continue
+        tool=$(basename "$f" .txt)
+        printf '\n\033[1;36m%s\033[0m\n' "$tool"
+        cat "$f"
+      done
+    fi
+  fi
   ;;
 ansible_deps)
   _install_ansible_deps

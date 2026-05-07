@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Reload tmux config in any running server. No-op when no server running.
+# Picks up `set`/binding/source-file changes; full plugin reinit
+# (resurrect/continuum state) still needs `tmux kill-server`.
+set -u
+
+if ! tmux ls >/dev/null 2>&1; then
+  echo "tmux-reload: no server running; skipping"
+  exit 0
+fi
+
+conf="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf"
+if [ ! -f "$conf" ]; then
+  echo "tmux-reload: config not found at $conf" >&2
+  exit 1
+fi
+
+if tmux source-file "$conf"; then
+  echo "tmux-reload: ok ($conf)"
+else
+  echo "tmux-reload: source-file failed" >&2
+  exit 1
+fi

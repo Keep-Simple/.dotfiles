@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# Per-tool log summarizer for `my update`. Reads log on stdin, prints one line.
+# Per-tool log summarizer for `my update`.
+# Reads log on stdin, prints one-line summary to stdout, writes color-coded
+# multi-line detail block to ~/.cache/dotfiles-update/details/<tool>.txt
+# (empty file when nothing changed → caller skips).
 # Usage: summarize-update <tool> [delta] [status]
 set -u
 
@@ -7,25 +10,43 @@ tool="${1:-?}"
 delta="${2:-?}"
 status="${3:-OK}"
 
+details_dir="${UPDATE_DETAILS_DIR:-$HOME/.cache/dotfiles-update/details}"
+mkdir -p "$details_dir"
+details_file="$details_dir/$tool.txt"
+: > "$details_file"
+
+color_reset=$'\033[0m'
+color_bold=$'\033[1m'
+color_dim=$'\033[2m'
+color_red=$'\033[31m'
+color_green=$'\033[32m'
+color_yellow=$'\033[33m'
+color_cyan=$'\033[36m'
+
+input=$(cat)
 strip() { sed $'s/\x1b\\[[0-9;]*m//g' | tr -d '\r'; }
+clean=$(printf '%s\n' "$input" | strip)
 
 case "$tool" in
   brew)
-    body=$(awk '
-      /^==> Upgrading [0-9]+ outdated/ { n=$3 }
-      /^==> Upgrading / && /->/ {
-        gsub(/,/, ""); pkgs = pkgs sep $3 " " $4 "→" $6; sep = ", "
-      }
+    body=$(printf '%s\n' "$clean" | awk '
+      /^==> Upgraded [0-9]+ outdated packages/ { print $3 " updated"; done=1; exit }
       /Already up-to-date/ { up=1 }
-      END {
-        if (n) print "updated " n ": " pkgs
-        else if (up) print "0 outdated"
-        else print "no changes"
-      }')
+      END { if (!done) print (up ? "0 outdated" : "no changes") }')
+    printf '%s\n' "$clean" | awk \
+      -v G="$color_green" -v D="$color_dim" -v B="$color_bold" -v R="$color_reset" '
+      /^==> Upgraded [0-9]+ outdated packages/ { in_block=1; next }
+      in_block && /^==>/ { in_block=0 }
+      in_block && / -> / {
+        name=$1; old=$2; new=$4
+        # last path segment for tap-qualified names
+        n=split(name, parts, "/"); short=parts[n]
+        printf "  %s%-36s%s %s%s%s %s→%s %s%s%s\n", G, short, R, D, old, R, D, R, B, new, R
+      }' > "$details_file"
     ;;
 
   tpm)
-    body=$(awk '
+    body=$(printf '%s\n' "$clean" | awk '
       /update success/ { ok++ }
       /Already up to date/ { noop++ }
       /update fail/ { fail++ }
@@ -39,14 +60,14 @@ case "$tool" in
     ;;
 
   asdf)
-    body=$(awk '
+    body=$(printf '%s\n' "$clean" | awk '
       /^updated / { n++ }
       END { print n " plugin repos refreshed (no tool version changes)" }')
     ;;
 
   bmad)
-    body=$(awk '
-      /^bmad-method: .* -> / { ver = $2 " → " $4 }
+    body=$(printf '%s\n' "$clean" | awk '
+      /^bmad-method: .* -> / { ver = $2 " → " $4; changed=1 }
       /^bmad-method: .* \(unchanged\)/ { ver = $2 " (unchanged)" }
       /^[ ]+OK / { ok++ }
       /^[ ]+FAIL / { fail++ }
@@ -56,40 +77,105 @@ case "$tool" in
         if (fail) printf " (%d failed)", fail
         print ""
       }')
+    if printf '%s\n' "$clean" | grep -qE '^bmad-method: .* -> '; then
+      printf '%s\n' "$clean" | awk \
+        -v G="$color_green" -v D="$color_dim" -v B="$color_bold" -v R="$color_reset" '
+        /^bmad-method: .* -> / {
+          printf "  %s%-36s%s %s%s%s %s→%s %s%s%s\n", G, "bmad-method", R, D, $2, R, D, R, B, $4, R
+        }' > "$details_file"
+    fi
     ;;
 
   yazi)
-    body=$(awk '
+    body=$(printf '%s\n' "$clean" | awk '
       /^  Upgrading package/ { tot++; gsub(/`/, ""); cur=$3 }
-      /^Done!/ { done++ }
+      /^---PKG-DIFF---/ { in_diff=1; next }
+      in_diff && /^pkg-diff: / { upd++ }
       /aborted/ { bad++; aborts = aborts (aborts ? ", " : "") cur }
       END {
-        printf "%d packages, %d done", tot, done
+        printf "%d packages, %d updated", tot, upd
         if (bad) printf ", %d aborted (%s)", bad, aborts
         print ""
       }')
+    printf '%s\n' "$clean" | awk \
+      -v G="$color_green" -v C="$color_cyan" -v D="$color_dim" \
+      -v B="$color_bold" -v Y="$color_yellow" -v R="$color_reset" '
+      /^---PKG-DIFF---/ { in_diff=1; next }
+      in_diff && /^pkg-diff: / {
+        # pkg-diff: <use> <old> -> <new>   OR   pkg-diff: <use> (new) -> <new>
+        sub(/^pkg-diff: /, "")
+        # short name = last path segment of use
+        n = split($1, segs, /[:\/]/); short = segs[n]
+        if ($2 == "(new)") printf "  %s+%s %s%-32s%s %s→%s %s%s%s\n", G, R, C, short, R, D, R, B, $4, R
+        else               printf "  %s✓%s %s%-32s%s %s%s%s %s→%s %s%s%s\n", G, R, C, short, R, D, $2, R, D, R, B, $4, R
+      }
+      /aborted/ {
+        # last upgrading line gives package name
+        if (cur != "") printf "  %s⚠%s %s%s%s (aborted)\n", Y, R, C, cur, R
+      }
+      /^  Upgrading package/ { gsub(/`/, ""); cur=$3 }' > "$details_file"
     ;;
 
   claude)
-    body=$(strip | awk '
-      /Plugin .* updated from/ {
-        sub(/.*Plugin "/, ""); sub(/" .*/, "")
-        upd++; names = names (names ? ", " : "") $0
-      }
+    body=$(printf '%s\n' "$clean" | awk '
+      /Plugin .* updated from/ { upd++ }
       /already at the latest version/ { ok++ }
-      /Failed to refresh marketplace/ { warn = "; marketplace refresh failed" }
-      /^✖ / { fail++ }
+      /^✘ / { fail++ }
+      /Failed to refresh marketplace/ {
+        if (match($0, /Failed to refresh marketplace [^:]+/)) {
+          mkt = substr($0, RSTART + 30, RLENGTH - 30)
+          gsub(/[\047"]/, "", mkt)
+          sub(/^[ \t]+/, "", mkt); sub(/[ \t]+$/, "", mkt)
+          warn = "; " mkt " marketplace refresh failed"
+        } else warn = "; marketplace refresh failed"
+      }
       END {
-        printf "%d/%d updated", upd, upd + ok
-        if (upd) printf " (%s)", names
+        printf "%d/%d updated", upd, upd + ok + fail
+        if (fail) printf ", %d failed", fail
         if (warn) printf "%s", warn
-        if (fail) printf "; %d errors", fail
         print ""
       }')
+    printf '%s\n' "$clean" | awk \
+      -v G="$color_green" -v RD="$color_red" -v Y="$color_yellow" \
+      -v D="$color_dim" -v B="$color_bold" -v C="$color_cyan" -v R="$color_reset" '
+      function strip_quotes(s) { gsub(/['\''"]/, "", s); return s }
+      /Plugin .* updated from .* to .* for scope/ {
+        # ✔ Plugin "X" updated from A to B for scope user.
+        line=$0
+        match(line, /Plugin "[^"]+"/); name=substr(line, RSTART+8, RLENGTH-9)
+        match(line, /from [^ ]+ to [^ ]+/); seg=substr(line, RSTART, RLENGTH)
+        split(seg, parts, " "); old=parts[2]; new=parts[4]
+        if (old == "unknown" && new == "unknown")
+          printf "  %s✔%s %s%-32s%s %s(refreshed; version unreported by claude)%s\n", G, R, C, name, R, D, R
+        else if (old == "unknown")
+          printf "  %s✔%s %s%-32s%s %s→%s %s%s%s\n", G, R, C, name, R, D, R, B, new, R
+        else if (new == "unknown")
+          printf "  %s✔%s %s%-32s%s %s%s%s %s→ ?%s %s(version unreported)%s\n", G, R, C, name, R, D, old, R, D, R, D, R
+        else
+          printf "  %s✔%s %s%-32s%s %s%s%s %s→%s %s%s%s\n", G, R, C, name, R, D, old, R, D, R, B, new, R
+      }
+      /^✘ Failed to update plugin/ {
+        line=$0
+        match(line, /plugin "[^"]+"/); name=substr(line, RSTART+8, RLENGTH-9)
+        # strip leading scope after @
+        sub(/@.*/, "", name)
+        # reason after the first colon following the quoted name
+        idx=index(line, "\": "); reason = (idx>0) ? substr(line, idx+3) : line
+        printf "  %s✘%s %s%-32s%s %s%s%s\n", RD, R, C, name, R, D, reason, R
+      }
+      /Failed to refresh marketplace/ {
+        line=$0
+        if (match(line, /Failed to refresh marketplace [^:]+/)) {
+          mkt = substr(line, RSTART + 30, RLENGTH - 30)
+          mkt = strip_quotes(mkt)
+          sub(/^[ \t]+/, "", mkt); sub(/[ \t]+$/, "", mkt)
+          printf "  %s⚠%s marketplace %s%s%s refresh failed\n", Y, R, C, mkt, R
+        }
+      }' > "$details_file"
     ;;
 
   zinit)
-    body=$(strip | awk '
+    body=$(printf '%s\n' "$clean" | awk '
       /^Updating / { n++ }
       /No new commits found/ { noop++ }
       /took .* seconds/ { for (i=1; i<=NF; i++) if ($i == "took") { t = $(i+1); break } }
@@ -102,25 +188,93 @@ case "$tool" in
     ;;
 
   lazy)
-    body=$(strip | awk '
+    # Pre-split glued records: insert newline before each "[plugin] task | "
+    split_clean=$(printf '%s\n' "$clean" | awk '{
+      gsub(/\[[A-Za-z0-9._-]+\][ \t]*[a-z]+[ \t]*\|[ \t]*/, "\n&")
+      print
+    }')
+    body=$(printf '%s\n' "$split_clean" | awk '
       /Finished task fetch/ { fetched++ }
-      /^lock-diff: / {
-        updated++
-        if (updated <= 3) sample = sample (sample ? ", " : "") $2
-      }
+      /^---LOCK-DIFF---/ { in_lock=1; next }
+      in_lock && /^lock-diff: / { updated++ }
       /\[ERROR\]|fatal:/ { fail++ }
       END {
         printf "%d fetched, %d updated", fetched, updated
-        if (updated) printf " (%s%s)", sample, (updated > 3 ? ", …" : "")
         if (fail) printf "; %d errors", fail
         print ""
       }')
+    printf '%s\n' "$split_clean" | awk \
+      -v C="$color_cyan" -v D="$color_dim" -v R="$color_reset" \
+      -v RD="$color_red" '
+      function ltrim(s) { sub(/^[ \t]+/, "", s); return s }
+      function rtrim(s) { sub(/[ \t]+$/, "", s); return s }
+      function plugin_of(line,    h, end) {
+        end = index(line, "]")
+        if (end < 2) return ""
+        return substr(line, 2, end - 2)
+      }
+      function content_after_pipe(line,    pipe) {
+        pipe = index(line, "|")
+        if (pipe == 0) return ""
+        return ltrim(substr(line, pipe + 1))
+      }
+      # Capture commit log lines per plugin
+      /^\[[A-Za-z0-9._-]+\][ \t]*log[ \t]*\|/ {
+        name = plugin_of($0)
+        rest = content_after_pipe($0)
+        sub(/[ \t]*\([0-9]+[ \t]+[a-z]+[ \t]+ago\)[ \t]*$/, "", rest)
+        rest = rtrim(rest)
+        if (rest ~ /^[0-9a-f]{6,}[ \t]+./) {
+          commits[name] = commits[name] rest "\n"
+        }
+        next
+      }
+      # Capture per-plugin fatal/error lines (actionable git output)
+      /^\[[A-Za-z0-9._-]+\]/ && /\|[ \t]*(fatal:|error:|ERROR)/ {
+        name = plugin_of($0)
+        rest = content_after_pipe($0)
+        if (rest != "") {
+          if (!(name in err_seen)) { err_order[++en] = name; err_seen[name] = 1 }
+          errors[name] = errors[name] rest "\n"
+        }
+        next
+      }
+      /^---LOCK-DIFF---/ { in_lock=1; next }
+      in_lock && /^lock-diff: / { order[++n] = $2 }
+      END {
+        # Errors first (red, top of details so they cannot be missed)
+        if (en > 0) {
+          printf "  %sErrors:%s\n", RD, R
+          for (i=1; i<=en; i++) {
+            p = err_order[i]
+            printf "  %s✘%s %s%s%s\n", RD, R, C, p, R
+            k = split(errors[p], lines, "\n")
+            for (j=1; j<k; j++) printf "      %s%s%s\n", D, lines[j], R
+          }
+          if (n > 0) print ""
+        }
+        for (i=1; i<=n; i++) {
+          p = order[i]
+          printf "  %s%s%s\n", C, p, R
+          k = split(commits[p], lines, "\n")
+          for (j=1; j<k; j++) {
+            line = lines[j]
+            sp = index(line, " ")
+            if (sp > 0) {
+              h = substr(line, 1, sp - 1)
+              s = substr(line, sp + 1)
+              sub(/^[ \t]+/, "", s)
+              printf "    %s%s%s %s\n", D, h, R, s
+            }
+          }
+        }
+      }' > "$details_file"
     ;;
 
   mason)
-    body=$(awk '
+    body=$(printf '%s\n' "$clean" | awk '
       /^checked [0-9]+ packages, [0-9]+ outdated/ { checked=$2; outdated=$4 }
-      /^[a-z0-9_-]+: .* -> / { upd++; pkg = $1; sub(/:/, "", pkg); samples = samples (samples ? ", " : "") pkg }
+      /^[a-z0-9_-]+: .* -> / { upd++ }
       /install failed/ { fail++ }
       /^Error|E5108:/ { lua_err = 1 }
       /attempt to call/ { lua_msg = $0 }
@@ -128,10 +282,16 @@ case "$tool" in
         if (lua_err) { printf "Lua error: %s\n", lua_msg; exit }
         if (checked == "") { print "no output (script may have failed silently)"; exit }
         printf "%s checked, %s outdated", checked, outdated
-        if (upd) printf " (%s)", samples
+        if (upd) printf ", %d updated", upd
         if (fail) printf "; %d failed", fail
         print ""
       }')
+    printf '%s\n' "$clean" | awk \
+      -v G="$color_green" -v D="$color_dim" -v B="$color_bold" -v R="$color_reset" '
+      /^[a-z0-9_-]+: .* -> / {
+        name=$1; sub(/:/, "", name); old=$2; new=$4
+        printf "  %s%-36s%s %s%s%s %s→%s %s%s%s\n", G, name, R, D, old, R, D, R, B, new, R
+      }' > "$details_file"
     ;;
 
   *)
@@ -157,13 +317,6 @@ fmt_delta() {
 }
 
 # Status escalation: FAIL > body-mentions-warn > OK
-status_icon=""
-color_reset=$'\033[0m'
-color_green=$'\033[32m'
-color_yellow=$'\033[33m'
-color_red=$'\033[31m'
-color_dim=$'\033[2m'
-
 if [ "$status" = "FAIL" ]; then
   icon="✗"; color="$color_red"
 elif printf '%s' "$body" | grep -qiE 'aborted|failed|error|warn'; then

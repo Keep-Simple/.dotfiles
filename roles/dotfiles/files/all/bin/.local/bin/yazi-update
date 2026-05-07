@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Update yazi packages and emit a real "what actually changed" diff.
+# `ya pkg upgrade` prints `Upgrading package` + `HEAD is now at` for every
+# dep on every run (git checkout chatter, fires even when HEAD didn't move),
+# so the raw output can't tell us what truly updated. Snapshot
+# ~/.config/yazi/package.toml before, diff `rev` per dep after, append
+# `pkg-diff: <use> <old> -> <new>` lines after a `---PKG-DIFF---` separator.
+# summarize-update yazi parser counts only those.
+set -uo pipefail
+
+pkg_toml="${XDG_CONFIG_HOME:-$HOME/.config}/yazi/package.toml"
+if [ ! -f "$pkg_toml" ]; then
+  echo "yazi-update: package.toml not found at $pkg_toml" >&2
+  exit 1
+fi
+
+snapshot="$(mktemp)"
+trap 'rm -f "$snapshot" "$snapshot.kv" "$snapshot.kv2"' EXIT
+
+# Resolve symlink so snapshot survives if ya pkg replaces the file in place.
+cp -L "$pkg_toml" "$snapshot"
+
+ya pkg upgrade
+
+# Extract `use = "<repo>"` + `rev = "<sha>"` pairs into "<use>\t<rev>" lines.
+extract_kv() {
+  awk '
+    /^use[[:space:]]*=[[:space:]]*"/ {
+      line=$0
+      sub(/^use[[:space:]]*=[[:space:]]*"/, "", line)
+      sub(/".*/, "", line)
+      use=line
+      next
+    }
+    /^rev[[:space:]]*=[[:space:]]*"/ {
+      line=$0
+      sub(/^rev[[:space:]]*=[[:space:]]*"/, "", line)
+      sub(/".*/, "", line)
+      if (use) print use "\t" line
+    }
+  ' "$1" | sort
+}
+
+extract_kv "$snapshot"  > "$snapshot.kv"
+extract_kv "$pkg_toml"  > "$snapshot.kv2"
+
+echo "---PKG-DIFF---"
+# Updated: present in both, rev changed.
+join -t "$(printf '\t')" "$snapshot.kv" "$snapshot.kv2" \
+  | awk -F'\t' '$2 != $3 { print "pkg-diff: " $1 " " $2 " -> " $3 }'
+# Added: in new file only.
+join -t "$(printf '\t')" -v 2 "$snapshot.kv" "$snapshot.kv2" \
+  | awk -F'\t' '{ print "pkg-diff: " $1 " (new) -> " $2 }'
