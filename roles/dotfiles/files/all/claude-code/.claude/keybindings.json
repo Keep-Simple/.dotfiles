@@ -1,9 +1,15 @@
 {
+	"$schema": "https://www.schemastore.org/claude-code-keybindings.json",
+	"$docs": "https://code.claude.com/docs/en/keybindings",
 	"bindings": [
 		{
 			"context": "Chat",
 			"bindings": {
-				"ctrl+shift+v": "chat:imagePaste"
+				"ctrl+shift+v": "chat:imagePaste",
+				"ctrl+p": "chat:modelPicker",
+				"meta+p": null,
+				"ctrl+space": "chat:thinkingToggle",
+				"space": null
 			}
 		}
 	]

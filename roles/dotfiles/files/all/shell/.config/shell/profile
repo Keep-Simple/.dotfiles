@@ -47,6 +47,7 @@ export POETRY_CONFIG_DIR="$XDG_CONFIG_HOME/pypoetry"
 
 PATH="$HOME/.local/bin:$PATH"
 PATH="/usr/local/bin:$PATH"
+PATH="$XDG_DATA_HOME/nvim/mason/bin:$PATH"
 
 export PATH
 

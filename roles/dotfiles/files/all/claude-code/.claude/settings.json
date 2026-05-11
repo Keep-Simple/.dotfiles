@@ -1,5 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "skillListingBudgetFraction": 0.02,
   "env": {
     "DISABLE_AUTOUPDATER": "1",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5@20251001",
@@ -7,6 +8,10 @@
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6[1m]",
     "ENABLE_TOOL_SEARCH": "true",
     "CAVEMAN_DEFAULT_MODE": "ultra"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
   },
   "permissions": {
     "allow": [
@@ -89,7 +94,7 @@
       "Bash(rm -rf /)"
     ]
   },
-  "model": "opus",
+  "model": "opusplan",
   "hooks": {
     "Stop": [
       {
@@ -184,6 +189,8 @@
     }
   },
   "sandbox": {
+    "enabled": true,
+    "allowUnsandboxedCommands": true,
     "network": {
       "allowUnixSockets": [
         "/var/run/docker.sock"
@@ -191,22 +198,16 @@
     },
     "filesystem": {
       "allowWrite": [
-        "/Users/nickyasnohorodskyi/.cache/pre-commit"
+        "$HOME/.cache/pre-commit"
       ]
     },
     "excludedCommands": [
-      "git",
-      "gh"
-    ],
-    "enabled": true
+      "git:*",
+      "gh:*"
+    ]
   },
-  "alwaysThinkingEnabled": true,
-  "skillListingBudgetFraction": 0.02,
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
-  "effortLevel": "xhigh",
+  "alwaysThinkingEnabled": false,
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "editorMode": "vim",
