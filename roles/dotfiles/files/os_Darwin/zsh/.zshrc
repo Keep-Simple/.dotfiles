@@ -9,6 +9,9 @@ source "${ZINIT_HOME}/zinit.zsh"
 [[ -n $(ls ~/.zshrc.d/) ]] && for file in ~/.zshrc.d/*; do source "${file}"; done
 
 # Deep cache brew shellenv - expand ALL evals for maximum speed
+# Cache snapshots PATH at generation time (login shell). If PATH changes (e.g. new
+# mason tools added to .zprofile), delete brew.zsh and run `zinit update brew-shellenv`
+# in a login shell to regenerate: rm ~/.local/share/zinit/plugins/brew-shellenv/brew.zsh
 zinit ice id-as'brew-shellenv' lucid \
   atclone'
     if [[ -f /opt/homebrew/bin/brew ]]; then

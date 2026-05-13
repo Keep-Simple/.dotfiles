@@ -5,7 +5,7 @@ set -u
 target="${1:?target pane id required}"
 f=$(mktemp "${TMPDIR:-/tmp}/claude-reply.XXXXXX.md")
 trap 'rm -f "$f"' EXIT
-nvim "$f"
+nvim --cmd 'set noswapfile' "$f"
 [ -s "$f" ] || exit 0
 buffer="claude-reply-${target#%}"
 printf '%s' "$(cat "$f")" | tmux load-buffer -b "$buffer" -
