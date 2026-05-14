@@ -24,6 +24,11 @@
   changed_when: false
   notify: Restart dock
 
+- name: Activate system settings
+  ansible.builtin.command:
+    cmd: /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+  changed_when: false
+
 - name: Unhide ~/Library
   ansible.builtin.command: "chflags nohidden {{ ansible_facts['user_dir'] }}/Library"
   changed_when: false

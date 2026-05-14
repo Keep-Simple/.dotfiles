@@ -164,7 +164,6 @@
     "padding": 0
   },
   "enabledPlugins": {
-    "commit-commands@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
@@ -203,7 +202,15 @@
       ]
     },
     "excludedCommands": [
-      "git:*",
+      "git status:*",
+      "git diff:*",
+      "git log:*",
+      "git tag:*",
+      "git show:*",
+      "git branch:*",
+      "git checkout:*",
+      "git stash:*",
+      "git fetch:*",
       "gh:*"
     ]
   },
