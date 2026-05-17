@@ -4,3 +4,4 @@
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc"
 
 alias openclaw-tunnel='ssh -N -L 18789:localhost:18789 openclaw'
+alias claude='claude --allow-dangerously-skip-permissions'

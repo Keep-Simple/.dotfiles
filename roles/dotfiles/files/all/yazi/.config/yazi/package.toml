@@ -10,8 +10,8 @@ hash = "f0c8c378184d5f8abd1b095a443d336d"
 
 [[plugin.deps]]
 use = "KKV9/compress"
-rev = "46a6b9f"
-hash = "771af2becc575a3f43d0542de823969d"
+rev = "e60e122"
+hash = "fbaf0adc8efc59555b748d36aab62d40"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:toggle-pane"
@@ -20,5 +20,5 @@ hash = "9c7987da2d2a2120dac33abb64132004"
 
 [[flavor.deps]]
 use = "yazi-rs/flavors:catppuccin-mocha"
-rev = "0670801"
+rev = "54ab389"
 hash = "7dfe41c9c3d9be76da8a844263d0bbed"
