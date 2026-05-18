@@ -146,7 +146,7 @@ brew "yh"
 brew "zlib"
 brew "asmvik/formulae/yabai"
 brew "hudochenkov/sshpass/sshpass"
-brew "jackielii/tap/skhd-zig"
+brew "jackielii/tap/skhd-zig", pin: true
 brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 brew "keep-simple/formulae/vtclean"
 brew "morantron/tmux-fingers/tmux-fingers"

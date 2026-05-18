@@ -28,7 +28,7 @@ If that returns nothing, ask the user for a PR number. Store as `$PR_NUMBER`.
 Fetch all three comment types in parallel:
 
 ```bash
-# Inline review comments (on specific lines)
+# Inline review comments (on specific lines) — ALL including replies
 gh api repos/{owner}/{repo}/pulls/$PR_NUMBER/comments \
   --paginate \
   --jq '[.[] | {
@@ -84,9 +84,10 @@ gh repo view --json nameWithOwner --jq '.nameWithOwner'
 
 **Time filter:** If the user specified a time range (e.g. "since yesterday", "last 2 days"), filter by `created_at`. Otherwise include all comments.
 
-**Exclude:**
-- Comments where `in_reply_to_id` is set (these are replies, not root issues)
-- Comments authored by yourself (check against `gh api user --jq '.login'`)
+**Thread grouping:** For inline comments, group replies under their root comment using `in_reply_to_id`. Root comments have no `in_reply_to_id`. Each root comment carries its full reply chain as context.
+
+**Exclude from root issue list:**
+- Nothing. Include all comments, including your own. Your own comments may be questions you asked or context you added — they are still part of the review.
 
 ---
 
@@ -130,6 +131,10 @@ Create `.pr-review-$PR_NUMBER.md` in the project root (or current directory if n
 **Body:**
 > $BODY
 
+**Thread replies:** *(omit section if no replies)*
+> @$REPLY_AUTHOR: $REPLY_BODY
+> @$REPLY_AUTHOR2: $REPLY_BODY2
+
 ---
 
 ## Suggestions ($SUGGESTION_COUNT)
@@ -164,15 +169,16 @@ Work through comments in severity order. For each pending (`[ ]`) comment:
 Show:
 ```
 ─────────────────────────────────────────
-[$SEVERITY] #$ID by @$AUTHOR
+[$SEVERITY] #$ID by @$AUTHOR  (append [bot] if is_bot)
 $PATH:$LINE  (omit if not inline)
 $URL
 
 $BODY
+
+  ↳ @$REPLY_AUTHOR: $REPLY_BODY    ← include all replies in chronological order
+  ↳ @$REPLY_AUTHOR2: $REPLY_BODY2  ← omit this block entirely if no replies
 ─────────────────────────────────────────
 ```
-
-If it's a bot comment, note: `[bot]` next to the author.
 
 ### Ask the user
 
@@ -209,9 +215,10 @@ Wait for the user's response. Do not proceed until they answer.
        --method POST \
        --field body="$REPLY_TEXT\n\n*— Claude Code*"
      ```
-3. Mark `[ ]` → `[x]` in the tracking file.
-4. Update the progress counter: `Progress: X / $TOTAL_COUNT done`.
-5. Move to next comment.
+3. Ask: "Commit the fix? (yes / no)" — if yes, suggest a commit message based on the comment body and wait for confirmation, then run `git add -p` guidance or ask which files to stage, then commit. Never `git add .` blindly — ask the user which files are part of this fix.
+4. Mark `[ ]` → `[x]` in the tracking file.
+5. Update the progress counter: `Progress: X / $TOTAL_COUNT done`.
+6. Move to next comment.
 
 ### On "no"
 
