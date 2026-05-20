@@ -36,3 +36,5 @@
   path = ~/.gitconfig-work
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+[http]
+	sslCAInfo = ~/zscaler-ca-bundle.pem
