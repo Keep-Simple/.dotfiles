@@ -1,6 +1,7 @@
 ---
 name: address-pr-review
 description: Fetch GitHub PR review comments, store progress in a tracking file, then walk through each issue one-by-one with the user, reply to GitHub when confirmed done. Use when user says "address PR review", "address review comments", "go through PR feedback", or /address-pr-review.
+allowed-tools: Edit(**/.pr-review-*.md)
 ---
 
 # Address PR Review Comments
@@ -20,6 +21,8 @@ gh pr view --json number,url,headRefName,title 2>/dev/null
 ```
 
 If that returns nothing, ask the user for a PR number. Store as `$PR_NUMBER`.
+
+Ask: `Include bot comments? (y / n)  [default: n]` — store as `$INCLUDE_BOTS`.
 
 ---
 
@@ -85,6 +88,8 @@ gh repo view --json nameWithOwner --jq '.nameWithOwner'
 **Time filter:** If the user specified a time range (e.g. "since yesterday", "last 2 days"), filter by `created_at`. Otherwise include all comments.
 
 **Thread grouping:** For inline comments, group replies under their root comment using `in_reply_to_id`. Root comments have no `in_reply_to_id`. Each root comment carries its full reply chain as context.
+
+**Bot filter:** If `$INCLUDE_BOTS` is `n`, exclude any comment where `is_bot: true` before building the tracking file.
 
 **Exclude from root issue list:**
 - Nothing. Include all comments, including your own. Your own comments may be questions you asked or context you added — they are still part of the review.
@@ -169,7 +174,9 @@ Work through comments in severity order. For each pending (`[ ]`) comment:
 Show:
 ```
 ─────────────────────────────────────────
-[$SEVERITY] #$ID by @$AUTHOR  (append [bot] if is_bot)
+Done: $DONE  Won't do: $WONT  Skipped: $SKIPPED  Remaining: $REMAINING
+
+[$SEVERITY] #$ID — @$AUTHOR  (append [bot] if is_bot)
 $PATH:$LINE  (omit if not inline)
 $URL
 
@@ -183,70 +190,82 @@ $BODY
 ### Ask the user
 
 ```
-Is this addressed? (yes / no / skip / done)
-  yes   — mark done, post reply to GitHub
-  no    — skip for now, come back later
-  skip  — skip permanently (won't revisit)
-  done  — end the session, save progress
+Your call? (address / won't do / skip)
+  address  — offer reply + commit, mark done
+  won't do — offer reply explaining why, mark declined
+  skip     — come back later, no reply
 ```
 
 Wait for the user's response. Do not proceed until they answer.
 
-### On "yes"
+### Posting a reply (shared logic for "address" and "won't do")
 
-1. Ask: "Reply to GitHub? Suggested: `[brief description of what was done]` — or type your own reply, or 'none' to skip reply."
-2. If reply provided (not 'none'), post it:
-   - For **inline comments** — reply to the thread:
-     ```bash
-     gh api repos/{owner}/{repo}/pulls/$PR_NUMBER/comments \
-       --method POST \
-       --field body="$REPLY_TEXT\n\n*— Claude Code*" \
-       --field in_reply_to=$COMMENT_ID
-     ```
-   - For **review-level comments** — post a PR issue comment:
-     ```bash
-     gh api repos/{owner}/{repo}/issues/$PR_NUMBER/comments \
-       --method POST \
-       --field body="Re: $URL\n\n$REPLY_TEXT\n\n*— Claude Code*"
-     ```
-   - For **issue comments** — reply in the same thread:
-     ```bash
-     gh api repos/{owner}/{repo}/issues/$PR_NUMBER/comments \
-       --method POST \
-       --field body="$REPLY_TEXT\n\n*— Claude Code*"
-     ```
-3. Ask: "Commit the fix? (yes / no)" — if yes, suggest a commit message based on the comment body and wait for confirmation, then run `git add -p` guidance or ask which files to stage, then commit. Never `git add .` blindly — ask the user which files are part of this fix.
-4. Mark `[ ]` → `[x]` in the tracking file.
-5. Update the progress counter: `Progress: X / $TOTAL_COUNT done`.
-6. Move to next comment.
+Suggest a reply based on context, then show:
+```
+Reply: "$SUGGESTED_TEXT" — y / n / edit
+```
+- **y** — post as-is
+- **n** — skip reply
+- **edit** — user types their own text, then post
 
-### On "no"
+Post via:
+- **Inline comments** — reply to the thread:
+  ```bash
+  gh api repos/{owner}/{repo}/pulls/$PR_NUMBER/comments \
+    --method POST \
+    --field body="$REPLY_TEXT\n\n*— Claude Code*" \
+    --field in_reply_to=$COMMENT_ID
+  ```
+- **Review-level comments** — post a PR issue comment:
+  ```bash
+  gh api repos/{owner}/{repo}/issues/$PR_NUMBER/comments \
+    --method POST \
+    --field body="Re: $URL\n\n$REPLY_TEXT\n\n*— Claude Code*"
+  ```
+- **Issue comments** — reply in the same thread:
+  ```bash
+  gh api repos/{owner}/{repo}/issues/$PR_NUMBER/comments \
+    --method POST \
+    --field body="$REPLY_TEXT\n\n*— Claude Code*"
+  ```
 
-Leave `[ ]`, move to next comment. Will revisit if user runs the skill again (existing tracking file is loaded instead of re-fetching).
+### On "address"
+
+1. Offer reply (see above). Suggested reply: brief description of what was done.
+2. Ask: "Commit the fix? (y / n)" — if yes, suggest a commit message and wait for confirmation, then ask which files to stage, then commit. Never `git add .` blindly.
+3. Mark `[ ]` → `[x]` in the tracking file. Save immediately.
+4. Move to next comment.
+
+### On "won't do"
+
+1. Offer reply (see above). Suggested reply: brief explanation of why it won't be addressed.
+2. Mark `[ ]` → `[~]` in the tracking file. Save immediately.
+3. Move to next comment.
 
 ### On "skip"
 
-Mark `### [~]` (skipped permanently). Move to next comment.
+Leave `[ ]` as-is. No reply. Save tracking file. Move to next comment.
 
-### On "done"
+---
 
-Save tracking file state. Print summary:
+## Step 6 — Session End
+
+When all comments are processed (no more `[ ]` items), print summary:
 ```
-Session ended.
-Done: X / $TOTAL_COUNT
-Remaining: Y (no), Z (skipped)
+All done.
+Done: X  |  Won't do: W  |  Skipped: Y
 
 Tracking file: .pr-review-$PR_NUMBER.md
-Resume by running /address-pr-review again.
+Resume skipped items: /address-pr-review
 ```
 
 ---
 
-## Step 6 — Resume Behavior
+## Step 7 — Resume Behavior
 
 On activation, check if `.pr-review-$PR_NUMBER.md` already exists for the detected PR:
 
-- If yes: load it, skip already-done/skipped items, resume from first pending `[ ]` item
+- If yes: load it, resume from first pending `[ ]` item (skip `[x]` and `[~]`)
 - If no: run from Step 2
 
 ---
