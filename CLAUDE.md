@@ -1,4 +1,8 @@
 
+## Global rules (repo-specific)
+
+Symlinked dotfiles: `~/.claude/*` and other `$HOME` configs are stow symlinks into `~/.dotfiles/roles/dotfiles/files/...`. Edit tool refuses symlinks. Resolve with `readlink -f <path>` first, then edit the real target under `~/.dotfiles/`.
+
 ## Repo Purpose
 
 Personal dotfiles + machine bootstrap. Ansible playbook drives full setup; GNU Stow symlinks dotfile packages into `$HOME`. Primary target: macOS (`macos` branch). Linux (Debian/Fedora) partially supported.

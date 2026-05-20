@@ -135,6 +135,15 @@
             "command": "$HOME/.claude/hooks/on-status-refresh.sh"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
       }
     ],
     "PostToolUse": [
