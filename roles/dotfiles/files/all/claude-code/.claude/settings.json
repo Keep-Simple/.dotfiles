@@ -131,7 +131,9 @@
       "mcp__atlassian__search",
       "mcp__atlassian__searchConfluenceUsingCql",
       "mcp__atlassian__searchJiraIssuesUsingJql",
-      "mcp__reddit"
+      "mcp__reddit",
+      "Edit(**/.pr-review-*.md)",
+      "Write(**/.pr-review-*.md)"
     ],
     "deny": [
       "Bash(rm -rf /)"
