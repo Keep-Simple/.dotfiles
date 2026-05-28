@@ -30,12 +30,12 @@ clean=$(printf '%s\n' "$input" | strip)
 case "$tool" in
   brew)
     body=$(printf '%s\n' "$clean" | awk '
-      /^==> Upgraded [0-9]+ outdated packages/ { print $3 " updated"; done=1; exit }
+      /^==> Upgraded [0-9]+ outdated package/ { total += $3 }
       /Already up-to-date/ { up=1 }
-      END { if (!done) print (up ? "0 outdated" : "no changes") }')
+      END { if (total > 0) print total " updated"; else print (up ? "0 outdated" : "no changes") }')
     printf '%s\n' "$clean" | awk \
       -v G="$color_green" -v D="$color_dim" -v B="$color_bold" -v R="$color_reset" '
-      /^==> Upgraded [0-9]+ outdated packages/ { in_block=1; next }
+      /^==> Upgraded [0-9]+ outdated package/ { in_block=1; next }
       in_block && /^==>/ { in_block=0 }
       in_block && / -> / {
         name=$1; old=$2; new=$4

@@ -40,6 +40,7 @@
     {
       {{ homebrew_brew_bin_path }}/brew update
       {{ homebrew_brew_bin_path }}/brew upgrade
+      {{ homebrew_brew_bin_path }}/brew upgrade --cask
       {{ homebrew_brew_bin_path }}/brew cleanup
     } 2>&1 | tee {{ update_log_dir }}/brew.log
   args:

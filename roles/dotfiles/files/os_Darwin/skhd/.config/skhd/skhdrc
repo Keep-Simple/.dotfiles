@@ -58,8 +58,8 @@ ctrl + alt + cmd + shift - s : @toggle_window("sticky")
 # Close active application
 ctrl + alt + cmd - q : yabai -m window --close
 
-# Clipboard history, ClipboardTool spoon (0x27 = apostrophe ')
-ctrl + alt + cmd - 0x27 : hs -c "ToggleClipboard()"
+# Clipboard history, ClipboardTool spoon (0x2A = backslash \)
+ctrl + alt + cmd - 0x2A : hs -c "ToggleClipboard()"
 
 # toggle window zoom
 ctrl + alt + cmd - f : @toggle_window("zoom-fullscreen")

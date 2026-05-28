@@ -8,7 +8,8 @@
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6[1m]",
     "ENABLE_TOOL_SEARCH": "true",
     "ENABLE_LSP_TOOL": "1",
-    "CAVEMAN_DEFAULT_MODE": "ultra"
+    "CAVEMAN_DEFAULT_MODE": "ultra",
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"
   },
   "attribution": {
     "commit": "",
