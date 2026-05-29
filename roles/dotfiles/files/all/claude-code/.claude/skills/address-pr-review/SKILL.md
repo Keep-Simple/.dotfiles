@@ -47,7 +47,6 @@ gh api repos/{owner}/{repo}/pulls/$PR_NUMBER/comments \
     path: .path,
     line: (.line // .original_line),
     url: .html_url,
-    reply_url: .url,
     created_at: .created_at,
     in_reply_to_id: .in_reply_to_id
   }]'
@@ -78,7 +77,6 @@ gh api repos/{owner}/{repo}/issues/$PR_NUMBER/comments \
     is_bot: (.user.type == "Bot"),
     body: .body,
     url: .html_url,
-    reply_url: .url,
     created_at: .created_at
   }]'
 
@@ -172,7 +170,6 @@ Create `.pr-review-$PR_NUMBER.md` in the project root (the directory containing 
 ### [ ] Comment #$ID — @$AUTHOR — $SEVERITY
 **File:** `$PATH:$LINE` *(omit if not inline)*  
 **Link:** $URL  
-**Reply endpoint:** $REPLY_URL  
 **Body:**
 > $BODY
 
@@ -341,4 +338,5 @@ On activation, check if `.pr-review-$PR_NUMBER.md` already exists in the project
 
 - **Never post a reply without user confirmation.**
 - **Never mark done without user saying "address".**
+- **Never PATCH (edit) an existing comment.** Always POST a new reply. Use `in_reply_to=$COMMENT_ID` for inline threads. Never call `PATCH /pulls/comments/{id}` or `PATCH /issues/comments/{id}`.
 - If a `gh api` call fails, show the error, ask the user if they want to retry or continue without posting.
