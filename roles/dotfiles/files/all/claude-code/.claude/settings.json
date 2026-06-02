@@ -4,7 +4,7 @@
   "env": {
     "DISABLE_AUTOUPDATER": "1",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5@20251001",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-7[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-8[1m]",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6[1m]",
     "ENABLE_TOOL_SEARCH": "true",
     "ENABLE_LSP_TOOL": "1",
@@ -227,7 +227,10 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "caveman@caveman": true,
     "andrej-karpathy-skills@karpathy-skills": true,
-    "catppuccin@claude-themes": true
+    "catppuccin@claude-themes": true,
+    "start-ticket@snyk-ide-tools": true,
+    "publish-pr-for-review@snyk-ide-tools": true,
+    "address-pr-review@snyk-ide-tools": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -246,6 +249,12 @@
       "source": {
         "source": "github",
         "repo": "matcra587/claude-themes"
+      }
+    },
+    "snyk-ide-tools": {
+      "source": {
+        "source": "github",
+        "repo": "snyk/ide-tools"
       }
     }
   },
