@@ -9,6 +9,7 @@
     "ENABLE_TOOL_SEARCH": "true",
     "ENABLE_LSP_TOOL": "1",
     "CAVEMAN_DEFAULT_MODE": "ultra",
+    "PONYTAIL_DEFAULT_MODE": "full",
     "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"
   },
   "attribution": {
@@ -230,7 +231,8 @@
     "catppuccin@claude-themes": true,
     "start-ticket@snyk-ide-tools": true,
     "publish-pr-for-review@snyk-ide-tools": true,
-    "address-pr-review@snyk-ide-tools": true
+    "address-pr-review@snyk-ide-tools": true,
+    "ponytail@ponytail": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -255,6 +257,12 @@
       "source": {
         "source": "github",
         "repo": "snyk/ide-tools"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
       }
     }
   },
