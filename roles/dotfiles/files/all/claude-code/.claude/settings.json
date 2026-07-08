@@ -10,7 +10,8 @@
     "ENABLE_LSP_TOOL": "1",
     "CAVEMAN_DEFAULT_MODE": "ultra",
     "PONYTAIL_DEFAULT_MODE": "full",
-    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1",
+    "CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN": "1"
   },
   "attribution": {
     "commit": "",
@@ -293,7 +294,7 @@
     ]
   },
   "syntaxHighlightingDisabled": false,
-  "alwaysThinkingEnabled": false,
+  "alwaysThinkingEnabled": true,
   "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "theme": "custom:catppuccin:catppuccin-mocha",
