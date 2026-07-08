@@ -21,14 +21,14 @@ my dotfiles_unlink          # unstow (sets dotfiles_state=absent)
 my system_defaults          # only macOS defaults
 my ansible_deps             # ansible-galaxy install -r requirements.yaml --force
 my run_remote               # run on hosts in inventory[remote_servers] (-Kk)
-my update                   # async-parallel upgrade: brew, tpm, asdf, bmad, yazi, claude, zinit, lazy, mason
+my update                   # async-parallel upgrade: brew, tpm, asdf, yazi, claude, zinit, lazy, mason
 ```
 
 Pass extra ansible args after the subcommand (e.g. `my run --check --diff -vv`, `my run --tags dotfiles --start-at-task=...`).
 
 ### Debugging `my update`
 
-Per-tool logs (raw, unfiltered): `~/.cache/dotfiles-update/<tool>.log` — `brew | tpm | asdf | bmad | yazi | claude | zinit | lazy | mason`. Each tool's task tee's stdout+stderr to its own log; previous run is overwritten on re-run. Output:
+Per-tool logs (raw, unfiltered): `~/.cache/dotfiles-update/<tool>.log` — `brew | tpm | asdf | yazi | claude | zinit | lazy | mason`. Each tool's task tee's stdout+stderr to its own log; previous run is overwritten on re-run. Output:
 - `~/.cache/dotfiles-update/summary.txt` — one colored line per tool (status icon, name, delta, body).
 - `~/.cache/dotfiles-update/details/<tool>.txt` — multi-line color-coded breakdown (only emitted when there's something to show: package version diffs, lazy commit logs, claude failures/marketplace warns, yazi packages). Empty file → skipped by `ansible.sh`.
 
@@ -36,13 +36,12 @@ Both are printed by `ansible.sh update` post-run (summary first, then `── de
 
 Where each tool's update runs from:
 - `brew | mason` → `roles/packages/tasks/os_Darwin.yaml`, `roles/nvim/tasks/main.yaml`
-- `tpm | asdf | bmad | yazi | claude` → `roles/dotfiles/tasks/additional_setup.yaml`
+- `tpm | asdf | yazi | claude` → `roles/dotfiles/tasks/additional_setup.yaml`
 - `zinit` → `roles/zsh/tasks/main.yaml`
 - `lazy` → `roles/nvim/tasks/main.yaml`
 
 Underlying scripts (executable, all stowed to `~/.local/bin/`):
 - `mason-update` — headless nvim lua loop; uses `pkg:get_latest_version()` (registry-cached, matches mason UI's "Outdated" tab) then `pkg:install():once("closed", ...)`. Empty output ≈ registry refresh returned 0 outdated (try `:Mason` in nvim to compare).
-- `bmad-update` — `npm update -g bmad-method` then per-repo `bmad install --action quick-update --yes` in parallel. Prints version diff (`bmad-method: 6.5.0 → 6.6.0` or `(unchanged)`) — npm's "changed N package" line is touched-count, not version-bumped.
 - `summarize-update <tool> <delta> <OK|FAIL>` — reads log on stdin, emits one colored summary line on stdout AND writes color-coded details to `$UPDATE_DETAILS_DIR/<tool>.txt` (defaults to `~/.cache/dotfiles-update/details/`). Per-tool awk parsers dispatched by case. Tweak parser there if log format changes; override `UPDATE_DETAILS_DIR` to test against existing logs without touching the live cache.
 - `tmux-reload` — `tmux source-file "$XDG_CONFIG_HOME/tmux/tmux.conf"` against any running server (no-op when none). Called automatically at the end of the tpm update task; also safe to invoke manually after editing `tmux.conf`.
 - `yazi-update` — wraps `ya pkg upgrade`. Snapshots `package.toml` pre-run, joins the `use=/rev=` pairs from the snapshot vs the post-run file, appends `pkg-diff: <use> <old> -> <new>` lines after a `---PKG-DIFF---` separator. Required because `ya pkg upgrade` prints `Upgrading package` + `HEAD is now at` for *every* dep on every run (same checkout-chatter lie as lazy), so the raw output can't tell us what actually changed.
@@ -62,7 +61,6 @@ Updates write fresh files to disk, but already-running processes hold the old co
 - **brew / mason** — CLI binaries replaced on disk; next invocation gets the new binary. Long-running daemons (`brew services`) are NOT restarted automatically.
 - **tpm** — task ends by invoking `tmux-reload` (sources `tmux.conf` in any running server, no-op if none). Picks up `set`/binding changes; full plugin re-init (resurrect/continuum state) still needs `tmux kill-server`.
 - **asdf** — only refreshes plugin registries; installed tool versions don't change, so nothing to reload.
-- **bmad** — `bmad-method` CLI updated globally via npm; per-repo `.bmad/` content read on demand. No reload needed.
 - **yazi** — package files updated under `~/.config/yazi/`; running yazi instances keep old plugins until restart.
 - **claude** — output literally says `Restart to apply changes`. Cannot auto-restart user-owned Claude Code sessions.
 - **zinit** — plugin git repos pulled; running zsh sessions keep cached code. `exec zsh` to reload current shell, or open a new one.

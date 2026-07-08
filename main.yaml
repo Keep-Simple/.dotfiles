@@ -61,7 +61,6 @@
         - { name: brew, job: "{{ brew_async }}" }
         - { name: tpm, job: "{{ tpm_async }}" }
         - { name: asdf, job: "{{ asdf_async }}" }
-        - { name: bmad, job: "{{ bmad_async }}" }
         - { name: yazi, job: "{{ yazi_async }}" }
         - { name: claude, job: "{{ claude_async }}" }
         - { name: zinit, job: "{{ zinit_async }}" }

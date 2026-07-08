@@ -65,27 +65,6 @@ case "$tool" in
       END { print n " plugin repos refreshed (no tool version changes)" }')
     ;;
 
-  bmad)
-    body=$(printf '%s\n' "$clean" | awk '
-      /^bmad-method: .* -> / { ver = $2 " → " $4; changed=1 }
-      /^bmad-method: .* \(unchanged\)/ { ver = $2 " (unchanged)" }
-      /^[ ]+OK / { ok++ }
-      /^[ ]+FAIL / { fail++ }
-      /^[0-9]+\/[0-9]+ succeeded/ { tot=$1 }
-      END {
-        printf "bmad-method %s; repos %s", (ver ? ver : "?"), (tot ? tot : ok"/"ok+fail)
-        if (fail) printf " (%d failed)", fail
-        print ""
-      }')
-    if printf '%s\n' "$clean" | grep -qE '^bmad-method: .* -> '; then
-      printf '%s\n' "$clean" | awk \
-        -v G="$color_green" -v D="$color_dim" -v B="$color_bold" -v R="$color_reset" '
-        /^bmad-method: .* -> / {
-          printf "  %s%-36s%s %s%s%s %s→%s %s%s%s\n", G, "bmad-method", R, D, $2, R, D, R, B, $4, R
-        }' > "$details_file"
-    fi
-    ;;
-
   yazi)
     body=$(printf '%s\n' "$clean" | awk '
       /^  Upgrading package/ { tot++; gsub(/`/, ""); cur=$3 }
