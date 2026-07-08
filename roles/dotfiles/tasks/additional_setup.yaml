@@ -50,6 +50,14 @@
   failed_when: false
   tags: ['bootstrap']
 
+- name: Install mattpocock skills
+  ansible.builtin.shell: |
+    npx skills@latest add mattpocock/skills --all -g -y
+  args:
+    executable: /bin/bash
+  failed_when: false
+  tags: ['bootstrap']
+
 - name: Update tmux plugins (async)
   ansible.builtin.shell: |
     set -o pipefail
