@@ -76,6 +76,17 @@
   register: asdf_async
   tags: ['update', 'never']
 
+- name: Update mattpocock skills (async)
+  ansible.builtin.shell: |
+    set -o pipefail
+    npx skills@latest update --yes -g 2>&1 | tee {{ update_log_dir }}/skills.log
+  args:
+    executable: /bin/bash
+  async: 1800
+  poll: 0
+  register: skills_async
+  tags: ['update', 'never']
+
 - name: Update yazi plugins (async)
   ansible.builtin.shell: |
     set -o pipefail
