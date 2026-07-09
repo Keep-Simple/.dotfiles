@@ -120,3 +120,17 @@ Append to `macos_defaults` in `vars/os_Darwin/os_configs.yaml` (uses `osx_defaul
 
 - `macos` is the working/main branch (PRs default here per local git config).
 - Remote setup uses `inventory` `[remote_servers]` group; `my run_remote` adds `-Kk -e hosts_var=remote_servers`.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues at `Keep-Simple/.dotfiles`; external PRs are not a triage surface. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default canonical labels (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout — `CONTEXT.md` + `docs/adr/` at repo root. See `docs/agents/domain.md`.
