@@ -67,7 +67,8 @@ case "$tool" in
 
   skills)
     body=$(printf '%s\n' "$clean" | awk '
-      /✓ Updated / { upd++; last=$3 }
+      /✓ Updated [0-9]+ skills/ { upd = $3 }
+      /✓ Updated / && $3 !~ /^[0-9]+$/ { upd++ }
       /✓ All global skills are up to date/ { noop=1 }
       END {
         if (upd) printf "%d updated", upd
@@ -75,8 +76,8 @@ case "$tool" in
         print ""
       }')
     printf '%s\n' "$clean" | awk \
-      -v G="$color_green" -v D="$color_dim" -v B="$color_bold" -v R="$color_reset" '
-      /✓ Updated / { printf "  %s✓%s %s%s%s\n", G, R, B, $3, R }' > "$details_file"
+      -v G="$color_green" -v B="$color_bold" -v R="$color_reset" '
+      /✓ Updated / && $3 !~ /^[0-9]+$/ { printf "  %s✓%s %s%s%s\n", G, R, B, $3, R }' > "$details_file"
     ;;
 
   yazi)
