@@ -142,7 +142,7 @@
       "Bash(rm -rf /)"
     ]
   },
-  "model": "opusplan",
+  "model": "claude-sonnet-5",
   "hooks": {
     "Stop": [
       {
