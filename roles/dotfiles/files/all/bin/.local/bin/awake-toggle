@@ -1,0 +1,19 @@
+#!/bin/bash
+# Toggle a background `caffeinate -i` lock so Claude Code / other background
+# jobs keep running once the display sleeps or goes to standby. Doesn't touch
+# display sleep itself (screen is still allowed to blank) or lid-closed sleep.
+lockfile="${XDG_CACHE_HOME:-$HOME/.cache}/awake.pid"
+
+if [ -f "$lockfile" ] && kill -0 "$(cat "$lockfile")" 2>/dev/null; then
+    kill "$(cat "$lockfile")"
+    rm -f "$lockfile"
+else
+    caffeinate -i </dev/null >/dev/null 2>&1 &
+    pid=$!
+    disown
+    echo "$pid" > "$lockfile"
+fi
+
+# refresh-client here (not chained in tmux.conf) guarantees the status bar
+# reads the lockfile AFTER it's written/removed, not racing a backgrounded run-shell.
+tmux refresh-client -S 2>/dev/null
