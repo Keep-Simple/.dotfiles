@@ -22,10 +22,13 @@ frontmost_app() {
 }
 
 # Check whether a tmux pane is currently visible to the user.
-# "Visible" = frontmost macOS app is $TERMINAL_APP AND the most-recently-active
-# tmux client has this pane focused (active pane in active window of session).
-# With multiple terminal windows on different macOS workspaces, only the
-# frontmost one counts; clients on background terminals don't.
+# "Visible" = frontmost macOS app is $TERMINAL_APP AND the client tmux
+# reports as actually focused (#{client_focused}) has this pane active.
+# With multiple attached clients (one per terminal window), client_activity
+# (last-touched timestamp) is NOT a reliable proxy for "on screen right now" —
+# mouse-reporting/resize noise on a background client can out-tick the client
+# you're actually looking at, so fall back to it only if no client reports
+# client_focused (unsupported terminal/tmux).
 # Returns 0 if visible, 1 if not.
 is_pane_visible() {
     local pane="$1"
@@ -33,10 +36,14 @@ is_pane_visible() {
 
     [ "$(frontmost_app)" = "$TERMINAL_APP" ] || return 1
 
-    # Pick most-recently-active client (the one in the frontmost terminal window).
     local focused_client
-    focused_client=$(tmux list-clients -F '#{client_activity} #{client_name}' 2>/dev/null \
-        | sort -rn | head -1 | cut -d' ' -f2-)
+    focused_client=$(tmux list-clients -F '#{client_focused} #{client_name}' 2>/dev/null \
+        | awk '$1==1{print substr($0, index($0,$2)); exit}')
+
+    if [ -z "$focused_client" ]; then
+        focused_client=$(tmux list-clients -F '#{client_activity} #{client_name}' 2>/dev/null \
+            | sort -rn | head -1 | cut -d' ' -f2-)
+    fi
     [ -z "$focused_client" ] && return 1
 
     local active_pane

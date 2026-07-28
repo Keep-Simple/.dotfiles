@@ -39,15 +39,16 @@ if [ -n "$STARTED" ]; then
     log_debug "DURATION: $DURATION"
 fi
 
-# Mark session as awaiting user attention (cleared on next UserPromptSubmit / SessionEnd /
-# pane-focus-in). Skip if pane is currently visible — user can see completion directly.
-if is_pane_visible "$CLAUDE_PANE"; then
-    log_debug "Pane visible - skipping completion marker"
-else
-    : > "/tmp/claude_${SESSION_ID}_completed"
-    tmux refresh-client -S 2>/dev/null  # push status update without waiting for status-interval
-    log_debug "Wrote completion marker"
-fi
+# Mark session as awaiting user attention (cleared on next UserPromptSubmit /
+# SessionEnd / pane-focus-in). Write unconditionally — the status script
+# self-heals at render time by dropping this marker if the pane turns out to
+# already be visible, which is more reliable than guessing visibility here
+# (client_activity/client_focused are flaky with 2+ attached tmux clients).
+: > "/tmp/claude_${SESSION_ID}_completed"
+# Turn ended — any pending ⏸ (e.g. permission denied, no PostToolUse fired) is moot now.
+rm -f "/tmp/claude_${SESSION_ID}_waiting"
+tmux refresh-client -S 2>/dev/null  # push status update without waiting for status-interval
+log_debug "Wrote completion marker"
 
 # Check if notification should be sent and send it
 if should_send_notification; then

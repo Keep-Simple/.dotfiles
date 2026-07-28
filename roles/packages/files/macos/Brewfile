@@ -10,7 +10,7 @@ tap "jackielii/tap"
 tap "jandedobbeleer/oh-my-posh"
 tap "jcgay/jcgay"
 tap "keep-simple/formulae"
-tap "koekeishiya/formulae"
+tap "koekeishiya/formulae", "https://github.com/asmvik/homebrew-formulae.git"
 tap "morantron/tmux-fingers"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
@@ -296,6 +296,8 @@ cask "brave-browser"
 cask "burp-suite"
 # Terminal-based AI coding assistant
 cask "claude-code@latest"
+# OpenAI's coding agent that runs in your terminal
+cask "codex"
 # Write, edit, and chat about your code with AI
 cask "cursor"
 # Keyboard-only application launcher
@@ -321,7 +323,6 @@ cask "monitorcontrol"
 cask "ngrok"
 # Open-source software for live streaming and screen recording
 cask "obs"
-# Command-line shell and scripting language
 cask "powershell"
 # Archive manager for data compression and backups
 cask "rar"

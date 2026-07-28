@@ -32,8 +32,8 @@ log_debug "Saved REPO_NAME to /tmp/claude_${SESSION_ID}_repo: $REPO_NAME (from $
 date +%s > "/tmp/claude_${SESSION_ID}_started"
 log_debug "Saved start timestamp to /tmp/claude_${SESSION_ID}_started"
 
-# Clear completion marker — user is engaging again, prior completion was seen
-rm -f "/tmp/claude_${SESSION_ID}_completed"
+# Clear completion/waiting markers — user is engaging again, prior state was seen
+rm -f "/tmp/claude_${SESSION_ID}_completed" "/tmp/claude_${SESSION_ID}_waiting"
 tmux refresh-client -S 2>/dev/null  # push status update without waiting for status-interval
 
 log_debug "========== UserPromptSubmit Hook Finished =========="

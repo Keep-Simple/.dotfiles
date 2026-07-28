@@ -12,6 +12,15 @@
         "type": "separator"
       },
       {
+        "id": "thinking-effort-1",
+        "type": "thinking-effort",
+        "color": "magenta"
+      },
+      {
+        "id": "thinking-effort-sep-1",
+        "type": "separator"
+      },
+      {
         "id": "3",
         "type": "context-length",
         "color": "brightBlack"

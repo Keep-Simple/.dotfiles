@@ -30,6 +30,13 @@ if [ "$NOTIFICATION_TYPE" = "idle_input" ] || [ "$NOTIFICATION_TYPE" = "idle_pro
     exit 0
 fi
 
+# Everything else (permission_prompt, etc.) means Claude is blocked on the
+# user. Write the ⏸ marker straight off this native event — ground truth,
+# no dependency on an external tool's own session-state guess. Cleared on
+# the next tool activity/Stop/prompt-submit for this session.
+: > "/tmp/claude_${SESSION_ID}_waiting"
+log_debug "Wrote waiting marker"
+
 # Get the repo name from temp file
 REPO_NAME=$(cat "/tmp/claude_${SESSION_ID}_repo" 2>/dev/null)
 log_debug "REPO_NAME: $REPO_NAME"

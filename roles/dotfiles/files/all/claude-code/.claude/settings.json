@@ -4,8 +4,8 @@
   "env": {
     "DISABLE_AUTOUPDATER": "1",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5@20251001",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-8[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-5[1m]",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-5[1m]",
     "ENABLE_TOOL_SEARCH": "true",
     "ENABLE_LSP_TOOL": "1",
     "CAVEMAN_DEFAULT_MODE": "ultra",
@@ -135,14 +135,14 @@
       "mcp__atlassian__searchConfluenceUsingCql",
       "mcp__atlassian__searchJiraIssuesUsingJql",
       "mcp__reddit",
-      "Edit(**/.pr-review-*.md)",
-      "Write(**/.pr-review-*.md)"
+      "Edit(**/.pr-review-*.md)"
     ],
     "deny": [
       "Bash(rm -rf /)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
-  "model": "claude-sonnet-5",
+  "model": "opusplan",
   "hooks": {
     "Stop": [
       {
@@ -295,8 +295,9 @@
   },
   "syntaxHighlightingDisabled": false,
   "alwaysThinkingEnabled": true,
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
   "theme": "custom:catppuccin:catppuccin-mocha",
   "editorMode": "vim",
   "preferredNotifChannel": "notifications_disabled"
