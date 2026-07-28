@@ -1,0 +1,4 @@
+---
+agent_skills:
+  - mattpocock/skills
+  - awesome-skills/code-review-skill
