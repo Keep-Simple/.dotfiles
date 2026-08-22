@@ -86,8 +86,6 @@ brew "exiftool"
 brew "fd"
 # Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
-# Multi-format archive and compression library
-brew "libarchive"
 # Create thumbnails for your video files
 brew "ffmpegthumbnailer"
 # Banner-like program prints strings as ASCII art
@@ -160,6 +158,8 @@ brew "kubectx"
 brew "kubernetes-cli"
 # Lazier way to manage everything docker
 brew "lazydocker"
+# Multi-format archive and compression library
+brew "libarchive"
 # Implementation of the file(1) command
 brew "libmagic"
 # XML security library
@@ -290,6 +290,8 @@ cask "1password-cli"
 cask "alacritty"
 # Android SDK component
 cask "android-platform-tools"
+# Display management tool
+cask "betterdisplay"
 # Web browser focusing on privacy
 cask "brave-browser"
 # Web security testing toolkit
@@ -315,6 +317,8 @@ cask "karabiner-elements"
 cask "keycastr"
 # GPU-based terminal emulator
 cask "kitty"
+# Screen and video recording software
+cask "loom"
 # Intercept, modify, replay, save HTTP/S traffic
 cask "mitmproxy"
 # Tool to control external monitor brightness & volume
