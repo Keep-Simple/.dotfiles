@@ -298,7 +298,7 @@
     },
     "filesystem": {
       "allowWrite": [
-        "$HOME/.cache/pre-commit"
+        "~/.cache/pre-commit"
       ]
     },
     "excludedCommands": [
