@@ -32,4 +32,27 @@ function ToggleClipboard()
 	spoon.ClipboardTool:toggleClipboard()
 end
 
+BRIO_MIC_NAME = "Logitech BRIO"
+
+function PreferBrioMic()
+	local brio = hs.audiodevice.findInputByName(BRIO_MIC_NAME)
+	if not brio then
+		return
+	end
+	local current = hs.audiodevice.defaultInputDevice()
+	if not current or current:name() ~= BRIO_MIC_NAME then
+		brio:setDefaultInputDevice()
+	end
+end
+
+-- ponytail: no unplug fallback, macOS already auto-switches input away from a disconnected device
+-- "dIn " catches default-input hijacks (e.g. iPhone Continuity mic), "dev#" catches BRIO plug-in
+hs.audiodevice.watcher.setCallback(function(event)
+	if event == "dev#" or event == "dIn " then
+		PreferBrioMic()
+	end
+end)
+hs.audiodevice.watcher.start()
+PreferBrioMic()
+
 hs.notify.show("Hammerspoon started", "", "")
