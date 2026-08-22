@@ -58,6 +58,8 @@ dotfiles_unlink)
   _run_playbook --tags "dotfiles" -e dotfiles_state=absent "${@:2}"
   ;;
 update)
+  echo "⚪ [brew] upgrading ansible first, so the playbook doesn't upgrade itself mid-run..."
+  brew upgrade ansible
   _run_playbook --tags "update" "${@:2}"
   cache_dir="$HOME/.cache/dotfiles-update"
   summary="$cache_dir/summary.txt"
