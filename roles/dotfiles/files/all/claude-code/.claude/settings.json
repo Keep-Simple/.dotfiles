@@ -3,7 +3,6 @@
   "skillListingBudgetFraction": 0.02,
   "env": {
     "DISABLE_AUTOUPDATER": "1",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5@20251001",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-5[1m]",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-5[1m]",
     "ENABLE_TOOL_SEARCH": "true",
@@ -298,7 +297,7 @@
   "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
-  "theme": "custom:catppuccin:catppuccin-mocha",
+  "theme": "auto",
   "editorMode": "vim",
   "preferredNotifChannel": "notifications_disabled"
 }
