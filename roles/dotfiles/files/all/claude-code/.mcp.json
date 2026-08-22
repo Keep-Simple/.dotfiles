@@ -25,6 +25,14 @@
 		"reddit": {
 			"command": "npx",
 			"args": ["-y", "reddit-mcp-buddy"]
-		}
+		},
+		"circleci-mcp-server": {
+			"type": "http",
+			"url": "https://mcp.circleci.com/v1/mcp"
+		},
+    "datadog": {
+       "type": "http",
+       "url": "https://mcp.datadoghq.com/v1/mcp?toolsets=all"
+    }
 	}
 }
