@@ -52,7 +52,7 @@
 
 - name: Install agent skills
   ansible.builtin.shell: |
-    npx skills@latest add {{ item.repo }} -s '{{ item.skills }}' -a claude-code -g -y
+    npx skills@latest add {{ item.repo }} -s {% for s in item.skills.split(',') %}'{{ s }}' {% endfor %}-a claude-code -g -y
   args:
     executable: /bin/bash
   loop: "{{ agent_skills }}"
@@ -85,10 +85,23 @@
   register: asdf_async
   tags: ['update', 'never']
 
-- name: Update mattpocock skills (async)
+- name: Update agent skills (async)
   ansible.builtin.shell: |
     set -o pipefail
-    npx skills@latest update --yes -g 2>&1 | tee {{ update_log_dir }}/skills.log
+    skills_dir="{{ ansible_facts['user_dir'] }}/.claude/skills"
+    before=$(ls -1 "$skills_dir" 2>/dev/null | sort)
+    {
+      {% for item in agent_skills %}
+      npx skills@latest add {{ item.repo }} -s {% for s in item.skills.split(',') %}'{{ s }}' {% endfor %}-a claude-code -g -y
+      {% endfor %}
+      npx skills@latest update --yes -g
+    } 2>&1 | tee {{ update_log_dir }}/skills.log
+    after=$(ls -1 "$skills_dir" 2>/dev/null | sort)
+    {
+      echo "---SKILL-DIFF---"
+      comm -13 <(echo "$before") <(echo "$after") | sed 's/^/skill-diff: added /'
+      comm -23 <(echo "$before") <(echo "$after") | sed 's/^/skill-diff: removed /'
+    } >> {{ update_log_dir }}/skills.log
   args:
     executable: /bin/bash
   async: 1800

@@ -69,15 +69,23 @@ case "$tool" in
     body=$(printf '%s\n' "$clean" | awk '
       /✓ Updated [0-9]+ skills/ { upd = $3 }
       /✓ Updated / && $3 !~ /^[0-9]+$/ { upd++ }
-      /✓ All global skills are up to date/ { noop=1 }
+      /^---SKILL-DIFF---/ { in_diff=1; next }
+      in_diff && /^skill-diff: added / { added++ }
+      in_diff && /^skill-diff: removed / { removed++ }
       END {
-        if (upd) printf "%d updated", upd
-        else print "up to date"
+        n = 0
+        if (upd)     { printf "%s%d updated", (n?", ":""), upd; n++ }
+        if (added)   { printf "%s%d added", (n?", ":""), added; n++ }
+        if (removed) { printf "%s%d removed", (n?", ":""), removed; n++ }
+        if (!n) print "up to date"
         print ""
       }')
     printf '%s\n' "$clean" | awk \
-      -v G="$color_green" -v B="$color_bold" -v R="$color_reset" '
-      /✓ Updated / && $3 !~ /^[0-9]+$/ { printf "  %s✓%s %s%s%s\n", G, R, B, $3, R }' > "$details_file"
+      -v G="$color_green" -v RD="$color_red" -v B="$color_bold" -v R="$color_reset" '
+      /✓ Updated / && $3 !~ /^[0-9]+$/ { printf "  %s✓%s %s%s%s\n", G, R, B, $3, R }
+      /^---SKILL-DIFF---/ { in_diff=1; next }
+      in_diff && /^skill-diff: added / { printf "  %s+%s %s%s%s\n", G, R, B, $3, R }
+      in_diff && /^skill-diff: removed / { printf "  %s-%s %s%s%s\n", RD, R, B, $3, R }' > "$details_file"
     ;;
 
   yazi)
