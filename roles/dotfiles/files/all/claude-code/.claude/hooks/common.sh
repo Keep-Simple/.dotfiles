@@ -16,9 +16,14 @@ log_debug() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$DEBUG_LOG"
 }
 
-# Frontmost macOS app name (empty on osascript failure).
+# Frontmost macOS app name (empty on lookup failure — e.g. lock screen).
+# lsappinfo (Launch Services) over osascript/System Events: the latter flakes
+# with transient AppleEvents/XPC errors (-600, -10810) that silently return
+# empty and defeat the "am I frontmost" check. lsappinfo has no such failure
+# mode and needs no TCC grant.
 frontmost_app() {
-    osascript -e 'tell application "System Events" to get name of first process whose frontmost is true' 2>/dev/null
+    lsappinfo info -only name "$(lsappinfo front)" 2>/dev/null \
+        | sed -n 's/.*"LSDisplayName"="\([^"]*\)".*/\1/p'
 }
 
 # Check whether a tmux pane is currently visible to the user.
@@ -85,7 +90,10 @@ format_duration() {
     fi
 }
 
-# Send a terminal notification
+# Send a terminal notification. Empty $group skips -group (a repeated group
+# replaces the prior banner instead of adding a new one — fine for the
+# ⏸-waiting notice where only the latest matters, wrong for Stop where every
+# finished turn should alert on its own).
 send_notification() {
     local group="$1"
     local title="$2"
@@ -93,13 +101,63 @@ send_notification() {
     local message="$4"
     local sound="$5"
 
-    terminal-notifier \
-        -group "$group" \
+    local -a group_args=()
+    [ -n "$group" ] && group_args=(-group "$group")
+
+    if terminal-notifier \
+        "${group_args[@]}" \
         -contentImage "$HOME/.claude/claude.webp" \
         -title "$title" \
         -subtitle "$subtitle" \
         -message "$message" \
-        -sound "$sound"
-
-    log_debug "Notification sent successfully"
+        -sound "$sound"; then
+        log_debug "Notification sent (exit 0)"
+    else
+        log_debug "Notification FAILED (exit $?)"
+    fi
 }
+
+# ---------------------------------------------------------------------------
+# Self-check: bash ~/.claude/hooks/common.sh --selfcheck
+# Smallest thing that fails if frontmost_app, format_duration, or the
+# on-notification.sh idle-guard (Fault B) regress. terminal-notifier is
+# stubbed so this never fires a real desktop notification.
+# ---------------------------------------------------------------------------
+if [ "${BASH_SOURCE[0]}" = "$0" ] && [ "$1" = "--selfcheck" ]; then
+    fail=0
+    assert_eq() { [ "$1" = "$2" ] || { echo "FAIL: $3 (got '$1', want '$2')"; fail=1; }; }
+
+    front=$(frontmost_app)
+    [ -n "$front" ] || { echo "FAIL: frontmost_app returned empty"; fail=1; }
+    case "$front" in *$'\n'*) echo "FAIL: frontmost_app returned multiple lines: '$front'"; fail=1 ;; esac
+
+    assert_eq "$(format_duration 59)" "59s" "format_duration(59)"
+    assert_eq "$(format_duration 60)" "1m" "format_duration(60)"
+    assert_eq "$(format_duration 3600)" "1h0m" "format_duration(3600)"
+
+    # idle_prompt is periodic background noise (fires ~every 3min at any
+    # normal idle prompt, not just when blocked) — must never write the ⏸
+    # marker. permission_prompt is the real block signal and must.
+    sid="selfcheck-$$"
+    hooks_dir="$(dirname "${BASH_SOURCE[0]}")"
+    stub_bin=$(mktemp -d)
+    printf '#!/bin/bash\nexit 0\n' > "$stub_bin/terminal-notifier"
+    chmod +x "$stub_bin/terminal-notifier"
+    cleanup_selfcheck() {
+        rm -rf "$stub_bin"
+        rm -f "/tmp/claude_${sid}_completed" "/tmp/claude_${sid}_waiting"
+    }
+    trap cleanup_selfcheck EXIT
+
+    echo "{\"session_id\":\"$sid\",\"notification_type\":\"idle_prompt\"}" \
+        | PATH="$stub_bin:$PATH" "$hooks_dir/on-notification.sh" >/dev/null 2>&1
+    [ -f "/tmp/claude_${sid}_waiting" ] && { echo "FAIL: idle_prompt wrote a waiting marker (must be ignored — it's not a block signal)"; fail=1; }
+
+    rm -f "/tmp/claude_${sid}_waiting"
+    echo "{\"session_id\":\"$sid\",\"message\":\"test\",\"notification_type\":\"permission_prompt\"}" \
+        | PATH="$stub_bin:$PATH" "$hooks_dir/on-notification.sh" >/dev/null 2>&1
+    [ -f "/tmp/claude_${sid}_waiting" ] || { echo "FAIL: permission_prompt did not write a waiting marker"; fail=1; }
+
+    [ "$fail" -eq 0 ] && echo "OK: common.sh selfcheck passed"
+    exit "$fail"
+fi

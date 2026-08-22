@@ -1,7 +1,11 @@
 #!/bin/bash
-# Hook for PreToolUse/PostToolUse: any tool activity in a session means a
-# prior permission prompt (if any) got resolved, so clear its ⏸ marker and
-# push an immediate tmux status redraw instead of waiting for status-interval.
+# Hook for PreToolUse/PostToolUse/PermissionDenied: a prior permission
+# prompt got resolved either way — approved (tool runs, Pre/PostToolUse
+# fire) or denied (PermissionDenied fires, including a human cancelling the
+# interactive prompt — "denials without a classifier verdict" per Claude
+# Code docs, which is exactly what defaultMode:auto produces here). Clear
+# the ⏸ marker and push an immediate tmux status redraw either way, instead
+# of waiting for Stop.
 read -r EVENT
 SESSION_ID=$(command -v jq >/dev/null && jq -r '.session_id // empty' <<< "$EVENT" 2>/dev/null)
 [ -n "$SESSION_ID" ] && rm -f "/tmp/claude_${SESSION_ID}_waiting"

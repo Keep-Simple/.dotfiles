@@ -23,7 +23,15 @@ log_debug "MESSAGE: $MESSAGE"
 NOTIFICATION_TYPE=$(jq -r '.notification_type // "unknown"' <<< "$EVENT")
 log_debug "NOTIFICATION_TYPE: $NOTIFICATION_TYPE"
 
-# Ignore idle_input notifications
+# idle_input/idle_prompt fires periodically (~3min) any time Claude is
+# sitting at a normal prompt with nothing to do — NOT a signal that it's
+# blocked on the user. That signal is permission_prompt (or other non-idle
+# types), which already falls through below unconditionally. Confirmed via
+# live logs: idle_prompt recurred for a session with zero permission_prompt
+# events (genuinely idle), while a separate session's real permission_prompt
+# fired independently and correctly. Ignoring idle here is correct; do not
+# reinstate a _completed-marker heuristic — it produced ⏸ markers that never
+# clear for ordinary idle sessions.
 if [ "$NOTIFICATION_TYPE" = "idle_input" ] || [ "$NOTIFICATION_TYPE" = "idle_prompt" ]; then
     log_debug "Ignoring idle_input/idle_prompt notification"
     log_debug "========== Notification Hook Finished (ignored) =========="

@@ -51,8 +51,10 @@ tmux refresh-client -S 2>/dev/null  # push status update without waiting for sta
 log_debug "Wrote completion marker"
 
 # Check if notification should be sent and send it
+# No group: each finished turn should alert on its own, not replace the
+# previous session's still-unread banner (see common.sh send_notification).
 if should_send_notification; then
-    send_notification "$SESSION_ID" "$TITLE" "$SUBTITLE" "" "Glass"
+    send_notification "" "$TITLE" "$SUBTITLE" "" "Glass"
 fi
 
 log_debug "========== Stop Hook Finished =========="
