@@ -1,4 +1,8 @@
 ---
 agent_skills:
-  - mattpocock/skills
-  - awesome-skills/code-review-skill
+  - repo: mattpocock/skills
+    skills: '*'
+  - repo: awesome-skills/code-review-skill
+    skills: '*'
+  - repo: cursor/plugins
+    skills: unslop

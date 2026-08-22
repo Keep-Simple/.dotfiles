@@ -52,7 +52,7 @@
 
 - name: Install agent skills
   ansible.builtin.shell: |
-    npx skills@latest add {{ item }} -s '*' -a claude-code -g -y
+    npx skills@latest add {{ item.repo }} -s '{{ item.skills }}' -a claude-code -g -y
   args:
     executable: /bin/bash
   loop: "{{ agent_skills }}"
