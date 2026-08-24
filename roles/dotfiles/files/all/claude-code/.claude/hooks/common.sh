@@ -101,12 +101,25 @@ send_notification() {
     local message="$4"
     local sound="$5"
 
+    # terminal-notifier v3 treats an empty/whitespace -message as not provided
+    # and prints help instead of sending (exit 1) — move subtitle into message
+    # (not copy: leaving both set renders the same text on two lines).
+    if [ -z "${message// }" ]; then
+        message="$subtitle"
+        subtitle=""
+    fi
+
     local -a group_args=()
     [ -n "$group" ] && group_args=(-group "$group")
 
+    # terminal-notifier moves the attachment into its data store, which fails
+    # on a symlink (our ~/.claude/* files are all stow symlinks) — resolve first.
+    local content_image
+    content_image=$(readlink -f "$HOME/.claude/claude.png" 2>/dev/null) || content_image="$HOME/.claude/claude.png"
+
     if terminal-notifier \
         "${group_args[@]}" \
-        -contentImage "$HOME/.claude/claude.webp" \
+        -contentImage "$content_image" \
         -title "$title" \
         -subtitle "$subtitle" \
         -message "$message" \
