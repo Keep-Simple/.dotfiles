@@ -97,9 +97,18 @@
       npx skills@latest update --yes -g
     } 2>&1 | tee {{ update_log_dir }}/skills.log
     after=$(ls -1 "$skills_dir" 2>/dev/null | sort)
+    list_clean=$(npx skills@latest list -g 2>/dev/null | sed $'s/\x1b\\[[0-9;]*m//g')
     {
       echo "---SKILL-DIFF---"
-      comm -13 <(echo "$before") <(echo "$after") | sed 's/^/skill-diff: added /'
+      while IFS= read -r name; do
+        [ -z "$name" ] && continue
+        desc=$(sed -n 's/^description:[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p' "$skills_dir/$name/SKILL.md" 2>/dev/null | head -1)
+        source=$(printf '%s\n' "$list_clean" | awk -v n="$name" '
+          /^  [^ ]/ { cur=$1 }
+          cur==n && /Source:/ { sub(/.*Source: */,""); print; exit }
+        ')
+        printf 'skill-diff: added %s\t%s\t%s\n' "$name" "${source:-unknown}" "${desc:-}"
+      done < <(comm -13 <(echo "$before") <(echo "$after"))
       comm -23 <(echo "$before") <(echo "$after") | sed 's/^/skill-diff: removed /'
     } >> {{ update_log_dir }}/skills.log
   args:

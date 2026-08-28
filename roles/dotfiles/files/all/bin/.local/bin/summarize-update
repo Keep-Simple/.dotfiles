@@ -81,10 +81,15 @@ case "$tool" in
         print ""
       }')
     printf '%s\n' "$clean" | awk \
-      -v G="$color_green" -v RD="$color_red" -v B="$color_bold" -v R="$color_reset" '
+      -v G="$color_green" -v RD="$color_red" -v D="$color_dim" -v B="$color_bold" -v R="$color_reset" '
       /✓ Updated / && $3 !~ /^[0-9]+$/ { printf "  %s✓%s %s%s%s\n", G, R, B, $3, R }
       /^---SKILL-DIFF---/ { in_diff=1; next }
-      in_diff && /^skill-diff: added / { printf "  %s+%s %s%s%s\n", G, R, B, $3, R }
+      in_diff && /^skill-diff: added / {
+        n = split($0, parts, "\t")
+        split(parts[1], a, " "); name=a[3]; source=parts[2]; desc=parts[3]
+        printf "  %s+%s %s%s%s %s(%s)%s\n", G, R, B, name, R, D, source, R
+        if (desc != "") printf "      %s%s%s\n", D, desc, R
+      }
       in_diff && /^skill-diff: removed / { printf "  %s-%s %s%s%s\n", RD, R, B, $3, R }' > "$details_file"
     ;;
 
