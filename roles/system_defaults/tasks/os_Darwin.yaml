@@ -54,6 +54,40 @@
       auth       sufficient     pam_tid.so
   become: true
 
+- name: Allow passwordless pmset disablesleep (awake-toggle)
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/pmset-disablesleep
+    owner: root
+    group: wheel
+    mode: '0440'
+    validate: 'visudo -cf %s'
+    content: |
+      # Managed by ansible (dotfiles). Lets awake-toggle run from a tmux binding.
+      {{ ansible_facts['user_id'] }} ALL = (root) NOPASSWD: /usr/bin/pmset -a disablesleep 0, /usr/bin/pmset -a disablesleep 1
+  become: true
+
+- name: Hash the yabai binary
+  ansible.builtin.stat:
+    path: "{{ homebrew_brew_bin_path }}/yabai"
+    checksum_algorithm: sha256
+    follow: true
+  register: yabai_bin
+
+- name: Allow passwordless yabai --load-sa
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/yabai
+    owner: root
+    group: wheel
+    mode: '0440'
+    validate: 'visudo -cf %s'
+    content: |
+      # Managed by ansible (dotfiles). The hash is re-read on every run, so a
+      # yabai upgrade refreshes it instead of silently breaking --load-sa.
+      {{ ansible_facts['user_id'] }} ALL = (root) NOPASSWD: sha256:{{ yabai_bin.stat.checksum }} {{ homebrew_brew_bin_path }}/yabai --load-sa
+  when: yabai_bin.stat.exists
+  become: true
+
+
 # - name: get current wallpapper
 #   ansible.builtin.command:
 #     cmd: 'osascript -e "tell app \"finder\" to get posix path of (get desktop picture as alias)"'
