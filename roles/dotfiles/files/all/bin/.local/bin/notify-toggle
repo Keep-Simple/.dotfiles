@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Toggle a flag file that mutes Claude Code desktop notifications.
+# Read by should_send_notification() in ~/.claude/hooks/common.sh; the tmux
+# status bar shows 🔕 while muted (see tmux/scripts/notify-status.sh).
+flagfile="${XDG_CACHE_HOME:-$HOME/.cache}/notify-off"
+
+if [ -f "$flagfile" ]; then
+    rm -f "$flagfile"
+else
+    : > "$flagfile"
+fi
+
+# refresh-client here (not chained in tmux.conf) guarantees the status bar
+# reads the flag AFTER it's written/removed, not racing a backgrounded run-shell.
+tmux refresh-client -S 2>/dev/null

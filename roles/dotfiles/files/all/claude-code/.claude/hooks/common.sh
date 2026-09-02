@@ -59,6 +59,12 @@ is_pane_visible() {
 # Desktop notifications only when user is NOT looking at the terminal app.
 # Status-bar ⏸/✓ icons surface attention while in terminal+tmux.
 should_send_notification() {
+    # Manual mute via notify-toggle (M-z in tmux); 🔕 shows in the status bar.
+    if [ -f "${XDG_CACHE_HOME:-$HOME/.cache}/notify-off" ]; then
+        log_debug "notifications muted via notify-toggle - skipping"
+        return 1
+    fi
+
     local front
     front=$(frontmost_app)
     log_debug "FRONT_APP: $front (TERMINAL_APP=$TERMINAL_APP)"
