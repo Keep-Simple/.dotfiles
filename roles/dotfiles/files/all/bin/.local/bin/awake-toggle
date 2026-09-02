@@ -1,19 +1,27 @@
 #!/bin/bash
-# Toggle a background `caffeinate -i` lock so Claude Code / other background
-# jobs keep running once the display sleeps or goes to standby. Doesn't touch
-# display sleep itself (screen is still allowed to blank) or lid-closed sleep.
-lockfile="${XDG_CACHE_HOME:-$HOME/.cache}/awake.pid"
+# Toggle macOS sleep off entirely, so Claude Code / other background jobs keep
+# running with the lid shut and the external monitor powered down.
+#
+# caffeinate is deliberately NOT used here. It only asserts
+# PreventUserIdleSystemSleep, and powering off the Thunderbolt monitor cuts its
+# power delivery: the Mac drops to battery and loses its only display while the
+# lid is closed. macOS calls that 'Clamshell Sleep' -- a hardware sleep path
+# that ignores every caffeinate assertion. pmset disablesleep is the only lever
+# that stops it.
+#
+# Needs a NOPASSWD sudoers entry or the tmux binding can't run pmset; see
+# /etc/sudoers.d/pmset-disablesleep.
+sleep_disabled() {
+    [ "$(pmset -g | awk '/SleepDisabled/ { print $2 }')" = "1" ]
+}
 
-if [ -f "$lockfile" ] && kill -0 "$(cat "$lockfile")" 2>/dev/null; then
-    kill "$(cat "$lockfile")"
-    rm -f "$lockfile"
-else
-    caffeinate -i </dev/null >/dev/null 2>&1 &
-    pid=$!
-    disown
-    echo "$pid" > "$lockfile"
+if sleep_disabled; then want=0; else want=1; fi
+
+if ! sudo -n pmset -a disablesleep "$want" 2>/dev/null; then
+    tmux display-message "awake-toggle: sudo pmset denied (see /etc/sudoers.d/pmset-disablesleep)" 2>/dev/null
+    exit 1
 fi
 
-# refresh-client here (not chained in tmux.conf) guarantees the status bar
-# reads the lockfile AFTER it's written/removed, not racing a backgrounded run-shell.
+# refresh-client here (not chained in tmux.conf) guarantees the status bar reads
+# the new state AFTER pmset applied it, not racing a backgrounded run-shell.
 tmux refresh-client -S 2>/dev/null
