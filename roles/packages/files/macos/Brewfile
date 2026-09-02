@@ -282,6 +282,8 @@ brew "yh"
 brew "zlib"
 # Simple hotkey daemon for macOS, written in Zig
 brew "jackielii/tap/skhd-zig"
+# A tiling window manager for macOS based on binary space partitioning.
+brew "koekeishiya/formulae/yabai", trusted: true
 # mouseless terminal interaction
 brew "morantron/tmux-fingers/tmux-fingers", trusted: true
 # Command-line interface for 1Password
