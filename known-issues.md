@@ -23,6 +23,10 @@
 
 ## skhd-zig 0.1.2 — auto-registers SMAppService on upgrade (2026-05-11)
 
+**Resolved 2026-09-10:** migrated back to C skhd (`koekeishiya/formulae/skhd`), which has no
+SMAppService support and no post-install service registration. Kept for history — the
+`--uninstall-service` / `--uninstall-grabber` flags below are zig-only and do not exist on C skhd.
+
 **Symptom:** After `brew upgrade skhd-zig`, skhd starts independently via launchd (parent PID 1) instead of as a child of yabai. `$YABAI` env var not set → skhdrc `.define focus_space : $YABAI/focus_space.sh` expands to empty path → all yabai script bindings broken.
 
 **Root cause:** skhd-zig 0.1.2 added `--install-service` via SMAppService. The brew post-install hook auto-registered it, causing skhd to start at login independently before yabai runs, with bare launchd env (no `$YABAI`).

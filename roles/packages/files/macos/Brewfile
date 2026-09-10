@@ -1,16 +1,7 @@
 tap "asmvik/formulae"
-tap "bufbuild/buf"
-tap "cmacrae/formulae"
-tap "deviceinsight/packages"
-tap "gitguardian/tap"
-tap "hmarr/tap"
-tap "homebrew/core"
 tap "hudochenkov/sshpass"
-tap "jackielii/tap"
 tap "jandedobbeleer/oh-my-posh"
-tap "jcgay/jcgay"
 tap "keep-simple/formulae"
-tap "koekeishiya/formulae", "https://github.com/asmvik/homebrew-formulae.git"
 tap "morantron/tmux-fingers"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
@@ -24,8 +15,6 @@ brew "aerc"
 brew "tree"
 # Automate deployment, configuration, and upgrading
 brew "ansible"
-# Utility to read Word (.doc) files
-brew "antiword"
 # Text processor and publishing toolchain for AsciiDoc
 brew "asciidoctor"
 # Extendable version manager with support for Ruby, Node.js, Erlang & more
@@ -178,8 +167,6 @@ brew "minikube"
 brew "mpv"
 # NCurses Disk Usage
 brew "ncdu"
-# Fast, highly customisable system info script
-brew "neofetch"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Port scanning utility for large networks
@@ -208,6 +195,10 @@ brew "poppler"
 brew "postgresql@14"
 # Command-line shell and scripting language
 brew "powershell", link: false
+# Prompt theme engine, sourced by .zshrc
+brew "jandedobbeleer/oh-my-posh/oh-my-posh"
+# Non-interactive ssh password auth, needed by `my run_remote`
+brew "hudochenkov/sshpass/sshpass"
 # Framework for managing multi-language pre-commit hooks
 brew "pre-commit"
 # Tool Command Language
@@ -280,16 +271,14 @@ brew "yazi"
 brew "yh"
 # General-purpose lossless data-compression library
 brew "zlib"
-# Simple hotkey daemon for macOS, written in Zig
-brew "jackielii/tap/skhd-zig"
+# Simple hotkey-daemon for macOS
+brew "asmvik/formulae/skhd", trusted: true
 # A tiling window manager for macOS based on binary space partitioning.
-brew "koekeishiya/formulae/yabai", trusted: true
+brew "asmvik/formulae/yabai", trusted: true
 # mouseless terminal interaction
 brew "morantron/tmux-fingers/tmux-fingers", trusted: true
 # Command-line interface for 1Password
 cask "1password-cli"
-# GPU-accelerated terminal emulator
-cask "alacritty"
 # Android SDK component
 cask "android-platform-tools"
 # Display management tool
@@ -304,8 +293,8 @@ cask "claude-code@latest"
 cask "codex"
 # Write, edit, and chat about your code with AI
 cask "cursor"
-# Keyboard-only application launcher
-cask "dmenu-mac"
+# Keyboard-only application launcher (disabled upstream, vendored in our tap)
+cask "keep-simple/formulae/dmenu-mac"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
 cask "font-jetbrains-mono-nerd-font"
@@ -329,11 +318,8 @@ cask "monitorcontrol"
 cask "ngrok"
 # Open-source software for live streaming and screen recording
 cask "obs"
-cask "powershell"
-# Archive manager for data compression and backups
-cask "rar"
-# Menu bar indicator showing the currently selected space
-cask "spaceid"
+# Menu bar indicator showing the currently selected space (disabled upstream, vendored in our tap)
+cask "keep-simple/formulae/spaceid"
 # Dictation and transcription app with AI-powered editing
 cask "spokenly"
 # Music streaming service

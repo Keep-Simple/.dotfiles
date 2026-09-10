@@ -5,6 +5,18 @@
   register: brew_file
 
 - block:
+    # Homebrew ignores untrusted third-party taps, so this must run before any resolution.
+    - name: Trust Brewfile taps
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep '^tap ' {{ brew_file.stat.path | quote }} \
+          | sed -E 's/^tap "([^"]+)".*/\1/' \
+          | xargs {{ homebrew_brew_bin_path }}/brew trust --tap
+      args:
+        executable: /bin/bash
+      register: brew_trust
+      changed_when: "'Trusted tap:' in brew_trust.stdout"
+
     - name: Check if install is needed
       command: "{{ homebrew_brew_bin_path }}/brew bundle check chdir={{ brew_file.stat.path | dirname }}"
       register: brew_check

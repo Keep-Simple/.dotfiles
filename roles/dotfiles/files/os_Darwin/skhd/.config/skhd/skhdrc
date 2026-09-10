@@ -1,18 +1,3 @@
-.shell "/bin/dash"
-
-# Command definitions for common patterns
-.define unzoom_focus : $YABAI/unzoom.sh; yabai -m window --focus {{1}}
-.define unzoom_focus_with_stack : $YABAI/unzoom.sh; yabai -m window --focus {{1}} || yabai -m window --focus stack.{{2}} || yabai -m window --focus stack.{{3}}
-.define warp_window : yabai -m window --warp {{1}}
-.define resize_window : yabai -m window --resize {{1}} || yabai -m window --resize {{2}}
-.define set_layout : yabai -m space --layout {{1}}
-.define focus_space : $YABAI/focus_space.sh {{1}}
-.define move_to_space : yabai -m window --space {{1}} --focus
-.define move_to_space_with_fallback : yabai -m window --space {{1}} --focus || yabai -m window --space {{2}} --focus
-.define toggle_window : yabai -m window --toggle {{1}}
-.define toggle_window_with_grid : yabai -m window --toggle {{1}} --grid {{2}}
-.define toggle_space : yabai -m space --toggle {{1}}
-
 # apps shortcuts
 ctrl + alt + cmd - return : kitty --single-instance --instance-group base -d ~ tmux
 ctrl + alt + cmd + shift - return : yabai -m window --toggle QuickTerminal || kitty --single-instance --instance-group quickterm --title QuickTerminal --directory "${HOME}" tmux new -A -s quickterm
@@ -24,36 +9,36 @@ ctrl + alt + cmd - 0x1B : screencapture -cix /dev/null
 # screenshot with options
 ctrl + alt + cmd + shift - 0x1B : screencapture -iU /dev/null
 # 0x18 = equals
-ctrl + alt + cmd - 0x18 : @toggle_space("mission-control")
+ctrl + alt + cmd - 0x18 : yabai -m space --toggle mission-control
 ctrl + alt + cmd - d : killall dmenu-mac; exec dmenu-mac
 
 # change layouts
-ctrl + alt + cmd - t : @set_layout("bsp")
-ctrl + alt + cmd - u : @set_layout("stack")
-ctrl + alt + cmd - y : @set_layout("float")
+ctrl + alt + cmd - t : yabai -m space --layout bsp
+ctrl + alt + cmd - u : yabai -m space --layout stack
+ctrl + alt + cmd - y : yabai -m space --layout float
 
 # focus window
-ctrl + alt + cmd - o : @unzoom_focus("recent")
-# ctrl + alt + cmd - i : @unzoom_focus("next")
-ctrl + alt + cmd - h : @unzoom_focus_with_stack("west", "prev", "last")
-ctrl + alt + cmd - j : @unzoom_focus("south")
-ctrl + alt + cmd - k : @unzoom_focus("north")
-ctrl + alt + cmd - l : @unzoom_focus_with_stack("east", "next", "first")
+ctrl + alt + cmd - o : $YABAI/unzoom.sh; yabai -m window --focus recent
+# ctrl + alt + cmd - i : $YABAI/unzoom.sh; yabai -m window --focus next
+ctrl + alt + cmd - h : $YABAI/unzoom.sh; yabai -m window --focus west || yabai -m window --focus stack.prev || yabai -m window --focus stack.last
+ctrl + alt + cmd - j : $YABAI/unzoom.sh; yabai -m window --focus south
+ctrl + alt + cmd - k : $YABAI/unzoom.sh; yabai -m window --focus north
+ctrl + alt + cmd - l : $YABAI/unzoom.sh; yabai -m window --focus east || yabai -m window --focus stack.next || yabai -m window --focus stack.first
 
 # warp windows
-ctrl + alt + cmd + shift - h : @warp_window("west")
-ctrl + alt + cmd + shift - j : @warp_window("south")
-ctrl + alt + cmd + shift - k : @warp_window("north")
-ctrl + alt + cmd + shift - l : @warp_window("east")
+ctrl + alt + cmd + shift - h : yabai -m window --warp west
+ctrl + alt + cmd + shift - j : yabai -m window --warp south
+ctrl + alt + cmd + shift - k : yabai -m window --warp north
+ctrl + alt + cmd + shift - l : yabai -m window --warp east
 
 # resize window
-ctrl + alt + cmd - left : @resize_window("left:-50:0", "right:-50:0")
-ctrl + alt + cmd - down : @resize_window("bottom:0:50", "top:0:50")
-ctrl + alt + cmd - up : @resize_window("top:0:-50", "bottom:0:-50")
-ctrl + alt + cmd - right : @resize_window("right:50:0", "left:50:0")
+ctrl + alt + cmd - left : yabai -m window --resize left:-50:0 || yabai -m window --resize right:-50:0
+ctrl + alt + cmd - down : yabai -m window --resize bottom:0:50 || yabai -m window --resize top:0:50
+ctrl + alt + cmd - up : yabai -m window --resize top:0:-50 || yabai -m window --resize bottom:0:-50
+ctrl + alt + cmd - right : yabai -m window --resize right:50:0 || yabai -m window --resize left:50:0
 
 # toggle sticky (show on all spaces)
-ctrl + alt + cmd + shift - s : @toggle_window("sticky")
+ctrl + alt + cmd + shift - s : yabai -m window --toggle sticky
 
 # Close active application
 ctrl + alt + cmd - q : yabai -m window --close
@@ -62,43 +47,43 @@ ctrl + alt + cmd - q : yabai -m window --close
 ctrl + alt + cmd - 0x2A : hs -c "ToggleClipboard()"
 
 # toggle window zoom
-ctrl + alt + cmd - f : @toggle_window("zoom-fullscreen")
+ctrl + alt + cmd - f : yabai -m window --toggle zoom-fullscreen
 
 # toggle window native fullscreen
-ctrl + alt + cmd + shift - f : @toggle_window("native-fullscreen")
+ctrl + alt + cmd + shift - f : yabai -m window --toggle native-fullscreen
 
 # float / unfloat window
-ctrl + alt + cmd + shift - space : @toggle_window_with_grid("float", "4:4:1:1:2:2")
+ctrl + alt + cmd + shift - space : yabai -m window --toggle float --grid 4:4:1:1:2:2
 
 # Restart Yabai
 ctrl + alt + cmd - r : pkill -f "title QuickTerminal" 2>/dev/null || true; notify "Restarting yabai..."; if yabai --restart-service; then notify "Restart successful"; else notify "Restart failed"; fi
 
 # focus desktop
-ctrl + alt + cmd - 1 : @focus_space("1")
-ctrl + alt + cmd - 2 : @focus_space("2")
-ctrl + alt + cmd - 3 : @focus_space("3")
-ctrl + alt + cmd - 4 : @focus_space("4")
-ctrl + alt + cmd - 5 : @focus_space("5")
-ctrl + alt + cmd - 6 : @focus_space("6")
-ctrl + alt + cmd - 7 : @focus_space("7")
-ctrl + alt + cmd - 8 : @focus_space("8")
-ctrl + alt + cmd - 9 : @focus_space("9")
-ctrl + alt + cmd - g : @focus_space("prev")
+ctrl + alt + cmd - 1 : $YABAI/focus_space.sh 1
+ctrl + alt + cmd - 2 : $YABAI/focus_space.sh 2
+ctrl + alt + cmd - 3 : $YABAI/focus_space.sh 3
+ctrl + alt + cmd - 4 : $YABAI/focus_space.sh 4
+ctrl + alt + cmd - 5 : $YABAI/focus_space.sh 5
+ctrl + alt + cmd - 6 : $YABAI/focus_space.sh 6
+ctrl + alt + cmd - 7 : $YABAI/focus_space.sh 7
+ctrl + alt + cmd - 8 : $YABAI/focus_space.sh 8
+ctrl + alt + cmd - 9 : $YABAI/focus_space.sh 9
+ctrl + alt + cmd - g : $YABAI/focus_space.sh prev
 # 0x29 = semicolon
-ctrl + alt + cmd - 0x29 : @focus_space("next")
-ctrl + alt + cmd - p : @focus_space("recent")
+ctrl + alt + cmd - 0x29 : $YABAI/focus_space.sh next
+ctrl + alt + cmd - p : $YABAI/focus_space.sh recent
 
 # send window to desktop and follow focus
-ctrl + alt + cmd + shift - 1 : @move_to_space("1")
-ctrl + alt + cmd + shift - 2 : @move_to_space("2")
-ctrl + alt + cmd + shift - 3 : @move_to_space("3")
-ctrl + alt + cmd + shift - 4 : @move_to_space("4")
-ctrl + alt + cmd + shift - 5 : @move_to_space("5")
-ctrl + alt + cmd + shift - 6 : @move_to_space("6")
-ctrl + alt + cmd + shift - 7 : @move_to_space("7")
-ctrl + alt + cmd + shift - 8 : @move_to_space("8")
-ctrl + alt + cmd + shift - 9 : @move_to_space("9")
-ctrl + alt + cmd + shift - g : @move_to_space_with_fallback("prev", "last")
+ctrl + alt + cmd + shift - 1 : yabai -m window --space 1 --focus
+ctrl + alt + cmd + shift - 2 : yabai -m window --space 2 --focus
+ctrl + alt + cmd + shift - 3 : yabai -m window --space 3 --focus
+ctrl + alt + cmd + shift - 4 : yabai -m window --space 4 --focus
+ctrl + alt + cmd + shift - 5 : yabai -m window --space 5 --focus
+ctrl + alt + cmd + shift - 6 : yabai -m window --space 6 --focus
+ctrl + alt + cmd + shift - 7 : yabai -m window --space 7 --focus
+ctrl + alt + cmd + shift - 8 : yabai -m window --space 8 --focus
+ctrl + alt + cmd + shift - 9 : yabai -m window --space 9 --focus
+ctrl + alt + cmd + shift - g : yabai -m window --space prev --focus || yabai -m window --space last --focus
 # 0x29 = semicolon
-ctrl + alt + cmd + shift - 0x29 : @move_to_space_with_fallback("next", "first")
-ctrl + alt + cmd + shift - p : @move_to_space("recent")
+ctrl + alt + cmd + shift - 0x29 : yabai -m window --space next --focus || yabai -m window --space first --focus
+ctrl + alt + cmd + shift - p : yabai -m window --space recent --focus
