@@ -80,3 +80,19 @@ vim.cmd([[  autocmd!]])
 vim.cmd([[  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif]])
 vim.cmd([[  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif]])
 vim.cmd([[augroup END]])
+
+-- nvim runs the editor as a separate `nvim --embed` server process. When the TUI dies while LSP
+-- clients are attached, the server's event loop stalls instead of exiting and it is reparented to
+-- launchd, holding its heap forever. UILeave still runs synchronously, so hard-exit from there.
+vim.api.nvim_create_autocmd("UILeave", {
+	group = augroup("exit_when_ui_gone"),
+	callback = function()
+		if #vim.api.nvim_list_uis() > 0 then
+			return
+		end
+		pcall(function()
+			require("persistence").save()
+		end)
+		vim.uv.kill(vim.uv.os_getpid(), "sigkill")
+	end,
+})

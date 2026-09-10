@@ -141,7 +141,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus[1m]",
+  "model": "opusplan",
   "hooks": {
     "Notification": [
       {
@@ -208,7 +208,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "snyk-axi",
+            "command": "snyk-axi context",
             "timeout": 10
           }
         ]
