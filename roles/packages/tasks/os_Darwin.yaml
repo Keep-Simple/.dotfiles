@@ -5,6 +5,14 @@
   register: brew_file
 
 - block:
+    # `brew bundle` prints "Using <tap>" and skips the fetch when a tap is already
+    # cloned, so a tap that gained a formula since the last clone stays stale and the
+    # new entry fails with "does not exist". Refresh before anything resolves.
+    - name: Update Homebrew and tap clones
+      command: "{{ homebrew_brew_bin_path }}/brew update"
+      register: brew_update
+      changed_when: "'Already up-to-date' not in brew_update.stdout"
+
     # Homebrew ignores untrusted third-party taps, so this must run before any resolution.
     - name: Trust Brewfile taps
       ansible.builtin.shell: |
