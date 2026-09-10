@@ -8,10 +8,13 @@
     # `brew bundle` prints "Using <tap>" and skips the fetch when a tap is already
     # cloned, so a tap that gained a formula since the last clone stays stale and the
     # new entry fails with "does not exist". Refresh before anything resolves.
+    # Best-effort: a stale tap left over from an old Brewfile can fail its fetch
+    # without affecting anything we still install, so don't abort the run.
     - name: Update Homebrew and tap clones
       command: "{{ homebrew_brew_bin_path }}/brew update"
       register: brew_update
       changed_when: "'Already up-to-date' not in brew_update.stdout"
+      failed_when: false
 
     # Homebrew ignores untrusted third-party taps, so this must run before any resolution.
     - name: Trust Brewfile taps

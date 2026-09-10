@@ -34,7 +34,11 @@
   path = ~/.gitconfig-work
 [includeIf "hasconfig:remote.*.url:**/snyk/**"]
   path = ~/.gitconfig-work
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+# Scoped per-org, not to all of github.com: GOPRIVATE=github.com/snyk means `go mod`
+# clones private modules by https URL and needs this rewrite to reach them over ssh.
+# A github.com-wide rule also caught Homebrew, whose tap remotes are stored as https,
+# so `brew update` failed on every machine without ~/.ssh/personal_key.
+[url "ssh://git@github.com/snyk/"]
+	insteadOf = https://github.com/snyk/
 [http]
 	sslCAInfo = ~/zscaler-ca-bundle.pem
