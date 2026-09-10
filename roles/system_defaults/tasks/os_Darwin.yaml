@@ -42,6 +42,16 @@
   changed_when: false
   become: true
 
+# pam-reattach comes from the Brewfile, so it is missing whenever the packages
+# role has not run or its formula was dropped. Naming a module file that is not
+# there does not degrade to a skipped line: openpam fails to build the stack and
+# every sudo after this dies with "unable to initialize PAM", including the ones
+# that would let you undo it. Check before writing.
+- name: Stat pam_reattach
+  ansible.builtin.stat:
+    path: "{{ homebrew_brew_bin_path | dirname }}/lib/pam/pam_reattach.so"
+  register: pam_reattach
+
 - name: Enable Touch ID for sudo (with tmux/ssh reattach)
   ansible.builtin.copy:
     dest: /etc/pam.d/sudo_local
@@ -50,7 +60,9 @@
     mode: '0444'
     content: |
       # Managed by ansible (dotfiles). Survives macOS updates.
-      auth       optional       {{ homebrew_brew_bin_path | dirname }}/lib/pam/pam_reattach.so ignore_ssh
+      {% if pam_reattach.stat.exists %}
+      auth       optional       {{ pam_reattach.stat.path }} ignore_ssh
+      {% endif %}
       auth       sufficient     pam_tid.so
   become: true
 
