@@ -14,7 +14,7 @@ Bootstrap entrypoint (one-liner): `setup.sh` → installs ansible deps → clone
 All wrapped by `ansible.sh` (also installed as `~/.local/bin/my`):
 
 ```
-my run                      # full local playbook (asks sudo pw via -K)
+my run                      # full local playbook (asks sudo pw unless sudo is passwordless)
 my run --tags packages      # subset by tag: setup|repo|packages|dotfiles|devenv|system
 my dotfiles_link            # only stow links
 my dotfiles_unlink          # unstow (sets dotfiles_state=absent)

@@ -32,7 +32,13 @@ _install_ansible_deps() {
 # wrong on a machine where sudo needs no password, and fatal under the
 # documented `curl ... | sh` install: stdin is the script, so the prompt reads
 # EOF and the run dies. Ask only when sudo actually asks.
-_become_flag() { sudo -n true 2>/dev/null || echo -K; }
+#
+# `-k` is what makes this safe. Without it the probe passes on a warm sudo
+# timestamp, so a `my run` started within five minutes of any other sudo would
+# drop `-K`, then die twenty tasks later when the timestamp expired and become
+# had no password to fall back on. With a command, `-k` ignores the cached
+# credentials without clearing them, so this asks the policy, not the cache.
+_become_flag() { sudo -kn true 2>/dev/null || echo -K; }
 
 _run_playbook() {
   echo "⚪ [ansible] running playbook..."

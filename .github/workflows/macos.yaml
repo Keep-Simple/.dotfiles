@@ -8,10 +8,14 @@
 #   - A genuinely fresh Mac. Runners ship Homebrew, so `install_brew` takes its
 #     early return; the rosetta / xcode-select branch needs a GUI and is never
 #     exercised here.
-#   - The real package list. The job swaps the Brewfile for eight formulae
-#     because the runner has ~14 GB free and the full list (137 formulae, 29
-#     casks) fills it long before the playbook can fail for an interesting
-#     reason.
+#   - The real package list. The job swaps the Brewfile for seven formulae and
+#     one tap because the runner has ~14 GB free and the full list (137
+#     formulae, 29 casks) fills it long before the playbook can fail for an
+#     interesting reason. pam-reattach is among the ones cut, so the Touch ID
+#     task is only covered on its module-absent branch.
+#   - Hands-off on a Mac where sudo needs a password. The runner has
+#     passwordless sudo, so ansible.sh drops `-K` and nothing prompts. On a Mac
+#     that does need one, `-K` comes back and the one-liner still stops for it.
 #   - Anything needing SIP off. yabai's scripting addition and skhd get their
 #     config linked and are never started.
 #   - Linux, `my run_remote`, or the `update` tag.
@@ -36,7 +40,7 @@ jobs:
   install:
     name: README install command
     runs-on: macos-latest
-    timeout-minutes: 60
+    timeout-minutes: 30  # runs take about 7 minutes; this is a hang guard
 
     steps:
       - uses: actions/checkout@v4
@@ -67,7 +71,10 @@ jobs:
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           # The pull request head is detached; setup.sh clones by branch name.
           git checkout -B ci-under-test
-          git commit -am 'ci: slim the package list'
+          # --allow-empty: a pull request that already carries this exact
+          # Brewfile makes the slim step a no-op, and a bare commit would
+          # fail the job for the wrong reason.
+          git commit -am 'ci: slim the package list' --allow-empty
 
       - name: Reset $HOME to fresh-Mac conditions
         run: |
@@ -136,6 +143,8 @@ jobs:
             exit 1
           fi
 
-      # Non-idempotent tasks fail here rather than on the next `my run`.
+      # A task that errors on a populated machine fails here rather than on the
+      # next `my run`. This does not assert changed=0: several tasks report
+      # changed on every run by design, so idempotence is not checkable this way.
       - name: Run the playbook a second time
         run: ~/.dotfiles/ansible.sh run
