@@ -72,6 +72,22 @@ Updates write fresh files to disk, but already-running processes hold the old co
 
 Shell wrapper in `roles/dotfiles/files/os_Darwin/zsh/.zshrc.d/brew.sh` overrides `brew` so `install/uninstall/tap/...` auto-`brew bundle dump` to `roles/packages/files/macos/Brewfile`. Use `brew-orphans` to find leaves not tracked, `brew-backup` / `brew-cleanup` for manual ops.
 
+## CI
+
+One check: `.github/workflows/macos.yaml`. On every PR it runs the README
+one-liner on a `macos-latest` runner, piping the script to `sh` so any prompt
+hits EOF and fails the build. Then it asserts stow, lazy.nvim and tpm landed
+and `/etc/sudoers` has no leftover `NOPASSWD` line, then runs the playbook a
+second time to catch non-idempotent tasks.
+
+Run it without pushing: `gh workflow run macos.yaml --ref <branch>`, then
+`gh run watch`.
+
+The job rewrites the Brewfile to eight formulae and `.tool-versions` to one
+line before `setup.sh` reads the tree, because the runner has about 14 GB free.
+The workflow's header comment lists what a green run does and does not prove.
+Read it before treating green as evidence that a fresh Mac works.
+
 ## Architecture
 
 ### Ansible role pipeline (`main.yaml`)

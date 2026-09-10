@@ -1,44 +1,112 @@
 ---
+# Runs the install command the README prints, on a current macOS, with stdin
+# held by the script so any prompt gets EOF and fails the build.
+#
+# What a green run proves: the one-liner exits 0, asks nothing, and leaves the
+# home directory linked. What it does NOT prove:
+#
+#   - A genuinely fresh Mac. Runners ship Homebrew, so `install_brew` takes its
+#     early return; the rosetta / xcode-select branch needs a GUI and is never
+#     exercised here.
+#   - The real package list. The job swaps the Brewfile for eight formulae
+#     because the runner has ~14 GB free and the full list (137 formulae, 29
+#     casks) fills it long before the playbook can fail for an interesting
+#     reason.
+#   - Anything needing SIP off. yabai's scripting addition and skhd get their
+#     config linked and are never started.
+#   - Linux, `my run_remote`, or the `update` tag.
+#
+# If this job starts running out of disk or time, cut the package list, not the
+# assertions.
+
 name: macos
 
 on:
+  pull_request:
   push:
     branches:
-      - 'master'
-    paths:
-      - 'config/**'
-      - 'scripts/**'
-      - '.github/workflows/macos.yaml'
-      - '!**.md'
-      - '!.github/mkdocs.yaml'
-      - '!docs/**'
+      - 'macos'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  macos:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-11.0]
+  install:
+    name: README install command
+    runs-on: macos-latest
+    timeout-minutes: 60
 
     steps:
-      - name: Clean up installed software
-        if: startsWith(matrix.os, 'macos')
+      - uses: actions/checkout@v4
+
+      - name: Slim the checkout
         run: |
-          brew uninstall --ignore-dependencies --force $(brew list --formula)
-          brew uninstall --cask --force firefox google-chrome
-          brew cleanup --prune-prefix
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
+          # Every entry is here because a later role needs it to run at all.
+          # Trimming this list does not make the job faster, it silently
+          # disables whatever role depended on the line you removed.
+          cat > roles/packages/files/macos/Brewfile <<'EOF'
+          tap "jandedobbeleer/oh-my-posh"  # home of the oh-my-posh formula
+          brew "stow"                      # dotfiles role: every symlink
+          brew "neovim"                    # nvim role: headless bootstrap
+          brew "tmux"                      # dotfiles role: tpm install_plugins
+          brew "pre-commit"                # dotfiles role: hook install
+          brew "asdf"                      # dotfiles role: tool install
+          brew "jq"                        # scripts under ~/.local/bin
+          brew "oh-my-posh"                # zsh role: prompt block in .zshrc
+          EOF
 
-      # - name: Download and install available system updates
-      #   if: startsWith(matrix.os, 'macos')
-      #   run: |
-      #     sudo softwareupdate -i -a
+          # uv is a binary download. The real list compiles Python, Rust and
+          # Go, and pulls .NET.
+          echo 'uv 0.9.21' > roles/dotfiles/files/all/asdf/.tool-versions
 
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Install using setup.sh
+      - name: Commit to a local branch for setup.sh to clone
         run: |
-          if [ "$RUNNER_OS" == "macOS" ]; then
-            ./scripts/setup.sh --all
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          # The pull request head is detached; setup.sh clones by branch name.
+          git checkout -B ci-under-test
+          git commit -am 'ci: slim the package list'
+
+      - name: Run the README install command
+        env:
+          # setup.sh clones this into ~/.dotfiles, and the repo role's clone of
+          # dotfiles.repo into the same path is a no-op (update: false). So the
+          # whole playbook runs against the pull request, not against macos.
+          source: ${{ github.workspace }}
+          branch: ci-under-test
+        # Same shape as the README's pipe. stdin belongs to the script, so
+        # anything that tries to read the terminal gets EOF and the job fails.
+        run: cat setup.sh | sh -s
+
+      - name: Assert the install kept its promises
+        run: |
+          set -eu
+
+          resolved=$(readlink -f "$HOME/.zshrc")
+          case "$resolved" in
+            "$HOME/.dotfiles/"*) ;;
+            *) echo "~/.zshrc is not stowed from the repo: $resolved"; exit 1 ;;
+          esac
+
+          test -d "$HOME/.local/share/nvim/lazy" || {
+            echo 'lazy.nvim did not bootstrap'; exit 1; }
+
+          test -d "$HOME/.tmux/plugins/tpm" || {
+            echo 'tpm was not cloned'; exit 1; }
+
+          # The packages role adds this exact line around `brew bundle` and
+          # removes it in an `always` block. Matching the literal rather than
+          # grepping for NOPASSWD keeps the check on our own leftovers instead
+          # of whatever grants the runner its passwordless sudo.
+          echo '--- NOPASSWD lines in /etc/sudoers ---'
+          grep -n NOPASSWD /etc/sudoers || echo '(none)'
+          if grep -qxF 'ALL ALL=(ALL) NOPASSWD: ALL' /etc/sudoers; then
+            echo '/etc/sudoers still has the packages role NOPASSWD line'
+            exit 1
           fi
+
+      # Non-idempotent tasks fail here rather than on the next `my run`.
+      - name: Run the playbook a second time
+        run: ~/.dotfiles/ansible.sh run
