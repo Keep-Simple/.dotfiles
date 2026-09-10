@@ -123,9 +123,15 @@ jobs:
           # removes it in an `always` block. Matching the literal rather than
           # grepping for NOPASSWD keeps the check on our own leftovers instead
           # of whatever grants the runner its passwordless sudo.
+          # /etc/sudoers is mode 0440, so read it as root. Reading it through
+          # a bare `grep` returns "Permission denied" and a non-zero status,
+          # which reads as "line not found" and passes the check for the wrong
+          # reason.
+          sudoers=$(sudo cat /etc/sudoers) || {
+            echo 'cannot read /etc/sudoers'; exit 1; }
           echo '--- NOPASSWD lines in /etc/sudoers ---'
-          grep -n NOPASSWD /etc/sudoers || echo '(none)'
-          if grep -qxF 'ALL ALL=(ALL) NOPASSWD: ALL' /etc/sudoers; then
+          printf '%s\n' "$sudoers" | grep -n NOPASSWD || echo '(none)'
+          if printf '%s\n' "$sudoers" | grep -qxF 'ALL ALL=(ALL) NOPASSWD: ALL'; then
             echo '/etc/sudoers still has the packages role NOPASSWD line'
             exit 1
           fi
