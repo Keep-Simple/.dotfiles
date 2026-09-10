@@ -57,6 +57,23 @@
       when: brew_check.rc == 1
   when: brew_file.stat.exists
 
+# dmenu-mac and SpaceId are adhoc-signed and were never notarized — that is why
+# homebrew-cask disabled both and we vendor them in our own tap. Homebrew stamps
+# com.apple.quarantine on every cask it installs, and Gatekeeper refuses to launch
+# an unnotarized app carrying that flag. Homebrew dropped `--no-quarantine`, so
+# clear it here instead.
+- name: Clear Gatekeeper quarantine on the vendored casks
+  ansible.builtin.command:
+    cmd: /usr/bin/xattr -d com.apple.quarantine {{ item | quote }}
+  loop:
+    - /Applications/dmenu-mac.app
+    - /Applications/SpaceId.app
+  register: quarantine_clear
+  # rc 1 with "No such xattr" just means it was already clear.
+  changed_when: quarantine_clear.rc == 0
+  failed_when: quarantine_clear.rc != 0 and 'No such xattr' not in quarantine_clear.stderr
+  when: item is exists
+
 - name: Update homebrew packages (async)
   ansible.builtin.shell: |
     set -o pipefail
