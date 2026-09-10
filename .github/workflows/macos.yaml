@@ -69,6 +69,22 @@ jobs:
           git checkout -B ci-under-test
           git commit -am 'ci: slim the package list'
 
+      - name: Reset $HOME to fresh-Mac conditions
+        run: |
+          # The runner image ships a populated home (~/.gitconfig, among
+          # others). A fresh Mac does not, and stow refuses to clobber a real
+          # file. Remove only the plain files this repo is about to link over,
+          # so the job fails on stow bugs and not on the image.
+          find roles/dotfiles/files/all roles/dotfiles/files/os_Darwin \
+               -mindepth 2 \( -type f -o -type l \) -print |
+            sed -E 's#^roles/dotfiles/files/(all|os_Darwin)/[^/]+/##' |
+            while read -r rel; do
+              if [ -f "$HOME/$rel" ] && [ ! -L "$HOME/$rel" ]; then
+                echo "removing pre-existing $HOME/$rel"
+                rm -f "$HOME/$rel"
+              fi
+            done
+
       - name: Run the README install command
         env:
           # setup.sh clones this into ~/.dotfiles, and the repo role's clone of
