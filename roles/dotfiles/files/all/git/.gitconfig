@@ -40,5 +40,9 @@
 # so `brew update` failed on every machine without ~/.ssh/personal_key.
 [url "ssh://git@github.com/snyk/"]
 	insteadOf = https://github.com/snyk/
-[http]
-	sslCAInfo = ~/zscaler-ca-bundle.pem
+# The Zscaler bundle exists only on the work Mac, and git aborts every https
+# request when http.sslCAInfo names a file that is not there. git ignores a
+# missing include, so the dotfiles role writes this file only where the
+# bundle is present.
+[include]
+	path = ~/.gitconfig-zscaler
