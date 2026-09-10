@@ -85,6 +85,13 @@ jobs:
               fi
             done
 
+          # The image runs `defaults write com.apple.screensaver idleTime 0`,
+          # which stores a string. osx_defaults refuses to change a key whose
+          # stored type differs from the declared one. A fresh Mac does not
+          # have the key at all. Add to this list if another default trips the
+          # same "Type mismatch" error.
+          defaults delete com.apple.screensaver idleTime 2>/dev/null || true
+
       - name: Run the README install command
         env:
           # setup.sh clones this into ~/.dotfiles, and the repo role's clone of
