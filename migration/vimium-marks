@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+"""Dump Vimium C marks from every Brave profile and print restore snippets.
+
+Vimium C keeps marks in its own chrome.storage.local. Nothing outside the
+extension can read that: its own Backup exports settings only, Brave Sync
+doesn't cover extension storage, and extension isolation rules out a
+third-party extension doing it. So read the profile's LevelDB directly and
+emit a chrome.storage.local.set(...) line to paste on the new machine
+(brave://extensions -> Vimium C -> service worker -> Console), once per
+profile.
+
+Output contains real browsing URLs. Don't commit it - this repo is public.
+"""
+import json
+import os
+import re
+import sys
+from glob import glob
+
+EXT = "hfjbmagddngcpeloejdejnfgbamkjaeg"  # Vimium C
+ROOT = os.path.expanduser(
+    "~/Library/Application Support/BraveSoftware/Brave-Browser"
+)
+# LevelDB record: type(1) | varint32 keylen | key | varint32 vallen | value,
+# with type 1 a write and 0 a delete. Anchor on the key prefix and read the
+# lengths, rather than matching the value: global marks store a {"t":..} object
+# but local marks store a bare scroll position (0, 14352384, [0,0,"#frag"]).
+MARK = re.compile(rb"vimium(?:Global)?Mark\|")
+KEY = re.compile(rb"^vimium(?:Global)?Mark\|[ -~]{1,400}$")
+
+
+def varint(blob, i):
+    """Read a varint32 at i. Return (value, index after it)."""
+    n = shift = 0
+    while i < len(blob):
+        c = blob[i]
+        i += 1
+        n |= (c & 0x7F) << shift
+        if not c & 0x80:
+            return n, i
+        shift += 7
+    raise ValueError("truncated varint")
+
+
+def parse(blob, marks=None):
+    """Fold blob's mark records into marks. Later records win, deletes remove."""
+    if marks is None:
+        marks = {}
+    for m in MARK.finditer(blob):
+        ks = m.start()
+        for width in (1, 2):  # length of the key's own varint
+            if ks - width - 1 < 0:
+                continue
+            try:
+                klen, after = varint(blob, ks - width)
+            except ValueError:
+                continue
+            if after != ks or not 0 < klen <= len(blob) - ks:
+                continue
+            key = blob[ks:ks + klen]
+            if not KEY.match(key):
+                continue
+            kind = blob[ks - width - 1]
+            if kind == 0:  # delete
+                marks.pop(key.decode(), None)
+                break
+            if kind != 1:
+                continue
+            try:
+                vlen, vstart = varint(blob, ks + klen)
+                value = json.loads(blob[vstart:vstart + vlen])
+            except (ValueError, UnicodeDecodeError):
+                break
+            marks[key.decode()] = value
+            break
+    return marks
+
+
+def self_test():
+    def rec(key, val, kind=1):
+        return bytes([kind, len(key)]) + key + bytes([len(val)]) + val
+
+    log = rec(b"vimiumGlobalMark|Y", b'{"t":1,"u":"https://x/"}')
+    log += rec(b"vimiumMark|monkeytype.com/|f", b"0")  # local: bare scalar
+    log += rec(b"vimiumGlobalMark|Y", b'{"t":2,"u":"https://y/"}')  # newer wins
+    log += rec(b"vimiumGlobalMark|Z", b'{"t":1,"u":"https://z/"}')
+    log += bytes([0, 18]) + b"vimiumGlobalMark|Z"  # delete
+    assert parse(log) == {
+        "vimiumGlobalMark|Y": {"t": 2, "u": "https://y/"},
+        "vimiumMark|monkeytype.com/|f": 0,
+    }, parse(log)
+    assert parse(b"\x01\x05junk\x010") == {}
+    print("self-test ok")
+
+
+def main():
+    if "--self-test" in sys.argv:
+        return self_test()
+    # --snippet NAME prints just the JS for one profile, to pipe into pbcopy.
+    only = None
+    if "--snippet" in sys.argv:
+        i = sys.argv.index("--snippet")
+        if i + 1 >= len(sys.argv):
+            sys.exit("vimium-marks: --snippet needs a profile name")
+        only = sys.argv[i + 1]
+    state = os.path.join(ROOT, "Local State")
+    if not os.path.exists(state):
+        sys.exit(f"vimium-marks: no Brave install at {ROOT}")
+    with open(state) as fh:
+        names = {
+            k: v.get("name", k)
+            for k, v in json.load(fh)["profile"]["info_cache"].items()
+        }
+    if only and only not in names and only not in names.values():
+        sys.exit(f"vimium-marks: no profile {only!r} in {sorted(names.values())}")
+    found = False
+    for prof in sorted(names):
+        if only and only not in (prof, names[prof]):
+            continue
+        d = os.path.join(ROOT, prof, "Local Extension Settings", EXT)
+        if not os.path.isdir(d):
+            continue
+        found = True
+        marks = {}
+        # ponytail: .log only. Values in compacted .ldb tables can be snappy
+        # compressed, so parse them if the store ever grows one, don't guess.
+        for f in sorted(glob(os.path.join(d, "*.log"))):
+            with open(f, "rb") as fh:
+                parse(fh.read(), marks)
+        if glob(os.path.join(d, "*.ldb")):
+            print(
+                f"warning: {prof} has compacted .ldb files; marks written "
+                "before the last compaction may be missing",
+                file=sys.stderr,
+            )
+        body = json.dumps(marks, separators=(",", ":"), sort_keys=True)
+        if only:
+            if marks:
+                print(f"chrome.storage.local.set({body})")
+            continue
+        glo = {k: v for k, v in marks.items() if k.startswith("vimiumGlobal")}
+        print(f"\n=== {prof} ({names[prof]}) - "
+              f"{len(glo)} global, {len(marks) - len(glo)} local ===")
+        for k in sorted(glo):
+            print(f"  {k.split('|')[1]}  {glo[k].get('u', '')}")
+        if marks:
+            print(f"\nchrome.storage.local.set({body})")
+    if not found:
+        sys.exit(f"vimium-marks: Vimium C ({EXT}) not installed in any profile")
+
+
+if __name__ == "__main__":
+    main()

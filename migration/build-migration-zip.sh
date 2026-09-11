@@ -20,6 +20,7 @@ copy ~/.npmrc                               "$H/.npmrc"
 # curl/git/npm/node hard-errors if it is missing.
 copy ~/zscaler-ca-bundle.pem                "$H/zscaler-ca-bundle.pem"
 copy ~/.claude.json                         "$H/.claude.json"
+copy ~/.claude/history.jsonl                "$H/.claude/history.jsonl"
 copy ~/.claude/RTK.md                       "$H/.claude/RTK.md"
 copy ~/.claude/settings.local.json          "$H/.claude/settings.local.json"
 copy ~/.docker/config.json                  "$H/.docker/config.json"
@@ -35,19 +36,28 @@ cp -p ~/.ssh/personal_key ~/.ssh/personal_key.pub ~/.ssh/id_ed25519 \
 # gcloud: virtenv is an 83M regenerable Python venv, logs are noise.
 rsync -a --exclude virtenv --exclude logs ~/.config/gcloud/ "$H/.config/gcloud/"
 
-# Claude auto-memory only. ~/.claude/projects is 255M of transcripts; the
-# memory/ subdirs are the sole non-regenerable part.
-# A pattern containing '/' is anchored to the transfer root, so 'memory/**'
-# silently matches nothing here; '*/memory/***' is what walks into each project.
-rsync -a --prune-empty-dirs \
-      --include='*/' --include='*/memory/***' --exclude='*' \
-      ~/.claude/projects/ "$H/.claude/projects/"
+# Whole transcript store, not just memory/: 259M raw, ~81M once deflated, and
+# none of it is regenerable. Directory names encode absolute repo paths, so
+# these only reattach to /resume when the new Mac keeps the same $HOME.
+# `claude-transcripts` (stowed to ~/.local/bin) does the same job standalone.
+rsync -a ~/.claude/projects/ "$H/.claude/projects/"
+
+# Vimium C marks sit in Brave's per-profile LevelDB. No export covers them and
+# Brave Sync skips extension storage, so dump paste-ready snippets instead.
+mkdir -p "$H/migration-manual"
+if "$(dirname "$0")/vimium-marks" > "$H/migration-manual/vimium-marks.txt"; then
+	echo "dumped Vimium C marks"
+else
+	echo "skip: vimium-marks found no Brave profile with Vimium C"
+	rm -f "$H/migration-manual/vimium-marks.txt"
+fi
 
 RSYNC_EXCLUDES=(--exclude 'personal/projects/openclaw-backups')
 for d in "${JUNK_EXCLUDES[@]}"; do RSYNC_EXCLUDES+=(--exclude "$d"); done
 rsync -a "${RSYNC_EXCLUDES[@]}" ~/Documents/ "$H/Documents/"
 
 cp "$(dirname "$0")/setup.sh" "$STAGE/setup.sh"
+cp "$(dirname "$0")/README.md" "$STAGE/README.md"
 chmod +x "$STAGE/setup.sh"
 
 OUT=~/migration-"$(date +%Y%m%d)".zip
@@ -58,3 +68,6 @@ echo
 echo "Built $OUT ($(du -h "$OUT" | cut -f1))"
 echo "Contains live secrets (SNYK_TOKEN, GITHUB_PRIVATE_TOKEN, LITELLM_MASTER_KEY, gcloud + gh tokens)."
 echo "Transfer via AirDrop/USB only, never email/Slack/cloud upload. Delete after transfer."
+echo
+echo "Before wiping this Mac, do the browser steps README.md lists under"
+echo "'Manual steps': export Tab Session Manager sessions in each Brave profile."
