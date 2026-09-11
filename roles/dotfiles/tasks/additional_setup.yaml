@@ -85,6 +85,28 @@
   failed_when: false
   tags: ['bootstrap']
 
+# asdf-rust reads ~/.default-cargo-crates only inside `asdf install rust <ver>`,
+# so a crate added after rust was installed (or one whose build failed on the
+# first bootstrap) is never retried. Install anything still missing here.
+- name: Install default cargo crates
+  ansible.builtin.shell: |
+    set -o pipefail
+    ver=$(awk '$1 == "rust" { print $2 }' {{ ansible_facts['user_dir'] }}/.tool-versions)
+    root="{{ ansible_facts['user_dir'] }}/.asdf/installs/rust/$ver"
+    crates="{{ ansible_facts['user_dir'] }}/.default-cargo-crates"
+    [ -d "$root" ] && [ -f "$crates" ] || exit 0
+    export CARGO_HOME="$root" RUSTUP_HOME="$root" PATH="$root/bin:$PATH"
+    sed -E -e 's|(.*) //.*$|\1|' -e 's|^[[:space:]]*//.*||' "$crates" | while read -r line; do
+      [ -n "$line" ] && cargo install $line
+    done
+    asdf reshim rust
+  args:
+    executable: /bin/bash
+  register: cargo_crates
+  changed_when: "'Installing' in cargo_crates.stdout"
+  failed_when: false
+  tags: ['bootstrap']
+
 - name: Allow model invocation for unslop
   ansible.builtin.shell: |
     f="{{ ansible_facts['user_dir'] }}/.claude/skills/unslop/SKILL.md"

@@ -98,3 +98,21 @@ Gating a binding with `if-shell` blocks the command, not the consumption: tmux c
 **Repro:** run yazi in a focused tmux window, then `tmux capture-pane -p -t <win> | head -3`. A leak shows the find prompt in line 1 and a tab bar in line 2. Bisect by unbinding one suspect key at a time with `tmux unbind -n 'M-['`.
 
 **Gotcha:** `tmux source-file` does not remove bindings deleted from the config. After renaming or dropping a binding, run `tmux unbind -n <oldkey>` against the running server (or `tmux kill-server`), otherwise the old key stays live and the bug persists after a reload.
+
+## asdf-rust installs `.default-cargo-crates` only at rust-install time (2026-09-11)
+
+**Symptom:** on a freshly bootstrapped laptop, `recon` is missing, so tmux `M-I` (`display-popup -E ... recon`) opens and closes instantly. `M-i` still works, since `recon-jump.sh` is pure shell and needs no binary.
+
+**Root cause:** the asdf-rust plugin runs `install_default_cargo_crates` inside `bin/install`, so `$HOME/.default-cargo-crates` is read only while `asdf install rust <ver>` runs. A crate added to that file after rust was installed never gets picked up, and a crate whose build failed on the first bootstrap is never retried (`asdf install` skips an already-installed version). The playbook's own ordering is fine: stow runs before `asdf install`.
+
+**Fix:** the `Install default cargo crates` task in `roles/dotfiles/tasks/additional_setup.yaml` runs after `asdf install` and installs whatever is still missing. `cargo install` prints "Ignored ... is already installed" and exits 0 when there is nothing to do, so the task is idempotent and reports changed only when stdout contains "Installing".
+
+**Manual equivalent**, if you add a crate and don't want a full provision run:
+
+```bash
+R=~/.asdf/installs/rust/$(awk '$1=="rust"{print $2}' ~/.tool-versions)
+CARGO_HOME=$R RUSTUP_HOME=$R PATH="$R/bin:$PATH" cargo install --git https://github.com/gavraz/recon --locked
+asdf reshim rust
+```
+
+Both `CARGO_HOME` and `RUSTUP_HOME` matter. asdf-rust keeps the toolchain inside the install dir, so a bare `cargo install` reaches for `~/.rustup`, finds no default toolchain, and fails with "rustup could not choose a version of cargo to run".
