@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>local.pdfjs-serve</string>
+
+  <!-- launchd does not expand ~ and this file is stowed verbatim, so the home
+       path has to come from the environment launchd already sets for a user
+       agent. The same shell handles the log redirect, because StandardOutPath
+       would need an absolute path too. -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string>
+    <string>-c</string>
+    <string>mkdir -p "$HOME/.cache" &amp;&amp; exec "$HOME/.local/bin/pdfjs-serve" &gt;&gt; "$HOME/.cache/pdfjs-serve.log" 2&gt;&amp;1</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <!-- Without this a missing pdf.js dist would crash-loop at launchd's default
+       10s and fill the log. -->
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+</dict>
+</plist>

@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+"""Serve the pdf.js viewer on loopback so Vimium C keys work inside PDFs.
+
+Brave's built-in viewer is a PDFium plugin that swallows every keystroke, and a
+packed pdf.js extension cannot load Vimium C's content scripts under Manifest
+V3: extension_pages script-src is pinned to 'self', so the viewer page can no
+longer pull in another extension's origin. That is Chromium issue 40813203,
+closed as intended behavior, and it is what killed "PDF Viewer for Vimium C".
+
+A pdf.js viewer served over http is an ordinary web page, so Vimium C's
+<all_urls> content script runs on it with nothing injected and no extension to
+maintain.
+
+Routes:
+  /open?url=<url>   entry point. Redirects to the viewer. Handles http(s) and
+                    file://, so one key mapping covers web and local PDFs.
+  /web/, /build/    the pdf.js dist
+  /pdf/<relpath>    a local PDF, relative to $HOME
+  /proxy?url=<url>  a remote PDF, refetched so the viewer sees it same-origin.
+                    Needed because a remote host will not send
+                    Access-Control-Allow-Origin for a 127.0.0.1 origin, so the
+                    viewer cannot fetch it directly.
+
+Env: PDFJS_DIST (default ~/.local/share/pdfjs), PDFJS_PORT (default 8637).
+"""
+
+import os
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+
+HOME = os.path.realpath(os.path.expanduser("~"))
+DIST = os.environ.get("PDFJS_DIST", os.path.join(HOME, ".local/share/pdfjs"))
+PORT = int(os.environ.get("PDFJS_PORT", "8637"))
+FETCH_TIMEOUT = 30
+# Some hosts 403 the default Python-urllib agent.
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) pdfjs-serve"
+
+
+def under_home(path):
+    """Return path relative to $HOME, or None when it escapes $HOME."""
+    real = os.path.realpath(path)
+    if real == HOME or real.startswith(HOME + os.sep):
+        return os.path.relpath(real, HOME)
+    return None
+
+
+class Handler(SimpleHTTPRequestHandler):
+    server_version = "pdfjs-serve"
+
+    def do_GET(self):
+        parts = urllib.parse.urlsplit(self.path)
+        route = parts.path
+        if route == "/":
+            return self.redirect("/web/viewer.html")
+        if route == "/open":
+            return self.open_pdf(parts.query)
+        if route == "/proxy":
+            return self.proxy_pdf(parts.query)
+        if route.startswith("/pdf/"):
+            return self.local_pdf(route[len("/pdf/"):])
+        return super().do_GET()
+
+    def open_pdf(self, query):
+        target = urllib.parse.parse_qs(query).get("url", [""])[0]
+        if not target:
+            return self.fail(400, "missing url=")
+        scheme = urllib.parse.urlsplit(target).scheme
+        if scheme == "file":
+            path = urllib.parse.unquote(urllib.parse.urlsplit(target).path)
+            rel = under_home(path)
+            if rel is None:
+                return self.fail(403, "local file is outside $HOME")
+            source = "/pdf/" + urllib.parse.quote(rel)
+        elif scheme in ("http", "https"):
+            source = "/proxy?url=" + urllib.parse.quote(target, safe="")
+        else:
+            return self.fail(400, "only file, http and https are supported")
+        # pdf.js reads ?file= as a single value, so the whole path plus its own
+        # query has to survive as one encoded parameter.
+        self.redirect("/web/viewer.html?file=" + urllib.parse.quote(source, safe=""))
+
+    def proxy_pdf(self, query):
+        # Only the viewer page may drive this. Without the check, any web page
+        # could use this endpoint to make this machine fetch arbitrary URLs.
+        # A browser sends "cross-site" for those; the header is absent for
+        # command-line clients, which keeps curl usable for debugging.
+        site = self.headers.get("Sec-Fetch-Site")
+        if site is not None and site != "same-origin":
+            return self.fail(403, "cross-origin request refused")
+        target = urllib.parse.parse_qs(query).get("url", [""])[0]
+        if urllib.parse.urlsplit(target).scheme not in ("http", "https"):
+            return self.fail(400, "only http and https are proxied")
+        request = urllib.request.Request(target, headers={"User-Agent": USER_AGENT})
+        try:
+            with urllib.request.urlopen(request, timeout=FETCH_TIMEOUT) as response:
+                # urllib follows redirects on its own; make sure it did not land
+                # somewhere the scheme check above was meant to rule out.
+                if urllib.parse.urlsplit(response.url).scheme not in ("http", "https"):
+                    return self.fail(400, "redirected to an unsupported scheme")
+                body = response.read()
+        except (urllib.error.URLError, OSError) as err:
+            return self.fail(502, "fetch failed: %s" % err)
+        self.send_pdf(body)
+
+    def local_pdf(self, rel):
+        path = os.path.join(HOME, urllib.parse.unquote(rel))
+        if under_home(path) is None:
+            return self.fail(403, "path is outside $HOME")
+        try:
+            with open(os.path.realpath(path), "rb") as handle:
+                body = handle.read()
+        except OSError as err:
+            return self.fail(404, "cannot read: %s" % err)
+        self.send_pdf(body)
+
+    def send_pdf(self, body):
+        self.send_response(200)
+        self.send_header("Content-Type", "application/pdf")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def redirect(self, location):
+        self.send_response(302)
+        self.send_header("Location", location)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def fail(self, code, message):
+        self.send_error(code, message)
+
+
+def main():
+    if not os.path.isdir(os.path.join(DIST, "web")):
+        sys.exit("pdfjs-serve: no pdf.js dist at %s (run `my run --tags dotfiles`)" % DIST)
+    # Threaded: the viewer loads the worker, locale, cmaps and the PDF itself in
+    # parallel, and a single-threaded server deadlocks partway through the load.
+    server = ThreadingHTTPServer(("127.0.0.1", PORT), partial(Handler, directory=DIST))
+    print("pdfjs-serve: http://127.0.0.1:%d/ serving %s" % (PORT, DIST), flush=True)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+
+
+if __name__ == "__main__":
+    main()

@@ -161,6 +161,61 @@
   register: skills_async
   tags: ['update', 'never']
 
+# Vimium C cannot reach Brave's built-in PDF viewer: it is a PDFium plugin that
+# swallows every keystroke, and the packed pdf.js helper that used to solve this
+# died with Manifest V2. A pdf.js viewer served over http is an ordinary web
+# page, so Vimium C's content script runs on it untouched. pdfjs-serve hosts it.
+- name: Ensure the pdf.js viewer directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/.local/share/pdfjs"
+    state: directory
+    mode: '0755'
+  tags: ['dotfiles']
+
+- name: Install the pdf.js viewer dist
+  ansible.builtin.unarchive:
+    src: "https://github.com/mozilla/pdf.js/releases/download/v{{ pdfjs_version }}/pdfjs-{{ pdfjs_version }}-dist.zip"
+    dest: "{{ ansible_facts['user_dir'] }}/.local/share/pdfjs"
+    remote_src: true
+    creates: "{{ ansible_facts['user_dir'] }}/.local/share/pdfjs/web/viewer.html"
+  tags: ['dotfiles']
+
+# There is no gui domain to load an agent into on a headless machine, CI
+# included, and bootstrap fails there for a reason that is not a problem.
+- name: Check for a GUI launchd domain
+  ansible.builtin.command: launchctl print gui/{{ ansible_facts['user_uid'] }}
+  register: pdfjs_gui_domain
+  changed_when: false
+  failed_when: false
+  when: ansible_facts['system'] == 'Darwin'
+  tags: ['dotfiles']
+
+# bootstrap returns 5 ("Input/output error") when the label is already loaded,
+# which is indistinguishable from a real failure, so ask first instead of
+# reading the exit code afterwards.
+- name: Check whether the pdf.js viewer agent is loaded
+  ansible.builtin.command: >-
+    launchctl print gui/{{ ansible_facts['user_uid'] }}/local.pdfjs-serve
+  register: pdfjs_agent
+  changed_when: false
+  failed_when: false
+  when:
+    - ansible_facts['system'] == 'Darwin'
+    - pdfjs_gui_domain.rc | default(1) == 0
+  tags: ['dotfiles']
+
+- name: Load the pdf.js viewer agent
+  ansible.builtin.command:
+    cmd: >-
+      launchctl bootstrap gui/{{ ansible_facts['user_uid'] }}
+      {{ ansible_facts['user_dir'] }}/Library/LaunchAgents/local.pdfjs-serve.plist
+  changed_when: true
+  when:
+    - ansible_facts['system'] == 'Darwin'
+    - pdfjs_gui_domain.rc | default(1) == 0
+    - pdfjs_agent.rc | default(0) != 0
+  tags: ['dotfiles']
+
 - name: Update yazi plugins (async)
   ansible.builtin.shell: |
     set -o pipefail
