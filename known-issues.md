@@ -116,3 +116,21 @@ asdf reshim rust
 ```
 
 Both `CARGO_HOME` and `RUSTUP_HOME` matter. asdf-rust keeps the toolchain inside the install dir, so a bare `cargo install` reaches for `~/.rustup`, finds no default toolchain, and fails with "rustup could not choose a version of cargo to run".
+
+## Karabiner `keyboard_type_if` cannot gate remaps per keyboard (2026-09-11)
+
+**Symptom:** The internal keyboard is ISO (short left shift, short return) and the external Magic Keyboard is ANSI. Profile-level `simple_modifications` apply to every attached keyboard, so the ISO fixes ran on the ANSI keyboard too and destroyed backtick, backslash and right option there.
+
+**Root cause:** Karabiner offers no per-device layout condition. `keyboard_type_if` sounds like one, but it reads `profiles[].virtual_hid_keyboard.keyboard_type_v2`, a single global value for the virtual keyboard Karabiner emits. Ours is `ansi`, so a rule conditioned on `["iso"]` matched nothing and the internal keyboard lost all four remaps. The `device_if` identifiers are vendor_id, product_id, location_id, device_address, is_keyboard, is_pointing_device and is_built_in_keyboard. None of them describe layout.
+
+**Fix:** The four ISO remaps moved from `simple_modifications` into a `complex_modifications` rule whose manipulators carry a `device_if` condition. `karabiner-layout-sync` writes that condition. It reads each keyboard's Apple kbdtype from `alt_handler_id` in the IO registry, resolves it through Carbon's `KBGetLayoutType` (which returns the four-character codes `ANSI`, `ISO ` and `JIS `), and lists every ISO keyboard in the condition. When no ISO keyboard is attached it writes `device_unless` on `is_keyboard`, which no keyboard event can satisfy. The `local.karabiner-layout-sync` launch agent runs it at login.
+
+**Repro:**
+```sh
+karabiner-layout-sync --self-check   # asserts kbdtype 82=ANSI, 92=ISO, 42=JIS
+ioreg -c IOHIDDevice -r -l | grep -E 'alt_handler_id|KeyboardLanguage'
+```
+
+**Gotchas:**
+- Karabiner watches `~/.config/karabiner/karabiner.json`, which is a stow symlink. Editing the target under `~/.dotfiles` does not trigger a reload. Kick it with `launchctl kickstart -k gui/$(id -u)/org.pqrs.service.agent.Karabiner-Console-User-Server`, which is what the script does after a write.
+- Karabiner's own virtual keyboard appears in `ioreg` as a keyboard. The script skips it by product name. Without that skip, setting the Virtual Keyboard type to ISO would make Karabiner match its own output and feed it back through the remaps.

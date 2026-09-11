@@ -183,6 +183,42 @@
   register: skills_async
   tags: ['update', 'never']
 
+# There is no gui domain to load an agent into on a headless machine, CI
+# included, and bootstrap fails there for a reason that is not a problem.
+- name: Check for a GUI launchd domain
+  ansible.builtin.command: launchctl print gui/{{ ansible_facts['user_uid'] }}
+  register: karabiner_gui_domain
+  changed_when: false
+  failed_when: false
+  when: ansible_facts['system'] == 'Darwin'
+  tags: ['dotfiles']
+
+# bootstrap returns 5 ("Input/output error") when the label is already loaded,
+# which is indistinguishable from a real failure, so ask first instead of
+# reading the exit code afterwards.
+- name: Check whether the karabiner layout sync agent is loaded
+  ansible.builtin.command: >-
+    launchctl print gui/{{ ansible_facts['user_uid'] }}/local.karabiner-layout-sync
+  register: karabiner_layout_agent
+  changed_when: false
+  failed_when: false
+  when:
+    - ansible_facts['system'] == 'Darwin'
+    - karabiner_gui_domain.rc | default(1) == 0
+  tags: ['dotfiles']
+
+- name: Load the karabiner layout sync agent
+  ansible.builtin.command:
+    cmd: >-
+      launchctl bootstrap gui/{{ ansible_facts['user_uid'] }}
+      {{ ansible_facts['user_dir'] }}/Library/LaunchAgents/local.karabiner-layout-sync.plist
+  changed_when: true
+  when:
+    - ansible_facts['system'] == 'Darwin'
+    - karabiner_gui_domain.rc | default(1) == 0
+    - karabiner_layout_agent.rc | default(0) != 0
+  tags: ['dotfiles']
+
 - name: Update yazi plugins (async)
   ansible.builtin.shell: |
     set -o pipefail

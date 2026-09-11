@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>local.karabiner-layout-sync</string>
+  <!-- launchd does not expand ~ or $HOME in ProgramArguments, and the plist is
+       stowed verbatim, so it cannot carry a hardcoded home directory. -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string>
+    <string>-c</string>
+    <string>exec "$HOME/.local/bin/karabiner-layout-sync" >>"$HOME/.cache/karabiner-layout-sync.log" 2>&amp;1</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <!-- Add StartInterval here to also catch keyboards hot-plugged mid-session;
+       the built-in keyboard's layout cannot change, so login is enough. -->
+</dict>
+</plist>

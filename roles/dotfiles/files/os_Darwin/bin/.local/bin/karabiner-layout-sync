@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+"""Point the ISO keyboard remaps in karabiner.json at whichever keyboards are ISO.
+
+Karabiner can gate a rule on a device (vendor/product/built-in) but not on a
+keyboard layout, and its `keyboard_type_if` reads the single global virtual
+keyboard type, not the device that sent the event. So layout has to be resolved
+out here and written into the rule's `device_if` identifiers.
+
+macOS reports each keyboard's Apple kbdtype as `alt_handler_id` in the IO
+registry; Carbon's KBGetLayoutType turns that into 'ANSI', 'ISO' or 'JIS'.
+"""
+
+import ctypes
+import json
+import os
+import re
+import subprocess
+import sys
+
+RULE_PREFIX = "Built-in ISO keyboard"
+CONFIG = os.path.expanduser("~/.config/karabiner/karabiner.json")
+AGENT = "org.pqrs.service.agent.Karabiner-Console-User-Server"
+
+_carbon = ctypes.cdll.LoadLibrary(
+    "/System/Library/Frameworks/Carbon.framework/Carbon"
+)
+_carbon.KBGetLayoutType.argtypes = [ctypes.c_int16]
+_carbon.KBGetLayoutType.restype = ctypes.c_uint32
+
+
+def layout(kbdtype):
+    """'ANSI' | 'ISO' | 'JIS' for an Apple kbdtype (alt_handler_id)."""
+    return _carbon.KBGetLayoutType(kbdtype).to_bytes(4, "big").decode().strip()
+
+
+def keyboards():
+    """(kbdtype, built_in, vendor_id, product_id) per keyboard macOS reports."""
+    out = subprocess.run(
+        ["ioreg", "-c", "IOHIDDevice", "-r", "-l"],
+        capture_output=True, text=True, check=True,
+    ).stdout
+    # Top-level entries start at column 0; nested ones are indented.
+    for subtree in re.split(r"(?m)^\+-o ", out)[1:]:
+        m = re.search(r'"alt_handler_id" = (\d+)', subtree)
+        if not m:
+            continue
+        # Karabiner's own virtual keyboard would feed its output back in.
+        if "Karabiner DriverKit VirtualHIDKeyboard" in subtree:
+            continue
+        # Nearest preceding VendorID/ProductID belong to the same property block.
+        head = subtree[: m.start()]
+        vendor = re.findall(r'"VendorID" = (\d+)', head)
+        product = re.findall(r'"ProductID" = (\d+)', head)
+        yield (
+            int(m.group(1)),
+            '"Built-In" = Yes' in subtree,
+            int(vendor[-1]) if vendor else None,
+            int(product[-1]) if product else None,
+        )
+
+
+def iso_identifiers():
+    """Karabiner device_if identifiers matching every attached ISO keyboard."""
+    found = []
+    for kbdtype, built_in, vendor, product in keyboards():
+        if layout(kbdtype) != "ISO":
+            continue
+        # The built-in keyboard reports vendor/product 0, so match it by flag.
+        ident = (
+            {"is_built_in_keyboard": True}
+            if built_in
+            else {"vendor_id": vendor, "product_id": product, "is_keyboard": True}
+        )
+        if ident not in found:
+            found.append(ident)
+    return found
+
+
+def self_check():
+    assert layout(82) == "ANSI", layout(82)   # US Magic Keyboard
+    assert layout(92) == "ISO", layout(92)    # EU MacBook internal
+    assert layout(42) == "JIS", layout(42)
+    assert iso_identifiers() == iso_identifiers()  # stable across calls
+    print("ok")
+
+
+def main():
+    if "--self-check" in sys.argv:
+        return self_check()
+
+    path = os.path.realpath(CONFIG)  # config is a stow symlink; edit the source
+    with open(path) as fh:
+        before = fh.read()
+    config = json.loads(before)
+
+    identifiers = iso_identifiers()
+    condition = (
+        {"type": "device_if", "identifiers": identifiers}
+        if identifiers
+        # No ISO keyboard attached: a condition that a keyboard event never meets.
+        else {"type": "device_unless", "identifiers": [{"is_keyboard": True}]}
+    )
+
+    patched = 0
+    for profile in config["profiles"]:
+        for rule in profile.get("complex_modifications", {}).get("rules", []):
+            if not rule.get("description", "").startswith(RULE_PREFIX):
+                continue
+            for manipulator in rule["manipulators"]:
+                manipulator["conditions"] = [condition]
+                patched += 1
+    if not patched:
+        sys.exit(f"no rule starting with {RULE_PREFIX!r} in {path}")
+
+    after = json.dumps(config, indent=4, ensure_ascii=False) + "\n"
+    if after == before:
+        return
+    with open(path, "w") as fh:
+        fh.write(after)
+    subprocess.run(
+        ["launchctl", "kickstart", "-k", f"gui/{os.getuid()}/{AGENT}"],
+        check=False,
+    )
+    print(f"ISO keyboards: {identifiers or 'none'}")
+
+
+if __name__ == "__main__":
+    main()
