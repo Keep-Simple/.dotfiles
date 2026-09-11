@@ -83,8 +83,9 @@ second time to catch non-idempotent tasks.
 Run it without pushing: `gh workflow run macos.yaml --ref <branch>`, then
 `gh run watch`.
 
-The job rewrites the Brewfile to eight formulae and `.tool-versions` to one
-line before `setup.sh` reads the tree, because the runner has about 14 GB free.
+The job rewrites the Brewfile to seven formulae and one tap, and
+`.tool-versions` to one line, before `setup.sh` reads the tree, because the
+runner has about 14 GB free.
 The workflow's header comment lists what a green run does and does not prove.
 Read it before treating green as evidence that a fresh Mac works.
 
