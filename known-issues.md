@@ -77,3 +77,24 @@ shasum -a 256 $(which yabai) | cut -d" " -f1
 sudo visudo -f /private/etc/sudoers.d/yabai
 # update hash in: nickyasnohorodskyi ALL = (root) NOPASSWD: sha256:<hash> /opt/homebrew/bin/yabai --load-sa
 ```
+
+## tmux root-table Alt bindings swallow terminal query replies (2026-09-11)
+
+**Symptom:** yazi in tmux opens its find prompt pre-filled with `62;52;c`, spawns extra tabs on every launch, and image/PDF preview appears broken. Earlier the same junk landed in nvim pickers (snacks.nvim).
+
+**Root cause:** TUIs ask kitty what it supports (DA1 `\e[?c`, XTVERSION `\eP>q`) through tmux DCS passthrough. Kitty answers on the tmux *client's* input, so tmux parses the reply as typed keys. Key lookup runs first, and `\e` + char is exactly how tmux encodes a Meta key, so the reply's ESC prefix matches a root-table (`bind-key -n`) binding. tmux consumes the prefix and forwards the remaining bytes to the focused pane as keystrokes:
+
+| Reply | Bytes | Matched | Leftover typed into the pane |
+|---|---|---|---|
+| DA1 | `\e[?62;52;c` | `M-[` | `?62;52;c` — `?` opens yazi find-previous, rest fills it |
+| XTVERSION | `\eP>\|kitty(0.48.2)\e\\` | `M-P` | `>\|kitty(0.48.2)` — two `t` open two tabs, `y` yanks |
+
+Gating a binding with `if-shell` blocks the command, not the consumption: tmux consumes at key-match time, before the binding runs. Only an unbound key leaves the sequence intact for the pane.
+
+**Fix:** never bind an escape-sequence introducer in the root table. `M-[` (CSI), `M-]` (OSC), `M-P` (DCS), `M-O` (SS3), and for the same reason `M-\` (ST), `M-^` (PM), `M-_` (APC), `M-X` (SOS). Prefix-table bindings are safe, only `-n` intercepts. Commit a2cf2d5 moved prompt navigation to `M-U`/`M-D` (my prompts) and `M-u`/`M-d` (Claude's `⏺ ` replies), and `gh pr view --web` to `M-o`.
+
+**Ruled out by test:** `escape-time` (leak identical at 0 and 10), `extended-keys always` (changes how kitty encodes *your* keystrokes, not how tmux parses a reply), yazi's `[tasks] image_alloc`/`image_bound`.
+
+**Repro:** run yazi in a focused tmux window, then `tmux capture-pane -p -t <win> | head -3`. A leak shows the find prompt in line 1 and a tab bar in line 2. Bisect by unbinding one suspect key at a time with `tmux unbind -n 'M-['`.
+
+**Gotcha:** `tmux source-file` does not remove bindings deleted from the config. After renaming or dropping a binding, run `tmux unbind -n <oldkey>` against the running server (or `tmux kill-server`), otherwise the old key stays live and the bug persists after a reload.

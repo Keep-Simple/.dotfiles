@@ -1,6 +1,8 @@
 
 ## Global rules (repo-specific)
 
+Before debugging a tool that behaves oddly, read `known-issues.md`. It records diagnosed breakages with their root cause, what was ruled out, and the repro command.
+
 Symlinked dotfiles: `~/.claude/*` and other `$HOME` configs are stow symlinks into `~/.dotfiles/roles/dotfiles/files/...`. Edit tool refuses symlinks. Resolve with `readlink -f <path>` first, then edit the real target under `~/.dotfiles/`.
 
 ## Repo Purpose
@@ -60,7 +62,7 @@ Common pitfalls:
 Updates write fresh files to disk, but already-running processes hold the old code in memory. Per-tool:
 
 - **brew / mason** — CLI binaries replaced on disk; next invocation gets the new binary. Long-running daemons (`brew services`) are NOT restarted automatically.
-- **tpm** — task ends by invoking `tmux-reload` (sources `tmux.conf` in any running server, no-op if none). Picks up `set`/binding changes; full plugin re-init (resurrect/continuum state) still needs `tmux kill-server`.
+- **tpm** — task ends by invoking `tmux-reload` (sources `tmux.conf` in any running server, no-op if none). Picks up `set` changes and new or changed bindings, but NOT deletions: a binding removed or renamed in `tmux.conf` stays live in the running server until `tmux unbind -n <oldkey>` or `tmux kill-server`. Full plugin re-init (resurrect/continuum state) also needs `tmux kill-server`.
 - **asdf** — only refreshes plugin registries; installed tool versions don't change, so nothing to reload.
 - **skills** — skill files updated under `~/.claude/skills/`; already-running sessions pick up changes on next invocation (skills are read per-use, not cached).
 - **yazi** — package files updated under `~/.config/yazi/`; running yazi instances keep old plugins until restart.
