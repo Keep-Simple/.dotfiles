@@ -39,7 +39,6 @@ rsync -a --exclude virtenv --exclude logs ~/.config/gcloud/ "$H/.config/gcloud/"
 # Whole transcript store, not just memory/: 259M raw, ~81M once deflated, and
 # none of it is regenerable. Directory names encode absolute repo paths, so
 # these only reattach to /resume when the new Mac keeps the same $HOME.
-# `claude-transcripts` (stowed to ~/.local/bin) does the same job standalone.
 rsync -a ~/.claude/projects/ "$H/.claude/projects/"
 
 # Vimium C marks sit in Brave's per-profile LevelDB. No export covers them and

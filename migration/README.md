@@ -38,9 +38,6 @@ gcloud, gh, kube, docker, ngrok, ggshield and snyk auth files, the Zscaler CA
 bundle, `~/Documents` without build junk, and the whole Claude Code transcript
 store (`~/.claude/projects`, about 81M compressed) with `history.jsonl`.
 
-`claude-transcripts`, stowed to `~/.local/bin`, backs up and restores that
-transcript store on its own when you want it without a full move.
-
 ## Manual steps
 
 ### Open and pinned tabs in Brave
