@@ -3,6 +3,30 @@
   ansible.builtin.include_tasks: project_overrides.yaml
   tags: ['dotfiles']
 
+# .gitconfig includes ~/.gitconfig-zscaler unconditionally; git ignores the
+# include when the file is absent. Write it only where the bundle it names
+# actually exists, so a fresh machine is not left with a broken http.sslCAInfo.
+- name: Stat the Zscaler CA bundle
+  ansible.builtin.stat:
+    path: "{{ ansible_facts['user_dir'] }}/zscaler-ca-bundle.pem"
+  register: zscaler_bundle
+  tags: ['dotfiles']
+
+# Written unconditionally so that removing the bundle also removes the setting.
+# A `when:` here would leave the old file behind and put http.sslCAInfo back on
+# a path that no longer exists.
+- name: Point git at the Zscaler CA bundle
+  ansible.builtin.copy:
+    dest: "{{ ansible_facts['user_dir'] }}/.gitconfig-zscaler"
+    mode: '0644'
+    content: |
+      # Managed by ansible (dotfiles).
+      {% if zscaler_bundle.stat.exists %}
+      [http]
+      	sslCAInfo = {{ zscaler_bundle.stat.path }}
+      {% endif %}
+  tags: ['dotfiles']
+
 - name: Stat tmux plugin manager
   ansible.builtin.stat:
     path: "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm/.git"

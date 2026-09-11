@@ -6,5 +6,8 @@ agent_skills:
     skills: '*'
   - repo: awesome-skills/code-review-skill
     skills: '*'
+  # unslop is vendored under roles/dotfiles/files/all/claude-code/ and stowed.
+  # Listing it here too made `npx skills add` replace the stow symlink with a
+  # real file, so the next run's stow failed on the conflict.
   - repo: cursor/plugins
-    skills: unslop,blast-radius
+    skills: blast-radius

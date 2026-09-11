@@ -2,7 +2,9 @@
 
 set -euoE pipefail
 
-source="https://github.com/Keep-Simple/.dotfiles"
+# Overridable so CI can point the clone at its own checkout instead of the
+# published repo. The default is the published one-liner's behaviour.
+source="${source:-https://github.com/Keep-Simple/.dotfiles}"
 branch="${branch:-macos}"
 tarball="$source/tarball/$branch"
 target="$HOME/.dotfiles"
