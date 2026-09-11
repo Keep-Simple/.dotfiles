@@ -52,10 +52,24 @@
 
 - name: Install agent skills
   ansible.builtin.shell: |
-    npx skills@latest add {{ item.repo }} -s {% for s in item.skills.split(',') %}'{{ s }}' {% endfor %}-a claude-code -g -y
+    npx skills@latest add {{ item.repo }} -s {% for s in item.skills.split(',') %}'{{ s }}' {% endfor %}-a {{ skill_agents }} -g -y
   args:
     executable: /bin/bash
   loop: "{{ agent_skills }}"
+  failed_when: false
+  tags: ['bootstrap']
+
+- name: Allow model invocation for unslop
+  ansible.builtin.shell: |
+    f="{{ ansible_facts['user_dir'] }}/.claude/skills/unslop/SKILL.md"
+    if [ -f "$f" ] && grep -q '^disable-model-invocation:' "$f"; then
+      perl -ni -e 'print unless /^disable-model-invocation:/' "$f"
+      echo flipped
+    fi
+  args:
+    executable: /bin/bash
+  register: unslop_flip
+  changed_when: "'flipped' in unslop_flip.stdout"
   failed_when: false
   tags: ['bootstrap']
 
@@ -92,9 +106,12 @@
     before=$(ls -1 "$skills_dir" 2>/dev/null | sort)
     {
       {% for item in agent_skills %}
-      npx skills@latest add {{ item.repo }} -s {% for s in item.skills.split(',') %}'{{ s }}' {% endfor %}-a claude-code -g -y
+      npx skills@latest add {{ item.repo }} -s {% for s in item.skills.split(',') %}'{{ s }}' {% endfor %}-a {{ skill_agents }} -g -y
       {% endfor %}
       npx skills@latest update --yes -g
+      if [ -f "$skills_dir/unslop/SKILL.md" ]; then
+        perl -ni -e 'print unless /^disable-model-invocation:/' "$skills_dir/unslop/SKILL.md"
+      fi
     } 2>&1 | tee {{ update_log_dir }}/skills.log
     after=$(ls -1 "$skills_dir" 2>/dev/null | sort)
     list_clean=$(npx skills@latest list -g 2>/dev/null | sed $'s/\x1b\\[[0-9;]*m//g')

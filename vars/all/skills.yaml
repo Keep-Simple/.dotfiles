@@ -1,4 +1,6 @@
 ---
+skill_agents: codex,claude-code,opencode,pi
+
 agent_skills:
   - repo: mattpocock/skills
     skills: '*'
