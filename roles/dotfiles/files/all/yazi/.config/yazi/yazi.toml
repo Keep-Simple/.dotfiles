@@ -17,7 +17,7 @@ image_alloc = 0
 image_bound = [0, 0]
 
 [[opener.open_in_browser]]
-run = '$BROWSER "$@"'
+run = '$BROWSER %s'
 desc = "$BROWSER"
 orphan = true
 for = "unix"
