@@ -11,6 +11,13 @@ Personal dotfiles + machine bootstrap. Ansible playbook drives full setup; GNU S
 
 Bootstrap entrypoint (one-liner): `setup.sh` → installs ansible deps → clones repo to `~/.dotfiles` → runs `ansible.sh run`.
 
+`migration/` holds the machine-to-machine move, which the playbook does not
+cover: `build-migration-zip.sh` runs on the old Mac and zips up everything this
+repo deliberately does not track (live secrets, auth state, SSH keys,
+`~/Documents`, Claude auto-memory), and the `setup.sh` inside that zip restores
+it on the new Mac and verifies the file modes. Not stowed, not run by ansible.
+Run it before `my run`, so the SSH keys and `~/.zshenv` are in place.
+
 ## Common Commands
 
 All wrapped by `ansible.sh` (also installed as `~/.local/bin/my`):
