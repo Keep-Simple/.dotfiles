@@ -40,6 +40,13 @@
 # so `brew update` failed on every machine without ~/.ssh/personal_key.
 [url "ssh://git@github.com/snyk/"]
 	insteadOf = https://github.com/snyk/
+# Push over ssh, fetch over https. core.sshCommand already picks the right key
+# (personal_key here, id_ed25519 via the work includeIf above), so this is all
+# that's needed to push to personal repos whose remotes are https.
+# pushInsteadOf, not insteadOf: setup.sh clones this repo by https on a new
+# machine, and Homebrew fetches its taps the same way. Neither ever pushes.
+[url "ssh://git@github.com/"]
+	pushInsteadOf = https://github.com/
 # The Zscaler bundle exists only on the work Mac, and git aborts every https
 # request when http.sslCAInfo names a file that is not there. git ignores a
 # missing include, so the dotfiles role writes this file only where the
