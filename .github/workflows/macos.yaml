@@ -195,5 +195,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - run: pip install ansible-lint
+      # Pinned: an unpinned linter turns the badge red on someone else's
+      # release, with nothing in this repo having changed.
+      - run: pip install 'ansible-lint==26.8.0'
+      # osx_defaults and flatpak_remote live in community.general, and
+      # syntax-check cannot resolve a module from a collection that is absent.
+      - run: ansible-galaxy install -r requirements.yaml
       - run: ansible-lint
