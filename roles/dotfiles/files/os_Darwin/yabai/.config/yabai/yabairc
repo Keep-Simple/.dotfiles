@@ -70,6 +70,10 @@ $YABAI/create_spaces.sh 8
 yabai -m query --spaces | jq -r '.[].index' | xargs -I{} yabai -m space {} --layout bsp
 $YABAI/smart_indicator.sh
 echo "yabai configuration loaded.."
+# Start dmenu-mac resident so the skhd binding only has to activate it: a cold
+# launch never shows the bar. open without -g does not steal focus here.
+# Must precede skhd, which runs in the foreground and never returns.
+open -b com.onaips.dmenu-macos
 skhd
 
 # can be usefull for focus problems https://github.com/koekeishiya/yabai/issues/2030#issuecomment-1873351137

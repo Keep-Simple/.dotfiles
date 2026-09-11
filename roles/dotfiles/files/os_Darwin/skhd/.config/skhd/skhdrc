@@ -10,7 +10,9 @@ ctrl + alt + cmd - 0x1B : screencapture -cix /dev/null
 ctrl + alt + cmd + shift - 0x1B : screencapture -iU /dev/null
 # 0x18 = equals
 ctrl + alt + cmd - 0x18 : yabai -m space --toggle mission-control
-ctrl + alt + cmd - d : killall dmenu-mac; exec dmenu-mac
+# dmenu-mac is a resident LSUIElement app: it reveals its bar on activation, not
+# on launch, so activate the running instance rather than restarting it.
+ctrl + alt + cmd - d : open -b com.onaips.dmenu-macos
 
 # change layouts
 ctrl + alt + cmd - t : yabai -m space --layout bsp
