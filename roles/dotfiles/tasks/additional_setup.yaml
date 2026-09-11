@@ -64,10 +64,12 @@
 
 - name: Install asdf packages
   ansible.builtin.shell: |
+    set -o pipefail
     awk '{print $1}' {{ ansible_facts['user_dir'] }}/.tool-versions | xargs -I _ asdf plugin add _ || true
     asdf install
   args:
     chdir: "{{ ansible_facts['user_dir'] }}"
+    executable: /bin/bash
   register: asdf_result
   changed_when: >
     'The installation was successful!' in asdf_result.stdout

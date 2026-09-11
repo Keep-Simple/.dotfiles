@@ -32,7 +32,7 @@ macos_defaults:
 
   - name: Finder disable animation
     domain: com.apple.finder
-    key: DisableAllAnimations 
+    key: DisableAllAnimations
     type: bool
     value: 'true'
 

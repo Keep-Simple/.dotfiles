@@ -74,11 +74,20 @@ Shell wrapper in `roles/dotfiles/files/os_Darwin/zsh/.zshrc.d/brew.sh` overrides
 
 ## CI
 
-One check: `.github/workflows/macos.yaml`. On every PR it runs the README
-one-liner on a `macos-latest` runner, piping the script to `sh` so any prompt
-hits EOF and fails the build. Then it asserts stow, lazy.nvim and tpm landed
-and `/etc/sudoers` has no leftover `NOPASSWD` line, then runs the playbook a
-second time to catch non-idempotent tasks.
+`.github/workflows/macos.yaml`, two jobs, on every PR and every push to
+`macos`. The README badge covers both.
+
+`lint` runs `ansible-lint` on ubuntu. Config is `.ansible-lint`; `ansible.cfg`
+sets `library = library` so the vendored `stow` module resolves.
+
+`install` runs the README one-liner on a `macos-latest` runner, piping the
+script to `sh` so any prompt hits EOF and fails the build. It then asserts
+stow, lazy.nvim, tpm and the asdf `uv` install landed, and that `/etc/sudoers`
+has no leftover `NOPASSWD` line, runs the playbook a second time, and parses
+both play recaps. The recap check is what catches `ignored` and `rescued`
+tasks, which do not change the exit code. Tasks carrying `failed_when: false`
+are still invisible to both, so gate those with an assertion on their effect,
+the way `uv` is.
 
 Run it without pushing: `gh workflow run macos.yaml --ref <branch>`, then
 `gh run watch`.

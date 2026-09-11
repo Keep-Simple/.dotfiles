@@ -41,4 +41,3 @@
   poll: 0
   register: zinit_async
   tags: ['update', 'never']
-

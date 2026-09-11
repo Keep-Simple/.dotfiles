@@ -1,9 +1,9 @@
 # Hands-off computer setup
 
-[![install](https://github.com/Keep-Simple/.dotfiles/actions/workflows/macos.yaml/badge.svg?branch=macos)](https://github.com/Keep-Simple/.dotfiles/actions/workflows/macos.yaml?query=branch%3Amacos)
+[![ci](https://github.com/Keep-Simple/.dotfiles/actions/workflows/macos.yaml/badge.svg?branch=macos)](https://github.com/Keep-Simple/.dotfiles/actions/workflows/macos.yaml?query=branch%3Amacos)
 
-The badge is the install command below, run end to end on a clean macOS runner
-against whatever is on `macos` right now.
+The badge is `ansible-lint` plus the install command below, run end to end on a
+clean macOS runner against whatever is on `macos` right now.
 
 ![desktop pic](https://i.imgur.com/HDuGa52.jpeg)
 

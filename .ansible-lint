@@ -1,5 +1,18 @@
----
 skip_list:
   - experimental
   - fqcn-builtins
   - name
+  # One role per concern here, so prefixing every register with the role name
+  # buys nothing and would rename 22 variables.
+  - var-naming[no-role-prefix]
+  # Bootstrap commands guarded by `when:` or `creates:` rather than by a
+  # changed_when the linter can see.
+  - no-changed-when
+  # `command: "brew bundle chdir=..."`. Works, and rewriting it is a separate job.
+  - no-free-form
+  # Cosmetic.
+  - key-order
+  # Both are on the Linux paths, which nothing here runs.
+  - package-latest
+  # The git task pins with `update: false`.
+  - latest
