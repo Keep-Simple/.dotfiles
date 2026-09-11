@@ -23,7 +23,8 @@
 # If this job starts running out of disk or time, cut the package list, not the
 # assertions.
 
-name: macos
+# The badge in the README reads this name, so keep it short.
+name: install
 
 on:
   pull_request:
