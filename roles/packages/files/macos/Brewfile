@@ -312,8 +312,6 @@ cask "kitty"
 cask "loom"
 # Intercept, modify, replay, save HTTP/S traffic
 cask "mitmproxy"
-# Tool to control external monitor brightness & volume
-cask "monitorcontrol"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # Open-source software for live streaming and screen recording
@@ -324,6 +322,8 @@ cask "keep-simple/formulae/spaceid"
 cask "spokenly"
 # Music streaming service
 cask "spotify"
+# Remote pair programming app
+cask "tuple"
 # Virtual machines UI using QEMU
 cask "utm"
 # Virtualization tool
