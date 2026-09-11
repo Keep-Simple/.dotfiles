@@ -136,34 +136,6 @@ The `stow` Ansible module is vendored in-repo at `library/stow` (a Python module
 
 Append to `macos_defaults` in `vars/os_Darwin/os_configs.yaml` (uses `osx_defaults` keys: `domain/key/type/value`). For settings without a clean `defaults write` form, drop XML into `roles/system_defaults/files/macos/xml_settings/<filename>` and reference via `macos_defaults_xml`.
 
-### PDF viewer for Vimium C
-
-Vimium C's keys do not work in Brave's built-in PDF viewer, because that is a
-PDFium plugin that takes every keystroke. The packed helper that used to fix
-this, "PDF Viewer for Vimium C", was Manifest V2 and cannot be ported: a
-Manifest V3 extension page is pinned to `script-src 'self'`, so it can no
-longer load Vimium C's content scripts. That is Chromium issue 40813203, closed
-as intended behavior. `docs/specs/vimium-shortcuts-mv3.md` covers the same wall
-in the shortcuts extension.
-
-A pdf.js viewer served over http is an ordinary web page, so Vimium C's
-`<all_urls>` content script runs on it with nothing injected.
-
-- `pdfjs-serve` (stowed to `~/.local/bin`) serves the viewer on
-  `127.0.0.1:8637`. Routes are documented in its docstring. `/proxy?url=`
-  exists because a remote host will not send `Access-Control-Allow-Origin` for
-  a loopback origin, so the viewer cannot fetch a web PDF directly.
-- The launchd agent `local.pdfjs-serve` keeps it running. Stow package
-  `launchd` under `files/os_Darwin/`. Log: `~/.cache/pdfjs-serve.log`.
-  Restart with
-  `launchctl kickstart -k gui/$(id -u)/local.pdfjs-serve`.
-- The dist lands in `~/.local/share/pdfjs`, fetched by an `unarchive` task
-  keyed on `web/viewer.html`. Bump `pdfjs_version` in `vars/all/pdfjs.yaml`
-  and delete the directory to upgrade.
-- `vimium_c.json` maps `gp` to `openUrl url="…/open?url=$s" url_mask="$s"`,
-  which reopens the current PDF in the viewer. That file is a Vimium C backup,
-  not live config: importing it into Vimium C is still manual.
-
 ### zsh runtime
 
 `roles/dotfiles/files/os_Darwin/zsh/.zshrc` is the entrypoint:

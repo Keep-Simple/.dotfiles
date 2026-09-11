@@ -1,4 +1,10 @@
 #!/bin/sh
-
-open -a "Brave Browser" -n --args "$@" </dev/null &
->/dev/null &
+# Hand arguments to Brave. File paths and URLs both work, because `open -a`
+# lets macOS turn a path into a file:// URL and percent-encode it.
+#
+# Not `-n --args`. `-n` starts a second Brave instance, that instance finds the
+# running one through Chromium's singleton and forwards to it, and the
+# forwarded arguments are dropped on the way, so you get an empty window
+# instead of the file. Plain `open -a` routes the document to the running
+# instance, which is what lets Brave's PDF handler see a real navigation.
+exec open -a "Brave Browser" "$@"

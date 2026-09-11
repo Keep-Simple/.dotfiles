@@ -1,6 +1,0 @@
----
-# pdf.js viewer served on loopback so Vimium C keys work inside PDFs.
-# Bump this to upgrade; the unarchive task is keyed on web/viewer.html, so
-# delete ~/.local/share/pdfjs first to force a re-fetch.
-pdfjs_version: "6.3.289"
-pdfjs_port: 8637
