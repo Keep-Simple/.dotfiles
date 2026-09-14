@@ -164,7 +164,8 @@ if [ "${BASH_SOURCE[0]}" = "$0" ] && [ "$1" = "--selfcheck" ]; then
     chmod +x "$stub_bin/terminal-notifier"
     cleanup_selfcheck() {
         rm -rf "$stub_bin"
-        rm -f "/tmp/claude_${sid}_completed" "/tmp/claude_${sid}_waiting"
+        rm -f "/tmp/claude_${sid}_completed" "/tmp/claude_${sid}_waiting" \
+              "/tmp/claude_${sid}_started" "/tmp/claude_${sid}_pane" "/tmp/claude_${sid}_repo"
     }
     trap cleanup_selfcheck EXIT
 
@@ -176,6 +177,18 @@ if [ "${BASH_SOURCE[0]}" = "$0" ] && [ "$1" = "--selfcheck" ]; then
     echo "{\"session_id\":\"$sid\",\"message\":\"test\",\"notification_type\":\"permission_prompt\"}" \
         | PATH="$stub_bin:$PATH" "$hooks_dir/on-notification.sh" >/dev/null 2>&1
     [ -f "/tmp/claude_${sid}_waiting" ] || { echo "FAIL: permission_prompt did not write a waiting marker"; fail=1; }
+
+    # An injected prompt (<task-notification> from a finished background agent)
+    # must not reset the turn clock — doing so made Stop report only the last
+    # leg, a 23s banner for a 5m turn.
+    echo 0 > "/tmp/claude_${sid}_started"
+    echo "{\"session_id\":\"$sid\",\"hook_event_name\":\"UserPromptSubmit\",\"prompt\":\"<task-notification>done</task-notification>\"}" \
+        | "$hooks_dir/on-user-prompt-submit.sh" >/dev/null 2>&1
+    assert_eq "$(cat "/tmp/claude_${sid}_started")" "0" "injected prompt reset the start timestamp"
+
+    echo "{\"session_id\":\"$sid\",\"hook_event_name\":\"UserPromptSubmit\",\"prompt\":\"hello\"}" \
+        | "$hooks_dir/on-user-prompt-submit.sh" >/dev/null 2>&1
+    [ "$(cat "/tmp/claude_${sid}_started")" = "0" ] && { echo "FAIL: real prompt did not reset the start timestamp"; fail=1; }
 
     [ "$fail" -eq 0 ] && echo "OK: common.sh selfcheck passed"
     exit "$fail"

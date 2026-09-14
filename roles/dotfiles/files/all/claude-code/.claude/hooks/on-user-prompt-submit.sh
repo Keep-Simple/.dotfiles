@@ -28,12 +28,21 @@ REPO_NAME=$(basename "$REPO_PATH")
 echo "$REPO_NAME" > "/tmp/claude_${SESSION_ID}_repo"
 log_debug "Saved REPO_NAME to /tmp/claude_${SESSION_ID}_repo: $REPO_NAME (from $REPO_PATH)"
 
-# Record prompt-submit timestamp for Stop-hook duration calc
-date +%s > "/tmp/claude_${SESSION_ID}_started"
-log_debug "Saved start timestamp to /tmp/claude_${SESSION_ID}_started"
+# Claude Code fires UserPromptSubmit for system-injected prompts too — a
+# <task-notification> when a background agent finishes, for example. Those are
+# not the user engaging, and resetting the clock on one made Stop report only
+# the final leg (23s banner for a 5m turn). Tag-prefixed prompt = injected.
+PROMPT=$(jq -r '.prompt // ""' <<< "$EVENT")
+if [[ "$PROMPT" =~ ^\<[a-z][a-z0-9-]*\> ]]; then
+    log_debug "Injected prompt (${BASH_REMATCH[0]}) - keeping start timestamp and markers"
+else
+    # Record prompt-submit timestamp for Stop-hook duration calc
+    date +%s > "/tmp/claude_${SESSION_ID}_started"
+    log_debug "Saved start timestamp to /tmp/claude_${SESSION_ID}_started"
 
-# Clear completion/waiting markers — user is engaging again, prior state was seen
-rm -f "/tmp/claude_${SESSION_ID}_completed" "/tmp/claude_${SESSION_ID}_waiting"
+    # Clear completion/waiting markers — user is engaging again, prior state was seen
+    rm -f "/tmp/claude_${SESSION_ID}_completed" "/tmp/claude_${SESSION_ID}_waiting"
+fi
 tmux refresh-client -S 2>/dev/null  # push status update without waiting for status-interval
 
 log_debug "========== UserPromptSubmit Hook Finished =========="
