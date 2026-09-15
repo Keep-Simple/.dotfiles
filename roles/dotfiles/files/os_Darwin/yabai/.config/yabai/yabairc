@@ -74,6 +74,10 @@ echo "yabai configuration loaded.."
 # launch never shows the bar. open without -g does not steal focus here.
 # Must precede skhd, which runs in the foreground and never returns.
 open -b com.onaips.dmenu-macos
+# dmenu-mac caches display geometry at launch, so its bar lands on the old
+# screen after a display change. Restart it; sleep lets the layout settle.
+yabai -m signal --add event=display_added action="sleep 2; pkill -x dmenu-mac; open -b com.onaips.dmenu-macos"
+yabai -m signal --add event=display_removed action="sleep 2; pkill -x dmenu-mac; open -b com.onaips.dmenu-macos"
 skhd
 
 # can be usefull for focus problems https://github.com/koekeishiya/yabai/issues/2030#issuecomment-1873351137
