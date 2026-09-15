@@ -134,3 +134,51 @@ ioreg -c IOHIDDevice -r -l | grep -E 'alt_handler_id|KeyboardLanguage'
 **Gotchas:**
 - Karabiner watches `~/.config/karabiner/karabiner.json`, which is a stow symlink. Editing the target under `~/.dotfiles` does not trigger a reload. Kick it with `launchctl kickstart -k gui/$(id -u)/org.pqrs.service.agent.Karabiner-Console-User-Server`, which is what the script does after a write.
 - Karabiner's own virtual keyboard appears in `ioreg` as a keyboard. The script skips it by product name. Without that skip, setting the Virtual Keyboard type to ISO would make Karabiner match its own output and feed it back through the remaps.
+
+## tmux `M-i` never reached finished Claude sessions (2026-09-15)
+
+**Symptom:** `M-i` (recon-jump) says "No sessions waiting" while a Claude pane
+sits on a finished turn asking a question. Only live permission prompts were
+ever found, so anything that had already stopped had to be located by hand.
+
+**Root cause, two of them:**
+
+1. `recon-jump.sh` sorted the stop-hook markers with `stat -f '%m %N'`. `-f`
+   is a format string only in BSD stat; in GNU stat it means `--file-system`.
+   That is the default stat on Linux, and on this mac `.zshrc:40` puts
+   `coreutils/libexec/gnubin` ahead of `/usr/bin`, which tmux's `run-shell`
+   inherits from the server's PATH — so `stat` was GNU 9.11 either way. It
+   printed filesystem blurbs, `cut` turned those into nonsense session ids,
+   every `cat .../_pane` missed, and the whole marker branch contributed
+   nothing. Silent: `2>/dev/null` on the stat, `|| continue` on the cat.
+2. The marker it read, `_completed`, means "unseen", not "unanswered". The
+   pane-focus-in hook and the `is_pane_visible` self-heal in
+   `recon-input-count.sh` both delete it, so watching a turn finish removed the
+   session from the jump list before you ever left the pane.
+
+**Fix:** `ls -t` instead of `stat -f` (same meaning in both implementations),
+and a second marker, `_done`, written by the Stop hook and cleared only by a
+real UserPromptSubmit or SessionEnd. `M-i` reads `_done`; the status line keeps
+reading `_completed`, so `✓N` still counts unseen and the jump list now counts
+unanswered.
+
+**Repro:** `ls -t /tmp/claude_*_done` should list markers; compare with
+`stat -f '%m %N' /tmp/claude_*_done`, which prints `Type: apfs` lines. Dry-run
+the jump without moving the client:
+
+```sh
+sed -e 's|^mkdir "$LOCK_DIR".*|:|' -e 's|^tmux switch-client.*|echo "WOULD SWITCH -> $target"|' \
+  ~/.config/tmux/scripts/recon-jump.sh > "$TMPDIR/rj-dry.sh" && bash "$TMPDIR/rj-dry.sh"
+```
+
+**Watch out:** these scripts live in the cross-platform `files/all/` stow
+package, so they have to work under both toolchains. The same split applies to
+`sed`, `grep`, `tar` and `date`, and on mac the gnubin entries in `.zshrc`
+decide which one a tmux `run-shell` or hook actually gets. Write for both
+rather than pinning an absolute path.
+
+Still macOS-only in this code path: `frontmost_app` in
+`.claude/hooks/common.sh` shells out to `lsappinfo`. On Linux it returns empty,
+so `is_pane_visible` always says hidden — notifications fire even with the
+terminal in front, and the `✓N` self-heal in `recon-input-count.sh` never
+drops a marker. `M-i` itself no longer depends on it.

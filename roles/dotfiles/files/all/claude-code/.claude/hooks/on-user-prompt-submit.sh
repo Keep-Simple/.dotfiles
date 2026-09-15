@@ -41,7 +41,8 @@ else
     log_debug "Saved start timestamp to /tmp/claude_${SESSION_ID}_started"
 
     # Clear completion/waiting markers — user is engaging again, prior state was seen
-    rm -f "/tmp/claude_${SESSION_ID}_completed" "/tmp/claude_${SESSION_ID}_waiting"
+    rm -f "/tmp/claude_${SESSION_ID}_completed" "/tmp/claude_${SESSION_ID}_waiting" \
+          "/tmp/claude_${SESSION_ID}_done"
 fi
 tmux refresh-client -S 2>/dev/null  # push status update without waiting for status-interval
 

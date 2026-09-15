@@ -45,6 +45,10 @@ fi
 # already be visible, which is more reliable than guessing visibility here
 # (client_activity/client_focused are flaky with 2+ attached tmux clients).
 : > "/tmp/claude_${SESSION_ID}_completed"
+# M-i jump list marker: "finished, user has not replied yet". Separate from
+# _completed, which means "unseen" and is cleared by focus/visibility — a
+# session you watched finish and then walked away from must stay reachable.
+: > "/tmp/claude_${SESSION_ID}_done"
 # Turn ended — any pending ⏸ (e.g. permission denied, no PostToolUse fired) is moot now.
 rm -f "/tmp/claude_${SESSION_ID}_waiting"
 tmux refresh-client -S 2>/dev/null  # push status update without waiting for status-interval

@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 # Cycle to next Claude pane needing user attention.
 # Order: panes showing a permission prompt (`❯ 1. Yes`/`No`), then stop-hook
-# completion markers, newest first. If current pane is already in the list,
+# _done markers, newest first. If current pane is already in the list,
 # advance to the next one (wrap around); otherwise jump to the head.
-# Completion markers are cleared by the pane-focus-in hook, no rm needed here.
+#
+# _done, not _completed: _completed means "unseen" and is cleared the moment
+# the pane is focused or merely visible at status-render time, so a session
+# you watched finish and then walked away from would drop out of this list
+# ("No sessions waiting" with a Claude still holding a question). _done is
+# cleared only by a real UserPromptSubmit or SessionEnd, i.e. "unanswered".
 #
 # Detection runs in pure shell (~12ms): tmux capture-pane | grep — vs ~600ms
 # for `recon next`, which walks all .claude.jsonl files for token stats we
@@ -49,19 +54,24 @@ while IFS= read -r r; do [ -n "$r" ] && refs+=("$r"); done < <(
         done
 )
 
-# Sort completion markers newest-first by mtime. Glob expansion (with nullglob)
-# yields zero entries when no markers exist; stat handles the empty list cleanly.
-markers=(/tmp/claude_*_completed)
+# Sort _done markers newest-first by mtime. `ls -t`, not `stat -f '%m %N'`:
+# `-f` is a format string only in BSD stat. In GNU stat it means
+# --file-system, so on Linux — and on a mac with coreutils ahead of /usr/bin
+# on PATH — that printed filesystem blurbs instead of "mtime path" and every
+# marker was silently dropped. `ls -t` means the same thing everywhere.
+# Glob expansion (with nullglob) yields zero entries when no markers exist;
+# the count guard skips ls then.
+markers=(/tmp/claude_*_done)
 if [ ${#markers[@]} -gt 0 ]; then
     while IFS= read -r m; do
         [ -z "$m" ] && continue
-        sid=${m##*/claude_}; sid=${sid%_completed}
+        sid=${m##*/claude_}; sid=${sid%_done}
         pane=$(cat "/tmp/claude_${sid}_pane" 2>/dev/null) || continue
         [ -n "$pane" ] && refs+=("$pane")
-    done < <(stat -f '%m %N' "${markers[@]}" 2>/dev/null | sort -rn | cut -d' ' -f2-)
+    done < <(ls -t "${markers[@]}" 2>/dev/null)
 fi
 
-# Normalize to %pane_id, drop dead panes, dedupe (Input + completion may overlap).
+# Normalize to %pane_id, drop dead panes, dedupe (Input + _done may overlap).
 # Plain string for dedupe — bash 3.2 has no associative arrays.
 ids=()
 seen=" "
