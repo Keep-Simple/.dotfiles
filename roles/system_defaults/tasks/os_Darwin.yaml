@@ -100,6 +100,29 @@
   become: true
 
 
+# The iPhone offers itself as a webcam because this agent advertises it over
+# Rapport. macOS 26 exposes no defaults key and no MDM restriction for
+# Continuity Camera, and the iPhone-side toggle no longer exists, so the launchd
+# disable flag is the only Mac-side off switch. It lives in
+# /var/db/com.apple.xpc.launchd/disabled.<uid>.plist and survives reboots.
+- name: Read the launchd disable flags
+  ansible.builtin.command:
+    cmd: launchctl print-disabled gui/{{ ansible_facts['user_uid'] }}
+  register: launchd_disabled
+  changed_when: false
+
+# bootout exits 3 ("No such process") once the agent is already stopped, so it
+# cannot gate the task; the disable flag read above is what makes this idempotent.
+- name: Disable Continuity Camera (iPhone as webcam)
+  ansible.builtin.shell:
+    cmd: |
+      set -e
+      launchctl disable gui/{{ ansible_facts['user_uid'] }}/com.apple.cmio.ContinuityCaptureAgent
+      launchctl bootout gui/{{ ansible_facts['user_uid'] }}/com.apple.cmio.ContinuityCaptureAgent || true
+  when: >-
+    'com.apple.cmio.ContinuityCaptureAgent" => disabled' not in launchd_disabled.stdout
+  changed_when: true
+
 # - name: get current wallpapper
 #   ansible.builtin.command:
 #     cmd: 'osascript -e "tell app \"finder\" to get posix path of (get desktop picture as alias)"'
