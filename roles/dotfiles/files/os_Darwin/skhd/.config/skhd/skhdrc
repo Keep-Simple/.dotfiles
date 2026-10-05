@@ -3,7 +3,9 @@ ctrl + alt + cmd - return : kitty --single-instance --instance-group base -d ~ t
 ctrl + alt + cmd + shift - return : yabai -m window --toggle QuickTerminal || kitty --single-instance --instance-group quickterm --title QuickTerminal --directory "${HOME}" tmux new -A -s quickterm
 # 0x2B = comma
 ctrl + alt + cmd - 0x2B : open -n /System/Applications/System\ Settings.app
-ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app
+# Hides the "started debugging this browser" bar the OpenClaw extension triggers.
+# Only a cold start reads the flag; a running Brave swallows it.
+ctrl + alt + cmd - b : open -n /Applications/Brave\ Browser.app --args --silent-debugger-extension-api
 # selection screenshot to the clipboard without sound (0x1B = minus)
 ctrl + alt + cmd - 0x1B : screencapture -cix /dev/null
 # screenshot with options
