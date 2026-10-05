@@ -1,8 +1,8 @@
-tap "asmvik/formulae"
-tap "hudochenkov/sshpass"
-tap "jandedobbeleer/oh-my-posh"
-tap "keep-simple/formulae"
-tap "morantron/tmux-fingers"
+tap "asmvik/formulae", trusted: true
+tap "hudochenkov/sshpass", trusted: true
+tap "jandedobbeleer/oh-my-posh", trusted: true
+tap "keep-simple/formulae", trusted: true
+tap "morantron/tmux-fingers", trusted: true
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
 # GNU Privacy Guard (OpenPGP)
@@ -194,11 +194,7 @@ brew "poppler"
 # Object-relational database system
 brew "postgresql@14"
 # Command-line shell and scripting language
-brew "powershell", link: false
-# Prompt theme engine, sourced by .zshrc
-brew "jandedobbeleer/oh-my-posh/oh-my-posh"
-# Non-interactive ssh password auth, needed by `my run_remote`
-brew "hudochenkov/sshpass/sshpass"
+brew "powershell"
 # Framework for managing multi-language pre-commit hooks
 brew "pre-commit"
 # Tool Command Language
@@ -271,12 +267,15 @@ brew "yazi"
 brew "yh"
 # General-purpose lossless data-compression library
 brew "zlib"
-# Simple hotkey-daemon for macOS
-brew "asmvik/formulae/skhd", trusted: true
+# Simple hotkey-daemon for macOS.
+brew "asmvik/formulae/skhd"
 # A tiling window manager for macOS based on binary space partitioning.
-brew "asmvik/formulae/yabai", trusted: true
+brew "asmvik/formulae/yabai"
+brew "hudochenkov/sshpass/sshpass"
+# Prompt theme engine for any shell
+brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 # mouseless terminal interaction
-brew "morantron/tmux-fingers/tmux-fingers", trusted: true
+brew "morantron/tmux-fingers/tmux-fingers"
 # Command-line interface for 1Password
 cask "1password-cli"
 # Android SDK component
@@ -293,8 +292,8 @@ cask "claude-code@latest"
 cask "codex"
 # Write, edit, and chat about your code with AI
 cask "cursor"
-# Keyboard-only application launcher (disabled upstream, vendored in our tap)
-cask "keep-simple/formulae/dmenu-mac"
+# Keyboard-only application launcher
+cask "keep-simple/formulae/dmenu-mac", trusted: true
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
 cask "font-jetbrains-mono-nerd-font"
@@ -308,6 +307,8 @@ cask "karabiner-elements"
 cask "keycastr"
 # GPU-based terminal emulator
 cask "kitty"
+# Support for Logitech G gear
+cask "logitech-g-hub"
 # Screen and video recording software
 cask "loom"
 # Intercept, modify, replay, save HTTP/S traffic
@@ -316,7 +317,7 @@ cask "mitmproxy"
 cask "ngrok"
 # Open-source software for live streaming and screen recording
 cask "obs"
-# Menu bar indicator showing the currently selected space (disabled upstream, vendored in our tap)
+# Menu bar indicator showing the currently selected space
 cask "keep-simple/formulae/spaceid"
 # Dictation and transcription app with AI-powered editing
 cask "spokenly"
