@@ -3,14 +3,15 @@
   "skillListingBudgetFraction": 0.02,
   "env": {
     "DISABLE_AUTOUPDATER": "1",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-5[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-5-5[1m]",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-5[1m]",
     "ENABLE_TOOL_SEARCH": "true",
     "ENABLE_LSP_TOOL": "1",
     "CAVEMAN_DEFAULT_MODE": "ultra",
     "PONYTAIL_DEFAULT_MODE": "full",
     "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1",
-    "CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN": "1"
+    "CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN": "1",
+    "CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL": "1"
   },
   "attribution": {
     "commit": "",
@@ -54,7 +55,6 @@
       "Bash(uniq:*)",
       "Bash(cut:*)",
       "Bash(tr:*)",
-      "Bash(xargs:*)",
       "Bash(which:*)",
       "Bash(npm:*)",
       "Bash(make:*)",
@@ -343,9 +343,15 @@
   "syntaxHighlightingDisabled": false,
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  },
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "auto",
   "editorMode": "vim",
-  "preferredNotifChannel": "notifications_disabled"
+  "preferredNotifChannel": "notifications_disabled",
+  "autoCompactEnabled": true
 }
