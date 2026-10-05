@@ -55,10 +55,22 @@ tmux refresh-client -S 2>/dev/null  # push status update without waiting for sta
 log_debug "Wrote completion marker"
 
 # Check if notification should be sent and send it
-# No group: each finished turn should alert on its own, not replace the
-# previous session's still-unread banner (see common.sh send_notification).
-if should_send_notification; then
-    send_notification "" "$TITLE" "$SUBTITLE" "" "Glass"
+# Grouped per session, never suppressed. Each finished background agent wakes
+# the session and ends in its own Stop, so six agents produce six Stops; the
+# group makes each banner replace the previous one instead of stacking six.
+# Do NOT skip the banner while tasks are running: a long-lived background shell
+# (dev server, watch loop) stays "running" forever and silenced a whole session
+# for 10 turns. The group key is the session, so a different session's unread
+# banner is never replaced.
+# A pending one-shot cron is a self-paced /loop wakeup: the turn is a tick, not
+# the end of the work, and a 60s tick would banner every minute. The tick that
+# stops the loop has none left pending, so it still banners. Recurring crons
+# are fixed-schedule jobs, not ticks, and keep bannering.
+PENDING_WAKEUPS=$(jq '[.session_crons[]? | select(.recurring == false)] | length' <<< "$EVENT" 2>/dev/null)
+if [ "${PENDING_WAKEUPS:-0}" -gt 0 ]; then
+    log_debug "loop wakeup pending ($PENDING_WAKEUPS) - mid-loop tick, skipping banner"
+elif should_send_notification; then
+    send_notification "$SESSION_ID" "$TITLE" "$SUBTITLE" "" "Glass"
 fi
 
 log_debug "========== Stop Hook Finished =========="

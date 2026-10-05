@@ -207,6 +207,20 @@ if [ "${BASH_SOURCE[0]}" = "$0" ] && [ "$1" = "--selfcheck" ]; then
         | "$hooks_dir/on-user-prompt-submit.sh" >/dev/null 2>&1
     [ "$(cat "/tmp/claude_${sid}_started")" = "0" ] && { echo "FAIL: real prompt did not reset the start timestamp"; fail=1; }
 
+    # A /loop tick (one-shot wakeup pending) must not banner; the tick that
+    # ends the loop, with nothing pending, must. A fake terminal name forces
+    # "not frontmost" so the banner path runs.
+    notified="$stub_bin/notified"
+    printf '#!/bin/bash\ntouch "%s"\n' "$notified" > "$stub_bin/terminal-notifier"
+    echo "{\"session_id\":\"$sid\",\"session_crons\":[{\"id\":\"x\",\"recurring\":false}]}" \
+        | PATH="$stub_bin:$PATH" CLAUDE_HOOK_TERMINAL_APP=selfcheck-none "$hooks_dir/on-stop.sh" >/dev/null 2>&1
+    [ -f "$notified" ] && { echo "FAIL: loop tick with a pending wakeup sent a banner"; fail=1; }
+    echo "{\"session_id\":\"$sid\",\"session_crons\":[]}" \
+        | PATH="$stub_bin:$PATH" CLAUDE_HOOK_TERMINAL_APP=selfcheck-none "$hooks_dir/on-stop.sh" >/dev/null 2>&1
+    [ -f "$notified" ] || [ -f "${XDG_CACHE_HOME:-$HOME/.cache}/notify-off" ] \
+        || { echo "FAIL: final turn with no pending wakeup sent no banner"; fail=1; }
+    rm -f "/tmp/claude_${sid}_done"
+
     [ "$fail" -eq 0 ] && echo "OK: common.sh selfcheck passed"
     exit "$fail"
 fi

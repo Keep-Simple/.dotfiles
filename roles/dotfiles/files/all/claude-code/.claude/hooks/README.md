@@ -16,6 +16,12 @@ Runs when Claude Code finishes a task. Sends a notification if:
 - The frontmost app is NOT kitty, OR
 - The current pane is NOT the pane where Claude was invoked
 
+The banner is grouped by session id, so the extra Stops that background agents
+produce when they finish replace the banner instead of stacking one per agent.
+Never gate the banner on `background_tasks` still running: a background shell
+that never exits keeps that list non-empty and kills notifications for the
+whole session.
+
 This prevents notifications when you're actively watching Claude work.
 
 ### on-notification.sh
