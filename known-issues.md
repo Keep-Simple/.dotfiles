@@ -182,3 +182,22 @@ Still macOS-only in this code path: `frontmost_app` in
 so `is_pane_visible` always says hidden — notifications fire even with the
 terminal in front, and the `✓N` self-heal in `recon-input-count.sh` never
 drops a marker. `M-i` itself no longer depends on it.
+
+**Follow-up (2026-09-21): `M-i` kept returning to answers already read.**
+Nothing cleared `_done` on reading. The marker was written by the Stop hook and
+removed only by a real UserPromptSubmit or SessionEnd, so a finished session you
+read and deliberately left with no reply stayed in the jump list for good. With
+one such session the key looked dead: `M-i` found the current pane in the list,
+advanced to the next entry, wrapped back to the same pane, and switched the
+client to where it already was.
+
+Now `pane-focus-out` clears `_done` for the pane you leave, and `recon-jump.sh`
+clears it for the pane you are in before it builds the list. Focus-out, not
+focus-in: on focus-in the pane you sit in while the turn ends would lose its
+marker immediately, which is the 2026-09-15 bug above. `recon-clear-on-focus.sh`
+takes the marker name as `$2` and still defaults to `_completed`, so the
+focus-in hook and the `✓N` count are unchanged.
+
+Sitting in a pane when the turn ends and staying there keeps the session listed
+until you leave or press `M-i`. That is deliberate. Only leaving proves you read
+it.

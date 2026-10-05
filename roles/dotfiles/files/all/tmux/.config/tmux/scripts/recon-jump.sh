@@ -25,6 +25,11 @@ trap 'rmdir "$LOCK_DIR" 2>/dev/null' EXIT
 
 current=$(tmux display-message -p '#{pane_id}')
 
+# You are in this pane, so its finished turn is read, not unanswered-unseen.
+# Covers a missed pane-focus-out and keeps M-i from no-opping when the current
+# pane is the only entry.
+"$(dirname "$0")/recon-clear-on-focus.sh" "$current" done
+
 to_pane_id() { tmux display-message -p -t "$1" '#{pane_id}' 2>/dev/null; }
 
 # Input detection: ported from gavraz/recon src/session.rs::pane_status.
