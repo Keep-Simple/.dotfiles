@@ -21,9 +21,26 @@ log_debug() {
 # with transient AppleEvents/XPC errors (-600, -10810) that silently return
 # empty and defeat the "am I frontmost" check. lsappinfo has no such failure
 # mode and needs no TCC grant.
+# A tmux server outlives the GUI session that started it: after a kitty restart
+# the server sits in launchd's Background session (`launchctl managername` says
+# so), where Launch Services sees no apps at all — `lsappinfo front` returns
+# `[ NULL ]`, the name comes back empty, and every Stop reads "terminal not
+# frontmost" and banners. AppleEvents reaches the real Aqua session from any
+# session, so fall back to it; it stays the fallback, not the primary, because
+# it flakes with transient -600/-10810 errors.
+# Cached for the life of the process: recon-input-count.sh asks once per
+# completed marker on every status redraw, and the osascript fallback costs
+# ~100ms a call.
 frontmost_app() {
-    lsappinfo info -only name "$(lsappinfo front)" 2>/dev/null \
-        | sed -n 's/.*"LSDisplayName"="\([^"]*\)".*/\1/p'
+    [ -n "$_FRONTMOST_APP" ] && { printf '%s' "$_FRONTMOST_APP"; return; }
+    local name
+    name=$(lsappinfo info -only name "$(lsappinfo front)" 2>/dev/null \
+        | sed -n 's/.*"LSDisplayName"="\([^"]*\)".*/\1/p')
+    [ -n "$name" ] || name=$(osascript -e \
+        'tell application "System Events" to get name of first application process whose frontmost is true' \
+        2>/dev/null)
+    _FRONTMOST_APP="$name"
+    printf '%s' "$name"
 }
 
 # Check whether a tmux pane is currently visible to the user.

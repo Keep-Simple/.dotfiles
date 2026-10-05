@@ -201,3 +201,47 @@ focus-in hook and the `✓N` count are unchanged.
 Sitting in a pane when the turn ends and staying there keeps the session listed
 until you leave or press `M-i`. That is deliberate. Only leaving proves you read
 it.
+
+---
+
+## Claude hooks banner on every turn after a kitty restart (2026-09-17)
+
+**Symptom:** Stop-hook notifications fire even when kitty is frontmost. Hook log
+shows `FRONT_APP:  (TERMINAL_APP=kitty)` with an empty name on every Stop. The
+`✓N` self-heal in `recon-input-count.sh` also stops dropping markers, because
+`is_pane_visible` reads the same empty name.
+
+**Root cause:** the tmux server outlives the GUI session that started it. This
+server started Sep 14; kitty restarted Sep 17 at 11:02, and the first bad
+reading came at 12:51. A tmux server whose original session is gone runs under
+launchd's Background session, where Launch Services sees no applications:
+
+```
+$ launchctl managername
+Background
+$ lsappinfo front
+[ NULL ]
+$ lsappinfo metainfo | head -3
+    sessionID=100025
+    applicationCount=17
+    visibleApplicationCount=0
+```
+
+`frontmost_app` returned empty, `should_send_notification` read that as "kitty
+is not in front", and every finished turn banners.
+
+**Fix:** `frontmost_app` falls back to AppleEvents when `lsappinfo` comes back
+empty. System Events reaches the real Aqua session from any session, so it
+answers `kitty` where `lsappinfo` answers nothing. It stays the fallback rather
+than the primary because it still flakes with transient -600 and -10810 errors.
+The result is cached per process: `recon-input-count.sh` asks once per completed
+marker on every status redraw, and each osascript call costs about 100ms.
+
+**Also possible:** killing the tmux server and starting a new one from a kitty
+window puts it back in the Aqua session and makes `lsappinfo` work again. That
+costs every pane and breaks again on the next kitty restart, so the code fix is
+the one to keep.
+
+**Repro:** `launchctl managername` from inside a tmux pane. `Background` means
+`lsappinfo front` is blind in every process under that server. `Aqua` means it
+works.
