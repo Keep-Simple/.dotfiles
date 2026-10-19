@@ -1,4 +1,6 @@
 #!/bin/sh
 text=$(cat)
+# url and path patterns swallow sentence punctuation after the match
+text=$(printf "%s" "$text" | sed -E "s/[.,;:]+\$//")
 printf '%s' "$text" | pbcopy
 tmux display-message -d 5000 "Copied: $text"
